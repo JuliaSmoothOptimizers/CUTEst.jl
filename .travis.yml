@@ -4,7 +4,7 @@ julia:
 before_install:
   - ./before_install.sh
 script:
-  - for f in *.bashrc; do source $f; done
+  - source $TRAVIS_BUILD_DIR/src_vars
   - julia -e 'Pkg.clone(pwd()); Pkg.build("CUTEst"); Pkg.test("CUTEst", coverage=true)'
 after_success:
   - julia -e 'cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
