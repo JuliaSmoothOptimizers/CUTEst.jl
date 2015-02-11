@@ -1,4 +1,4 @@
-# CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki) Interface 
+# CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki) Interface
 
 This is work in progress to create an interface to CUTEst based on
 [NLP.jl](https://github.com/optimizers/NLP.jl).
