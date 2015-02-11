@@ -1,4 +1,4 @@
-if [ $TRAVIS_OS_NAME == "linux" ]; then
+if [ "$TRAVIS_OS_NAME" == "linux" ]; then
   sudo apt-get update -qq -y
   sudo apt-get install -y gfortran
   git clone https://github.com/Homebrew/linuxbrew.git $TRAVIS_BUILD_DIR/linuxbrew
@@ -13,4 +13,5 @@ if [ $TRAVIS_OS_NAME == "linux" ]; then
   sudo ln -s $($brewcmd --prefix cutest)/lib/libcutest.so /usr/local/lib/
 else
   # Implement before_install for OSX here
+  echo "No support for OSX" yet
 fi
