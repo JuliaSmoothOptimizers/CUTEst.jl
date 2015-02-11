@@ -15,3 +15,5 @@ else
   # Implement before_install for OSX here
   echo "No support for OSX" yet
 fi
+
+julia -e 'Pkg.clone("https://github.com/optimizers/NLP.jl.git")'
