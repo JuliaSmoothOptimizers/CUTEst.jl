@@ -5,7 +5,7 @@ This is work in progress to create an interface to CUTEst based on
 
 ## Installing
 
-To install CUTESt, we suggest using the [Homebrew](https://github.com/Homebrew)
+To install CUTEst, we suggest using the [Homebrew](https://github.com/Homebrew)
 [CUTEst tap](https://github.com/dpo/homebrew-cutest), which will build a
 shared library.
 
