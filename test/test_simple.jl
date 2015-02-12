@@ -21,5 +21,7 @@ if nlp.meta.ncon > 0
 end
 @printf("H(x0,y0) = "); display(hess(nlp, nlp.meta.x0)); @printf("\n");
 
+terminate(nlp)
+
 # Return to initial directory.
 cd(curdir);
