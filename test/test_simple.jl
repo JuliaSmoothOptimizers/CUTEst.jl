@@ -5,6 +5,7 @@ curdir = pwd();
 tmpdir = mktempdir();
 cd(tmpdir);
 
+push!(DL_LOAD_PATH,tmpdir)
 # problem = "ROSENBR.SIF";
 problem = "BYRDSPHR.SIF";
 # sifdecoder(problem);
