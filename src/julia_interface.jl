@@ -5,11 +5,11 @@ function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   f = Cdouble[0];
   c = Array(Float64, ncon);
   if ncon > 0
-    @eval ccall((:cutest_cfn_, $(nlp.libname)), Void,
+    @eval ccall((:cutest_cfn_, $(libname)), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  $(io_err),  $(nvar),    $(ncon),    $(x),         $(f),         $(c));
   else
-    @eval ccall((:cutest_ufn_, $(nlp.libname)), Void,
+    @eval ccall((:cutest_ufn_, $(libname)), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}),
                  $(io_err),  $(nvar),    $(x),         $(f));
   end
@@ -32,7 +32,7 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
     get_grad = 0;
   end
   cutest_fcn = ncon > 0 ? "cutest_cofg_" : "cutest_uofg_";  # How do you do this with symbols?
-  @eval ccall(($(cutest_fcn), $(nlp.libname)), Void,
+  @eval ccall(($(cutest_fcn), $(libname)), Void,
             (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
              $(io_err),  &$(nvar),   $(x),         $(f),         $(g),         &$(get_grad));
   @cutest_error
@@ -55,7 +55,7 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
   jrow = Array(Int32, jsize);
   jcol = Array(Int32, jsize);
 
-  @eval ccall((:cutest_ccfsg_, $(nlp.libname)), Void,
+  @eval ccall((:cutest_ccfsg_, $(libname)), Void,
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
                $(io_err),  &$(nvar),   &$(ncon),   $(x),         $(c),         &$(nnzj),   &$(jsize),  $(jval),      $(jcol),    $(jrow),    &$(get_j));
   @cutest_error
@@ -86,11 +86,11 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1};
   hcol = Array(Int32, nnzh);
   this_nnzh = Cint[0];
   if ncon > 0
-    @eval ccall((:cutest_csh_, $(nlp.libname)), Void,
+    @eval ccall((:cutest_csh_, $(libname)), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
                  $(io_err),  &$(nvar),   &$(ncon),   $(x),         $(y),         $(this_nnzh),   &$(nnzh),   $(hval),      $(hrow),    $(hcol));
   else
-    @eval ccall((:cutest_ush_, $(nlp.libname)), Void,
+    @eval ccall((:cutest_ush_, $(libname)), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
                  $(io_err),  &$(nvar),   $(x),         $(this_nnzh),   &$(nnzh),   $(hval),      $(hrow),    $(hcol));
   end
