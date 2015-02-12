@@ -43,7 +43,7 @@ for function in functions:
     vars = [[m.group(1),m.group(2)] for m in matches]
 
     print(el.join(textwrap.wrap("function "+name+" ("+', '.join([v[1]
-        for v in vars])+")", width=80)))
+        for v in vars])+", libname = fixedlibname)", width=80)))
     print(s+"ccall((\"cutest_"+name+"_\", libname), Void,")
     if len(vars) == 1:
         print(2*s+"(Ptr{"+cutypes[vars[0][0]]+"},),")

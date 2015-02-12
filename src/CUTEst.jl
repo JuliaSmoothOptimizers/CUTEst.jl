@@ -4,14 +4,15 @@ module CUTEst
 
 using NLP  # Defines NLPModelMeta.
 
-export CUTEstModel, sifdecoder,
-       objcons, objgrad, obj, cons_coord, cons, hess_coord, hess
+export CUTEstModel, sifdecoder
 
 type CUTEstModel
   meta    :: NLPModelMeta;
+  libname :: ASCIIString;
+  initialized :: Bool;
 end
 
-const libname = "libCUTEstJL"
+const fixedlibname = "libCUTEstJL"
 const outsdif = "OUTSDIF.d";
 const funit   = int32(42);
 @osx? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
@@ -45,18 +46,20 @@ include("raw_interface.jl")
 include("julia_interface.jl")
 
 # Decode problem and build shared library.
-function sifdecoder(name :: ASCIIString)
+function sifdecoder(name :: ASCIIString; raw = false)
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(name);
+  libname = raw ? fixedlibname : "lib$pname"
   run(`sifdecoder $name`);
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`gfortran $sh_flags -o $libname.$soname -lcutest ELFUN.o EXTER.o GROUP.o RANGE.o`);
   push!(DL_LOAD_PATH,".")
+  return libname
 end
 
 # Initialize problem.
-function CUTEstModel(name :: ASCIIString)
-  sifdecoder(name)
+function CUTEstModel(name :: ASCIIString; raw :: Bool = false)
+  libname = sifdecoder(name, raw=raw)
   io_err = Cint[0];
 
   @eval ccall((:fortran_open_, $(libname)), Void,
@@ -126,20 +129,11 @@ function CUTEstModel(name :: ASCIIString)
                       nlin=nlin, nnln=nnln, nnet=0,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta);
+  nlp = CUTEstModel(meta, libname, true);
 
-  finalizer(nlp, cutest_finalize);
+  finalizer(nlp, terminate);
   return nlp
 end
-
-
-function cutest_finalize(nlp :: CUTEstModel)
-  io_err = Cint[0];
-  terminate = nlp.meta.ncon > 0 ? "cutest_cterminate_" : "cutest_uterminate_";
-  @eval ccall(($(terminate), $(libname)), Void, (Ptr{Int32},), $(io_err));
-  @cutest_error
-end
-
 
 # Displaying CUTEstModel instances.
 
