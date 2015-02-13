@@ -6,8 +6,8 @@ import sys
 import textwrap
 
 # Type conversion
-cutypes = {"integer":"Int32", "doublereal":"Float64", "logical":"Int32",
-        "char":"Uint8", "real":"Float64"}
+cutypes = {"integer":"Cint", "doublereal":"Cdouble", "logical":"Cint",
+        "char":"Cchar", "real":"Cdouble"}
 
 # Workarounds
 ignore_intent = ["ureport", "creport"]
@@ -123,19 +123,19 @@ for function in functions:
 
     funcall = [x for x in funcall if x]
     ins = [arg for arg in funcall if vars[arg]["intent"] == "in"]
-    print("function jl_"+name+"(", end="")
-    print(el.join(textwrap.wrap(', '.join(ins))), end="")
+    med.write("function jl_"+name+"(")
+    med.write(el.join(textwrap.wrap(', '.join(ins))))
     if len(ins) > 0:
-        print("; ", end="")
-    print("libname = fixedlibname)")
+        med.write("; ")
+    med.write("libname = fixedlibname)\n")
     for var in funcall:
         if vars[var]["intent"] == "in":
             continue
-        print(s+var + " = ", end="")
+        med.write(s+var + " = ")
         t = cutypes[vars[var]["type"]]
         if vars[var]["ptr"]:
             dim = vars[var]["dim"]
-            print("Array(" + t + ", ", end="")
+            med.write("Array(" + t + ", ")
             dims = []
             for d in dim:
                 if ":" in d:
@@ -145,10 +145,10 @@ for function in functions:
                 else:
                     d = d.strip()
                 dims.append(d)
-            print(', '.join(dims)+")")
+            med.write(', '.join(dims)+")\n")
         else:
-            print("["+t.lower()+"(0)]")
-    print(s+"@eval CUTEst."+name+"(", end="")
+            med.write("["+t.lower()+"(0)]\n")
+    med.write(s+"@eval CUTEst."+name+"(")
     ccall = []
     for arg in funcall:
         if vars[arg]["ptr"] or vars[arg]["intent"] == "out":
@@ -156,11 +156,11 @@ for function in functions:
         else:
             t = cutypes[vars[arg]["type"]].lower()
             ccall.append("$([{}({})])".format(t, arg))
-    print(el.join(textwrap.wrap(', '.join(ccall))), end="")
+    med.write(el.join(textwrap.wrap(', '.join(ccall))))
     if len(ccall) > 0:
-        print(", ", end="")
-    print("$(libname))")
-    print(s+"@cutest_error")
+        med.write(", ")
+    med.write("$(libname))\n")
+    med.write(s+"@cutest_error\n")
     out = []
     for arg in funcall:
         if arg == "io_err":
@@ -171,8 +171,9 @@ for function in functions:
             else:
                 out.append(arg+"[1]")
     if len(out) > 0:
-        print(s+"return "+', '.join(out))
-    print("end\n")
+        med.write(s+"return "+', '.join(out))
+        med.write("\n")
+    med.write("end\n\n")
 
 raw.close()
 med.close()

@@ -8,8 +8,8 @@ cd(tmpdir);
 problem = "HS53.SIF";
 nlp = CUTEstModel(problem, raw=true);
 
-nvar = int32(nlp.meta.nvar)
-ncon = int32(nlp.meta.ncon)
+nvar = nlp.meta.nvar
+ncon = nlp.meta.ncon
 x = nlp.meta.x0
 
 (f, c) = CUTEst.jl_cfn(nvar, ncon, x)
