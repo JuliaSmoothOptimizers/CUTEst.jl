@@ -3,8 +3,8 @@ export objcons, objgrad, obj, cons_coord, cons, hess_coord, hess, terminate
 function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
-  io_err = Cint[0];
-  f = Cdouble[0];
+  io_err = Int32[0];
+  f = Float64[0];
   c = Array(Float64, ncon);
   if ncon > 0
     @eval ccall((:cutest_cfn_, $(nlp.libname)), Void,
@@ -24,8 +24,8 @@ end
 function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
-  f = Cdouble[0];
-  io_err = Cint[0];
+  f = Float64[0];
+  io_err = Int32[0];
   if grad
     g = Array(Float64, nvar);
     get_grad = 1;
@@ -49,7 +49,7 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzj = nlp.meta.nnzj;
-  io_err = Cint[0];
+  io_err = Int32[0];
   c = Array(Float64, ncon);
   jsize = grad ? nlp.meta.nnzj : 0;
   get_j = grad ? 1 : 0;
@@ -82,11 +82,11 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1};
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzh = nlp.meta.nnzh;
-  io_err = Cint[0];
+  io_err = Int32[0];
   hval = Array(Float64, nnzh);
   hrow = Array(Int32, nnzh);
   hcol = Array(Int32, nnzh);
-  this_nnzh = Cint[0];
+  this_nnzh = Int32[0];
   if ncon > 0
     @eval ccall((:cutest_csh_, $(nlp.libname)), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
@@ -109,7 +109,7 @@ end
 
 function terminate(nlp :: CUTEstModel)
   if (nlp.initialized)
-    io_err = Cint[0];
+    io_err = Int32[0];
     termfoo = nlp.meta.ncon > 0 ? "cutest_cterminate_" : "cutest_uterminate_";
     @eval ccall(($(termfoo), $(nlp.libname)), Void, (Ptr{Int32},), $(io_err));
     @cutest_error
