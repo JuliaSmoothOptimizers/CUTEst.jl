@@ -79,12 +79,16 @@ for function in functions:
             line = line.strip().lower()
             if start_fundef:
                 for arg in re.search("(.*)[\)&]", line).group(1).split(','):
+                    if arg.strip() == "status":
+                        arg = "io_err"
                     funcall.append(arg.strip())
                 start_fundef = False
             if "subroutine cutest_"+name+"(" in line:
                 start_function = True
                 start_fundef = True
                 for arg in re.search("\((.*)[&\)]", line).group(1).split(','):
+                    if arg.strip() == "status":
+                        arg = "io_err"
                     funcall.append(arg.strip())
                 if ")" in line:
                     start_fundef = False
@@ -110,6 +114,8 @@ for function in functions:
                             dim = 0
                         args = re.search(":: (.*)", line).group(1).split(',')
                         for arg in args:
+                            if arg.strip() == "status":
+                                arg = "io_err"
                             vars[arg.strip().lower()] = {"type":t, "intent":intent,
                                     "ptr":is_ptr, "dim":dim}
             if start_function and "end subroutine" in line:
@@ -154,8 +160,11 @@ for function in functions:
     if len(ccall) > 0:
         print(", ", end="")
     print("$(libname))")
+    print(s+"@cutest_error")
     out = []
     for arg in funcall:
+        if arg == "io_err":
+            continue
         if vars[arg]["intent"] == "out":
             if vars[arg]["ptr"]:
                 out.append(arg)
