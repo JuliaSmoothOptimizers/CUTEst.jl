@@ -1,398 +1,401 @@
-function usetup (status, funit, iout, io_buffer, n, x, bl, bu, libname =
-    fixedlibname)
+function usetup(io_err, input, out, io_buffer, n, x, x_l, x_u, libname = fixedlibname)
   @eval ccall(("cutest_usetup_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(funit), $(iout), $(io_buffer), $(n), $(x), $(bl), $(bu))
+    $(io_err), $(input), $(out), $(io_buffer), $(n), $(x), $(x_l), $(x_u))
 end
 
-function csetup (status, funit, iout, io_buffer, n, m, x, bl, bu, v, cl, cu,
-    equatn, linear, e_order, l_order, v_order, libname = fixedlibname)
+function csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, libname
+    = fixedlibname)
   @eval ccall(("cutest_csetup_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(funit), $(iout), $(io_buffer), $(n), $(m), $(x), $(bl), $(bu),
-    $(v), $(cl), $(cu), $(equatn), $(linear), $(e_order), $(l_order), $(v_order))
+    Ptr{Cdouble}),
+    $(io_err), $(input), $(out), $(io_buffer), $(n), $(m), $(x), $(x_l),
+    $(x_u), $(y), $(c_l), $(c_u))
 end
 
-function udimen (status, funit, n, libname = fixedlibname)
+function udimen(io_err, input, n, libname = fixedlibname)
   @eval ccall(("cutest_udimen_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(funit), $(n))
+    $(io_err), $(input), $(n))
 end
 
-function udimsh (status, nnzh, libname = fixedlibname)
+function udimsh(io_err, nnzh, libname = fixedlibname)
   @eval ccall(("cutest_udimsh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}),
-    $(status), $(nnzh))
+    $(io_err), $(nnzh))
 end
 
-function udimse (status, ne, nzh, nzirnh, libname = fixedlibname)
+function udimse(io_err, ne, he_val_ne, he_row_ne, libname = fixedlibname)
   @eval ccall(("cutest_udimse_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(ne), $(nzh), $(nzirnh))
+    $(io_err), $(ne), $(he_val_ne), $(he_row_ne))
 end
 
-function uvartype (status, n, ivarty, libname = fixedlibname)
+function uvartype(io_err, n, x_type, libname = fixedlibname)
   @eval ccall(("cutest_uvartype_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(ivarty))
+    $(io_err), $(n), $(x_type))
 end
 
-function unames (status, n, pname, vnames, libname = fixedlibname)
+function unames(io_err, n, pname, vname, libname = fixedlibname)
   @eval ccall(("cutest_unames_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}, Ptr{Cchar}),
-    $(status), $(n), $(pname), $(vnames))
+    $(io_err), $(n), $(pname), $(vname))
 end
 
-function ureport (status, calls, time, libname = fixedlibname)
+function ureport(io_err, calls, time, libname = fixedlibname)
   @eval ccall(("cutest_ureport_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(calls), $(time))
+    $(io_err), $(calls), $(time))
 end
 
-function cdimen (status, funit, n, m, libname = fixedlibname)
+function cdimen(io_err, input, n, m, libname = fixedlibname)
   @eval ccall(("cutest_cdimen_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(funit), $(n), $(m))
+    $(io_err), $(input), $(n), $(m))
 end
 
-function cdimsj (status, nnzj, libname = fixedlibname)
+function cdimsj(io_err, nnzj, libname = fixedlibname)
   @eval ccall(("cutest_cdimsj_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}),
-    $(status), $(nnzj))
+    $(io_err), $(nnzj))
 end
 
-function cdimsh (status, nnzh, libname = fixedlibname)
+function cdimsh(io_err, nnzh, libname = fixedlibname)
   @eval ccall(("cutest_cdimsh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}),
-    $(status), $(nnzh))
+    $(io_err), $(nnzh))
 end
 
-function cdimse (status, ne, nzh, nzirnh, libname = fixedlibname)
+function cdimse(io_err, ne, he_val_ne, he_row_ne, libname = fixedlibname)
   @eval ccall(("cutest_cdimse_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(ne), $(nzh), $(nzirnh))
+    $(io_err), $(ne), $(he_val_ne), $(he_row_ne))
 end
 
-function cstats (status, nonlinear_variables_objective,
-    nonlinear_variables_constraints, equality_constraints, linear_constraints,
-    libname = fixedlibname)
+function cstats(io_err, nonlinear_variables_objective,
+    nonlinear_variables_constraints, libname = fixedlibname)
   @eval ccall(("cutest_cstats_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(nonlinear_variables_objective),
-    $(nonlinear_variables_constraints), $(equality_constraints),
-    $(linear_constraints))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(nonlinear_variables_objective),
+    $(nonlinear_variables_constraints))
 end
 
-function cvartype (status, n, ivarty, libname = fixedlibname)
+function cvartype(io_err, n, x_type, libname = fixedlibname)
   @eval ccall(("cutest_cvartype_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(ivarty))
+    $(io_err), $(n), $(x_type))
 end
 
-function cnames (status, n, m, pname, vnames, gnames, libname = fixedlibname)
+function cnames(io_err, n, m, pname, vname, cname, libname = fixedlibname)
   @eval ccall(("cutest_cnames_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}),
-    $(status), $(n), $(m), $(pname), $(vnames), $(gnames))
+    $(io_err), $(n), $(m), $(pname), $(vname), $(cname))
 end
 
-function creport (status, calls, time, libname = fixedlibname)
+function creport(io_err, calls, time, libname = fixedlibname)
   @eval ccall(("cutest_creport_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(calls), $(time))
+    $(io_err), $(calls), $(time))
 end
 
-function connames (status, m, gname, libname = fixedlibname)
+function connames(io_err, m, cname, libname = fixedlibname)
   @eval ccall(("cutest_connames_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}),
-    $(status), $(m), $(gname))
+    $(io_err), $(m), $(cname))
 end
 
-function pname (status, funit, pname, libname = fixedlibname)
+function pname(io_err, input, pname, libname = fixedlibname)
   @eval ccall(("cutest_pname_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}),
-    $(status), $(funit), $(pname))
+    $(io_err), $(input), $(pname))
 end
 
-function probname (status, pname, libname = fixedlibname)
+function probname(io_err, pname, libname = fixedlibname)
   @eval ccall(("cutest_probname_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cchar}),
-    $(status), $(pname))
+    $(io_err), $(pname))
 end
 
-function varnames (status, n, vname, libname = fixedlibname)
+function varnames(io_err, n, vname, libname = fixedlibname)
   @eval ccall(("cutest_varnames_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}),
-    $(status), $(n), $(vname))
+    $(io_err), $(n), $(vname))
 end
 
-function ufn (status, n, x, f, libname = fixedlibname)
+function ufn(io_err, n, x, f, libname = fixedlibname)
   @eval ccall(("cutest_ufn_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(n), $(x), $(f))
+    $(io_err), $(n), $(x), $(f))
 end
 
-function ugr (status, n, x, g, libname = fixedlibname)
+function ugr(io_err, n, x, g, libname = fixedlibname)
   @eval ccall(("cutest_ugr_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(n), $(x), $(g))
+    $(io_err), $(n), $(x), $(g))
 end
 
-function uofg (status, n, x, f, g, grad, libname = fixedlibname)
+function uofg(io_err, n, x, f, g, grad, libname = fixedlibname)
   @eval ccall(("cutest_uofg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(x), $(f), $(g), $(grad))
-end
-
-function ubandh (status, n, x, nsemib, bandh, lbandh, maxsbw, libname =
-    fixedlibname)
-  @eval ccall(("cutest_ubandh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}),
-    $(status), $(n), $(x), $(nsemib), $(bandh), $(lbandh), $(maxsbw))
+    $(io_err), $(n), $(x), $(f), $(g), $(grad))
 end
 
-function udh (status, n, x, lh1, h, libname = fixedlibname)
+function ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth,
+    libname = fixedlibname)
+  @eval ccall(("cutest_ubandh_", $(libname)), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(x), $(semibandwidth), $(h_band), $(lbandh),
+    $(max_semibandwidth))
+end
+
+function udh(io_err, n, x, lh1, h, libname = fixedlibname)
   @eval ccall(("cutest_udh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
-    $(status), $(n), $(x), $(lh1), $(h))
+    $(io_err), $(n), $(x), $(lh1), $(h))
 end
 
-function ush (status, n, x, nnzh, lh, h, irnh, icnh, libname = fixedlibname)
+function ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col, libname = fixedlibname)
   @eval ccall(("cutest_ush_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
-    Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(x), $(nnzh), $(lh), $(h), $(irnh), $(icnh))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(x), $(nnzh), $(lh), $(h_val), $(h_row), $(h_col))
 end
 
-function ueh (status, n, x, ne, le, iprnhi, iprhi, lirnhi, irnhi, lhi, hi,
-    byrows, libname = fixedlibname)
+function ueh(io_err, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, libname =
+    fixedlibname)
   @eval ccall(("cutest_ueh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(x), $(ne), $(le), $(iprnhi), $(iprhi), $(lirnhi),
-    $(irnhi), $(lhi), $(hi), $(byrows))
+    Ptr{Cint}),
+    $(io_err), $(n), $(x), $(ne), $(lhe_ptr), $(he_row_ptr), $(he_val_ptr))
 end
 
-function ugrdh (status, n, x, g, lh1, h, libname = fixedlibname)
+function ugrdh(io_err, n, x, g, lh1, h, libname = fixedlibname)
   @eval ccall(("cutest_ugrdh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
-    $(status), $(n), $(x), $(g), $(lh1), $(h))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cdouble}),
+    $(io_err), $(n), $(x), $(g), $(lh1), $(h))
 end
 
-function ugrsh (status, n, x, g, nnzh, lh, h, irnh, icnh, libname =
-    fixedlibname)
+function ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col, libname = fixedlibname)
   @eval ccall(("cutest_ugrsh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(x), $(g), $(nnzh), $(lh), $(h), $(irnh), $(icnh))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(x), $(g), $(nnzh), $(lh), $(h_val), $(h_row),
+    $(h_col))
 end
 
-function ugreh (status, n, x, g, ne, le, iprnhi, iprhi, lirnhi, irnhi, lhi, hi,
-    byrows, libname = fixedlibname)
+function ugreh(io_err, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, libname
+    = fixedlibname)
   @eval ccall(("cutest_ugreh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(x), $(g), $(ne), $(le), $(iprnhi), $(iprhi), $(lirnhi),
-    $(irnhi), $(lhi), $(hi), $(byrows))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(x), $(g), $(ne), $(lhe_ptr), $(he_row_ptr),
+    $(he_val_ptr), $(lhe_row))
 end
 
-function uhprod (status, n, goth, x, p, q, libname = fixedlibname)
+function uhprod(io_err, n, goth, x, vector, result, libname = fixedlibname)
   @eval ccall(("cutest_uhprod_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(n), $(goth), $(x), $(p), $(q))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cdouble}),
+    $(io_err), $(n), $(goth), $(x), $(vector), $(result))
 end
 
-function cfn (status, n, m, x, f, c, libname = fixedlibname)
+function cfn(io_err, n, m, x, f, c, libname = fixedlibname)
   @eval ccall(("cutest_cfn_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(n), $(m), $(x), $(f), $(c))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cdouble}),
+    $(io_err), $(n), $(m), $(x), $(f), $(c))
 end
 
-function cofg (status, n, x, f, g, grad, libname = fixedlibname)
+function cofg(io_err, n, x, f, g, grad, libname = fixedlibname)
   @eval ccall(("cutest_cofg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(x), $(f), $(g), $(grad))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}),
+    $(io_err), $(n), $(x), $(f), $(g), $(grad))
 end
 
-function cofsg (status, n, x, f, nnzg, lg, sg, ivsg, grad, libname =
-    fixedlibname)
+function cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad, libname = fixedlibname)
   @eval ccall(("cutest_cofsg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(x), $(f), $(nnzg), $(lg), $(sg), $(ivsg), $(grad))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(x), $(f), $(nnzg), $(lg), $(g_val), $(g_var),
+    $(grad))
 end
 
-function ccfg (status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, libname =
+function ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, libname =
     fixedlibname)
   @eval ccall(("cutest_ccfg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(c), $(jtrans), $(lcjac1), $(lcjac2), $(cjac),
-    $(grad))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(c), $(jtrans), $(lcjac1), $(lcjac2),
+    $(cjac), $(grad))
 end
 
-function clfg (status, n, m, x, v, f, g, grad, libname = fixedlibname)
+function clfg(io_err, n, m, x, y, f, g, grad, libname = fixedlibname)
   @eval ccall(("cutest_clfg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(v), $(f), $(g), $(grad))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(y), $(f), $(g), $(grad))
 end
 
-function cgr (status, n, m, x, v, grlagf, g, jtrans, lcjac1, lcjac2, cjac,
-    libname = fixedlibname)
+function cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, libname =
+    fixedlibname)
   @eval ccall(("cutest_cgr_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
-    $(status), $(n), $(m), $(x), $(v), $(grlagf), $(g), $(jtrans), $(lcjac1),
-    $(lcjac2), $(cjac))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
+    $(io_err), $(n), $(m), $(x), $(y), $(grlagf), $(g), $(jtrans), $(lj1),
+    $(lj2), $(j_val))
 end
 
-function csgr (status, n, m, x, v, grlagf, nnzj, lcjac, cjac, indvar, indfun,
-    libname = fixedlibname)
+function csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, libname =
+    fixedlibname)
   @eval ccall(("cutest_csgr_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(v), $(grlagf), $(nnzj), $(lcjac), $(cjac),
-    $(indvar), $(indfun))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(y), $(grlagf), $(nnzj), $(lj),
+    $(j_val), $(j_var), $(j_fun))
 end
 
-function ccfsg (status, n, m, x, c, nnzj, lcjac, cjac, indvar, indfun, grad,
-    libname = fixedlibname)
+function ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad, libname =
+    fixedlibname)
   @eval ccall(("cutest_ccfsg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(c), $(nnzj), $(lcjac), $(cjac), $(indvar),
-    $(indfun), $(grad))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(c), $(nnzj), $(lj), $(j_val), $(j_var),
+    $(j_fun), $(grad))
 end
 
-function ccifg (status, n, i, x, ci, gci, grad, libname = fixedlibname)
+function ccifg(io_err, n, icon, x, ci, gci, grad, libname = fixedlibname)
   @eval ccall(("cutest_ccifg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cint}),
-    $(status), $(n), $(i), $(x), $(ci), $(gci), $(grad))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cint}),
+    $(io_err), $(n), $(icon), $(x), $(ci), $(gci), $(grad))
 end
 
-function ccifsg (status, n, i, x, ci, nnzsgc, lsgci, sgci, ivsgci, grad, libname
+function ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad, libname
     = fixedlibname)
   @eval ccall(("cutest_ccifsg_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(i), $(x), $(ci), $(nnzsgc), $(lsgci), $(sgci), $(ivsgci),
-    $(grad))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(icon), $(x), $(ci), $(nnzgci), $(lgci), $(gci_val),
+    $(gci_var), $(grad))
 end
 
-function cgrdh (status, n, m, x, v, grlagf, g, jtrans, lcjac1, lcjac2, cjac,
-    lh1, h, libname = fixedlibname)
+function cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val,
+    libname = fixedlibname)
   @eval ccall(("cutest_cgrdh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cdouble}),
-    $(status), $(n), $(m), $(x), $(v), $(grlagf), $(g), $(jtrans), $(lcjac1),
-    $(lcjac2), $(cjac), $(lh1), $(h))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
+    $(io_err), $(n), $(m), $(x), $(y), $(grlagf), $(g), $(jtrans), $(lj1),
+    $(lj2), $(j_val), $(lh1), $(h_val))
 end
 
-function cdh (status, n, m, x, v, lh1, h, libname = fixedlibname)
+function cdh(io_err, n, m, x, y, lh1, h_val, libname = fixedlibname)
   @eval ccall(("cutest_cdh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cdouble}),
-    $(status), $(n), $(m), $(x), $(v), $(lh1), $(h))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cdouble}),
+    $(io_err), $(n), $(m), $(x), $(y), $(lh1), $(h_val))
 end
 
-function csh (status, n, m, x, v, nnzh, lh, h, irnh, icnh, libname =
+function csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col, libname =
     fixedlibname)
   @eval ccall(("cutest_csh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(v), $(nnzh), $(lh), $(h), $(irnh), $(icnh))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(y), $(nnzh), $(lh), $(h_val), $(h_row),
+    $(h_col))
 end
 
-function cshc (status, n, m, x, v, nnzh, lh, h, irnh, icnh, libname =
+function cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col, libname =
     fixedlibname)
   @eval ccall(("cutest_cshc_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(v), $(nnzh), $(lh), $(h), $(irnh), $(icnh))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(y), $(nnzh), $(lh), $(h_val), $(h_row),
+    $(h_col))
 end
 
-function ceh (status, n, m, x, lv, v, ne, le, iprnhi, iprhi, lirnhi, irnhi, lhi,
-    hi, byrows, libname = fixedlibname)
+function ceh(io_err, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, libname =
+    fixedlibname)
   @eval ccall(("cutest_ceh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(lv), $(v), $(ne), $(le), $(iprnhi), $(iprhi),
-    $(lirnhi), $(irnhi), $(lhi), $(hi), $(byrows))
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(y), $(ne), $(lhe_ptr), $(he_row_ptr),
+    $(he_val_ptr))
 end
 
-function cidh (status, n, x, iprob, lh1, h, libname = fixedlibname)
+function cidh(io_err, n, x, iprob, lh1, h, libname = fixedlibname)
   @eval ccall(("cutest_cidh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
-    $(status), $(n), $(x), $(iprob), $(lh1), $(h))
+    $(io_err), $(n), $(x), $(iprob), $(lh1), $(h))
 end
 
-function cish (status, n, x, iprob, nnzh, lh, h, irnh, icnh, libname =
+function cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col, libname =
     fixedlibname)
   @eval ccall(("cutest_cish_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(x), $(iprob), $(nnzh), $(lh), $(h), $(irnh), $(icnh))
+    $(io_err), $(n), $(x), $(iprob), $(nnzh), $(lh), $(h_val), $(h_row),
+    $(h_col))
 end
 
-function csgrsh (status, n, m, x, v, grlagf, nnzj, lcjac, cjac, indvar, indfun,
-    nnzh, lh, h, irnh, icnh, libname = fixedlibname)
-  @eval ccall(("cutest_csgrsh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(v), $(grlagf), $(nnzj), $(lcjac), $(cjac),
-    $(indvar), $(indfun), $(nnzh), $(lh), $(h), $(irnh), $(icnh))
-end
-
-function csgreh (status, n, m, x, v, grlagf, nnzj, lcjac, cjac, indvar, indfun,
-    ne, le, iprnhi, iprhi, lirnhi, irnhi, lhi, hi, byrows, libname = fixedlibname)
-  @eval ccall(("cutest_csgreh_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(m), $(x), $(v), $(grlagf), $(nnzj), $(lcjac), $(cjac),
-    $(indvar), $(indfun), $(ne), $(le), $(iprnhi), $(iprhi), $(lirnhi), $(irnhi),
-    $(lhi), $(hi), $(byrows))
-end
-
-function chprod (status, n, m, goth, x, v, p, q, libname = fixedlibname)
-  @eval ccall(("cutest_chprod_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(n), $(m), $(goth), $(x), $(v), $(p), $(q))
-end
-
-function chcprod (status, n, m, goth, x, v, p, q, libname = fixedlibname)
-  @eval ccall(("cutest_chcprod_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cdouble}, Ptr{Cdouble}),
-    $(status), $(n), $(m), $(goth), $(x), $(v), $(p), $(q))
-end
-
-function cjprod (status, n, m, gotj, jtrans, x, p, lp, r, lr, libname =
+function csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, libname =
     fixedlibname)
+  @eval ccall(("cutest_csgrsh_", $(libname)), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(y), $(grlagf), $(nnzj), $(lj),
+    $(j_val), $(j_var), $(j_fun))
+end
+
+function csgreh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne, libname
+    = fixedlibname)
+  @eval ccall(("cutest_csgreh_", $(libname)), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cint}),
+    $(io_err), $(n), $(m), $(x), $(y), $(grlagf), $(nnzj), $(lj),
+    $(j_val), $(j_var), $(j_fun), $(ne))
+end
+
+function chprod(io_err, n, m, goth, x, y, vector, result, libname = fixedlibname)
+  @eval ccall(("cutest_chprod_", $(libname)), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
+    $(io_err), $(n), $(m), $(goth), $(x), $(y), $(vector), $(result))
+end
+
+function chcprod(io_err, n, m, goth, x, y, vector, result, libname = fixedlibname)
+  @eval ccall(("cutest_chcprod_", $(libname)), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
+    $(io_err), $(n), $(m), $(goth), $(x), $(y), $(vector), $(result))
+end
+
+function cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult,
+    libname = fixedlibname)
   @eval ccall(("cutest_cjprod_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
-    $(status), $(n), $(m), $(gotj), $(jtrans), $(x), $(p), $(lp), $(r), $(lr))
+    $(io_err), $(n), $(m), $(gotj), $(jtrans), $(x), $(vector),
+    $(lvector), $(result), $(lresult))
 end
 
-function uterminate (status, libname = fixedlibname)
+function uterminate(io_err, libname = fixedlibname)
   @eval ccall(("cutest_uterminate_", $(libname)), Void,
-    (Ptr{Cint},),
-    $(status))
+    (Ptr{Cint}),
+    $(io_err))
 end
 
-function cterminate (status, libname = fixedlibname)
+function cterminate(io_err, libname = fixedlibname)
   @eval ccall(("cutest_cterminate_", $(libname)), Void,
-    (Ptr{Cint},),
-    $(status))
+    (Ptr{Cint}),
+    $(io_err))
 end
 

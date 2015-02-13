@@ -24,16 +24,10 @@ functions = []
 with open(cutest+"/include/cutest.h") as file:
     # Each new function starts with
     # void CUTEST_xxx
-    start_function = False
     for line in file:
-        if start_function:
-            function += " " + line.strip()
         if "void CUTEST" in line:
-            start_function = True
-            function = line.strip()
-        if start_function and ";" in line:
-            start_function = False
-            functions.append(function)
+            name = re.search('CUTEST_([a-z]*)', line).group(1).strip()
+            functions.append(name)
 
 s="  "
 el='\n'+2*s
@@ -41,37 +35,10 @@ el='\n'+2*s
 raw = open("src/raw_interface.jl","w")
 med = open("src/medium_interface.jl","w")
 
-for function in functions:
+for name in functions:
     # Get function name
-    name = re.search('CUTEST_([a-z]*)', function).group(1)
-    # Get function arguments
-    args = re.search('\((.*)\)', function).group(1).split(',')
-    matches = [re.search('([a-z]*) \*(.*)', arg.strip()) for arg in args]
-    # Create a list of [type,variable name]
-    vars = [[m.group(1),m.group(2)] for m in matches]
-
-    # Raw interface
-    raw.write(el.join(textwrap.wrap("function "+name+" ("+', '.join([v[1]
-        for v in vars])+", libname = fixedlibname)", width=80)))
-    raw.write("\n")
-    raw.write(s+"@eval ccall((\"cutest_"+name+"_\", $(libname)), Void,")
-    raw.write("\n")
-    if len(vars) == 1:
-        raw.write(2*s+"(Ptr{"+cutypes[vars[0][0]]+"},),")
-        raw.write("\n")
-    else:
-        raw.write(el.join(textwrap.wrap(2*s+"(" +
-            ', '.join(["Ptr{"+cutypes[v[0]]+"}" for v in vars])+"),",
-            width=80)))
-        raw.write("\n")
-    raw.write(el.join(textwrap.wrap(2*s+', '.join(["$("+v[1]+")" for v in vars]) + ")",
-        width=80)))
-    raw.write("\n")
-    raw.write("end\n\n")
-
     vars = {}
     funcall = []
-    # Medium interface
     with open(os.environ['CUTEST']+'/src/tools/'+name+'.f90','r') as f:
         start_function = False
         start_fundef = False
@@ -122,6 +89,26 @@ for function in functions:
                 break
 
     funcall = [x for x in funcall if x]
+
+    raw.write("function "+name+"(")
+    raw.write(el.join(textwrap.wrap(
+        ', '.join(funcall)+", libname = fixedlibname")))
+    raw.write(")\n")
+    raw.write(s+'@eval ccall(("cutest_'+name+'_", $(libname)), Void,\n')
+    raw.write(2*s+"(")
+    types = []
+    for var in funcall:
+        t = cutypes[vars[var]["type"]]
+        types.append("Ptr{"+t+"}")
+    raw.write(el.join(textwrap.wrap(', '.join(types))))
+    raw.write("),\n")
+    ccall = []
+    for var in funcall:
+        ccall.append("$({})".format(var))
+    raw.write(2*s+el.join(textwrap.wrap(', '.join(ccall))))
+    raw.write(")\n")
+    raw.write("end\n\n")
+
     ins = [arg for arg in funcall if vars[arg]["intent"] == "in"]
     med.write("function jl_"+name+"(")
     med.write(el.join(textwrap.wrap(', '.join(ins))))
