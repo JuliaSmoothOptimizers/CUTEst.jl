@@ -90,9 +90,13 @@ for name in functions:
 
     funcall = [x for x in funcall if x]
 
+    args = []
+    for var in funcall:
+        t = cutypes[vars[var]["type"]]
+        args.append(var+"::Array{"+t+", 1}")
     raw.write("function "+name+"(")
     raw.write(el.join(textwrap.wrap(
-        ', '.join(funcall)+", libname = fixedlibname")))
+        ', '.join(args)+", libname = fixedlibname")))
     raw.write(")\n")
     raw.write(s+'@eval ccall(("cutest_'+name+'_", $(libname)), Void,\n')
     raw.write(2*s+"(")
