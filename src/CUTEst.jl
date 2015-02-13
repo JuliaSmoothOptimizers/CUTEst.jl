@@ -53,7 +53,7 @@ function sifdecoder(name :: ASCIIString)
   libname = "lib$pname";
   run(`sifdecoder $name`);
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-  run(`gfortran $sh_flags -o $libname.$soname -lcutest ELFUN.o EXTER.o GROUP.o RANGE.o`);
+  run(`ld $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -lcutest -lgfortran`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
   push!(DL_LOAD_PATH,".")
   return libname
