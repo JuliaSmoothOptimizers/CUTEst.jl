@@ -22,10 +22,10 @@ const funit   = cint(42);
 @osx? (const soname = "dylib") : (const soname = "so");
 
 type CUTEstException <: Exception
-  info :: Cint
+  info :: Int32
   msg  :: ASCIIString
 
-  function CUTEstException(info :: Cint)
+  function CUTEstException(info :: Int32)
     if info == 1
       msg = "memory allocation error"
     elseif info == 2
@@ -39,7 +39,7 @@ type CUTEstException <: Exception
   end
 end
 
-CUTEstException(info :: Int) = CUTEstException(cint(info));
+CUTEstException(info :: Integer) = CUTEstException(int32(info));
 
 macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
@@ -93,12 +93,16 @@ function CUTEstModel(name :: ASCIIString; raw :: Bool = false)
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
     @eval ccall((:cutest_csetup_, $(libname)), Void,
-                (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-                 $(io_err),  &funit,     &5,         &6,         &$(nvar),   &$(ncon),   $(x),         $(bl),        $(bu),        $(v),         $(cl),        $(cu),        $(equatn),  $(linear),  &1,         &1,         &1);
+      (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+      Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
+      Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+      $(io_err), &funit, &5, &6, &$(nvar), &$(ncon), $(x), $(bl), $(bu), $(v),
+      $(cl), $(cu), $(equatn), $(linear), &1, &1, &1);
   else
     @eval ccall((:cutest_usetup_, $(libname)), Void,
-                (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
-                 $(io_err),  &funit,     &5,         &6,         &$(nvar),   $(x),         $(bl),        $(bu));
+      (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+      Ptr{Cdouble}, Ptr{Cdouble}),
+      $(io_err), &funit, &5, &6, &$(nvar), $(x), $(bl), $(bu));
   end
   @cutest_error
 
@@ -111,11 +115,14 @@ function CUTEstModel(name :: ASCIIString; raw :: Bool = false)
   nnzj = Cint[0];
 
   if ncon > 0
-    @eval ccall((:cutest_cdimsh_, $(libname)), Void, (Ptr{Cint}, Ptr{Cint}), $(io_err), $(nnzh));
-    @eval ccall((:cutest_cdimsj_, $(libname)), Void, (Ptr{Cint}, Ptr{Cint}), $(io_err), $(nnzj))
+    @eval ccall((:cutest_cdimsh_, $(libname)), Void,
+      (Ptr{Cint}, Ptr{Cint}), $(io_err), $(nnzh));
+    @eval ccall((:cutest_cdimsj_, $(libname)), Void,
+      (Ptr{Cint}, Ptr{Cint}), $(io_err), $(nnzj))
     nnzj[1] -= nvar;  # nnzj also counts the nonzeros in the objective gradient.
   else
-    @eval ccall((:cutest_udimsh_, $(libname)), Void, (Ptr{Cint}, Ptr{Cint}), $(io_err), $(nnzh));
+    @eval ccall((:cutest_udimsh_, $(libname)), Void,
+      (Ptr{Cint}, Ptr{Cint}), $(io_err), $(nnzh));
   end
   @cutest_error
 
