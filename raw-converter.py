@@ -8,6 +8,8 @@ import textwrap
 # Type conversion
 cutypes = {"integer":"Cint", "doublereal":"Cdouble", "logical":"Cint",
         "char":"Cchar", "real":"Cdouble"}
+jltypes = {"integer":"Integer", "doublereal":"Float64", "logical":"Bool",
+        "char":"Uint8", "real":"Float64"}
 
 # Workarounds
 ignore_intent = ["ureport", "creport"]
@@ -83,6 +85,17 @@ for name in functions:
                         for arg in args:
                             if arg.strip() == "status":
                                 arg = "io_err"
+                            if is_ptr:
+                                dims = []
+                                for d in dim:
+                                    if ":" in d:
+                                        a = d.split(':')[0]
+                                        b = d.split(':')[1]
+                                        d = "{} - {} + 1".format(b.strip(),a.strip())
+                                    else:
+                                        d = d.strip()
+                                    dims.append(d)
+                                dim = dims
                             vars[arg.strip().lower()] = {"type":t, "intent":intent,
                                     "ptr":is_ptr, "dim":dim}
             if start_function and "end subroutine" in line:
@@ -113,7 +126,15 @@ for name in functions:
     raw.write(")\n")
     raw.write("end\n\n")
 
-    ins = [arg for arg in funcall if vars[arg]["intent"] == "in"]
+    ins = []
+    for var in funcall:
+        if vars[var]["intent"] == "out":
+            continue
+        t = jltypes[vars[var]["type"]]
+        if vars[var]["ptr"]:
+            ins.append(var+"::Array{"+t+", "+str(len(vars[var]["dim"]))+"}")
+        else:
+            ins.append(var+"::"+t)
     med.write("function jl_"+name+"(")
     med.write(el.join(textwrap.wrap(', '.join(ins))))
     if len(ins) > 0:
@@ -125,18 +146,8 @@ for name in functions:
         med.write(s+var + " = ")
         t = cutypes[vars[var]["type"]]
         if vars[var]["ptr"]:
-            dim = vars[var]["dim"]
             med.write("Array(" + t + ", ")
-            dims = []
-            for d in dim:
-                if ":" in d:
-                    a = d.split(':')[0]
-                    b = d.split(':')[1]
-                    d = "{} - {} + 1".format(b.strip(),a.strip())
-                else:
-                    d = d.strip()
-                dims.append(d)
-            med.write(', '.join(dims)+")\n")
+            med.write(', '.join(vars[var]["dim"])+")\n")
         else:
             med.write("["+t.lower()+"(0)]\n")
     med.write(s+"@eval CUTEst."+name+"(")
