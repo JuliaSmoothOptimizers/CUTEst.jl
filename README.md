@@ -73,6 +73,10 @@ H = hess(nlp, nlp.meta.x0));
 
 For examples of using the other interfaces, see the files on `test`.
 
+## Todo
+
+See [TODO.md](TODO.md).
+
 ## License
 
 This work is licensed under The GNU LGPLv3. See [LICENSE.md](LICENSE.md).
