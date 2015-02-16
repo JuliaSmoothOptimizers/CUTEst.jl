@@ -11,13 +11,16 @@ function csetup(io_err::Array{Cint, 1}, input::Array{Cint, 1}, out::Array{Cint, 
     io_buffer::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     x::Array{Cdouble, 1}, x_l::Array{Cdouble, 1}, x_u::Array{Cdouble, 1},
     y::Array{Cdouble, 1}, c_l::Array{Cdouble, 1}, c_u::Array{Cdouble, 1},
-    libname = fixedlibname)
+    equatn::Array{Cint, 1}, linear::Array{Cint, 1}, e_order::Array{Cint,
+    1}, l_order::Array{Cint, 1}, v_order::Array{Cint, 1}, libname =
+    fixedlibname)
   @eval ccall(("cutest_csetup_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cdouble}),
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     $(io_err), $(input), $(out), $(io_buffer), $(n), $(m), $(x), $(x_l),
-    $(x_u), $(y), $(c_l), $(c_u))
+    $(x_u), $(y), $(c_l), $(c_u), $(equatn), $(linear), $(e_order),
+    $(l_order), $(v_order))
 end
 
 function udimen(io_err::Array{Cint, 1}, input::Array{Cint, 1}, n::Array{Cint, 1},
@@ -88,12 +91,14 @@ function cdimse(io_err::Array{Cint, 1}, ne::Array{Cint, 1}, he_val_ne::Array{Cin
 end
 
 function cstats(io_err::Array{Cint, 1}, nonlinear_variables_objective::Array{Cint, 1},
-    nonlinear_variables_constraints::Array{Cint, 1}, libname =
-    fixedlibname)
+    nonlinear_variables_constraints::Array{Cint, 1},
+    equality_constraints::Array{Cint, 1}, linear_constraints::Array{Cint,
+    1}, libname = fixedlibname)
   @eval ccall(("cutest_cstats_", $(libname)), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     $(io_err), $(nonlinear_variables_objective),
-    $(nonlinear_variables_constraints))
+    $(nonlinear_variables_constraints), $(equality_constraints),
+    $(linear_constraints))
 end
 
 function cvartype(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x_type::Array{Cint, 1},
@@ -197,11 +202,15 @@ end
 
 function ueh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
     ne::Array{Cint, 1}, lhe_ptr::Array{Cint, 1}, he_row_ptr::Array{Cint,
-    1}, he_val_ptr::Array{Cint, 1}, libname = fixedlibname)
+    1}, he_val_ptr::Array{Cint, 1}, lhe_row::Array{Cint, 1},
+    he_row::Array{Cint, 1}, lhe_val::Array{Cint, 1},
+    he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1}, libname =
+    fixedlibname)
   @eval ccall(("cutest_ueh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cint}),
-    $(io_err), $(n), $(x), $(ne), $(lhe_ptr), $(he_row_ptr), $(he_val_ptr))
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
+    $(io_err), $(n), $(x), $(ne), $(lhe_ptr), $(he_row_ptr),
+    $(he_val_ptr), $(lhe_row), $(he_row), $(lhe_val), $(he_val), $(byrows))
 end
 
 function ugrdh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
@@ -227,12 +236,15 @@ end
 function ugreh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
     g::Array{Cdouble, 1}, ne::Array{Cint, 1}, lhe_ptr::Array{Cint, 1},
     he_row_ptr::Array{Cint, 1}, he_val_ptr::Array{Cint, 1},
-    lhe_row::Array{Cint, 1}, libname = fixedlibname)
+    lhe_row::Array{Cint, 1}, he_row::Array{Cint, 1}, lhe_val::Array{Cint,
+    1}, he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1}, libname =
+    fixedlibname)
   @eval ccall(("cutest_ugreh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cdouble}, Ptr{Cint}),
     $(io_err), $(n), $(x), $(g), $(ne), $(lhe_ptr), $(he_row_ptr),
-    $(he_val_ptr), $(lhe_row))
+    $(he_val_ptr), $(lhe_row), $(he_row), $(lhe_val), $(he_val), $(byrows))
 end
 
 function uhprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
@@ -393,12 +405,16 @@ end
 function ceh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, ne::Array{Cint, 1},
     lhe_ptr::Array{Cint, 1}, he_row_ptr::Array{Cint, 1},
-    he_val_ptr::Array{Cint, 1}, libname = fixedlibname)
+    he_val_ptr::Array{Cint, 1}, lhe_row::Array{Cint, 1},
+    he_row::Array{Cint, 1}, lhe_val::Array{Cint, 1},
+    he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1}, libname =
+    fixedlibname)
   @eval ccall(("cutest_ceh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
     $(io_err), $(n), $(m), $(x), $(y), $(ne), $(lhe_ptr), $(he_row_ptr),
-    $(he_val_ptr))
+    $(he_val_ptr), $(lhe_row), $(he_row), $(lhe_val), $(he_val), $(byrows))
 end
 
 function cidh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
@@ -423,25 +439,35 @@ end
 function csgrsh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, grlagf::Array{Cint, 1},
     nnzj::Array{Cint, 1}, lj::Array{Cint, 1}, j_val::Array{Cdouble, 1},
-    j_var::Array{Cint, 1}, j_fun::Array{Cint, 1}, libname = fixedlibname)
+    j_var::Array{Cint, 1}, j_fun::Array{Cint, 1}, nnzh::Array{Cint, 1},
+    lh::Array{Cint, 1}, h_val::Array{Cdouble, 1}, h_row::Array{Cint, 1},
+    h_col::Array{Cint, 1}, libname = fixedlibname)
   @eval ccall(("cutest_csgrsh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
-    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
     $(io_err), $(n), $(m), $(x), $(y), $(grlagf), $(nnzj), $(lj),
-    $(j_val), $(j_var), $(j_fun))
+    $(j_val), $(j_var), $(j_fun), $(nnzh), $(lh), $(h_val), $(h_row),
+    $(h_col))
 end
 
 function csgreh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, grlagf::Array{Cint, 1},
     nnzj::Array{Cint, 1}, lj::Array{Cint, 1}, j_val::Array{Cdouble, 1},
     j_var::Array{Cint, 1}, j_fun::Array{Cint, 1}, ne::Array{Cint, 1},
-    libname = fixedlibname)
+    lhe_ptr::Array{Cint, 1}, he_row_ptr::Array{Cint, 1},
+    he_val_ptr::Array{Cint, 1}, lhe_row::Array{Cint, 1},
+    he_row::Array{Cint, 1}, lhe_val::Array{Cint, 1},
+    he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1}, libname =
+    fixedlibname)
   @eval ccall(("cutest_csgreh_", $(libname)), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
-    Ptr{Cint}),
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
     $(io_err), $(n), $(m), $(x), $(y), $(grlagf), $(nnzj), $(lj),
-    $(j_val), $(j_var), $(j_fun), $(ne))
+    $(j_val), $(j_var), $(j_fun), $(ne), $(lhe_ptr), $(he_row_ptr),
+    $(he_val_ptr), $(lhe_row), $(he_row), $(lhe_val), $(he_val), $(byrows))
 end
 
 function chprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},

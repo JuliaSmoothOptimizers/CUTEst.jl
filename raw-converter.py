@@ -51,7 +51,8 @@ for name in functions:
                     if arg.strip() == "status":
                         arg = "io_err"
                     funcall.append(arg.strip())
-                start_fundef = False
+                if ")" in line:
+                    start_fundef = False
             if "subroutine cutest_"+name+"(" in line:
                 start_function = True
                 start_fundef = True

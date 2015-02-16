@@ -10,7 +10,7 @@ function jl_usetup(input::Integer, out::Integer, io_buffer::Integer, n::Integer,
 end
 
 function jl_csetup(input::Integer, out::Integer, io_buffer::Integer, n::Integer,
-    m::Integer, libname = fixedlibname)
+    m::Integer, e_order::Integer, l_order::Integer, v_order::Integer, libname = fixedlibname)
   io_err = [cint(0)]
   x = Array(Cdouble, n)
   x_l = Array(Cdouble, n)
@@ -18,10 +18,14 @@ function jl_csetup(input::Integer, out::Integer, io_buffer::Integer, n::Integer,
   y = Array(Cdouble, m)
   c_l = Array(Cdouble, m)
   c_u = Array(Cdouble, m)
+  equatn = Array(Cint, m)
+  linear = Array(Cint, m)
   @eval CUTEst.csetup($(io_err), $([cint(input)]), $([cint(out)]), $([cint(io_buffer)]),
-    $([cint(n)]), $([cint(m)]), $(x), $(x_l), $(x_u), $(y), $(c_l), $(c_u), $(libname))
+    $([cint(n)]), $([cint(m)]), $(x), $(x_l), $(x_u), $(y), $(c_l),
+    $(c_u), $(equatn), $(linear), $([cint(e_order)]), $([cint(l_order)]),
+    $([cint(v_order)]), $(libname))
   @cutest_error
-  return x, x_l, x_u, y, c_l, c_u
+  return x, x_l, x_u, y, c_l, c_u, equatn, linear
 end
 
 function jl_udimen(input::Integer, libname = fixedlibname)
@@ -115,10 +119,13 @@ function jl_cstats(libname = fixedlibname)
   io_err = [cint(0)]
   nonlinear_variables_objective = [cint(0)]
   nonlinear_variables_constraints = [cint(0)]
+  equality_constraints = [cint(0)]
+  linear_constraints = [cint(0)]
   @eval CUTEst.cstats($(io_err), $(nonlinear_variables_objective),
-    $(nonlinear_variables_constraints), $(libname))
+    $(nonlinear_variables_constraints), $(equality_constraints),
+    $(linear_constraints), $(libname))
   @cutest_error
-  return nonlinear_variables_objective[1], nonlinear_variables_constraints[1]
+  return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
 
 function jl_cvartype(n::Integer, libname = fixedlibname)
@@ -236,15 +243,19 @@ function jl_ush(n::Integer, x::Array{Float64, 1}, lh::Integer, libname = fixedli
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_ueh(n::Integer, x::Array{Float64, 1}, lhe_ptr::Integer, libname = fixedlibname)
+function jl_ueh(n::Integer, x::Array{Float64, 1}, lhe_ptr::Integer, lhe_row::Integer,
+    lhe_val::Integer, byrows::Bool, libname = fixedlibname)
   io_err = [cint(0)]
   ne = [cint(0)]
   he_row_ptr = Array(Cint, lhe_ptr)
   he_val_ptr = Array(Cint, lhe_ptr)
+  he_row = Array(Cint, lhe_row)
+  he_val = Array(Cdouble, lhe_val)
   @eval CUTEst.ueh($(io_err), $([cint(n)]), $(x), $(ne), $([cint(lhe_ptr)]),
-    $(he_row_ptr), $(he_val_ptr), $(libname))
+    $(he_row_ptr), $(he_val_ptr), $([cint(lhe_row)]), $(he_row),
+    $([cint(lhe_val)]), $(he_val), $([cint(byrows)]), $(libname))
   @cutest_error
-  return ne[1], he_row_ptr, he_val_ptr
+  return ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
 function jl_ugrdh(n::Integer, x::Array{Float64, 1}, lh1::Integer, libname = fixedlibname)
@@ -269,16 +280,20 @@ function jl_ugrsh(n::Integer, x::Array{Float64, 1}, lh::Integer, libname = fixed
   return g, nnzh[1], h_val, h_row, h_col
 end
 
-function jl_ugreh(n::Integer, x::Array{Float64, 1}, lhe_ptr::Integer, lhe_row::Integer, libname = fixedlibname)
+function jl_ugreh(n::Integer, x::Array{Float64, 1}, lhe_ptr::Integer, lhe_row::Integer,
+    lhe_val::Integer, byrows::Bool, libname = fixedlibname)
   io_err = [cint(0)]
   g = Array(Cdouble, n)
   ne = [cint(0)]
   he_row_ptr = Array(Cint, lhe_ptr)
   he_val_ptr = Array(Cint, lhe_ptr)
+  he_row = Array(Cint, lhe_row)
+  he_val = Array(Cdouble, lhe_val)
   @eval CUTEst.ugreh($(io_err), $([cint(n)]), $(x), $(g), $(ne), $([cint(lhe_ptr)]),
-    $(he_row_ptr), $(he_val_ptr), $([cint(lhe_row)]), $(libname))
+    $(he_row_ptr), $(he_val_ptr), $([cint(lhe_row)]), $(he_row),
+    $([cint(lhe_val)]), $(he_val), $([cint(byrows)]), $(libname))
   @cutest_error
-  return g, ne[1], he_row_ptr, he_val_ptr
+  return g, ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
 function jl_uhprod(n::Integer, goth::Bool, x::Array{Float64, 1}, vector::Array{Float64,
@@ -452,15 +467,18 @@ function jl_cshc(n::Integer, m::Integer, x::Array{Float64, 1}, y::Array{Float64,
 end
 
 function jl_ceh(n::Integer, m::Integer, x::Array{Float64, 1}, y::Array{Float64, 1},
-    lhe_ptr::Integer, libname = fixedlibname)
+    lhe_ptr::Integer, lhe_row::Integer, lhe_val::Integer, byrows::Bool, libname = fixedlibname)
   io_err = [cint(0)]
   ne = [cint(0)]
   he_row_ptr = Array(Cint, lhe_ptr)
   he_val_ptr = Array(Cint, lhe_ptr)
+  he_row = Array(Cint, lhe_row)
+  he_val = Array(Cdouble, lhe_val)
   @eval CUTEst.ceh($(io_err), $([cint(n)]), $([cint(m)]), $(x), $(y), $(ne),
-    $([cint(lhe_ptr)]), $(he_row_ptr), $(he_val_ptr), $(libname))
+    $([cint(lhe_ptr)]), $(he_row_ptr), $(he_val_ptr), $([cint(lhe_row)]),
+    $(he_row), $([cint(lhe_val)]), $(he_val), $([cint(byrows)]), $(libname))
   @cutest_error
-  return ne[1], he_row_ptr, he_val_ptr
+  return ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
 function jl_cidh(n::Integer, x::Array{Float64, 1}, iprob::Integer, lh1::Integer, libname = fixedlibname)
@@ -484,30 +502,42 @@ function jl_cish(n::Integer, x::Array{Float64, 1}, iprob::Integer, lh::Integer, 
 end
 
 function jl_csgrsh(n::Integer, m::Integer, x::Array{Float64, 1}, y::Array{Float64, 1},
-    grlagf::Bool, lj::Integer, libname = fixedlibname)
+    grlagf::Bool, lj::Integer, lh::Integer, libname = fixedlibname)
   io_err = [cint(0)]
   nnzj = [cint(0)]
   j_val = Array(Cdouble, lj)
   j_var = Array(Cint, lj)
   j_fun = Array(Cint, lj)
+  nnzh = [cint(0)]
+  h_val = Array(Cdouble, lh)
+  h_row = Array(Cint, lh)
+  h_col = Array(Cint, lh)
   @eval CUTEst.csgrsh($(io_err), $([cint(n)]), $([cint(m)]), $(x), $(y), $([cint(grlagf)]),
-    $(nnzj), $([cint(lj)]), $(j_val), $(j_var), $(j_fun), $(libname))
+    $(nnzj), $([cint(lj)]), $(j_val), $(j_var), $(j_fun), $(nnzh),
+    $([cint(lh)]), $(h_val), $(h_row), $(h_col), $(libname))
   @cutest_error
-  return nnzj[1], j_val, j_var, j_fun
+  return nnzj[1], j_val, j_var, j_fun, nnzh[1], h_val, h_row, h_col
 end
 
 function jl_csgreh(n::Integer, m::Integer, x::Array{Float64, 1}, y::Array{Float64, 1},
-    grlagf::Bool, lj::Integer, libname = fixedlibname)
+    grlagf::Bool, lj::Integer, lhe_ptr::Integer, lhe_row::Integer,
+    lhe_val::Integer, byrows::Bool, libname = fixedlibname)
   io_err = [cint(0)]
   nnzj = [cint(0)]
   j_val = Array(Cdouble, lj)
   j_var = Array(Cint, lj)
   j_fun = Array(Cint, lj)
   ne = [cint(0)]
+  he_row_ptr = Array(Cint, lhe_ptr)
+  he_val_ptr = Array(Cint, lhe_ptr)
+  he_row = Array(Cint, lhe_row)
+  he_val = Array(Cdouble, lhe_val)
   @eval CUTEst.csgreh($(io_err), $([cint(n)]), $([cint(m)]), $(x), $(y), $([cint(grlagf)]),
-    $(nnzj), $([cint(lj)]), $(j_val), $(j_var), $(j_fun), $(ne), $(libname))
+    $(nnzj), $([cint(lj)]), $(j_val), $(j_var), $(j_fun), $(ne),
+    $([cint(lhe_ptr)]), $(he_row_ptr), $(he_val_ptr), $([cint(lhe_row)]),
+    $(he_row), $([cint(lhe_val)]), $(he_val), $([cint(byrows)]), $(libname))
   @cutest_error
-  return nnzj[1], j_val, j_var, j_fun, ne[1]
+  return nnzj[1], j_val, j_var, j_fun, ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
 function jl_chprod(n::Integer, m::Integer, goth::Bool, x::Array{Float64, 1},
