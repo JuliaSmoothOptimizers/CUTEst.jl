@@ -15,5 +15,6 @@ if nlp.meta.ncon > 0
   println("c(x0) = ", cx);
   println("J(x0) = \n", full(Jx));
 end
-Hx = full(hess(nlp, x0));
-println("H(x0,y0) = \n", Hx)
+Hx = hess(nlp, x0);
+@test_small(Hx-H(x0))
+println("H(x0,y0) = \n", full(Hx))

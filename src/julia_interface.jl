@@ -77,6 +77,7 @@ end
 cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
 
 
+# Returns the upper triangular part of the Hessian
 function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1};
                     y :: Array{Float64,1}=nlp.meta.y0)
   nvar = nlp.meta.nvar;
@@ -104,7 +105,12 @@ end
 function hess(nlp :: CUTEstModel, x :: Array{Float64,1};
               y :: Array{Float64,1}=nlp.meta.y0)
   (hrow, hcol, hval) = hess_coord(nlp, x, y=y);
-  return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar);
+  J = sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar);
+  nnz = length(hval)
+  for k = 1:nnz
+    J[hcol[k],hrow[k]] = hval[k]
+  end
+  return J
 end
 
 function terminate(nlp :: CUTEstModel)
