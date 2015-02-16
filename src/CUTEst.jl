@@ -12,6 +12,8 @@ type CUTEstModel
   initialized :: Bool;
 end
 
+global csetup_calls = 0
+
 cint(n)     = convert(Cint, n)
 cdouble(n)  = convert(Cdouble, n)
 
@@ -63,6 +65,10 @@ end
 
 # Initialize problem.
 function CUTEstModel(name :: ASCIIString; raw :: Bool = false)
+  @eval csetup_calls += 1;
+  if csetup_calls > 1
+    throw("CUTEst cannot be initialized a second time. See https://github.com/optimizers/CUTEst.jl/issues/4.")
+  end
   libname = sifdecoder(name, raw=raw)
   io_err = Cint[0];
 
