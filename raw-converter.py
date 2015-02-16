@@ -138,7 +138,7 @@ for name in functions:
     med.write("function jl_"+name+"(")
     med.write(el.join(textwrap.wrap(', '.join(ins))))
     if len(ins) > 0:
-        med.write("; ")
+        med.write(", ")
     med.write("libname = fixedlibname)\n")
     for var in funcall:
         if vars[var]["intent"] == "in":

@@ -1,3 +1,5 @@
-evalfile("test_raw.jl")
-evalfile("test_med.jl")
-evalfile("test_simple.jl")
+include("test_build.jl")
+include("test_raw.jl")
+include("test_med.jl")
+include("test_simple.jl")
+include("test_end.jl")
