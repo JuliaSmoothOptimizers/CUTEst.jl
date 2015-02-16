@@ -2,14 +2,17 @@ println("\nTesting the raw interface\n")
 st = [cint(0)]
 nvar = [cint(nlp.meta.nvar)]
 ncon = [cint(nlp.meta.ncon)]
-x = nlp.meta.x0
-f = [0.0]
-c = zeros(ncon[1])
-g = Array(Cdouble, nvar[1])
+fx = [0.0]
+cx = zeros(ncon[1])
+gx = Array(Cdouble, nvar[1])
 grad = [cint(true)]
 
-CUTEst.cfn(st, nvar, ncon, x, f, c, nlp.libname)
-CUTEst.cofg(st, nvar, x, f, g, grad, nlp.libname)
-println("f(x0) = ", f[1])
-println("c(x0) = ", c)
-println("∇f(x0) = ", g)
+CUTEst.cfn(st, nvar, ncon, x0, fx, cx, nlp.libname)
+@test_small(fx-f(x0))
+@test_small(cx-c(x0))
+CUTEst.cofg(st, nvar, x0, fx, gx, grad, nlp.libname)
+@test_small(fx-f(x0))
+@test_small(gx-g(x0))
+println("f(x0) = ", fx[1])
+println("c(x0) = ", cx)
+println("∇f(x0) = ", gx)
