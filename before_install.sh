@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -e
+
 if [ "$TRAVIS_OS_NAME" == "linux" ]; then
   sudo apt-get update -qq -y
   sudo apt-get install -y gfortran
@@ -19,3 +23,5 @@ else
 fi
 
 julia -e 'Pkg.clone("https://github.com/optimizers/NLP.jl.git")'
+
+set +e
