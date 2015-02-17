@@ -9,6 +9,7 @@ before_install:
 script:
   - source $TRAVIS_BUILD_DIR/src_vars
   - julia -e 'Pkg.clone(pwd()); Pkg.build("CUTEst"); Pkg.test("CUTEst", coverage=true)'
+  - julia -e 'cd(Pkg.dir("CUTEst")); include("test/runtests_unc.jl")'
 after_success:
   - julia -e 'cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
 matrix:
