@@ -1,6 +1,6 @@
-problem = "HS32.SIF"
+problem = "HS4.SIF"
 include("test_build.jl")
-include("hs32.jl")
+include("hs4.jl")
 include("test_raw.jl")
 include("test_med.jl")
 include("test_julia.jl")

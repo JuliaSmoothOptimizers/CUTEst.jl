@@ -9,6 +9,5 @@ curdir = pwd();
 tmpdir = mktempdir();
 cd(tmpdir);
 
-problem = "HS32.SIF"
 nlp = CUTEstModel(problem)
 println(nlp)
