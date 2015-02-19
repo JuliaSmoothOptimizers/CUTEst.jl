@@ -1,0 +1,2 @@
+terminate(nlp)
+cd(curdir)
