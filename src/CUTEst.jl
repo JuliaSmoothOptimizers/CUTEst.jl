@@ -6,6 +6,8 @@ using NLP  # Defines NLPModelMeta.
 
 export CUTEstModel, sifdecoder, cutest_finalize
 
+# Only one problem can be interfaced at any given time.
+cutest_instances = 0;
 
 type CUTEstModel
   meta    :: NLPModelMeta;
@@ -57,6 +59,8 @@ end
 
 # Initialize problem.
 function CUTEstModel(name :: ASCIIString)
+  global cutest_instances
+  cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
   libname = sifdecoder(name);
   io_err = Cint[0];
 
@@ -130,15 +134,20 @@ function CUTEstModel(name :: ASCIIString)
   nlp = CUTEstModel(meta, libname);
 
   finalizer(nlp, cutest_finalize);
+  cutest_instances += 1;
   return nlp
 end
 
 
 function cutest_finalize(nlp :: CUTEstModel)
+  global cutest_instances
+  cutest_instances == 0 && return;
   io_err = Cint[0];
   terminate = nlp.meta.ncon > 0 ? "cutest_cterminate_" : "cutest_uterminate_";
   @eval ccall(($(terminate), $(nlp.libname)), Void, (Ptr{Int32},), $(io_err));
   @cutest_error
+  cutest_instances -= 1;
+  return;
 end
 
 
