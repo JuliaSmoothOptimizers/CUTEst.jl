@@ -15,6 +15,7 @@ type CUTEstModel
 end
 
 const outsdif = "OUTSDIF.d";
+const automat = "AUTOMAT.d";
 const funit   = int32(42);
 @osx? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
 @osx? (const soname = "dylib") : (const soname = "so");
@@ -53,6 +54,7 @@ function sifdecoder(name :: ASCIIString)
   run(`sifdecoder $name`);
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`gfortran $sh_flags -o $libname.$soname -lcutest ELFUN.o EXTER.o GROUP.o RANGE.o`);
+  run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
   push!(DL_LOAD_PATH,".")
   return libname
 end
@@ -123,6 +125,7 @@ function CUTEstModel(name :: ASCIIString)
   @eval ccall((:fortran_close_, $(libname)), Void,
               (Ptr{Int32}, Ptr{Int32}), &funit, $(io_err));
   @cutest_error
+  run(`rm $outsdif $automat`);
 
   meta = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
                       ncon=ncon, y0=v, lcon=cl, ucon=cu,
