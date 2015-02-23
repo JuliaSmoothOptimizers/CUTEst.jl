@@ -4,8 +4,8 @@ module CUTEst
 
 using NLP  # Defines NLPModelMeta.
 
-export CUTEstModel, sifdecoder,
-       objcons, objgrad, obj, cons_coord, cons, hess_coord, hess
+export CUTEstModel, sifdecoder, cutest_finalize
+
 
 type CUTEstModel
   meta    :: NLPModelMeta;

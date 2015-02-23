@@ -1,3 +1,5 @@
+export objcons, objgrad, obj, cons_coord, cons, hess_coord, hess
+
 function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
