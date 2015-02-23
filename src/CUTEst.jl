@@ -37,7 +37,7 @@ type CUTEstException <: Exception
   end
 end
 
-CUTEstException(info :: Int) = CUTEstException(int32(info));
+CUTEstException(info :: Integer) = CUTEstException(int32(info));
 
 macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
