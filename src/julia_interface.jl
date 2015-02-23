@@ -37,7 +37,7 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
              $(io_err),  &$(nvar),   $(x),         $(f),         $(g),         &$(get_grad));
   @cutest_error
 
-  return (f, g);
+  return grad ? (f[1], g) : f[1];
 end
 
 obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
