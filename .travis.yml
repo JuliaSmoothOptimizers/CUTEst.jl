@@ -1,0 +1,34 @@
+language: julia
+
+julia:
+  - release
+  - nightly
+
+before_install:
+  # Install Linuxbrew.
+  - unset DYLD_LIBRARY_PATH
+  - bash travisCI/setup_travis_linux.sh;
+  - export PATH="$HOME/.linuxbrew/bin:$PATH";
+  - export LD_LIBRARY_PATH="$HOME/.linuxbrew/lib:$LD_LIBRARY_PATH";
+  - brew --config
+  - brew update
+  - brew install pkg-config;
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+
+install:
+  # Install CUTEst.
+  - brew tap dpo/cutest
+  - brew install cutest --HEAD
+  - brew install mastsif --HEAD
+  - for f in archdefs mastsif cutest sifdecode; do . $(brew --prefix $f)/$f.bashrc; done
+  - rm ~/julia/lib/julia/libgfortran.so.3
+  - julia -e 'versioninfo()'
+  - julia -E 'Pkg.clone("https://github.com/optimizers/NLP.jl.git");'
+  - julia -E 'Pkg.clone(pwd());'
+  - julia -E 'Pkg.build("CUTEst");'
+
+script:
+  - julia --check-bounds=yes -E 'Pkg.test("CUTEst"; coverage=true)'
+
+after_success:
+  - julia -e 'cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
