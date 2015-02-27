@@ -19,6 +19,8 @@ const automat = "AUTOMAT.d";
 const funit   = int32(42);
 @osx? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
 @osx? (const soname = "dylib") : (const soname = "so");
+@osx? (const linker = "gfortran") : (const linker = "ld");
+@osx? (const linker_libs = []) : (const linker_libs = ["-lgfortran"]);
 
 type CUTEstException <: Exception
   info :: Int32
@@ -53,7 +55,7 @@ function sifdecoder(name :: ASCIIString)
   libname = "lib$pname";
   run(`sifdecoder $name`);
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-  run(`ld $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -lcutest -lgfortran`);
+  run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -lcutest $linker_libs`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
   push!(DL_LOAD_PATH,".")
   return libname
