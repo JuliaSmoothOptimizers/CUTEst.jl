@@ -21,24 +21,18 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
   ln -s $(which gfortran-$gccver) $brewdir/bin/gfortran
 
   PATH=$brewdir/bin/:$PATH
-  LD_LIBRARY_PATH=$brewdir/lib/:$LD_LIBRARY_PATH
+  sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/4.6/libgfortran.so /usr/local/lib
 fi
 
 brew tap dpo/cutest
 brew install cutest --HEAD
 brew install mastsif --HEAD
 echo "export PATH=$PATH" > $TRAVIS_BUILD_DIR/src_vars
-echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $TRAVIS_BUILD_DIR/src_vars
 for f in archdefs mastsif cutest sifdecode
 do
   cat $(brew --prefix $f)/$f.bashrc >> $TRAVIS_BUILD_DIR/src_vars
 done
 
-#Workaround for LD_LIBRARY_PATH
-if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-  sudo ln -s $(brew --prefix cutest)/lib/libcutest.so /usr/local/lib
-  sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/4.6/libgfortran.so /usr/local/lib
-fi
 
 julia -e 'Pkg.clone("https://github.com/optimizers/NLP.jl.git")'
 
