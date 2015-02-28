@@ -14,9 +14,12 @@ type CUTEstModel
   libname :: ASCIIString;
 end
 
+const cutest_arch  = get(ENV, "MYARCH", "");
+const cutest_dir   = get(ENV, "CUTEST", "");
 const outsdif = "OUTSDIF.d";
 const automat = "AUTOMAT.d";
 const funit   = int32(42);
+@osx? (const linker = "gfortran") : (const linker = "ld")
 @osx? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
 @osx? (const soname = "dylib") : (const soname = "so");
 
@@ -53,7 +56,7 @@ function sifdecoder(name :: ASCIIString)
   libname = "lib$pname";
   run(`sifdecoder $name`);
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-  run(`gfortran $sh_flags -o $libname.$soname -lcutest ELFUN.o EXTER.o GROUP.o RANGE.o`);
+  run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -L$cutest_dir/objects/$cutest_arch/double -lcutest_double`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
   push!(DL_LOAD_PATH,".")
   return libname
