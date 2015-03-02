@@ -18,10 +18,10 @@ if nlp.meta.ncon > 0
   println("c(x0) = ", c);
   @printf("J(x0) = "); display(J); @printf("\n");
 end
-@printf("H(x0,y0) = "); display(hess(nlp, nlp.meta.x0)); @printf("\n");
+@printf("H(x0,0) = "); display(hess(nlp, nlp.meta.x0)); @printf("\n");
 if nlp.meta.ncon > 0
   y = ones(nlp.meta.ncon)
-  @printf("H(x0,y0) = "); display(hess(nlp, nlp.meta.x0, y)); @printf("\n");
+  @printf("H(x0,e) = "); display(hess(nlp, nlp.meta.x0, y)); @printf("\n");
 end
 cutest_finalize(nlp);
 

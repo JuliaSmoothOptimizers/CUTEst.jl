@@ -77,8 +77,7 @@ end
 cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
 
 
-function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1},
-                    y :: Array{Float64,1})
+function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzh = nlp.meta.nnzh;
@@ -89,12 +88,12 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1},
   this_nnzh = Cint[0];
   if ncon > 0
     @eval ccall((:cutest_csh_, $(nlp.libname)), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
-                 $(io_err),  &$(nvar),   &$(ncon),   $(x),         $(y),         $(this_nnzh),   &$(nnzh),   $(hval),      $(hrow),    $(hcol));
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32},   Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
+                 $(io_err),  &$(nvar),   &$(ncon),   $(x),         $(y),         $(this_nnzh), &$(nnzh),   $(hval),      $(hrow),    $(hcol));
   else
     @eval ccall((:cutest_ush_, $(nlp.libname)), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
-                 $(io_err),  &$(nvar),   $(x),         $(this_nnzh),   &$(nnzh),   $(hval),      $(hrow),    $(hcol));
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32},   Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
+                 $(io_err),  &$(nvar),   $(x),         $(this_nnzh),   &$(nnzh), $(hval),      $(hrow),    $(hcol));
   end
   @cutest_error
 
@@ -105,10 +104,18 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
   hess_coord(nlp, x, zeros(nlp.meta.ncon))
 end
 
-function hess(nlp :: CUTEstModel, x :: Array{Float64,1},
-              y :: Array{Float64,1})
+function hess(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1})
   (hrow, hcol, hval) = hess_coord(nlp, x, y);
-  return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar);
+  H = spzeros(nlp.meta.nvar, nlp.meta.nvar)
+  for k = 1:length(hval)
+    i = hrow[k]
+    j = hcol[k]
+    H[i,j] = hval[k]
+    if i != j
+      H[j,i] = hval[k]
+    end
+  end
+  return H
 end
 
 function hess(nlp :: CUTEstModel, x :: Array{Float64,1})
