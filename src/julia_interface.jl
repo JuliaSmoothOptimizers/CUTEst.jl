@@ -77,8 +77,8 @@ end
 cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
 
 
-function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1};
-                    y :: Array{Float64,1}=nlp.meta.y0)
+function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1},
+                    y :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzh = nlp.meta.nnzh;
@@ -101,8 +101,16 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1};
   return (hrow, hcol, hval);
 end
 
-function hess(nlp :: CUTEstModel, x :: Array{Float64,1};
-              y :: Array{Float64,1}=nlp.meta.y0)
-  (hrow, hcol, hval) = hess_coord(nlp, x, y=y);
+function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
+  hess_coord(nlp, x, zeros(nlp.meta.ncon))
+end
+
+function hess(nlp :: CUTEstModel, x :: Array{Float64,1},
+              y :: Array{Float64,1})
+  (hrow, hcol, hval) = hess_coord(nlp, x, y);
   return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar);
+end
+
+function hess(nlp :: CUTEstModel, x :: Array{Float64,1})
+  hess(nlp, x, zeros(nlp.meta.ncon))
 end
