@@ -104,5 +104,14 @@ end
 function hess(nlp :: CUTEstModel, x :: Array{Float64,1};
               y :: Array{Float64,1}=nlp.meta.y0)
   (hrow, hcol, hval) = hess_coord(nlp, x, y=y);
-  return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar);
+  H = spzeros(nlp.meta.nvar, nlp.meta.nvar)
+  for k = 1:length(hval)
+    i = hrow[k]
+    j = hcol[k]
+    H[i,j] = hval[k]
+    if i != j
+      H[j,i] = hval[k]
+    end
+  end
+  return H
 end
