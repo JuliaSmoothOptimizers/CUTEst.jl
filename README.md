@@ -1,5 +1,9 @@
 # CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki) Interface
 
+[![Build Status](https://travis-ci.org/optimizers/CUTEst.jl.svg?branch=develop)](https://travis-ci.org/optimizers/CUTEst.jl)
+[![Coverage Status](https://coveralls.io/repos/optimizers/CUTEst.jl/badge.svg?branch=develop)](https://coveralls.io/r/optimizers/CUTEst.jl?branch=develop)
+
+
 This is work in progress to create an interface to CUTEst based on
 [NLP.jl](https://github.com/optimizers/NLP.jl).
 
