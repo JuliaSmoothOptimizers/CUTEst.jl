@@ -14,6 +14,7 @@ type CUTEstModel
   libname :: ASCIIString;
 end
 
+const fixedlibname = "libCUTEstJL.jl"
 const cutest_arch  = get(ENV, "MYARCH", "");
 const cutest_dir   = get(ENV, "CUTEST", "");
 const outsdif = "OUTSDIF.d";
@@ -47,6 +48,7 @@ macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
 end
 
+include("core_interface.jl")
 include("julia_interface.jl")
 
 # Decode problem and build shared library.
