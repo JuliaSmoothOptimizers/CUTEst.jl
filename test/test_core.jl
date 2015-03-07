@@ -3,8 +3,10 @@ st = Cint[0]
 nvar = Cint[nlp.meta.nvar]
 ncon = Cint[nlp.meta.ncon]
 fx = [0.0]
+lx = [0.0]
 cx = Array(Cdouble, ncon[1])
 gx = Array(Cdouble, nvar[1])
+glx = Array(Cdouble, nvar[1])
 gval = Array(Cdouble, nvar[1])
 gvar = Array(Cint, nvar[1])
 nnzg = Cint[0]
@@ -33,6 +35,10 @@ if (ncon[1] > 0)
   @test_approx_eq_eps Jtx J(x0)' 1e-8
   CUTEst.ccfg(st, nvar, ncon, x0, cx, Cint[false], ncon, nvar, Jx, grad, nlp.libname)
   @test_approx_eq_eps Jx J(x0) 1e-8
+
+  CUTEst.clfg(st, nvar, ncon, x0, y0, lx, glx, grad, nlp.libname)
+  @test_approx_eq_eps lx f(x0)+dot(y0,cx) 1e-8
+  @test_approx_eq_eps glx g(x0)+J(x0)'*y0 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
