@@ -1,3 +1,4 @@
+println("\nTesting the Julia interface\n")
 fx = obj(nlp, x0);
 @test_approx_eq_eps fx f(x0) 1e-8
 
