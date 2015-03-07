@@ -33,7 +33,3 @@ if nlp.meta.ncon > 0
   @test_approx_eq_eps Wx W(x0, ones(nlp.meta.ncon)) 1e-8
   println("H(x0,ones) = "); println(full(Wx));
 end
-cutest_finalize(nlp);
-
-# Return to initial directory.
-cd(curdir);
