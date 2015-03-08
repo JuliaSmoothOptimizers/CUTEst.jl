@@ -65,8 +65,8 @@ if (ncon[1] > 0)
 
   CUTEst.csgr(st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun,
       nlp.libname)
-  gx = zeros(nlp.meta.nvar)
-  Jx = zeros(nlp.meta.nvar, nlp.meta.ncon)
+  gx = zeros(nvar[1])
+  Jx = zeros(nvar[1], ncon[1])
   for k = 1:nnzj[1]
     if Jfun[k] == 0
       gx[Jvar[k]] = Jval[k]
@@ -78,8 +78,8 @@ if (ncon[1] > 0)
   @test_approx_eq_eps Jtx J(x0)' 1e-8
   CUTEst.csgr(st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun,
       nlp.libname)
-  gx = zeros(nlp.meta.nvar)
-  Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
+  gx = zeros(nvar[1])
+  Jx = zeros(ncon[1], nvar[1])
   for k = 1:nnzj[1]
     if Jfun[k] == 0
       gx[Jvar[k]] = Jval[k]
@@ -88,6 +88,15 @@ if (ncon[1] > 0)
     end
   end
   @test_approx_eq_eps gx g(x0) 1e-8
+  @test_approx_eq_eps Jx J(x0) 1e-8
+
+  CUTEst.ccfsg(st, nvar, ncon, x0, cx, nnzj, lj, Jval, Jvar, Jfun, True,
+      nlp.libname)
+  Jx = zeros(ncon[1], nvar[1])
+  for k = 1:nnzj[1]
+    Jx[Jfun[k],Jvar[k]] = Jval[k]
+  end
+  @test_approx_eq_eps cx c(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
