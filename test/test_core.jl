@@ -108,6 +108,18 @@ if (ncon[1] > 0)
   end
   @test_approx_eq_eps cx c(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
+
+  Jx = zeros(ncon[1], nvar[1])
+  for j = 1:ncon[1]
+    CUTEst.ccifsg(st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True,
+        nlp.libname)
+    cx[j] = ci[1]
+    for k = 1:nnzj[1]
+      Jx[j,Jvar[k]] = Jval[k]
+    end
+  end
+  @test_approx_eq_eps cx c(x0) 1e-8
+  @test_approx_eq_eps Jx J(x0) 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
