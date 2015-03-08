@@ -4,8 +4,10 @@ nvar = Cint[nlp.meta.nvar]
 ncon = Cint[nlp.meta.ncon]
 fx = [0.0]
 lx = [0.0]
+ci = [0.0]
 cx = Array(Cdouble, ncon[1])
 gx = Array(Cdouble, nvar[1])
+gci = Array(Cdouble, nvar[1])
 glx = Array(Cdouble, nvar[1])
 gval = Array(Cdouble, nvar[1])
 gvar = Array(Cint, nvar[1])
@@ -95,6 +97,14 @@ if (ncon[1] > 0)
   Jx = zeros(ncon[1], nvar[1])
   for k = 1:nnzj[1]
     Jx[Jfun[k],Jvar[k]] = Jval[k]
+  end
+  @test_approx_eq_eps cx c(x0) 1e-8
+  @test_approx_eq_eps Jx J(x0) 1e-8
+
+  for j = 1:ncon[1]
+    CUTEst.ccifg(st, nvar, Cint[j], x0, ci, gci, True, nlp.libname)
+    cx[j] = ci[1]
+    Jx[j,:] = gci'
   end
   @test_approx_eq_eps cx c(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
