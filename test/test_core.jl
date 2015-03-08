@@ -9,11 +9,16 @@ gx = Array(Cdouble, nvar[1])
 glx = Array(Cdouble, nvar[1])
 gval = Array(Cdouble, nvar[1])
 gvar = Array(Cint, nvar[1])
+lj = Cint[nlp.meta.nnzj+nlp.meta.nvar]
 nnzg = Cint[0]
+nnzj = Cint[0]
 True = Cint[true]
 False = Cint[false]
 Jx = Array(Cdouble, ncon[1],nvar[1])
 Jtx = Array(Cdouble, nvar[1],ncon[1])
+Jval = Array(Cdouble, nlp.meta.nnzj+nlp.meta.nvar)
+Jvar = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+Jfun = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
 
 if (ncon[1] > 0)
   CUTEst.cfn(st, nvar, ncon, x0, fx, cx, nlp.libname)
@@ -56,6 +61,33 @@ if (ncon[1] > 0)
   CUTEst.cgr(st, nvar, ncon, x0, y0, True, glx, False, ncon, nvar, Jx,
       nlp.libname)
   @test_approx_eq_eps glx g(x0)+J(x0)'*y0 1e-8
+  @test_approx_eq_eps Jx J(x0) 1e-8
+
+  CUTEst.csgr(st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun,
+      nlp.libname)
+  gx = zeros(nlp.meta.nvar)
+  Jx = zeros(nlp.meta.nvar, nlp.meta.ncon)
+  for k = 1:nnzj[1]
+    if Jfun[k] == 0
+      gx[Jvar[k]] = Jval[k]
+    else
+      Jtx[Jvar[k],Jfun[k]] = Jval[k]
+    end
+  end
+  @test_approx_eq_eps gx g(x0)+J(x0)'*y0 1e-8
+  @test_approx_eq_eps Jtx J(x0)' 1e-8
+  CUTEst.csgr(st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun,
+      nlp.libname)
+  gx = zeros(nlp.meta.nvar)
+  Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
+  for k = 1:nnzj[1]
+    if Jfun[k] == 0
+      gx[Jvar[k]] = Jval[k]
+    else
+      Jx[Jfun[k],Jvar[k]] = Jval[k]
+    end
+  end
+  @test_approx_eq_eps gx g(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
