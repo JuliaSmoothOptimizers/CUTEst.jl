@@ -21,6 +21,7 @@ Jtx = Array(Cdouble, nvar[1],ncon[1])
 Jval = Array(Cdouble, nlp.meta.nnzj+nlp.meta.nvar)
 Jvar = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
 Jfun = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+Hx = Array(Cdouble, nvar[1],nvar[1])
 
 if (ncon[1] > 0)
   CUTEst.cfn(st, nvar, ncon, x0, fx, cx, nlp.libname)
@@ -120,6 +121,27 @@ if (ncon[1] > 0)
   end
   @test_approx_eq_eps cx c(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
+
+  CUTEst.cgrdh(st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar,
+      Hx, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+  @test_approx_eq_eps Jx J(x0) 1e-8
+  @test_approx_eq_eps Hx W(x0,y0) 1e-8
+  CUTEst.cgrdh(st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar,
+      Hx, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+  @test_approx_eq_eps Jtx J(x0)' 1e-8
+  @test_approx_eq_eps Hx W(x0,y0) 1e-8
+  CUTEst.cgrdh(st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar,
+      Hx, nlp.libname)
+  @test_approx_eq_eps gx g(x0)+J(x0)'*y0 1e-8
+  @test_approx_eq_eps Jx J(x0) 1e-8
+  @test_approx_eq_eps Hx W(x0,y0) 1e-8
+  CUTEst.cgrdh(st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar,
+      Hx, nlp.libname)
+  @test_approx_eq_eps gx g(x0)+J(x0)'*y0 1e-8
+  @test_approx_eq_eps Jtx J(x0)' 1e-8
+  @test_approx_eq_eps Hx W(x0,y0) 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
@@ -135,3 +157,4 @@ if (ncon[1] > 0)
   println("c(x0) = ", cx)
   println("J(x0) = "); println(Jx)
 end
+println("H(x0,y0) = "); println(Hx)
