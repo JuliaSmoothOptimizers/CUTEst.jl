@@ -142,6 +142,9 @@ if (ncon[1] > 0)
   @test_approx_eq_eps gx g(x0)+J(x0)'*y0 1e-8
   @test_approx_eq_eps Jtx J(x0)' 1e-8
   @test_approx_eq_eps Hx W(x0,y0) 1e-8
+
+  CUTEst.cdh(st, nvar, ncon, x0, y0, nvar, Hx, nlp.libname)
+  @test_approx_eq_eps Hx W(x0,y0) 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
