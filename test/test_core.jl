@@ -243,6 +243,11 @@ if (ncon[1] > 0)
   @test_approx_eq_eps glx g(x0)+J(x0)'*y0 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+  v = ones(nvar[1])
+  Hv = Array(Cdouble, nvar[1])
+  CUTEst.chprod(st, nvar, ncon, False, x0, y0, v, Hv, nlp.libname)
+  @test_approx_eq_eps Hv W(x0,y0)*v 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
