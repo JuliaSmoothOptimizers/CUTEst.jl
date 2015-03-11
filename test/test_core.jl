@@ -12,8 +12,10 @@ glx = Array(Cdouble, nvar[1])
 gval = Array(Cdouble, nvar[1])
 gvar = Array(Cint, nvar[1])
 lj = Cint[nlp.meta.nnzj+nlp.meta.nvar]
+lh = Cint[nlp.meta.nnzh]
 nnzg = Cint[0]
 nnzj = Cint[0]
+nnzh = Cint[0]
 True = Cint[true]
 False = Cint[false]
 Jx = Array(Cdouble, ncon[1],nvar[1])
@@ -22,6 +24,9 @@ Jval = Array(Cdouble, nlp.meta.nnzj+nlp.meta.nvar)
 Jvar = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
 Jfun = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
 Hx = Array(Cdouble, nvar[1],nvar[1])
+Hval = Array(Cdouble, nlp.meta.nnzh)
+Hrow = Array(Cint, nlp.meta.nnzh)
+Hcol = Array(Cint, nlp.meta.nnzh)
 
 if (ncon[1] > 0)
   CUTEst.cfn(st, nvar, ncon, x0, fx, cx, nlp.libname)
@@ -144,6 +149,15 @@ if (ncon[1] > 0)
   @test_approx_eq_eps Hx W(x0,y0) 1e-8
 
   CUTEst.cdh(st, nvar, ncon, x0, y0, nvar, Hx, nlp.libname)
+  @test_approx_eq_eps Hx W(x0,y0) 1e-8
+
+  CUTEst.csh(st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  Hx = zeros(nvar[1], nvar[1])
+  for k = 1:nnzh[1]
+    i = Hrow[k]; j = Hcol[k];
+    Hx[i,j] = Hval[k]
+    i != j && (Hx[j,i] = Hval[k])
+  end
   @test_approx_eq_eps Hx W(x0,y0) 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
