@@ -252,6 +252,17 @@ if (ncon[1] > 0)
   Hv = Array(Cdouble, nvar[1])
   CUTEst.chcprod(st, nvar, ncon, False, x0, y0, v, Hv, nlp.libname)
   @test_approx_eq_eps Hv (W(x0,y0)-H(x0))*v 1e-8
+
+  v = ones(nvar[1])
+  Jv = Array(Cdouble, ncon[1])
+  CUTEst.cjprod(st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon,
+      nlp.libname)
+  @test_approx_eq_eps Jv J(x0)*v 1e-8
+  v = ones(ncon[1])
+  Jtv = Array(Cdouble, nvar[1])
+  CUTEst.cjprod(st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar,
+      nlp.libname)
+  @test_approx_eq_eps Jtv J(x0)'*v 1e-8
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
