@@ -180,6 +180,28 @@ if (ncon[1] > 0)
     @test_approx_eq_eps Cx (W(x0,y1)-H(x0)) 1e-8
     y1[k] = 0.0
   end
+
+  CUTEst.cish(st, nvar, x0, Cint[0], nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  Hx = zeros(nvar[1], nvar[1])
+  for k = 1:nnzh[1]
+    i = Hrow[k]; j = Hcol[k];
+    Hx[i,j] = Hval[k]
+    i != j && (Hx[j,i] = Hval[k])
+  end
+  @test_approx_eq_eps Hx H(x0) 1e-8
+  y1 = zeros(ncon[1])
+  for k = 1:ncon[1]
+    CUTEst.cish(st, nvar, x0, Cint[k], nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+    Cx = zeros(nvar[1], nvar[1])
+    for k2 = 1:nnzh[1]
+      i = Hrow[k2]; j = Hcol[k2];
+      Cx[i,j] = Hval[k2]
+      i != j && (Cx[j,i] = Hval[k2])
+    end
+    y1[k] = 1.0
+    @test_approx_eq_eps Cx (W(x0,y1)-H(x0)) 1e-8
+    y1[k] = 0.0
+  end
 else
   CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
