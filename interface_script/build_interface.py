@@ -118,6 +118,8 @@ for name in functions:
         t = cutypes[vars[var]["type"]]
         types.append("Ptr{"+t+"}")
     core.write(el.join(textwrap.wrap(', '.join(types))))
+    if len(types) == 1:
+        core.write(",")
     core.write("),\n")
     ccall = []
     for var in funcall:

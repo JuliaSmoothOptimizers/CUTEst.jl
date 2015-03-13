@@ -504,13 +504,13 @@ end
 
 function uterminate(io_err::Array{Cint, 1}, libname = fixedlibname)
   @eval ccall(("cutest_uterminate_", $(libname)), Void,
-    (Ptr{Cint}),
+    (Ptr{Cint},),
     $(io_err))
 end
 
 function cterminate(io_err::Array{Cint, 1}, libname = fixedlibname)
   @eval ccall(("cutest_cterminate_", $(libname)), Void,
-    (Ptr{Cint}),
+    (Ptr{Cint},),
     $(io_err))
 end
 
