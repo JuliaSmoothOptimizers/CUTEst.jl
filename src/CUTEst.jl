@@ -14,6 +14,7 @@ type CUTEstModel
   libname :: ASCIIString;
 end
 
+const fixedlibname = "libCUTEstJL.jl"
 const cutest_arch  = get(ENV, "MYARCH", "");
 const cutest_dir   = get(ENV, "CUTEST", "");
 const outsdif = "OUTSDIF.d";
@@ -47,6 +48,7 @@ macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
 end
 
+include("core_interface.jl")
 include("julia_interface.jl")
 
 # Decode problem and build shared library.
@@ -77,9 +79,7 @@ function CUTEstModel(name :: ASCIIString)
   nvar = Cint[0];
   ncon = Cint[0];
 
-  @eval ccall((:cutest_cdimen_, $(libname)), Void,
-               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
-                $(io_err),  &funit,     $(nvar),    $(ncon));
+  CUTEst.cdimen(io_err, [funit], nvar, ncon, libname)
   @cutest_error
   nvar = nvar[1];
   ncon = ncon[1];
@@ -95,13 +95,10 @@ function CUTEstModel(name :: ASCIIString)
 
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
-    @eval ccall((:cutest_csetup_, $(libname)), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
-                 $(io_err),  &funit,     &5,         &6,         &$(nvar),   &$(ncon),   $(x),         $(bl),        $(bu),        $(v),         $(cl),        $(cu),        $(equatn),  $(linear),  &1,         &1,         &1);
+    CUTEst.csetup(io_err, [funit], Cint[5], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
+      equatn, linear, Cint[1], Cint[1], Cint[1], libname)
   else
-    @eval ccall((:cutest_usetup_, $(libname)), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 $(io_err),  &funit,     &5,         &6,         &$(nvar),   $(x),         $(bl),        $(bu));
+    CUTEst.usetup(io_err, [funit], Cint[5], Cint[6], [nvar], x, bl, bu, libname)
   end
   @cutest_error
 
@@ -114,11 +111,11 @@ function CUTEstModel(name :: ASCIIString)
   nnzj = Cint[0];
 
   if ncon > 0
-    @eval ccall((:cutest_cdimsh_, $(libname)), Void, (Ptr{Int32}, Ptr{Int32}), $(io_err), $(nnzh));
-    @eval ccall((:cutest_cdimsj_, $(libname)), Void, (Ptr{Int32}, Ptr{Int32}), $(io_err), $(nnzj))
+    CUTEst.cdimsh(io_err, nnzh, libname)
+    CUTEst.cdimsj(io_err, nnzj, libname)
     nnzj[1] -= nvar;  # nnzj also counts the nonzeros in the objective gradient.
   else
-    @eval ccall((:cutest_udimsh_, $(libname)), Void, (Ptr{Int32}, Ptr{Int32}), $(io_err), $(nnzh));
+    CUTEst.udimsh(io_err, nnzh, libname)
   end
   @cutest_error
 
@@ -150,7 +147,7 @@ function cutest_finalize(nlp :: CUTEstModel)
   cutest_instances == 0 && return;
   io_err = Cint[0];
   terminate = nlp.meta.ncon > 0 ? "cutest_cterminate_" : "cutest_uterminate_";
-  @eval ccall(($(terminate), $(nlp.libname)), Void, (Ptr{Int32},), $(io_err));
+  CUTEst.cterminate(io_err, nlp.libname)
   @cutest_error
   cutest_instances -= 1;
   return;
