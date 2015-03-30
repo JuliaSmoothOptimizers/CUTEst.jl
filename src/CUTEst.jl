@@ -3,6 +3,7 @@
 module CUTEst
 
 using NLP  # Defines NLPModelMeta.
+using Compat
 
 export CUTEstModel, sifdecoder, cutest_finalize
 
@@ -60,7 +61,7 @@ function sifdecoder(name :: ASCIIString)
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -L$cutest_dir/objects/$cutest_arch/double -lcutest_double`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
-  push!(DL_LOAD_PATH,".")
+  push!(Libdl.DL_LOAD_PATH,".")
   return libname
 end
 
