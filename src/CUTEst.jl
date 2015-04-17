@@ -51,6 +51,7 @@ macro cutest_error()  # Handle nonzero exit codes.
 end
 
 include("core_interface.jl")
+include("specialized_interface.jl")
 include("julia_interface.jl")
 
 # Decode problem and build shared library.
