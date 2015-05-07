@@ -4,6 +4,8 @@ julia:
   - release
   - nightly
 
+sudo: required
+
 before_install:
   # Install Linuxbrew.
   - unset DYLD_LIBRARY_PATH
