@@ -9,7 +9,7 @@ function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   if ncon > 0
     @eval ccall((:cutest_cfn_, $(nlp.libname)), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 $(io_err),  $(nvar),    $(ncon),    $(x),         $(f),         $(c));
+                 $(io_err),  &$(nvar),   &$(ncon),   $(x),         $(f),         $(c));
   else
     @eval ccall((:cutest_ufn_, $(nlp.libname)), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}),
