@@ -51,6 +51,7 @@ end
 
 include("core_interface.jl")
 include("julia_interface.jl")
+include("MathProgBase_interface.jl")
 
 # Decode problem and build shared library.
 function sifdecoder(name :: ASCIIString)
