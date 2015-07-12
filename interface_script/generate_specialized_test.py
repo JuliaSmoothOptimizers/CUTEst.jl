@@ -3,20 +3,39 @@
 import re
 import sys
 
+foos = [ "cfn", "cofg", "cgr", "ccfg" ]
+
 translate = {
     "n": "nlp.meta.nvar",
     "m": "nlp.meta.ncon",
     "x": "x0",
     "c": "cx",
-    "f": "fx" }
+    "f": "fx",
+    "g": "gx",
+    "grad": "true",
+    "cjac": "Jx",
+    "j_val": "Jx",
+    "h_val": "Wx",
+    "jtrans": "false",
+    "lcjac1": "nlp.meta.ncon",
+    "lcjac2": "nlp.meta.nvar",
+    "y": "y0",
+    "grlagf": "false",
+    "lj1": "nlp.meta.ncon",
+    "lj2": "nlp.meta.nvar",
+    "lh1": "nlp.meta.nvar" }
 
 hs = {
     "fx": "f(x0)",
-    "cx": "c(x0)" }
+    "cx": "c(x0)",
+    "gx": "g(x0)",
+    "Jx": "J(x0)",
+    "Wx": "W(x0,y0)" }
 
 def generate_test_for_function (foo):
     fname = foo.split("(")[0].strip()
     inplace = fname[-1] == "!"
+    test = ''
     inputs = []
     for x in foo[foo.find("(")+1:foo.find(")")].split(","):
         if "libname" in x:
@@ -31,10 +50,11 @@ def generate_test_for_function (foo):
         if "[" in x:
             x = x[0:x.find("[")]
         x = x.strip()
+        if len(x) == 0:
+            continue
         x = translate[x] if x in translate else x
         outputs.append(x)
 
-    test = 'println("\\nTesting the Specialized interface\\n"\n\n'
     if len(outputs) > 0:
         test += ', '.join(outputs) + " = "
     test += "{}({})\n".format(fname, ', '.join(inputs))
@@ -50,9 +70,14 @@ def generate_test_for_function (foo):
 filename = "src/specialized_interface.jl"
 content = ''.join(open(filename, "r").readlines()).split("function")[1:]
 
-cfns = [x for x in content if "cfn" in x]
+selection = []
+for x in content:
+    for foo in foos:
+        if foo in x:
+            selection.append(x)
 
-for cfn in cfns:
+print('println("\\nTesting the Specialized interface\\n")\n\n')
+for x in selection:
     #print("function ", end="")
-    #print(cfn)
-    print(generate_test_for_function(cfn))
+    #print(x)
+    print(generate_test_for_function(x))
