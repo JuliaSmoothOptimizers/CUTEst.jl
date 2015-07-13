@@ -3,7 +3,12 @@
 import re
 import sys
 
-foos = [ "cfn", "cofg", "cgr", "ccfg" ]
+foos = [ "ccfg", "ccfsg", "cfn", "cgr", "cofg" ]
+
+trip_comp = [ "j_var", "j_fun" ]
+triplet = { "Jx": "J" }
+trip_resp = { "Jx": "j_var" }
+ignore = trip_comp
 
 translate = {
     "n": "nlp.meta.nvar",
@@ -21,6 +26,7 @@ translate = {
     "lcjac2": "nlp.meta.nvar",
     "y": "y0",
     "grlagf": "false",
+    "lj": "nlp.meta.nnzj+nlp.meta.nvar",
     "lj1": "nlp.meta.ncon",
     "lj2": "nlp.meta.nvar",
     "lh1": "nlp.meta.nvar" }
@@ -30,14 +36,34 @@ hs = {
     "cx": "c(x0)",
     "gx": "g(x0)",
     "Jx": "J(x0)",
-    "Wx": "W(x0,y0)" }
+    "Wx": "W(x0,y0)",
+    "nnzj": "nnzj" }
+
+def addTriplet(trip):
+    str = "{}_val = copy({}x)\n".format(trip.lower(), trip)
+    if trip == "J":
+        str += "Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)\n"
+        i = "j_fun"
+        j = "j_var"
+    else:
+        str += "{}x = zeros(nlp.meta.nvar, nlp.meta.nvar)\n".format(trip)
+        i = "{}_row".format(trip.lower())
+        j = "{}_col".format(trip.lower())
+    str += "for k = 1:nnz{}\n".format(trip.lower())
+    str += "  {}x[{}[k],{}[k]] = {}_val[k]\n".format(trip, i, j, trip.lower())
+    str += "end\n"
+    str += "@test_approx_eq_eps {}x {} 1e-8\n".format(trip, hs[trip+"x"])
+    return str
 
 def generate_test_for_function (foo):
     fname = foo.split("(")[0].strip()
     inplace = fname[-1] == "!"
+    if inplace:
+        return ""
     test = ''
     inputs = []
     for x in foo[foo.find("(")+1:foo.find(")")].split(","):
+
         if "libname" in x:
             inputs.append("nlp.libname")
         else:
@@ -59,7 +85,11 @@ def generate_test_for_function (foo):
         test += ', '.join(outputs) + " = "
     test += "{}({})\n".format(fname, ', '.join(inputs))
     for output in outputs:
-        test += "@test_approx_eq_eps {} {} 1e-8\n".format(output, hs[output])
+        #print("> output = "+output)
+        if output in triplet and trip_resp[output] in outputs:
+            test += addTriplet(triplet[output])
+        elif output not in ignore:
+            test += "@test_approx_eq_eps {} {} 1e-8\n".format(output, hs[output])
     if inplace:
         for x in inputs:
             if x in hs:
