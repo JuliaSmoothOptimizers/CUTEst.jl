@@ -39,6 +39,21 @@ hs = {
     "Wx": "W(x0,y0)",
     "nnzj": "nnzj" }
 
+inplaces = [ "cx", "gx", "Jx", "Wx", "j_var", "j_fun" ]
+inplace_ignore = [ "j_var", "j_fun" ]
+
+sizeof = {
+    "gx": "nlp.meta.nvar",
+    "cx": "nlp.meta.ncon",
+    "Jx": "nlp.meta.ncon, nlp.meta.nvar",
+    "Wx": "nlp.meta.nvar, nlp.meta.nvar",
+    "j_var": "Int, nlp.meta.nnzj+nlp.meta.nvar",
+    "j_fun": "Int, nlp.meta.nnzj+nlp.meta.nvar" }
+
+sizeofsp = {
+    "Jx": "nlp.meta.nnzj+nlp.meta.nvar",
+    "Wx": "nlp.meta.nnzh" }
+
 def addTriplet(trip):
     str = "{}_val = copy({}x)\n".format(trip.lower(), trip)
     if trip == "J":
@@ -58,8 +73,6 @@ def addTriplet(trip):
 def generate_test_for_function (foo):
     fname = foo.split("(")[0].strip()
     inplace = fname[-1] == "!"
-    if inplace:
-        return ""
     test = ''
     inputs = []
     for x in foo[foo.find("(")+1:foo.find(")")].split(","):
@@ -84,16 +97,22 @@ def generate_test_for_function (foo):
     if len(outputs) > 0:
         test += ', '.join(outputs) + " = "
     test += "{}({})\n".format(fname, ', '.join(inputs))
-    for output in outputs:
-        #print("> output = "+output)
-        if output in triplet and trip_resp[output] in outputs:
-            test += addTriplet(triplet[output])
-        elif output not in ignore:
-            test += "@test_approx_eq_eps {} {} 1e-8\n".format(output, hs[output])
+    for x in outputs:
+        if x in triplet and trip_resp[x] in outputs:
+            test += addTriplet(triplet[x])
+        elif x not in ignore:
+            test += "@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
     if inplace:
         for x in inputs:
-            if x in hs:
-                test += "@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
+            # Check for Array instead
+            if x in inplaces:
+                if x in triplet and trip_resp[x] in inputs:
+                    test = "{} = zeros({})\n".format(x,sizeofsp[x]) + test
+                    test += addTriplet(triplet[x])
+                else:
+                    test = "{} = zeros({})\n".format(x,sizeof[x]) + test
+                    if x not in inplace_ignore:
+                        test += "@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
 
     return test
 
