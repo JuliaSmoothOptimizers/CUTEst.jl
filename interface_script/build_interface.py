@@ -8,7 +8,7 @@ import textwrap
 # Type conversion
 cutypes = {"integer":"Cint", "doublereal":"Cdouble", "logical":"Cint",
         "char":"Cchar", "real":"Cdouble"}
-jltypes = {"integer":"Integer", "doublereal":"Float64", "logical":"Bool",
+jltypes = {"integer":"Int", "doublereal":"Float64", "logical":"Bool",
         "char":"Uint8", "real":"Float64"}
 
 # NLP related
@@ -174,6 +174,7 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     str = ""
     arg_call = arguments(args, types, intents, dims, intent="in",
             use_nlp=use_nlp, use_types=True, all_ptrs=False, inplace=inplace)
+
     str += "function jl_" + name
     if inplace:
         str += "!"
@@ -188,16 +189,24 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
             if use_nlp and arg in nlp_equivalent.keys():
                 str += s+"{} = nlp.meta.{}\n".format(arg, nlp_equivalent[arg])
             continue
-        if len(dims[i]) > 0 and inplace:
+        if len(dims[i]) > 0 and inplace and types[i] != "integer":
             continue
         t = cutypes[types[i]]
         if len(dims[i]) > 0:
-            str += s+"{} = Array({}, {})\n".format(arg, t, ', '.join(dims[i]))
+            str += s+"{}".format(arg)
+            if intents[i] == "out" and types[i] == "integer" and inplace:
+                str += "_cp"
+            str += " = Array({}, {})\n".format(t, ', '.join(dims[i]))
         else:
             str += s+"{} = {}[0]\n".format(arg, t)
     out = []
     for i, arg in enumerate(args):
-        if len(dims[i]) > 0 or intents[i] == "out":
+        if len(dims[i]) > 0:
+            if intents[i] == "out" and types[i] == "integer" and inplace:
+                out.append("$({}_cp)".format(arg))
+            else:
+                out.append("$({})".format(arg))
+        elif intents[i] == "out":
             out.append("$({})".format(arg))
         else:
             out.append("$({}[{}])".format(cutypes[types[i]], arg))
@@ -208,6 +217,12 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     str += wrap(s+"@eval CUTEst.{}({})".format(name,\
         ', '.join(out+[libname]))) + "\n"
     str += s+"@cutest_error\n"
+    for i, arg in enumerate(args):
+        if len(dims[i]) > 0 and intents[i] == "out" and types[i] == "integer" \
+                and inplace:
+            str += s+"for i = 1:{}\n".format(dims[i][0])
+            str += s+s+"{}[i] = {}_cp[i]\n".format(arg, arg)
+            str += s+"end\n"
     str += s+"return "+arguments(args, 0, intents, dims, intent="out",
             use_nlp=use_nlp, use_types=False, all_ptrs=True, inplace=inplace)
     str += "\nend\n"
@@ -229,8 +244,8 @@ for name in names:
         if use_nlp and name in nlp_ignore:
             continue
         for inplace in [False, True]:
-            inter_file.write(specialized_function(name, args, types, intents,
-                dims, use_nlp=use_nlp, inplace=inplace))
+            inter_file.write(specialized_function(name, args, types,
+                intents, dims, use_nlp=use_nlp, inplace=inplace))
             inter_file.write("\n")
 
 core_file.close()
