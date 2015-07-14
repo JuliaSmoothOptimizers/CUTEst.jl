@@ -20,7 +20,7 @@ const cutest_arch  = get(ENV, "MYARCH", "");
 const cutest_dir   = get(ENV, "CUTEST", "");
 const outsdif = "OUTSDIF.d";
 const automat = "AUTOMAT.d";
-const funit   = int32(42);
+const funit   = convert(Int32, 42);
 @osx? (const linker = "gfortran") : (const linker = "ld")
 @osx? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
 @osx? (const soname = "dylib") : (const soname = "so");
@@ -43,13 +43,14 @@ type CUTEstException <: Exception
   end
 end
 
-CUTEstException(info :: Integer) = CUTEstException(int32(info));
+CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
 
 macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
 end
 
 include("core_interface.jl")
+include("specialized_interface.jl")
 include("julia_interface.jl")
 
 # Decode problem and build shared library.
