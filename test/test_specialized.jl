@@ -125,6 +125,28 @@ for k = 1:nnzj
 end
 @test_approx_eq_eps Jx J(x0) 1e-8
 
+for j = 1:nlp.meta.ncon
+  ci, gci = jl_ccifg(nlp.meta.nvar, j, x0, true, nlp.libname)
+  @test_approx_eq_eps ci c(x0)[j] 1e-8
+  @test_approx_eq_eps gci J(x0)[j,:] 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  ci = jl_ccifg!(nlp.meta.nvar, j, x0, gci, true, nlp.libname)
+  @test_approx_eq_eps ci c(x0)[j] 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  ci, gci = jl_ccifg(nlp, j, x0, true)
+  @test_approx_eq_eps ci c(x0)[j] 1e-8
+  @test_approx_eq_eps gci J(x0)[j,:] 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  ci = jl_ccifg!(nlp, j, x0, gci, true)
+  @test_approx_eq_eps ci c(x0)[j] 1e-8
+end
+
 gx, Jx, Wx = jl_cgrdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar, nlp.meta.nvar, nlp.libname)
 @test_approx_eq_eps gx g(x0) 1e-8
 @test_approx_eq_eps Jx J(x0) 1e-8
