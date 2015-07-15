@@ -3,16 +3,18 @@
 import re
 import sys
 
-foos = [ "ccfg", "ccfsg", "ccifg", "cfn", "cgr", "cofg" ]
+foos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cfn", "cgr", "cofg" ]
 
 trip_comp = [ "j_var", "j_fun" ]
 triplet = { "Jx": "J" }
 trip_resp = { "Jx": "j_var" }
-ignore = trip_comp
+
+ignore = trip_comp + [ "nnzj", "nnzgci", "gci_var" ]
 
 translate = {
     "n": "nlp.meta.nvar",
     "m": "nlp.meta.ncon",
+    "lgci": "nlp.meta.nvar",
     "x": "x0",
     "c": "cx",
     "f": "fx",
@@ -39,11 +41,11 @@ hs = {
     "gx": "g(x0)",
     "Jx": "J(x0)",
     "gci": "J(x0)[j,:]",
-    "Wx": "W(x0,y0)",
-    "nnzj": "nnzj" }
+    "gci_val": "J(x0)[j,gci_var]",
+    "Wx": "W(x0,y0)" }
 
-inplaces = [ "cx", "gx", "Jx", "Wx", "j_var", "j_fun" ]
-inplace_ignore = [ "j_var", "j_fun" ]
+
+#inplaces = [ "cx", "gx", "Jx", "Wx", "j_var", "j_fun" ]
 
 sizeof = {
     "gx": "nlp.meta.nvar",
@@ -51,7 +53,9 @@ sizeof = {
     "Jx": "nlp.meta.ncon, nlp.meta.nvar",
     "Wx": "nlp.meta.nvar, nlp.meta.nvar",
     "j_var": "Int, nlp.meta.nnzj+nlp.meta.nvar",
-    "j_fun": "Int, nlp.meta.nnzj+nlp.meta.nvar" }
+    "j_fun": "Int, nlp.meta.nnzj+nlp.meta.nvar",
+    "gci_val": "nlp.meta.nvar", 
+    "gci_var": "Int, nlp.meta.nvar" }
 
 sizeofsp = {
     "Jx": "nlp.meta.nnzj+nlp.meta.nvar",
@@ -122,13 +126,13 @@ def generate_test_for_function (foo):
     if inplace:
         for x in inputs:
             # Check for Array instead
-            if x in inplaces:
+            if x in sizeof:
                 if x in triplet and trip_resp[x] in inputs:
                     str = spc+"{} = zeros({})\n".format(x,sizeofsp[x]) + str
                     str += addTriplet(triplet[x], spc)
                 else:
                     str = spc+"{} = zeros({})\n".format(x,sizeof[x]) + str
-                    if x not in inplace_ignore:
+                    if x not in ignore:
                         str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
     if match != "":
         str += "end\n"
