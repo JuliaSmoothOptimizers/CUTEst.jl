@@ -3,7 +3,8 @@
 import re
 import sys
 
-foos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cfn", "cgr", "cofg" ]
+foos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cdh", "cfn", "cgr", "cofg",
+        "chcprod", "chprod", "cjprod" ]
 
 trip_comp = [ "j_var", "j_fun" ]
 triplet = { "Jx": "J" }
@@ -20,6 +21,8 @@ translate = {
     "f": "fx",
     "g": "gx",
     "grad": "true",
+    "goth": "false",
+    "gotj": "false",
     "cjac": "Jx",
     "icon": "j",
     "j_val": "Jx",
@@ -32,7 +35,10 @@ translate = {
     "lj": "nlp.meta.nnzj+nlp.meta.nvar",
     "lj1": "nlp.meta.ncon",
     "lj2": "nlp.meta.nvar",
-    "lh1": "nlp.meta.nvar" }
+    "lh1": "nlp.meta.nvar",
+    "lvector": "nlp.meta.nvar",
+    "lresult": "nlp.meta.ncon",
+    "vector": "ones(nlp.meta.nvar)" }
 
 hs = {
     "fx": "f(x0)",
@@ -44,8 +50,10 @@ hs = {
     "gci_val": "J(x0)[j,gci_var]",
     "Wx": "W(x0,y0)" }
 
-
-#inplaces = [ "cx", "gx", "Jx", "Wx", "j_var", "j_fun" ]
+results = {
+    "jl_chprod": "W(x0,y0)*v",
+    "jl_chcprod": "(W(x0,y0)-H(x0))*v",
+    "jl_cjprod": "J(x0)*v" }
 
 sizeof = {
     "gx": "nlp.meta.nvar",
@@ -54,8 +62,9 @@ sizeof = {
     "Wx": "nlp.meta.nvar, nlp.meta.nvar",
     "j_var": "Int, nlp.meta.nnzj+nlp.meta.nvar",
     "j_fun": "Int, nlp.meta.nnzj+nlp.meta.nvar",
-    "gci_val": "nlp.meta.nvar", 
+    "gci_val": "nlp.meta.nvar",
     "gci_var": "Int, nlp.meta.nvar" }
+
 
 sizeofsp = {
     "Jx": "nlp.meta.nnzj+nlp.meta.nvar",
@@ -118,14 +127,22 @@ def generate_test_for_function (foo):
     if len(outputs) > 0:
         str += ', '.join(outputs) + " = "
     str += "{}({})\n".format(fname, ', '.join(inputs))
+
+    if inplace:
+        fname = fname[0:len(fname)-1]
+
     for x in outputs:
         if x in triplet and trip_resp[x] in outputs:
             str += addTriplet(triplet[x], spc)
         elif x not in ignore:
-            str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
+            if x == "result":
+                str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, results[fname])
+            else:
+                str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
     if inplace:
         for x in inputs:
-            # Check for Array instead
+            if x == "result":
+                str = spc+"{} = zeros({})\n".format(x,results[fname]) + str
             if x in sizeof:
                 if x in triplet and trip_resp[x] in inputs:
                     str = spc+"{} = zeros({})\n".format(x,sizeofsp[x]) + str
@@ -148,6 +165,7 @@ for x in content:
         selection.append(x)
 
 print('println("\\nTesting the Specialized interface\\n")\n\n')
+print('v = ones(nlp.meta.nvar)')
 for x in selection:
     #print("function ", end="")
     #print(x)

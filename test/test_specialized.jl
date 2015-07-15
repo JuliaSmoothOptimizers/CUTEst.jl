@@ -1,6 +1,7 @@
 println("\nTesting the Specialized interface\n")
 
 
+v = ones(nlp.meta.nvar)
 fx, cx = jl_cfn(nlp.meta.nvar, nlp.meta.ncon, x0, nlp.libname)
 @test_approx_eq_eps fx f(x0) 1e-8
 @test_approx_eq_eps cx c(x0) 1e-8
@@ -196,4 +197,54 @@ jl_cgrdh!(nlp, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, nlp.m
 @test_approx_eq_eps gx g(x0) 1e-8
 @test_approx_eq_eps Jx J(x0) 1e-8
 @test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+Wx = jl_cdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, nlp.libname)
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+jl_cdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Wx, nlp.libname)
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+Wx = jl_cdh(nlp, x0, y0, nlp.meta.nvar)
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+jl_cdh!(nlp, x0, y0, nlp.meta.nvar, Wx)
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+result = jl_chprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), nlp.libname)
+@test_approx_eq_eps result W(x0,y0)*v 1e-8
+
+result = zeros(W(x0,y0)*v)
+jl_chprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result, nlp.libname)
+
+result = jl_chprod(nlp, false, x0, y0, ones(nlp.meta.nvar))
+@test_approx_eq_eps result W(x0,y0)*v 1e-8
+
+result = zeros(W(x0,y0)*v)
+jl_chprod!(nlp, false, x0, y0, ones(nlp.meta.nvar), result)
+
+result = jl_chcprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), nlp.libname)
+@test_approx_eq_eps result (W(x0,y0)-H(x0))*v 1e-8
+
+result = zeros((W(x0,y0)-H(x0))*v)
+jl_chcprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result, nlp.libname)
+
+result = jl_chcprod(nlp, false, x0, y0, ones(nlp.meta.nvar))
+@test_approx_eq_eps result (W(x0,y0)-H(x0))*v 1e-8
+
+result = zeros((W(x0,y0)-H(x0))*v)
+jl_chcprod!(nlp, false, x0, y0, ones(nlp.meta.nvar), result)
+
+result = jl_cjprod(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, nlp.meta.ncon, nlp.libname)
+@test_approx_eq_eps result J(x0)*v 1e-8
+
+result = zeros(J(x0)*v)
+jl_cjprod!(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon, nlp.libname)
+
+result = jl_cjprod(nlp, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, nlp.meta.ncon)
+@test_approx_eq_eps result J(x0)*v 1e-8
+
+result = zeros(J(x0)*v)
+jl_cjprod!(nlp, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon)
 
