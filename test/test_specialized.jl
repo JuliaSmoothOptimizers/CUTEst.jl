@@ -150,9 +150,9 @@ for j = 1:nlp.meta.ncon
   @test_approx_eq_eps gci_val J(x0)[j,gci_var] 1e-8
 end
 
+for j = 1:nlp.meta.ncon
   gci_var = zeros(Int, nlp.meta.nvar)
   gci_val = zeros(nlp.meta.nvar)
-for j = 1:nlp.meta.ncon
   ci, nnzgci = jl_ccifsg!(nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true, nlp.libname)
   @test_approx_eq_eps ci c(x0)[j] 1e-8
   @test_approx_eq_eps gci_val J(x0)[j,gci_var] 1e-8
@@ -164,9 +164,9 @@ for j = 1:nlp.meta.ncon
   @test_approx_eq_eps gci_val J(x0)[j,gci_var] 1e-8
 end
 
+for j = 1:nlp.meta.ncon
   gci_var = zeros(Int, nlp.meta.nvar)
   gci_val = zeros(nlp.meta.nvar)
-for j = 1:nlp.meta.ncon
   ci, nnzgci = jl_ccifsg!(nlp, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
   @test_approx_eq_eps ci c(x0)[j] 1e-8
   @test_approx_eq_eps gci_val J(x0)[j,gci_var] 1e-8
@@ -211,6 +211,162 @@ Wx = jl_cdh(nlp, x0, y0, nlp.meta.nvar)
 Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
 jl_cdh!(nlp, x0, y0, nlp.meta.nvar, Wx)
 @test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+nnzh, Wx, h_row, h_col = jl_csh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, nlp.libname)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+h_col = zeros(Int, nlp.meta.nnzh)
+h_row = zeros(Int, nlp.meta.nnzh)
+Wx = zeros(nlp.meta.nnzh)
+nnzh = jl_csh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col, nlp.libname)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+nnzh, Wx, h_row, h_col = jl_csh(nlp, x0, y0)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+h_col = zeros(Int, nlp.meta.nnzh)
+h_row = zeros(Int, nlp.meta.nnzh)
+Wx = zeros(nlp.meta.nnzh)
+nnzh = jl_csh!(nlp, x0, y0, Wx, h_row, h_col)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0) 1e-8
+
+nnzh, Wx, h_row, h_col = jl_cshc(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, nlp.libname)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0)-H(x0) 1e-8
+
+h_col = zeros(Int, nlp.meta.nnzh)
+h_row = zeros(Int, nlp.meta.nnzh)
+Wx = zeros(nlp.meta.nnzh)
+nnzh = jl_cshc!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col, nlp.libname)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0)-H(x0) 1e-8
+
+nnzh, Wx, h_row, h_col = jl_cshc(nlp, x0, y0)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0)-H(x0) 1e-8
+
+h_col = zeros(Int, nlp.meta.nnzh)
+h_row = zeros(Int, nlp.meta.nnzh)
+Wx = zeros(nlp.meta.nnzh)
+nnzh = jl_cshc!(nlp, x0, y0, Wx, h_row, h_col)
+w_val = copy(Wx)
+Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+for k = 1:nnzh
+  Wx[h_row[k],h_col[k]] = w_val[k]
+  Wx[h_col[k],h_row[k]] = w_val[k]
+end
+@test_approx_eq_eps Wx W(x0,y0)-H(x0) 1e-8
+
+for j = 1:nlp.meta.ncon
+  h = jl_cidh(nlp.meta.nvar, x0, j, nlp.meta.nvar, nlp.libname)
+  @test_approx_eq_eps h (W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)) 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  h = zeros(nlp.meta.nvar, nlp.meta.nvar)
+  jl_cidh!(nlp.meta.nvar, x0, j, nlp.meta.nvar, h, nlp.libname)
+  @test_approx_eq_eps h (W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)) 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  h = jl_cidh(nlp, x0, j, nlp.meta.nvar)
+  @test_approx_eq_eps h (W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)) 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  h = zeros(nlp.meta.nvar, nlp.meta.nvar)
+  jl_cidh!(nlp, x0, j, nlp.meta.nvar, h)
+  @test_approx_eq_eps h (W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)) 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  nnzh, Wx, h_row, h_col = jl_cish(nlp.meta.nvar, x0, j, nlp.meta.nnzh, nlp.libname)
+  w_val = copy(Wx)
+  Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+  for k = 1:nnzh
+    Wx[h_row[k],h_col[k]] = w_val[k]
+    Wx[h_col[k],h_row[k]] = w_val[k]
+  end
+  @test_approx_eq_eps Wx W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0) 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  h_col = zeros(Int, nlp.meta.nnzh)
+  h_row = zeros(Int, nlp.meta.nnzh)
+  Wx = zeros(nlp.meta.nnzh)
+  nnzh = jl_cish!(nlp.meta.nvar, x0, j, nlp.meta.nnzh, Wx, h_row, h_col, nlp.libname)
+  w_val = copy(Wx)
+  Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+  for k = 1:nnzh
+    Wx[h_row[k],h_col[k]] = w_val[k]
+    Wx[h_col[k],h_row[k]] = w_val[k]
+  end
+  @test_approx_eq_eps Wx W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0) 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  nnzh, Wx, h_row, h_col = jl_cish(nlp, x0, j)
+  w_val = copy(Wx)
+  Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+  for k = 1:nnzh
+    Wx[h_row[k],h_col[k]] = w_val[k]
+    Wx[h_col[k],h_row[k]] = w_val[k]
+  end
+  @test_approx_eq_eps Wx W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0) 1e-8
+end
+
+for j = 1:nlp.meta.ncon
+  h_col = zeros(Int, nlp.meta.nnzh)
+  h_row = zeros(Int, nlp.meta.nnzh)
+  Wx = zeros(nlp.meta.nnzh)
+  nnzh = jl_cish!(nlp, x0, j, Wx, h_row, h_col)
+  w_val = copy(Wx)
+  Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
+  for k = 1:nnzh
+    Wx[h_row[k],h_col[k]] = w_val[k]
+    Wx[h_col[k],h_row[k]] = w_val[k]
+  end
+  @test_approx_eq_eps Wx W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0) 1e-8
+end
 
 result = jl_chprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), nlp.libname)
 @test_approx_eq_eps result W(x0,y0)*v 1e-8

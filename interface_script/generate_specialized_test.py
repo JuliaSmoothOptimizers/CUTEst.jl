@@ -4,13 +4,13 @@ import re
 import sys
 
 foos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cdh", "cfn", "cgr", "cofg",
-        "chcprod", "chprod", "cjprod" ]
+        "chcprod", "chprod", "cidh", "cish", "cjprod", "csh" ]
 
-trip_comp = [ "j_var", "j_fun" ]
-triplet = { "Jx": "J" }
-trip_resp = { "Jx": "j_var" }
+trip_comp = [ "j_var", "j_fun", "h_row", "h_col" ]
+triplet = { "Jx": "J", "Wx": "W" }
+trip_resp = { "Jx": "j_var", "Wx": "h_row" }
 
-ignore = trip_comp + [ "nnzj", "nnzgci", "gci_var" ]
+ignore = trip_comp + [ "nnzj", "nnzh", "nnzgci", "gci_var" ]
 
 translate = {
     "n": "nlp.meta.nvar",
@@ -25,6 +25,7 @@ translate = {
     "gotj": "false",
     "cjac": "Jx",
     "icon": "j",
+    "iprob": "j",
     "j_val": "Jx",
     "h_val": "Wx",
     "jtrans": "false",
@@ -36,6 +37,7 @@ translate = {
     "lj1": "nlp.meta.ncon",
     "lj2": "nlp.meta.nvar",
     "lh1": "nlp.meta.nvar",
+    "lh": "nlp.meta.nnzh",
     "lvector": "nlp.meta.nvar",
     "lresult": "nlp.meta.ncon",
     "vector": "ones(nlp.meta.nvar)" }
@@ -44,11 +46,17 @@ hs = {
     "fx": "f(x0)",
     "cx": "c(x0)",
     "ci": "c(x0)[j]",
+    "h": "(W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0))",
     "gx": "g(x0)",
     "Jx": "J(x0)",
     "gci": "J(x0)[j,:]",
     "gci_val": "J(x0)[j,gci_var]",
     "Wx": "W(x0,y0)" }
+
+special = {
+    "jl_cshc": { "W": "W(x0,y0)-H(x0)"},
+    "jl_cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)" }
+    }
 
 results = {
     "jl_chprod": "W(x0,y0)*v",
@@ -62,8 +70,11 @@ sizeof = {
     "Wx": "nlp.meta.nvar, nlp.meta.nvar",
     "j_var": "Int, nlp.meta.nnzj+nlp.meta.nvar",
     "j_fun": "Int, nlp.meta.nnzj+nlp.meta.nvar",
+    "h_row": "Int, nlp.meta.nnzh",
+    "h_col": "Int, nlp.meta.nnzh",
     "gci_val": "nlp.meta.nvar",
-    "gci_var": "Int, nlp.meta.nvar" }
+    "gci_var": "Int, nlp.meta.nvar",
+    "h": "nlp.meta.nvar, nlp.meta.nvar" }
 
 
 sizeofsp = {
@@ -71,22 +82,32 @@ sizeofsp = {
     "Wx": "nlp.meta.nnzh" }
 
 multiples = {
-    "icon": "nlp.meta.ncon" }
+    "icon": "nlp.meta.ncon",
+    "iprob": "nlp.meta.ncon" }
 
-def addTriplet(trip, spc):
+def addTriplet(trip, spc, fname):
     str = spc+"{}_val = copy({}x)\n".format(trip.lower(), trip)
     if trip == "J":
         str += spc+"Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)\n"
         i = "j_fun"
         j = "j_var"
+        z = "j"
     else:
         str += spc+"{}x = zeros(nlp.meta.nvar, nlp.meta.nvar)\n".format(trip)
-        i = "{}_row".format(trip.lower())
-        j = "{}_col".format(trip.lower())
-    str += spc+"for k = 1:nnz{}\n".format(trip.lower())
+        i = "h_row"
+        j = "h_col"
+        z = "h"
+    str += spc+"for k = 1:nnz{}\n".format(z)
     str += spc+"  {}x[{}[k],{}[k]] = {}_val[k]\n".format(trip, i, j, trip.lower())
+    if trip != "J":
+        str += spc+"  {}x[{}[k],{}[k]] = {}_val[k]\n".format(trip, j, i, trip.lower())
     str += spc+"end\n"
-    str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, hs[trip+"x"])
+    if fname in special and trip in special[fname]:
+        str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
+                special[fname][trip])
+    else:
+        str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
+                hs[trip+"x"])
     return str
 
 def generate_test_for_function (foo):
@@ -96,11 +117,12 @@ def generate_test_for_function (foo):
             match = mult
             break
     if match != "":
-        str = "for j = 1:" + multiples[match] + "\n"
+        head = "for j = 1:" + multiples[match] + "\n"
         spc = "  "
     else:
         spc = ""
-        str = ''
+        head = ''
+    str = ""
     fname = foo.split("(")[0].strip()
     inplace = fname[-1] == "!"
     inputs = []
@@ -133,10 +155,13 @@ def generate_test_for_function (foo):
 
     for x in outputs:
         if x in triplet and trip_resp[x] in outputs:
-            str += addTriplet(triplet[x], spc)
+            str += addTriplet(triplet[x], spc, fname)
         elif x not in ignore:
             if x == "result":
                 str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, results[fname])
+            elif fname in special and x in special[fname]:
+                str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, \
+                        special[fname][x])
             else:
                 str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
     if inplace:
@@ -146,7 +171,10 @@ def generate_test_for_function (foo):
             if x in sizeof:
                 if x in triplet and trip_resp[x] in inputs:
                     str = spc+"{} = zeros({})\n".format(x,sizeofsp[x]) + str
-                    str += addTriplet(triplet[x], spc)
+                    str += addTriplet(triplet[x], spc, fname)
+                elif fname in special and x in special[fname]:
+                    str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, \
+                            special[fname][x])
                 else:
                     str = spc+"{} = zeros({})\n".format(x,sizeof[x]) + str
                     if x not in ignore:
@@ -154,7 +182,7 @@ def generate_test_for_function (foo):
     if match != "":
         str += "end\n"
 
-    return str
+    return head+str
 
 filename = "src/specialized_interface.jl"
 content = ''.join(open(filename, "r").readlines()).split("function")[1:]
