@@ -3,14 +3,15 @@
 import re
 import sys
 
-foos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cdh", "cfn", "cgr", "cofg",
-        "chcprod", "chprod", "cidh", "cish", "cjprod", "csh" ]
+foos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cdh", "cfn", "cgr", "cgrdh",
+        "chcprod", "chprod", "cidh", "cish", "cjprod", "clfg", "cofg", "cofsg",
+        "csgr", "csgrsh", "csh", "cshc" ]
 
 trip_comp = [ "j_var", "j_fun", "h_row", "h_col" ]
 triplet = { "Jx": "J", "Wx": "W" }
 trip_resp = { "Jx": "j_var", "Wx": "h_row" }
 
-ignore = trip_comp + [ "nnzj", "nnzh", "nnzgci", "gci_var" ]
+ignore = trip_comp + [ "nnzj", "nnzh", "nnzg", "nnzgci", "gci_var", "g_var" ]
 
 translate = {
     "n": "nlp.meta.nvar",
@@ -31,6 +32,7 @@ translate = {
     "jtrans": "false",
     "lcjac1": "nlp.meta.ncon",
     "lcjac2": "nlp.meta.nvar",
+    "lg": "nlp.meta.nvar",
     "y": "y0",
     "grlagf": "false",
     "lj": "nlp.meta.nnzj+nlp.meta.nvar",
@@ -50,12 +52,14 @@ hs = {
     "gx": "g(x0)",
     "Jx": "J(x0)",
     "gci": "J(x0)[j,:]",
+    "g_val": "g(x0)[g_var]",
     "gci_val": "J(x0)[j,gci_var]",
     "Wx": "W(x0,y0)" }
 
 special = {
     "jl_cshc": { "W": "W(x0,y0)-H(x0)"},
-    "jl_cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)" }
+    "jl_cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)" },
+    "jl_clfg": { "fx": "f(x0)+dot(y0,c(x0))", "gx": "g(x0)+J(x0)'*y0" }
     }
 
 results = {
@@ -74,6 +78,8 @@ sizeof = {
     "h_col": "Int, nlp.meta.nnzh",
     "gci_val": "nlp.meta.nvar",
     "gci_var": "Int, nlp.meta.nvar",
+    "g_val": "nlp.meta.nvar",
+    "g_var": "Int, nlp.meta.nvar",
     "h": "nlp.meta.nvar, nlp.meta.nvar" }
 
 
@@ -84,6 +90,8 @@ sizeofsp = {
 multiples = {
     "icon": "nlp.meta.ncon",
     "iprob": "nlp.meta.ncon" }
+
+zero_index = [ "jl_csgr", "jl_csgrsh" ]
 
 def addTriplet(trip, spc, fname):
     str = spc+"{}_val = copy({}x)\n".format(trip.lower(), trip)
@@ -98,6 +106,8 @@ def addTriplet(trip, spc, fname):
         j = "h_col"
         z = "h"
     str += spc+"for k = 1:nnz{}\n".format(z)
+    if fname in zero_index:
+        str += spc+"  {}[k] == 0 && continue\n".format(i)
     str += spc+"  {}x[{}[k],{}[k]] = {}_val[k]\n".format(trip, i, j, trip.lower())
     if trip != "J":
         str += spc+"  {}x[{}[k],{}[k]] = {}_val[k]\n".format(trip, j, i, trip.lower())
@@ -189,12 +199,10 @@ content = ''.join(open(filename, "r").readlines()).split("function")[1:]
 
 selection = []
 for x in content:
-    if any([foo in x for foo in foos]):
+    if any([foo+"(" in x for foo in foos]):
         selection.append(x)
 
 print('println("\\nTesting the Specialized interface\\n")\n\n')
 print('v = ones(nlp.meta.nvar)')
 for x in selection:
-    #print("function ", end="")
-    #print(x)
     print(generate_test_for_function(x))
