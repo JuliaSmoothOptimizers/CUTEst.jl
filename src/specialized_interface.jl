@@ -1658,7 +1658,7 @@ function jl_csgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   n = nlp.meta.nvar
   m = nlp.meta.ncon
   nnzj = Cint[0]
-  lj = nlp.meta.nnzj
+  lj = nlp.meta.nnzj + nlp.meta.nvar
   j_val = Array(Cdouble, lj)
   j_var = Array(Cint, lj)
   j_fun = Array(Cint, lj)
@@ -1676,7 +1676,7 @@ function jl_csgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   n = nlp.meta.nvar
   m = nlp.meta.ncon
   nnzj = Cint[0]
-  lj = nlp.meta.nnzj
+  lj = nlp.meta.nnzj + nlp.meta.nvar
   j_var_cp = Array(Cint, lj)
   j_fun_cp = Array(Cint, lj)
   @eval CUTEst.csgr($(io_err), $(Cint[n]), $(Cint[m]), $(x), $(y),
@@ -2357,7 +2357,7 @@ function jl_csgrsh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   n = nlp.meta.nvar
   m = nlp.meta.ncon
   nnzj = Cint[0]
-  lj = nlp.meta.nnzj
+  lj = nlp.meta.nnzj + nlp.meta.nvar
   j_val = Array(Cdouble, lj)
   j_var = Array(Cint, lj)
   j_fun = Array(Cint, lj)
@@ -2381,7 +2381,7 @@ function jl_csgrsh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1}
   n = nlp.meta.nvar
   m = nlp.meta.ncon
   nnzj = Cint[0]
-  lj = nlp.meta.nnzj
+  lj = nlp.meta.nnzj + nlp.meta.nvar
   j_var_cp = Array(Cint, lj)
   j_fun_cp = Array(Cint, lj)
   nnzh = Cint[0]

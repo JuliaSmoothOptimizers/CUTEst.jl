@@ -12,6 +12,10 @@ jltypes = {"integer":"Int", "doublereal":"Float64", "logical":"Bool",
 
 # NLP related
 nlp_equivalent = {"n":"nvar", "m":"ncon", "lj":"nnzj", "lh":"nnzh"}
+nlp_exception  = {
+    "csgr": { "lj":["nnzj","nvar"] },
+    "csgrsh": { "lj":["nnzj","nvar"] }
+    }
 nlp_ignore = ["usetup", "csetup"]
 
 s="  "
@@ -186,7 +190,15 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     for i, arg in enumerate(args):
         if intents[i] == "in":
             if use_nlp and arg in nlp_equivalent.keys():
-                str += s+"{} = nlp.meta.{}\n".format(arg, nlp_equivalent[arg])
+                if name in nlp_exception.keys() and arg in nlp_exception[name]:
+                    eqs = nlp_exception[name][arg]
+                else:
+                    eqs = nlp_equivalent[arg]
+                if type(eqs) == type("str"):
+                    str += s+"{} = nlp.meta.{}\n".format(arg, nlp_equivalent[arg])
+                else:
+                    str += s+arg+" = " + " + ".join(["nlp.meta."+v for v in \
+                            eqs])+"\n"
             continue
         if len(dims[i]) > 0 and inplace and types[i] != "integer":
             continue
