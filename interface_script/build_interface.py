@@ -162,13 +162,14 @@ def core_function(name, args, types, dims):
     str = ""
     arg_call = arguments(args, types, [], dims, intent="all",
             use_nlp=False, use_types=True, all_ptrs=True, typeset=cutypes)
-    str += wrap( "function {}({}, {})".format(name, arg_call, libeqfixed) )+"\n"
+    str += "function "+name+"("+wrap( "{}, {}".format(arg_call,
+        libeqfixed))+")\n"
     str += s+'@eval ccall(("cutest_{}_", $(libname)), Void,\n'.format(name)
     ptrs = ["Ptr{{{}}}".format(cutypes[t]) for t in types]
     if len(ptrs) == 1:
         ptrs.append('')
-    str += 2*s + wrap("("+', '.join(ptrs)+"),") + "\n"
-    str += 2*s + wrap(', '.join(["$({})".format(v) for v in args]) + ")") + "\n"
+    str += 2*s + "(" + wrap(', '.join(ptrs)) + "),\n"
+    str += 2*s + wrap(', '.join(["$({})".format(v) for v in args])) + ")\n"
     str += "end\n"
     return str
 
