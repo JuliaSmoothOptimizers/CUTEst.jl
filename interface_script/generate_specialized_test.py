@@ -57,15 +57,15 @@ hs = {
     "Wx": "W(x0,y0)" }
 
 special = {
-    "jl_cshc": { "W": "W(x0,y0)-H(x0)"},
-    "jl_cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)" },
-    "jl_clfg": { "fx": "f(x0)+dot(y0,c(x0))", "gx": "g(x0)+J(x0)'*y0" }
+    "cshc": { "W": "W(x0,y0)-H(x0)"},
+    "cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)" },
+    "clfg": { "fx": "f(x0)+dot(y0,c(x0))", "gx": "g(x0)+J(x0)'*y0" }
     }
 
 results = {
-    "jl_chprod": "W(x0,y0)*v",
-    "jl_chcprod": "(W(x0,y0)-H(x0))*v",
-    "jl_cjprod": "J(x0)*v" }
+    "chprod": "W(x0,y0)*v",
+    "chcprod": "(W(x0,y0)-H(x0))*v",
+    "cjprod": "J(x0)*v" }
 
 sizeof = {
     "gx": "nlp.meta.nvar",
@@ -91,7 +91,7 @@ multiples = {
     "icon": "nlp.meta.ncon",
     "iprob": "nlp.meta.ncon" }
 
-zero_index = [ "jl_csgr", "jl_csgrsh" ]
+zero_index = [ "csgr", "csgrsh" ]
 
 def addTriplet(trip, spc, fname):
     str = spc+"{}_val = copy({}x)\n".format(trip.lower(), trip)
@@ -202,7 +202,8 @@ for x in content:
     if any([foo+"(" in x for foo in foos]):
         selection.append(x)
 
-print('println("\\nTesting the Specialized interface\\n")\n\n')
-print('v = ones(nlp.meta.nvar)')
-for x in selection:
-    print(generate_test_for_function(x))
+with open("test/test_specialized.jl","w") as f:
+    f.write('println("\\nTesting the Specialized interface\\n")\n\n')
+    f.write('v = ones(nlp.meta.nvar)\n')
+    for x in selection:
+        f.write(generate_test_for_function(x))

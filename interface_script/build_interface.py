@@ -179,7 +179,7 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     arg_call = arguments(args, types, intents, dims, intent="in",
             use_nlp=use_nlp, use_types=True, all_ptrs=False, inplace=inplace)
 
-    str += "function jl_" + name
+    str += "function " + name
     if inplace:
         str += "!"
     if use_nlp:
@@ -245,8 +245,9 @@ inter_file = open("src/specialized_interface.jl", "w")
 
 names = function_names()
 
-inter_file.write(wrap("export " + ', '.join(["jl_"+x for x in names]))+"\n")
-inter_file.write(wrap("export " + ', '.join(["jl_"+x+"!" for x in names]))+"\n")
+core_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
+inter_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
+inter_file.write(wrap("export " + ', '.join([x+"!" for x in names]))+"\n")
 inter_file.write("\n")
 for name in names:
     args, types, intents, dims = get_function_data(name)

@@ -1,24 +1,19 @@
-export jl_usetup, jl_csetup, jl_udimen, jl_udimsh, jl_udimse,
-    jl_uvartype, jl_unames, jl_ureport, jl_cdimen, jl_cdimsj, jl_cdimsh,
-    jl_cdimse, jl_cstats, jl_cvartype, jl_cnames, jl_creport, jl_connames,
-    jl_pname, jl_probname, jl_varnames, jl_ufn, jl_ugr, jl_uofg,
-    jl_ubandh, jl_udh, jl_ush, jl_ueh, jl_ugrdh, jl_ugrsh, jl_ugreh,
-    jl_uhprod, jl_cfn, jl_cofg, jl_cofsg, jl_ccfg, jl_clfg, jl_cgr,
-    jl_csgr, jl_ccfsg, jl_ccifg, jl_ccifsg, jl_cgrdh, jl_cdh, jl_csh,
-    jl_cshc, jl_ceh, jl_cidh, jl_cish, jl_csgrsh, jl_csgreh, jl_chprod,
-    jl_chcprod, jl_cjprod, jl_uterminate, jl_cterminate
-export jl_usetup!, jl_csetup!, jl_udimen!, jl_udimsh!, jl_udimse!,
-    jl_uvartype!, jl_unames!, jl_ureport!, jl_cdimen!, jl_cdimsj!,
-    jl_cdimsh!, jl_cdimse!, jl_cstats!, jl_cvartype!, jl_cnames!,
-    jl_creport!, jl_connames!, jl_pname!, jl_probname!, jl_varnames!,
-    jl_ufn!, jl_ugr!, jl_uofg!, jl_ubandh!, jl_udh!, jl_ush!, jl_ueh!,
-    jl_ugrdh!, jl_ugrsh!, jl_ugreh!, jl_uhprod!, jl_cfn!, jl_cofg!,
-    jl_cofsg!, jl_ccfg!, jl_clfg!, jl_cgr!, jl_csgr!, jl_ccfsg!,
-    jl_ccifg!, jl_ccifsg!, jl_cgrdh!, jl_cdh!, jl_csh!, jl_cshc!, jl_ceh!,
-    jl_cidh!, jl_cish!, jl_csgrsh!, jl_csgreh!, jl_chprod!, jl_chcprod!,
-    jl_cjprod!, jl_uterminate!, jl_cterminate!
+export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
+    ureport, cdimen, cdimsj, cdimsh, cdimse, cstats, cvartype, cnames,
+    creport, connames, pname, probname, varnames, ufn, ugr, uofg, ubandh,
+    udh, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, cfn, cofg, cofsg, ccfg,
+    clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh, cdh, csh, cshc, ceh,
+    cidh, cish, csgrsh, csgreh, chprod, chcprod, cjprod, uterminate,
+    cterminate
+export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
+    unames!, ureport!, cdimen!, cdimsj!, cdimsh!, cdimse!, cstats!,
+    cvartype!, cnames!, creport!, connames!, pname!, probname!, varnames!,
+    ufn!, ugr!, uofg!, ubandh!, udh!, ush!, ueh!, ugrdh!, ugrsh!, ugreh!,
+    uhprod!, cfn!, cofg!, cofsg!, ccfg!, clfg!, cgr!, csgr!, ccfsg!,
+    ccifg!, ccifsg!, cgrdh!, cdh!, csh!, cshc!, ceh!, cidh!, cish!,
+    csgrsh!, csgreh!, chprod!, chcprod!, cjprod!, uterminate!, cterminate!
 
-function jl_usetup(input::Int, out::Int, io_buffer::Int, n::Int, libname = fixedlibname)
+function usetup(input::Int, out::Int, io_buffer::Int, n::Int, libname = fixedlibname)
   io_err = Cint[0]
   x = Array(Cdouble, n)
   x_l = Array(Cdouble, n)
@@ -29,7 +24,7 @@ function jl_usetup(input::Int, out::Int, io_buffer::Int, n::Int, libname = fixed
   return x, x_l, x_u
 end
 
-function jl_usetup!(input::Int, out::Int, io_buffer::Int, n::Int, x::Array{Float64, 1},
+function usetup!(input::Int, out::Int, io_buffer::Int, n::Int, x::Array{Float64, 1},
     x_l::Array{Float64, 1}, x_u::Array{Float64, 1}, libname =
     fixedlibname)
   io_err = Cint[0]
@@ -39,7 +34,7 @@ function jl_usetup!(input::Int, out::Int, io_buffer::Int, n::Int, x::Array{Float
   return 
 end
 
-function jl_csetup(input::Int, out::Int, io_buffer::Int, n::Int, m::Int, e_order::Int,
+function csetup(input::Int, out::Int, io_buffer::Int, n::Int, m::Int, e_order::Int,
     l_order::Int, v_order::Int, libname = fixedlibname)
   io_err = Cint[0]
   x = Array(Cdouble, n)
@@ -58,7 +53,7 @@ function jl_csetup(input::Int, out::Int, io_buffer::Int, n::Int, m::Int, e_order
   return x, x_l, x_u, y, c_l, c_u, equatn, linear
 end
 
-function jl_csetup!(input::Int, out::Int, io_buffer::Int, n::Int, m::Int,
+function csetup!(input::Int, out::Int, io_buffer::Int, n::Int, m::Int,
     x::Array{Float64, 1}, x_l::Array{Float64, 1}, x_u::Array{Float64, 1},
     y::Array{Float64, 1}, c_l::Array{Float64, 1}, c_u::Array{Float64, 1},
     equatn::Array{Bool, 1}, linear::Array{Bool, 1}, e_order::Int,
@@ -72,7 +67,7 @@ function jl_csetup!(input::Int, out::Int, io_buffer::Int, n::Int, m::Int,
   return 
 end
 
-function jl_udimen(input::Int, libname = fixedlibname)
+function udimen(input::Int, libname = fixedlibname)
   io_err = Cint[0]
   n = Cint[0]
   @eval CUTEst.udimen($(io_err), $(Cint[input]), $(n), $(libname))
@@ -80,7 +75,7 @@ function jl_udimen(input::Int, libname = fixedlibname)
   return n[1]
 end
 
-function jl_udimen!(input::Int, libname = fixedlibname)
+function udimen!(input::Int, libname = fixedlibname)
   io_err = Cint[0]
   n = Cint[0]
   @eval CUTEst.udimen($(io_err), $(Cint[input]), $(n), $(libname))
@@ -88,7 +83,7 @@ function jl_udimen!(input::Int, libname = fixedlibname)
   return n[1]
 end
 
-function jl_udimen(nlp::CUTEstModel, input::Int)
+function udimen(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   n = Cint[0]
   @eval CUTEst.udimen($(io_err), $(Cint[input]), $(n), $(nlp.libname))
@@ -96,7 +91,7 @@ function jl_udimen(nlp::CUTEstModel, input::Int)
   return n[1]
 end
 
-function jl_udimen!(nlp::CUTEstModel, input::Int)
+function udimen!(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   n = Cint[0]
   @eval CUTEst.udimen($(io_err), $(Cint[input]), $(n), $(nlp.libname))
@@ -104,7 +99,7 @@ function jl_udimen!(nlp::CUTEstModel, input::Int)
   return n[1]
 end
 
-function jl_udimsh(libname = fixedlibname)
+function udimsh(libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.udimsh($(io_err), $(nnzh), $(libname))
@@ -112,7 +107,7 @@ function jl_udimsh(libname = fixedlibname)
   return nnzh[1]
 end
 
-function jl_udimsh!(libname = fixedlibname)
+function udimsh!(libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.udimsh($(io_err), $(nnzh), $(libname))
@@ -120,7 +115,7 @@ function jl_udimsh!(libname = fixedlibname)
   return nnzh[1]
 end
 
-function jl_udimsh(nlp::CUTEstModel)
+function udimsh(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.udimsh($(io_err), $(nnzh), $(nlp.libname))
@@ -128,7 +123,7 @@ function jl_udimsh(nlp::CUTEstModel)
   return nnzh[1]
 end
 
-function jl_udimsh!(nlp::CUTEstModel)
+function udimsh!(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.udimsh($(io_err), $(nnzh), $(nlp.libname))
@@ -136,7 +131,7 @@ function jl_udimsh!(nlp::CUTEstModel)
   return nnzh[1]
 end
 
-function jl_udimse(libname = fixedlibname)
+function udimse(libname = fixedlibname)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -147,7 +142,7 @@ function jl_udimse(libname = fixedlibname)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_udimse!(libname = fixedlibname)
+function udimse!(libname = fixedlibname)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -158,7 +153,7 @@ function jl_udimse!(libname = fixedlibname)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_udimse(nlp::CUTEstModel)
+function udimse(nlp::CUTEstModel)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -169,7 +164,7 @@ function jl_udimse(nlp::CUTEstModel)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_udimse!(nlp::CUTEstModel)
+function udimse!(nlp::CUTEstModel)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -180,7 +175,7 @@ function jl_udimse!(nlp::CUTEstModel)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_uvartype(n::Int, libname = fixedlibname)
+function uvartype(n::Int, libname = fixedlibname)
   io_err = Cint[0]
   x_type = Array(Cint, n)
   @eval CUTEst.uvartype($(io_err), $(Cint[n]), $(x_type), $(libname))
@@ -188,7 +183,7 @@ function jl_uvartype(n::Int, libname = fixedlibname)
   return x_type
 end
 
-function jl_uvartype!(n::Int, x_type::Array{Int, 1}, libname = fixedlibname)
+function uvartype!(n::Int, x_type::Array{Int, 1}, libname = fixedlibname)
   io_err = Cint[0]
   x_type_cp = Array(Cint, n)
   @eval CUTEst.uvartype($(io_err), $(Cint[n]), $(x_type_cp),
@@ -200,7 +195,7 @@ function jl_uvartype!(n::Int, x_type::Array{Int, 1}, libname = fixedlibname)
   return 
 end
 
-function jl_uvartype(nlp::CUTEstModel)
+function uvartype(nlp::CUTEstModel)
   io_err = Cint[0]
   n = nlp.meta.nvar
   x_type = Array(Cint, n)
@@ -210,7 +205,7 @@ function jl_uvartype(nlp::CUTEstModel)
   return x_type
 end
 
-function jl_uvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
+function uvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   x_type_cp = Array(Cint, n)
@@ -223,7 +218,7 @@ function jl_uvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
   return 
 end
 
-function jl_unames(n::Int, libname = fixedlibname)
+function unames(n::Int, libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
   vname = Array(Cchar, n)
@@ -233,7 +228,7 @@ function jl_unames(n::Int, libname = fixedlibname)
   return pname[1], vname
 end
 
-function jl_unames!(n::Int, vname::Array{Uint8, 1}, libname = fixedlibname)
+function unames!(n::Int, vname::Array{Uint8, 1}, libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.unames($(io_err), $(Cint[n]), $(pname), $(vname),
@@ -242,7 +237,7 @@ function jl_unames!(n::Int, vname::Array{Uint8, 1}, libname = fixedlibname)
   return pname[1]
 end
 
-function jl_unames(nlp::CUTEstModel)
+function unames(nlp::CUTEstModel)
   io_err = Cint[0]
   n = nlp.meta.nvar
   pname = Cchar[0]
@@ -253,7 +248,7 @@ function jl_unames(nlp::CUTEstModel)
   return pname[1], vname
 end
 
-function jl_unames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
+function unames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   pname = Cchar[0]
@@ -263,7 +258,7 @@ function jl_unames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
   return pname[1]
 end
 
-function jl_ureport(libname = fixedlibname)
+function ureport(libname = fixedlibname)
   io_err = Cint[0]
   calls = Array(Cdouble, 4)
   time = Array(Cdouble, 2)
@@ -272,7 +267,7 @@ function jl_ureport(libname = fixedlibname)
   return calls, time
 end
 
-function jl_ureport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname =
+function ureport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname =
     fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.ureport($(io_err), $(calls), $(time), $(libname))
@@ -280,7 +275,7 @@ function jl_ureport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname 
   return 
 end
 
-function jl_ureport(nlp::CUTEstModel)
+function ureport(nlp::CUTEstModel)
   io_err = Cint[0]
   calls = Array(Cdouble, 4)
   time = Array(Cdouble, 2)
@@ -289,14 +284,14 @@ function jl_ureport(nlp::CUTEstModel)
   return calls, time
 end
 
-function jl_ureport!(nlp::CUTEstModel, calls::Array{Float64, 1}, time::Array{Float64, 1})
+function ureport!(nlp::CUTEstModel, calls::Array{Float64, 1}, time::Array{Float64, 1})
   io_err = Cint[0]
   @eval CUTEst.ureport($(io_err), $(calls), $(time), $(nlp.libname))
   @cutest_error
   return 
 end
 
-function jl_cdimen(input::Int, libname = fixedlibname)
+function cdimen(input::Int, libname = fixedlibname)
   io_err = Cint[0]
   n = Cint[0]
   m = Cint[0]
@@ -306,7 +301,7 @@ function jl_cdimen(input::Int, libname = fixedlibname)
   return n[1], m[1]
 end
 
-function jl_cdimen!(input::Int, libname = fixedlibname)
+function cdimen!(input::Int, libname = fixedlibname)
   io_err = Cint[0]
   n = Cint[0]
   m = Cint[0]
@@ -316,7 +311,7 @@ function jl_cdimen!(input::Int, libname = fixedlibname)
   return n[1], m[1]
 end
 
-function jl_cdimen(nlp::CUTEstModel, input::Int)
+function cdimen(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   n = Cint[0]
   m = Cint[0]
@@ -326,7 +321,7 @@ function jl_cdimen(nlp::CUTEstModel, input::Int)
   return n[1], m[1]
 end
 
-function jl_cdimen!(nlp::CUTEstModel, input::Int)
+function cdimen!(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   n = Cint[0]
   m = Cint[0]
@@ -336,7 +331,7 @@ function jl_cdimen!(nlp::CUTEstModel, input::Int)
   return n[1], m[1]
 end
 
-function jl_cdimsj(libname = fixedlibname)
+function cdimsj(libname = fixedlibname)
   io_err = Cint[0]
   nnzj = Cint[0]
   @eval CUTEst.cdimsj($(io_err), $(nnzj), $(libname))
@@ -344,7 +339,7 @@ function jl_cdimsj(libname = fixedlibname)
   return nnzj[1]
 end
 
-function jl_cdimsj!(libname = fixedlibname)
+function cdimsj!(libname = fixedlibname)
   io_err = Cint[0]
   nnzj = Cint[0]
   @eval CUTEst.cdimsj($(io_err), $(nnzj), $(libname))
@@ -352,7 +347,7 @@ function jl_cdimsj!(libname = fixedlibname)
   return nnzj[1]
 end
 
-function jl_cdimsj(nlp::CUTEstModel)
+function cdimsj(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzj = Cint[0]
   @eval CUTEst.cdimsj($(io_err), $(nnzj), $(nlp.libname))
@@ -360,7 +355,7 @@ function jl_cdimsj(nlp::CUTEstModel)
   return nnzj[1]
 end
 
-function jl_cdimsj!(nlp::CUTEstModel)
+function cdimsj!(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzj = Cint[0]
   @eval CUTEst.cdimsj($(io_err), $(nnzj), $(nlp.libname))
@@ -368,7 +363,7 @@ function jl_cdimsj!(nlp::CUTEstModel)
   return nnzj[1]
 end
 
-function jl_cdimsh(libname = fixedlibname)
+function cdimsh(libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.cdimsh($(io_err), $(nnzh), $(libname))
@@ -376,7 +371,7 @@ function jl_cdimsh(libname = fixedlibname)
   return nnzh[1]
 end
 
-function jl_cdimsh!(libname = fixedlibname)
+function cdimsh!(libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.cdimsh($(io_err), $(nnzh), $(libname))
@@ -384,7 +379,7 @@ function jl_cdimsh!(libname = fixedlibname)
   return nnzh[1]
 end
 
-function jl_cdimsh(nlp::CUTEstModel)
+function cdimsh(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.cdimsh($(io_err), $(nnzh), $(nlp.libname))
@@ -392,7 +387,7 @@ function jl_cdimsh(nlp::CUTEstModel)
   return nnzh[1]
 end
 
-function jl_cdimsh!(nlp::CUTEstModel)
+function cdimsh!(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval CUTEst.cdimsh($(io_err), $(nnzh), $(nlp.libname))
@@ -400,7 +395,7 @@ function jl_cdimsh!(nlp::CUTEstModel)
   return nnzh[1]
 end
 
-function jl_cdimse(libname = fixedlibname)
+function cdimse(libname = fixedlibname)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -411,7 +406,7 @@ function jl_cdimse(libname = fixedlibname)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_cdimse!(libname = fixedlibname)
+function cdimse!(libname = fixedlibname)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -422,7 +417,7 @@ function jl_cdimse!(libname = fixedlibname)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_cdimse(nlp::CUTEstModel)
+function cdimse(nlp::CUTEstModel)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -433,7 +428,7 @@ function jl_cdimse(nlp::CUTEstModel)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_cdimse!(nlp::CUTEstModel)
+function cdimse!(nlp::CUTEstModel)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -444,7 +439,7 @@ function jl_cdimse!(nlp::CUTEstModel)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function jl_cstats(libname = fixedlibname)
+function cstats(libname = fixedlibname)
   io_err = Cint[0]
   nonlinear_variables_objective = Cint[0]
   nonlinear_variables_constraints = Cint[0]
@@ -457,7 +452,7 @@ function jl_cstats(libname = fixedlibname)
   return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
 
-function jl_cstats!(libname = fixedlibname)
+function cstats!(libname = fixedlibname)
   io_err = Cint[0]
   nonlinear_variables_objective = Cint[0]
   nonlinear_variables_constraints = Cint[0]
@@ -470,7 +465,7 @@ function jl_cstats!(libname = fixedlibname)
   return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
 
-function jl_cstats(nlp::CUTEstModel)
+function cstats(nlp::CUTEstModel)
   io_err = Cint[0]
   nonlinear_variables_objective = Cint[0]
   nonlinear_variables_constraints = Cint[0]
@@ -483,7 +478,7 @@ function jl_cstats(nlp::CUTEstModel)
   return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
 
-function jl_cstats!(nlp::CUTEstModel)
+function cstats!(nlp::CUTEstModel)
   io_err = Cint[0]
   nonlinear_variables_objective = Cint[0]
   nonlinear_variables_constraints = Cint[0]
@@ -496,7 +491,7 @@ function jl_cstats!(nlp::CUTEstModel)
   return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
 
-function jl_cvartype(n::Int, libname = fixedlibname)
+function cvartype(n::Int, libname = fixedlibname)
   io_err = Cint[0]
   x_type = Array(Cint, n)
   @eval CUTEst.cvartype($(io_err), $(Cint[n]), $(x_type), $(libname))
@@ -504,7 +499,7 @@ function jl_cvartype(n::Int, libname = fixedlibname)
   return x_type
 end
 
-function jl_cvartype!(n::Int, x_type::Array{Int, 1}, libname = fixedlibname)
+function cvartype!(n::Int, x_type::Array{Int, 1}, libname = fixedlibname)
   io_err = Cint[0]
   x_type_cp = Array(Cint, n)
   @eval CUTEst.cvartype($(io_err), $(Cint[n]), $(x_type_cp),
@@ -516,7 +511,7 @@ function jl_cvartype!(n::Int, x_type::Array{Int, 1}, libname = fixedlibname)
   return 
 end
 
-function jl_cvartype(nlp::CUTEstModel)
+function cvartype(nlp::CUTEstModel)
   io_err = Cint[0]
   n = nlp.meta.nvar
   x_type = Array(Cint, n)
@@ -526,7 +521,7 @@ function jl_cvartype(nlp::CUTEstModel)
   return x_type
 end
 
-function jl_cvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
+function cvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   x_type_cp = Array(Cint, n)
@@ -539,7 +534,7 @@ function jl_cvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
   return 
 end
 
-function jl_cnames(n::Int, m::Int, libname = fixedlibname)
+function cnames(n::Int, m::Int, libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
   vname = Array(Cchar, n)
@@ -550,7 +545,7 @@ function jl_cnames(n::Int, m::Int, libname = fixedlibname)
   return pname[1], vname, cname
 end
 
-function jl_cnames!(n::Int, m::Int, vname::Array{Uint8, 1}, cname::Array{Uint8, 1},
+function cnames!(n::Int, m::Int, vname::Array{Uint8, 1}, cname::Array{Uint8, 1},
     libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
@@ -560,7 +555,7 @@ function jl_cnames!(n::Int, m::Int, vname::Array{Uint8, 1}, cname::Array{Uint8, 
   return pname[1]
 end
 
-function jl_cnames(nlp::CUTEstModel)
+function cnames(nlp::CUTEstModel)
   io_err = Cint[0]
   n = nlp.meta.nvar
   m = nlp.meta.ncon
@@ -573,7 +568,7 @@ function jl_cnames(nlp::CUTEstModel)
   return pname[1], vname, cname
 end
 
-function jl_cnames!(nlp::CUTEstModel, vname::Array{Uint8, 1}, cname::Array{Uint8, 1})
+function cnames!(nlp::CUTEstModel, vname::Array{Uint8, 1}, cname::Array{Uint8, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   m = nlp.meta.ncon
@@ -584,7 +579,7 @@ function jl_cnames!(nlp::CUTEstModel, vname::Array{Uint8, 1}, cname::Array{Uint8
   return pname[1]
 end
 
-function jl_creport(libname = fixedlibname)
+function creport(libname = fixedlibname)
   io_err = Cint[0]
   calls = Array(Cdouble, 7)
   time = Array(Cdouble, 2)
@@ -593,7 +588,7 @@ function jl_creport(libname = fixedlibname)
   return calls, time
 end
 
-function jl_creport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname =
+function creport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname =
     fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.creport($(io_err), $(calls), $(time), $(libname))
@@ -601,7 +596,7 @@ function jl_creport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname 
   return 
 end
 
-function jl_creport(nlp::CUTEstModel)
+function creport(nlp::CUTEstModel)
   io_err = Cint[0]
   calls = Array(Cdouble, 7)
   time = Array(Cdouble, 2)
@@ -610,14 +605,14 @@ function jl_creport(nlp::CUTEstModel)
   return calls, time
 end
 
-function jl_creport!(nlp::CUTEstModel, calls::Array{Float64, 1}, time::Array{Float64, 1})
+function creport!(nlp::CUTEstModel, calls::Array{Float64, 1}, time::Array{Float64, 1})
   io_err = Cint[0]
   @eval CUTEst.creport($(io_err), $(calls), $(time), $(nlp.libname))
   @cutest_error
   return 
 end
 
-function jl_connames(m::Int, libname = fixedlibname)
+function connames(m::Int, libname = fixedlibname)
   io_err = Cint[0]
   cname = Array(Cchar, m)
   @eval CUTEst.connames($(io_err), $(Cint[m]), $(cname), $(libname))
@@ -625,14 +620,14 @@ function jl_connames(m::Int, libname = fixedlibname)
   return cname
 end
 
-function jl_connames!(m::Int, cname::Array{Uint8, 1}, libname = fixedlibname)
+function connames!(m::Int, cname::Array{Uint8, 1}, libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.connames($(io_err), $(Cint[m]), $(cname), $(libname))
   @cutest_error
   return 
 end
 
-function jl_connames(nlp::CUTEstModel)
+function connames(nlp::CUTEstModel)
   io_err = Cint[0]
   m = nlp.meta.ncon
   cname = Array(Cchar, m)
@@ -642,7 +637,7 @@ function jl_connames(nlp::CUTEstModel)
   return cname
 end
 
-function jl_connames!(nlp::CUTEstModel, cname::Array{Uint8, 1})
+function connames!(nlp::CUTEstModel, cname::Array{Uint8, 1})
   io_err = Cint[0]
   m = nlp.meta.ncon
   @eval CUTEst.connames($(io_err), $(Cint[m]), $(cname),
@@ -651,7 +646,7 @@ function jl_connames!(nlp::CUTEstModel, cname::Array{Uint8, 1})
   return 
 end
 
-function jl_pname(input::Int, libname = fixedlibname)
+function pname(input::Int, libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.pname($(io_err), $(Cint[input]), $(pname), $(libname))
@@ -659,7 +654,7 @@ function jl_pname(input::Int, libname = fixedlibname)
   return pname[1]
 end
 
-function jl_pname!(input::Int, libname = fixedlibname)
+function pname!(input::Int, libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.pname($(io_err), $(Cint[input]), $(pname), $(libname))
@@ -667,7 +662,7 @@ function jl_pname!(input::Int, libname = fixedlibname)
   return pname[1]
 end
 
-function jl_pname(nlp::CUTEstModel, input::Int)
+function pname(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.pname($(io_err), $(Cint[input]), $(pname),
@@ -676,7 +671,7 @@ function jl_pname(nlp::CUTEstModel, input::Int)
   return pname[1]
 end
 
-function jl_pname!(nlp::CUTEstModel, input::Int)
+function pname!(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.pname($(io_err), $(Cint[input]), $(pname),
@@ -685,7 +680,7 @@ function jl_pname!(nlp::CUTEstModel, input::Int)
   return pname[1]
 end
 
-function jl_probname(libname = fixedlibname)
+function probname(libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.probname($(io_err), $(pname), $(libname))
@@ -693,7 +688,7 @@ function jl_probname(libname = fixedlibname)
   return pname[1]
 end
 
-function jl_probname!(libname = fixedlibname)
+function probname!(libname = fixedlibname)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.probname($(io_err), $(pname), $(libname))
@@ -701,7 +696,7 @@ function jl_probname!(libname = fixedlibname)
   return pname[1]
 end
 
-function jl_probname(nlp::CUTEstModel)
+function probname(nlp::CUTEstModel)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.probname($(io_err), $(pname), $(nlp.libname))
@@ -709,7 +704,7 @@ function jl_probname(nlp::CUTEstModel)
   return pname[1]
 end
 
-function jl_probname!(nlp::CUTEstModel)
+function probname!(nlp::CUTEstModel)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval CUTEst.probname($(io_err), $(pname), $(nlp.libname))
@@ -717,7 +712,7 @@ function jl_probname!(nlp::CUTEstModel)
   return pname[1]
 end
 
-function jl_varnames(n::Int, libname = fixedlibname)
+function varnames(n::Int, libname = fixedlibname)
   io_err = Cint[0]
   vname = Array(Cchar, n)
   @eval CUTEst.varnames($(io_err), $(Cint[n]), $(vname), $(libname))
@@ -725,14 +720,14 @@ function jl_varnames(n::Int, libname = fixedlibname)
   return vname
 end
 
-function jl_varnames!(n::Int, vname::Array{Uint8, 1}, libname = fixedlibname)
+function varnames!(n::Int, vname::Array{Uint8, 1}, libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.varnames($(io_err), $(Cint[n]), $(vname), $(libname))
   @cutest_error
   return 
 end
 
-function jl_varnames(nlp::CUTEstModel)
+function varnames(nlp::CUTEstModel)
   io_err = Cint[0]
   n = nlp.meta.nvar
   vname = Array(Cchar, n)
@@ -742,7 +737,7 @@ function jl_varnames(nlp::CUTEstModel)
   return vname
 end
 
-function jl_varnames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
+function varnames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   @eval CUTEst.varnames($(io_err), $(Cint[n]), $(vname),
@@ -751,7 +746,7 @@ function jl_varnames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
   return 
 end
 
-function jl_ufn(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
+function ufn(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
   @eval CUTEst.ufn($(io_err), $(Cint[n]), $(x), $(f), $(libname))
@@ -759,7 +754,7 @@ function jl_ufn(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
   return f[1]
 end
 
-function jl_ufn!(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
+function ufn!(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
   @eval CUTEst.ufn($(io_err), $(Cint[n]), $(x), $(f), $(libname))
@@ -767,7 +762,7 @@ function jl_ufn!(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
   return f[1]
 end
 
-function jl_ufn(nlp::CUTEstModel, x::Array{Float64, 1})
+function ufn(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   f = Cdouble[0]
@@ -776,7 +771,7 @@ function jl_ufn(nlp::CUTEstModel, x::Array{Float64, 1})
   return f[1]
 end
 
-function jl_ufn!(nlp::CUTEstModel, x::Array{Float64, 1})
+function ufn!(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   f = Cdouble[0]
@@ -785,7 +780,7 @@ function jl_ufn!(nlp::CUTEstModel, x::Array{Float64, 1})
   return f[1]
 end
 
-function jl_ugr(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
+function ugr(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
   io_err = Cint[0]
   g = Array(Cdouble, n)
   @eval CUTEst.ugr($(io_err), $(Cint[n]), $(x), $(g), $(libname))
@@ -793,7 +788,7 @@ function jl_ugr(n::Int, x::Array{Float64, 1}, libname = fixedlibname)
   return g
 end
 
-function jl_ugr!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, libname =
+function ugr!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, libname =
     fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.ugr($(io_err), $(Cint[n]), $(x), $(g), $(libname))
@@ -801,7 +796,7 @@ function jl_ugr!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, libname =
   return 
 end
 
-function jl_ugr(nlp::CUTEstModel, x::Array{Float64, 1})
+function ugr(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   g = Array(Cdouble, n)
@@ -810,7 +805,7 @@ function jl_ugr(nlp::CUTEstModel, x::Array{Float64, 1})
   return g
 end
 
-function jl_ugr!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1})
+function ugr!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   @eval CUTEst.ugr($(io_err), $(Cint[n]), $(x), $(g), $(nlp.libname))
@@ -818,7 +813,7 @@ function jl_ugr!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1})
   return 
 end
 
-function jl_uofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname = fixedlibname)
+function uofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
   g = Array(Cdouble, n)
@@ -828,7 +823,7 @@ function jl_uofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname = fixedlibnam
   return f[1], g
 end
 
-function jl_uofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool,
+function uofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool,
     libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -838,7 +833,7 @@ function jl_uofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool
   return f[1]
 end
 
-function jl_uofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
+function uofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
   f = Cdouble[0]
@@ -849,7 +844,7 @@ function jl_uofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   return f[1], g
 end
 
-function jl_uofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
+function uofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
     grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -860,7 +855,7 @@ function jl_uofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   return f[1]
 end
 
-function jl_ubandh(n::Int, x::Array{Float64, 1}, semibandwidth::Int, lbandh::Int,
+function ubandh(n::Int, x::Array{Float64, 1}, semibandwidth::Int, lbandh::Int,
     libname = fixedlibname)
   io_err = Cint[0]
   h_band = Array(Cdouble, lbandh - 0 + 1, n)
@@ -872,7 +867,7 @@ function jl_ubandh(n::Int, x::Array{Float64, 1}, semibandwidth::Int, lbandh::Int
   return h_band, max_semibandwidth[1]
 end
 
-function jl_ubandh!(n::Int, x::Array{Float64, 1}, semibandwidth::Int,
+function ubandh!(n::Int, x::Array{Float64, 1}, semibandwidth::Int,
     h_band::Array{Float64, 2}, lbandh::Int, libname = fixedlibname)
   io_err = Cint[0]
   max_semibandwidth = Cint[0]
@@ -883,7 +878,7 @@ function jl_ubandh!(n::Int, x::Array{Float64, 1}, semibandwidth::Int,
   return max_semibandwidth[1]
 end
 
-function jl_ubandh(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
+function ubandh(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
     lbandh::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -896,7 +891,7 @@ function jl_ubandh(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
   return h_band, max_semibandwidth[1]
 end
 
-function jl_ubandh!(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
+function ubandh!(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
     h_band::Array{Float64, 2}, lbandh::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -908,7 +903,7 @@ function jl_ubandh!(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
   return max_semibandwidth[1]
 end
 
-function jl_udh(n::Int, x::Array{Float64, 1}, lh1::Int, libname = fixedlibname)
+function udh(n::Int, x::Array{Float64, 1}, lh1::Int, libname = fixedlibname)
   io_err = Cint[0]
   h = Array(Cdouble, lh1, n)
   @eval CUTEst.udh($(io_err), $(Cint[n]), $(x), $(Cint[lh1]), $(h),
@@ -917,7 +912,7 @@ function jl_udh(n::Int, x::Array{Float64, 1}, lh1::Int, libname = fixedlibname)
   return h
 end
 
-function jl_udh!(n::Int, x::Array{Float64, 1}, lh1::Int, h::Array{Float64, 2}, libname
+function udh!(n::Int, x::Array{Float64, 1}, lh1::Int, h::Array{Float64, 2}, libname
     = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.udh($(io_err), $(Cint[n]), $(x), $(Cint[lh1]), $(h),
@@ -926,7 +921,7 @@ function jl_udh!(n::Int, x::Array{Float64, 1}, lh1::Int, h::Array{Float64, 2}, l
   return 
 end
 
-function jl_udh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
+function udh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
   h = Array(Cdouble, lh1, n)
@@ -936,7 +931,7 @@ function jl_udh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
   return h
 end
 
-function jl_udh!(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int, h::Array{Float64,
+function udh!(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int, h::Array{Float64,
     2})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -946,7 +941,7 @@ function jl_udh!(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int, h::Array{Floa
   return 
 end
 
-function jl_ush(n::Int, x::Array{Float64, 1}, lh::Int, libname = fixedlibname)
+function ush(n::Int, x::Array{Float64, 1}, lh::Int, libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
   h_val = Array(Cdouble, lh)
@@ -958,7 +953,7 @@ function jl_ush(n::Int, x::Array{Float64, 1}, lh::Int, libname = fixedlibname)
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_ush!(n::Int, x::Array{Float64, 1}, lh::Int, h_val::Array{Float64, 1},
+function ush!(n::Int, x::Array{Float64, 1}, lh::Int, h_val::Array{Float64, 1},
     h_row::Array{Int, 1}, h_col::Array{Int, 1}, libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
@@ -976,7 +971,7 @@ function jl_ush!(n::Int, x::Array{Float64, 1}, lh::Int, h_val::Array{Float64, 1}
   return nnzh[1]
 end
 
-function jl_ush(nlp::CUTEstModel, x::Array{Float64, 1})
+function ush(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   nnzh = Cint[0]
@@ -990,7 +985,7 @@ function jl_ush(nlp::CUTEstModel, x::Array{Float64, 1})
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_ush!(nlp::CUTEstModel, x::Array{Float64, 1}, h_val::Array{Float64, 1},
+function ush!(nlp::CUTEstModel, x::Array{Float64, 1}, h_val::Array{Float64, 1},
     h_row::Array{Int, 1}, h_col::Array{Int, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1010,7 +1005,7 @@ function jl_ush!(nlp::CUTEstModel, x::Array{Float64, 1}, h_val::Array{Float64, 1
   return nnzh[1]
 end
 
-function jl_ueh(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
+function ueh(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
     lhe_val::Int, byrows::Bool, libname = fixedlibname)
   io_err = Cint[0]
   ne = Cint[0]
@@ -1025,7 +1020,7 @@ function jl_ueh(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
   return ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_ueh!(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, he_row_ptr::Array{Int,
+function ueh!(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, he_row_ptr::Array{Int,
     1}, he_val_ptr::Array{Int, 1}, lhe_row::Int, he_row::Array{Int, 1},
     lhe_val::Int, he_val::Array{Float64, 1}, byrows::Bool, libname =
     fixedlibname)
@@ -1051,7 +1046,7 @@ function jl_ueh!(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, he_row_ptr::Array{I
   return ne[1]
 end
 
-function jl_ueh(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
+function ueh(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
     lhe_val::Int, byrows::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1068,7 +1063,7 @@ function jl_ueh(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::I
   return ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_ueh!(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int,
+function ueh!(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int,
     he_row_ptr::Array{Int, 1}, he_val_ptr::Array{Int, 1}, lhe_row::Int,
     he_row::Array{Int, 1}, lhe_val::Int, he_val::Array{Float64, 1},
     byrows::Bool)
@@ -1095,7 +1090,7 @@ function jl_ueh!(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int,
   return ne[1]
 end
 
-function jl_ugrdh(n::Int, x::Array{Float64, 1}, lh1::Int, libname = fixedlibname)
+function ugrdh(n::Int, x::Array{Float64, 1}, lh1::Int, libname = fixedlibname)
   io_err = Cint[0]
   g = Array(Cdouble, n)
   h = Array(Cdouble, lh1, n)
@@ -1105,7 +1100,7 @@ function jl_ugrdh(n::Int, x::Array{Float64, 1}, lh1::Int, libname = fixedlibname
   return g, h
 end
 
-function jl_ugrdh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh1::Int,
+function ugrdh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh1::Int,
     h::Array{Float64, 2}, libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.ugrdh($(io_err), $(Cint[n]), $(x), $(g), $(Cint[lh1]),
@@ -1114,7 +1109,7 @@ function jl_ugrdh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh1::Int,
   return 
 end
 
-function jl_ugrdh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
+function ugrdh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
   g = Array(Cdouble, n)
@@ -1125,7 +1120,7 @@ function jl_ugrdh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
   return g, h
 end
 
-function jl_ugrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
+function ugrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
     lh1::Int, h::Array{Float64, 2})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1135,7 +1130,7 @@ function jl_ugrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   return 
 end
 
-function jl_ugrsh(n::Int, x::Array{Float64, 1}, lh::Int, libname = fixedlibname)
+function ugrsh(n::Int, x::Array{Float64, 1}, lh::Int, libname = fixedlibname)
   io_err = Cint[0]
   g = Array(Cdouble, n)
   nnzh = Cint[0]
@@ -1148,7 +1143,7 @@ function jl_ugrsh(n::Int, x::Array{Float64, 1}, lh::Int, libname = fixedlibname)
   return g, nnzh[1], h_val, h_row, h_col
 end
 
-function jl_ugrsh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh::Int,
+function ugrsh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh::Int,
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1},
     libname = fixedlibname)
   io_err = Cint[0]
@@ -1167,7 +1162,7 @@ function jl_ugrsh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh::Int,
   return nnzh[1]
 end
 
-function jl_ugrsh(nlp::CUTEstModel, x::Array{Float64, 1})
+function ugrsh(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   g = Array(Cdouble, n)
@@ -1182,7 +1177,7 @@ function jl_ugrsh(nlp::CUTEstModel, x::Array{Float64, 1})
   return g, nnzh[1], h_val, h_row, h_col
 end
 
-function jl_ugrsh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
+function ugrsh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1202,7 +1197,7 @@ function jl_ugrsh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   return nnzh[1]
 end
 
-function jl_ugreh(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
+function ugreh(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
     lhe_val::Int, byrows::Bool, libname = fixedlibname)
   io_err = Cint[0]
   g = Array(Cdouble, n)
@@ -1218,7 +1213,7 @@ function jl_ugreh(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
   return g, ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_ugreh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lhe_ptr::Int,
+function ugreh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lhe_ptr::Int,
     he_row_ptr::Array{Int, 1}, he_val_ptr::Array{Int, 1}, lhe_row::Int,
     he_row::Array{Int, 1}, lhe_val::Int, he_val::Array{Float64, 1},
     byrows::Bool, libname = fixedlibname)
@@ -1244,7 +1239,7 @@ function jl_ugreh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lhe_ptr::
   return ne[1]
 end
 
-function jl_ugreh(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
+function ugreh(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row::Int,
     lhe_val::Int, byrows::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1262,7 +1257,7 @@ function jl_ugreh(nlp::CUTEstModel, x::Array{Float64, 1}, lhe_ptr::Int, lhe_row:
   return g, ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_ugreh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
+function ugreh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
     lhe_ptr::Int, he_row_ptr::Array{Int, 1}, he_val_ptr::Array{Int, 1},
     lhe_row::Int, he_row::Array{Int, 1}, lhe_val::Int,
     he_val::Array{Float64, 1}, byrows::Bool)
@@ -1289,7 +1284,7 @@ function jl_ugreh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   return ne[1]
 end
 
-function jl_uhprod(n::Int, goth::Bool, x::Array{Float64, 1}, vector::Array{Float64, 1},
+function uhprod(n::Int, goth::Bool, x::Array{Float64, 1}, vector::Array{Float64, 1},
     libname = fixedlibname)
   io_err = Cint[0]
   result = Array(Cdouble, n)
@@ -1299,7 +1294,7 @@ function jl_uhprod(n::Int, goth::Bool, x::Array{Float64, 1}, vector::Array{Float
   return result
 end
 
-function jl_uhprod!(n::Int, goth::Bool, x::Array{Float64, 1}, vector::Array{Float64, 1},
+function uhprod!(n::Int, goth::Bool, x::Array{Float64, 1}, vector::Array{Float64, 1},
     result::Array{Float64, 1}, libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.uhprod($(io_err), $(Cint[n]), $(Cint[goth]), $(x),
@@ -1308,7 +1303,7 @@ function jl_uhprod!(n::Int, goth::Bool, x::Array{Float64, 1}, vector::Array{Floa
   return 
 end
 
-function jl_uhprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
+function uhprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1319,7 +1314,7 @@ function jl_uhprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
   return result
 end
 
-function jl_uhprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
+function uhprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, result::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1329,7 +1324,7 @@ function jl_uhprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
   return 
 end
 
-function jl_cfn(n::Int, m::Int, x::Array{Float64, 1}, libname = fixedlibname)
+function cfn(n::Int, m::Int, x::Array{Float64, 1}, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
   c = Array(Cdouble, m)
@@ -1339,7 +1334,7 @@ function jl_cfn(n::Int, m::Int, x::Array{Float64, 1}, libname = fixedlibname)
   return f[1], c
 end
 
-function jl_cfn!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, libname =
+function cfn!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, libname =
     fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1349,7 +1344,7 @@ function jl_cfn!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, lib
   return f[1]
 end
 
-function jl_cfn(nlp::CUTEstModel, x::Array{Float64, 1})
+function cfn(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   m = nlp.meta.ncon
@@ -1361,7 +1356,7 @@ function jl_cfn(nlp::CUTEstModel, x::Array{Float64, 1})
   return f[1], c
 end
 
-function jl_cfn!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1})
+function cfn!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   m = nlp.meta.ncon
@@ -1372,7 +1367,7 @@ function jl_cfn!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1})
   return f[1]
 end
 
-function jl_cofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname = fixedlibname)
+function cofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
   g = Array(Cdouble, n)
@@ -1382,7 +1377,7 @@ function jl_cofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname = fixedlibnam
   return f[1], g
 end
 
-function jl_cofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool,
+function cofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool,
     libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1392,7 +1387,7 @@ function jl_cofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool
   return f[1]
 end
 
-function jl_cofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
+function cofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
   f = Cdouble[0]
@@ -1403,7 +1398,7 @@ function jl_cofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   return f[1], g
 end
 
-function jl_cofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
+function cofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
     grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1414,7 +1409,7 @@ function jl_cofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   return f[1]
 end
 
-function jl_cofsg(n::Int, x::Array{Float64, 1}, lg::Int, grad::Bool, libname =
+function cofsg(n::Int, x::Array{Float64, 1}, lg::Int, grad::Bool, libname =
     fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1427,7 +1422,7 @@ function jl_cofsg(n::Int, x::Array{Float64, 1}, lg::Int, grad::Bool, libname =
   return f[1], nnzg[1], g_val, g_var
 end
 
-function jl_cofsg!(n::Int, x::Array{Float64, 1}, lg::Int, g_val::Array{Float64, 1},
+function cofsg!(n::Int, x::Array{Float64, 1}, lg::Int, g_val::Array{Float64, 1},
     g_var::Array{Int, 1}, grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1442,7 +1437,7 @@ function jl_cofsg!(n::Int, x::Array{Float64, 1}, lg::Int, g_val::Array{Float64, 
   return f[1], nnzg[1]
 end
 
-function jl_cofsg(nlp::CUTEstModel, x::Array{Float64, 1}, lg::Int, grad::Bool)
+function cofsg(nlp::CUTEstModel, x::Array{Float64, 1}, lg::Int, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
   f = Cdouble[0]
@@ -1455,7 +1450,7 @@ function jl_cofsg(nlp::CUTEstModel, x::Array{Float64, 1}, lg::Int, grad::Bool)
   return f[1], nnzg[1], g_val, g_var
 end
 
-function jl_cofsg!(nlp::CUTEstModel, x::Array{Float64, 1}, lg::Int,
+function cofsg!(nlp::CUTEstModel, x::Array{Float64, 1}, lg::Int,
     g_val::Array{Float64, 1}, g_var::Array{Int, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1471,7 +1466,7 @@ function jl_cofsg!(nlp::CUTEstModel, x::Array{Float64, 1}, lg::Int,
   return f[1], nnzg[1]
 end
 
-function jl_ccfg(n::Int, m::Int, x::Array{Float64, 1}, jtrans::Bool, lcjac1::Int,
+function ccfg(n::Int, m::Int, x::Array{Float64, 1}, jtrans::Bool, lcjac1::Int,
     lcjac2::Int, grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
   c = Array(Cdouble, m)
@@ -1483,7 +1478,7 @@ function jl_ccfg(n::Int, m::Int, x::Array{Float64, 1}, jtrans::Bool, lcjac1::Int
   return c, cjac
 end
 
-function jl_ccfg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1},
+function ccfg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1},
     jtrans::Bool, lcjac1::Int, lcjac2::Int, cjac::Array{Float64, 2},
     grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
@@ -1494,7 +1489,7 @@ function jl_ccfg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1},
   return 
 end
 
-function jl_ccfg(nlp::CUTEstModel, x::Array{Float64, 1}, jtrans::Bool, lcjac1::Int,
+function ccfg(nlp::CUTEstModel, x::Array{Float64, 1}, jtrans::Bool, lcjac1::Int,
     lcjac2::Int, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1508,7 +1503,7 @@ function jl_ccfg(nlp::CUTEstModel, x::Array{Float64, 1}, jtrans::Bool, lcjac1::I
   return c, cjac
 end
 
-function jl_ccfg!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1},
+function ccfg!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1},
     jtrans::Bool, lcjac1::Int, lcjac2::Int, cjac::Array{Float64, 2},
     grad::Bool)
   io_err = Cint[0]
@@ -1521,7 +1516,7 @@ function jl_ccfg!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1},
   return 
 end
 
-function jl_clfg(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function clfg(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1532,7 +1527,7 @@ function jl_clfg(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return f[1], g
 end
 
-function jl_clfg!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function clfg!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     g::Array{Float64, 1}, grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1542,7 +1537,7 @@ function jl_clfg!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return f[1]
 end
 
-function jl_clfg(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function clfg(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1555,7 +1550,7 @@ function jl_clfg(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return f[1], g
 end
 
-function jl_clfg!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function clfg!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     g::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1567,7 +1562,7 @@ function jl_clfg!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return f[1]
 end
 
-function jl_cgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, jtrans::Bool, lj1::Int, lj2::Int, libname =
     fixedlibname)
   io_err = Cint[0]
@@ -1580,7 +1575,7 @@ function jl_cgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return g, j_val
 end
 
-function jl_cgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, g::Array{Float64, 1}, jtrans::Bool, lj1::Int, lj2::Int,
     j_val::Array{Float64, 2}, libname = fixedlibname)
   io_err = Cint[0]
@@ -1591,7 +1586,7 @@ function jl_cgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return 
 end
 
-function jl_cgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, jtrans::Bool, lj1::Int, lj2::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1605,7 +1600,7 @@ function jl_cgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return g, j_val
 end
 
-function jl_cgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, g::Array{Float64, 1}, jtrans::Bool, lj1::Int, lj2::Int,
     j_val::Array{Float64, 2})
   io_err = Cint[0]
@@ -1618,7 +1613,7 @@ function jl_cgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return 
 end
 
-function jl_csgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, libname = fixedlibname)
   io_err = Cint[0]
   nnzj = Cint[0]
@@ -1632,7 +1627,7 @@ function jl_csgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], j_val, j_var, j_fun
 end
 
-function jl_csgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
     j_fun::Array{Int, 1}, libname = fixedlibname)
   io_err = Cint[0]
@@ -1652,7 +1647,7 @@ function jl_csgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1]
 end
 
-function jl_csgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1669,7 +1664,7 @@ function jl_csgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], j_val, j_var, j_fun
 end
 
-function jl_csgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
     j_fun::Array{Int, 1})
   io_err = Cint[0]
@@ -1692,7 +1687,7 @@ function jl_csgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1]
 end
 
-function jl_ccfsg(n::Int, m::Int, x::Array{Float64, 1}, lj::Int, grad::Bool, libname =
+function ccfsg(n::Int, m::Int, x::Array{Float64, 1}, lj::Int, grad::Bool, libname =
     fixedlibname)
   io_err = Cint[0]
   c = Array(Cdouble, m)
@@ -1707,7 +1702,7 @@ function jl_ccfsg(n::Int, m::Int, x::Array{Float64, 1}, lj::Int, grad::Bool, lib
   return c, nnzj[1], j_val, j_var, j_fun
 end
 
-function jl_ccfsg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, lj::Int,
+function ccfsg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, lj::Int,
     j_val::Array{Float64, 1}, j_var::Array{Int, 1}, j_fun::Array{Int, 1},
     grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
@@ -1727,7 +1722,7 @@ function jl_ccfsg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, l
   return nnzj[1]
 end
 
-function jl_ccfsg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
+function ccfsg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
   m = nlp.meta.ncon
@@ -1744,7 +1739,7 @@ function jl_ccfsg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   return c, nnzj[1], j_val, j_var, j_fun
 end
 
-function jl_ccfsg!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1},
+function ccfsg!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1},
     j_val::Array{Float64, 1}, j_var::Array{Int, 1}, j_fun::Array{Int, 1},
     grad::Bool)
   io_err = Cint[0]
@@ -1767,7 +1762,7 @@ function jl_ccfsg!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1},
   return nnzj[1]
 end
 
-function jl_ccifg(n::Int, icon::Int, x::Array{Float64, 1}, grad::Bool, libname =
+function ccifg(n::Int, icon::Int, x::Array{Float64, 1}, grad::Bool, libname =
     fixedlibname)
   io_err = Cint[0]
   ci = Cdouble[0]
@@ -1778,7 +1773,7 @@ function jl_ccifg(n::Int, icon::Int, x::Array{Float64, 1}, grad::Bool, libname =
   return ci[1], gci
 end
 
-function jl_ccifg!(n::Int, icon::Int, x::Array{Float64, 1}, gci::Array{Float64, 1},
+function ccifg!(n::Int, icon::Int, x::Array{Float64, 1}, gci::Array{Float64, 1},
     grad::Bool, libname = fixedlibname)
   io_err = Cint[0]
   ci = Cdouble[0]
@@ -1788,7 +1783,7 @@ function jl_ccifg!(n::Int, icon::Int, x::Array{Float64, 1}, gci::Array{Float64, 
   return ci[1]
 end
 
-function jl_ccifg(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, grad::Bool)
+function ccifg(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
   ci = Cdouble[0]
@@ -1799,7 +1794,7 @@ function jl_ccifg(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, grad::Bool)
   return ci[1], gci
 end
 
-function jl_ccifg!(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1},
+function ccifg!(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1},
     gci::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1810,7 +1805,7 @@ function jl_ccifg!(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1},
   return ci[1]
 end
 
-function jl_ccifsg(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int, grad::Bool,
+function ccifsg(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int, grad::Bool,
     libname = fixedlibname)
   io_err = Cint[0]
   ci = Cdouble[0]
@@ -1824,7 +1819,7 @@ function jl_ccifsg(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int, grad::Boo
   return ci[1], nnzgci[1], gci_val, gci_var
 end
 
-function jl_ccifsg!(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int,
+function ccifsg!(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int,
     gci_val::Array{Float64, 1}, gci_var::Array{Int, 1}, grad::Bool,
     libname = fixedlibname)
   io_err = Cint[0]
@@ -1841,7 +1836,7 @@ function jl_ccifsg!(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int,
   return ci[1], nnzgci[1]
 end
 
-function jl_ccifsg(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, lgci::Int,
+function ccifsg(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, lgci::Int,
     grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1856,7 +1851,7 @@ function jl_ccifsg(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, lgci::Int,
   return ci[1], nnzgci[1], gci_val, gci_var
 end
 
-function jl_ccifsg!(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, lgci::Int,
+function ccifsg!(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, lgci::Int,
     gci_val::Array{Float64, 1}, gci_var::Array{Int, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1873,7 +1868,7 @@ function jl_ccifsg!(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, lgci::Int
   return ci[1], nnzgci[1]
 end
 
-function jl_cgrdh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgrdh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, jtrans::Bool, lj1::Int, lj2::Int, lh1::Int, libname =
     fixedlibname)
   io_err = Cint[0]
@@ -1887,7 +1882,7 @@ function jl_cgrdh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return g, j_val, h_val
 end
 
-function jl_cgrdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgrdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, g::Array{Float64, 1}, jtrans::Bool, lj1::Int, lj2::Int,
     j_val::Array{Float64, 2}, lh1::Int, h_val::Array{Float64, 2}, libname
     = fixedlibname)
@@ -1899,7 +1894,7 @@ function jl_cgrdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return 
 end
 
-function jl_cgrdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgrdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, jtrans::Bool, lj1::Int, lj2::Int, lh1::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1914,7 +1909,7 @@ function jl_cgrdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return g, j_val, h_val
 end
 
-function jl_cgrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cgrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, g::Array{Float64, 1}, jtrans::Bool, lj1::Int, lj2::Int,
     j_val::Array{Float64, 2}, lh1::Int, h_val::Array{Float64, 2})
   io_err = Cint[0]
@@ -1927,7 +1922,7 @@ function jl_cgrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return 
 end
 
-function jl_cdh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::Int,
+function cdh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::Int,
     libname = fixedlibname)
   io_err = Cint[0]
   h_val = Array(Cdouble, lh1, n)
@@ -1937,7 +1932,7 @@ function jl_cdh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1:
   return h_val
 end
 
-function jl_cdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::Int,
+function cdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::Int,
     h_val::Array{Float64, 2}, libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.cdh($(io_err), $(Cint[n]), $(Cint[m]), $(x), $(y),
@@ -1946,7 +1941,7 @@ function jl_cdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1
   return 
 end
 
-function jl_cdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     lh1::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1958,7 +1953,7 @@ function jl_cdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return h_val
 end
 
-function jl_cdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     lh1::Int, h_val::Array{Float64, 2})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1969,7 +1964,7 @@ function jl_cdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return 
 end
 
-function jl_csh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
+function csh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
     libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
@@ -1982,7 +1977,7 @@ function jl_csh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_csh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
+function csh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1},
     libname = fixedlibname)
   io_err = Cint[0]
@@ -2001,7 +1996,7 @@ function jl_csh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh:
   return nnzh[1]
 end
 
-function jl_csh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1})
+function csh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   m = nlp.meta.ncon
@@ -2016,7 +2011,7 @@ function jl_csh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1})
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_csh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2038,7 +2033,7 @@ function jl_csh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzh[1]
 end
 
-function jl_cshc(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
+function cshc(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
     libname = fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
@@ -2051,7 +2046,7 @@ function jl_cshc(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh:
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_cshc!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
+function cshc!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1},
     libname = fixedlibname)
   io_err = Cint[0]
@@ -2070,7 +2065,7 @@ function jl_cshc!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh
   return nnzh[1]
 end
 
-function jl_cshc(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1})
+function cshc(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   m = nlp.meta.ncon
@@ -2085,7 +2080,7 @@ function jl_cshc(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1})
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_cshc!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function cshc!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2107,7 +2102,7 @@ function jl_cshc!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzh[1]
 end
 
-function jl_ceh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function ceh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     lhe_ptr::Int, lhe_row::Int, lhe_val::Int, byrows::Bool, libname =
     fixedlibname)
   io_err = Cint[0]
@@ -2124,7 +2119,7 @@ function jl_ceh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_ceh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function ceh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     lhe_ptr::Int, he_row_ptr::Array{Int, 1}, he_val_ptr::Array{Int, 1},
     lhe_row::Int, he_row::Array{Int, 1}, lhe_val::Int,
     he_val::Array{Float64, 1}, byrows::Bool, libname = fixedlibname)
@@ -2150,7 +2145,7 @@ function jl_ceh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return ne[1]
 end
 
-function jl_ceh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function ceh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     lhe_ptr::Int, lhe_row::Int, lhe_val::Int, byrows::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2168,7 +2163,7 @@ function jl_ceh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_ceh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function ceh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     lhe_ptr::Int, he_row_ptr::Array{Int, 1}, he_val_ptr::Array{Int, 1},
     lhe_row::Int, he_row::Array{Int, 1}, lhe_val::Int,
     he_val::Array{Float64, 1}, byrows::Bool)
@@ -2196,7 +2191,7 @@ function jl_ceh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return ne[1]
 end
 
-function jl_cidh(n::Int, x::Array{Float64, 1}, iprob::Int, lh1::Int, libname =
+function cidh(n::Int, x::Array{Float64, 1}, iprob::Int, lh1::Int, libname =
     fixedlibname)
   io_err = Cint[0]
   h = Array(Cdouble, lh1, n)
@@ -2206,7 +2201,7 @@ function jl_cidh(n::Int, x::Array{Float64, 1}, iprob::Int, lh1::Int, libname =
   return h
 end
 
-function jl_cidh!(n::Int, x::Array{Float64, 1}, iprob::Int, lh1::Int, h::Array{Float64,
+function cidh!(n::Int, x::Array{Float64, 1}, iprob::Int, lh1::Int, h::Array{Float64,
     2}, libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.cidh($(io_err), $(Cint[n]), $(x), $(Cint[iprob]),
@@ -2215,7 +2210,7 @@ function jl_cidh!(n::Int, x::Array{Float64, 1}, iprob::Int, lh1::Int, h::Array{F
   return 
 end
 
-function jl_cidh(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int)
+function cidh(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
   h = Array(Cdouble, lh1, n)
@@ -2225,7 +2220,7 @@ function jl_cidh(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int)
   return h
 end
 
-function jl_cidh!(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int,
+function cidh!(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int,
     h::Array{Float64, 2})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2235,7 +2230,7 @@ function jl_cidh!(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int,
   return 
 end
 
-function jl_cish(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int, libname =
+function cish(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int, libname =
     fixedlibname)
   io_err = Cint[0]
   nnzh = Cint[0]
@@ -2248,7 +2243,7 @@ function jl_cish(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int, libname =
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_cish!(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int,
+function cish!(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int,
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1},
     libname = fixedlibname)
   io_err = Cint[0]
@@ -2267,7 +2262,7 @@ function jl_cish!(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int,
   return nnzh[1]
 end
 
-function jl_cish(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int)
+function cish(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
   nnzh = Cint[0]
@@ -2281,7 +2276,7 @@ function jl_cish(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int)
   return nnzh[1], h_val, h_row, h_col
 end
 
-function jl_cish!(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int,
+function cish!(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int,
     h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2302,7 +2297,7 @@ function jl_cish!(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int,
   return nnzh[1]
 end
 
-function jl_csgrsh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgrsh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, lh::Int, libname = fixedlibname)
   io_err = Cint[0]
   nnzj = Cint[0]
@@ -2320,7 +2315,7 @@ function jl_csgrsh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], j_val, j_var, j_fun, nnzh[1], h_val, h_row, h_col
 end
 
-function jl_csgrsh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgrsh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
     j_fun::Array{Int, 1}, lh::Int, h_val::Array{Float64, 1},
     h_row::Array{Int, 1}, h_col::Array{Int, 1}, libname = fixedlibname)
@@ -2351,7 +2346,7 @@ function jl_csgrsh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], nnzh[1]
 end
 
-function jl_csgrsh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgrsh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2373,7 +2368,7 @@ function jl_csgrsh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], j_val, j_var, j_fun, nnzh[1], h_val, h_row, h_col
 end
 
-function jl_csgrsh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgrsh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
     j_fun::Array{Int, 1}, h_val::Array{Float64, 1}, h_row::Array{Int, 1},
     h_col::Array{Int, 1})
@@ -2408,7 +2403,7 @@ function jl_csgrsh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1}
   return nnzj[1], nnzh[1]
 end
 
-function jl_csgreh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgreh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, lhe_ptr::Int, lhe_row::Int, lhe_val::Int,
     byrows::Bool, libname = fixedlibname)
   io_err = Cint[0]
@@ -2430,7 +2425,7 @@ function jl_csgreh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], j_val, j_var, j_fun, ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_csgreh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgreh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
     j_fun::Array{Int, 1}, lhe_ptr::Int, he_row_ptr::Array{Int, 1},
     he_val_ptr::Array{Int, 1}, lhe_row::Int, he_row::Array{Int, 1},
@@ -2468,7 +2463,7 @@ function jl_csgreh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], ne[1]
 end
 
-function jl_csgreh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgreh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lhe_ptr::Int, lhe_row::Int, lhe_val::Int, byrows::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2492,7 +2487,7 @@ function jl_csgreh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return nnzj[1], j_val, j_var, j_fun, ne[1], he_row_ptr, he_val_ptr, he_row, he_val
 end
 
-function jl_csgreh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+function csgreh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
     j_fun::Array{Int, 1}, lhe_ptr::Int, he_row_ptr::Array{Int, 1},
     he_val_ptr::Array{Int, 1}, lhe_row::Int, he_row::Array{Int, 1},
@@ -2532,7 +2527,7 @@ function jl_csgreh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1}
   return nnzj[1], ne[1]
 end
 
-function jl_chprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1}, libname = fixedlibname)
   io_err = Cint[0]
   result = Array(Cdouble, n)
@@ -2542,7 +2537,7 @@ function jl_chprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Fl
   return result
 end
 
-function jl_chprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1}, result::Array{Float64, 1}, libname =
     fixedlibname)
   io_err = Cint[0]
@@ -2552,7 +2547,7 @@ function jl_chprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{F
   return 
 end
 
-function jl_chprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2564,7 +2559,7 @@ function jl_chprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{
   return result
 end
 
-function jl_chprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1}, result::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2575,7 +2570,7 @@ function jl_chprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array
   return 
 end
 
-function jl_chcprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chcprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1}, libname = fixedlibname)
   io_err = Cint[0]
   result = Array(Cdouble, n)
@@ -2585,7 +2580,7 @@ function jl_chcprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{F
   return result
 end
 
-function jl_chcprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chcprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1}, result::Array{Float64, 1}, libname =
     fixedlibname)
   io_err = Cint[0]
@@ -2595,7 +2590,7 @@ function jl_chcprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{
   return 
 end
 
-function jl_chcprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chcprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2607,7 +2602,7 @@ function jl_chcprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array
   return result
 end
 
-function jl_chcprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+function chcprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1}, result::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2618,7 +2613,7 @@ function jl_chcprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Arra
   return 
 end
 
-function jl_cjprod(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+function cjprod(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, lvector::Int, lresult::Int, libname =
     fixedlibname)
   io_err = Cint[0]
@@ -2630,7 +2625,7 @@ function jl_cjprod(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1
   return result
 end
 
-function jl_cjprod!(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+function cjprod!(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, lvector::Int, result::Array{Float64, 1},
     lresult::Int, libname = fixedlibname)
   io_err = Cint[0]
@@ -2641,7 +2636,7 @@ function jl_cjprod!(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 
   return 
 end
 
-function jl_cjprod(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+function cjprod(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, lvector::Int, lresult::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2654,7 +2649,7 @@ function jl_cjprod(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64,
   return result
 end
 
-function jl_cjprod!(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+function cjprod!(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, lvector::Int, result::Array{Float64, 1},
     lresult::Int)
   io_err = Cint[0]
@@ -2667,56 +2662,56 @@ function jl_cjprod!(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64
   return 
 end
 
-function jl_uterminate(libname = fixedlibname)
+function uterminate(libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.uterminate($(io_err), $(libname))
   @cutest_error
   return 
 end
 
-function jl_uterminate!(libname = fixedlibname)
+function uterminate!(libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.uterminate($(io_err), $(libname))
   @cutest_error
   return 
 end
 
-function jl_uterminate(nlp::CUTEstModel)
+function uterminate(nlp::CUTEstModel)
   io_err = Cint[0]
   @eval CUTEst.uterminate($(io_err), $(nlp.libname))
   @cutest_error
   return 
 end
 
-function jl_uterminate!(nlp::CUTEstModel)
+function uterminate!(nlp::CUTEstModel)
   io_err = Cint[0]
   @eval CUTEst.uterminate($(io_err), $(nlp.libname))
   @cutest_error
   return 
 end
 
-function jl_cterminate(libname = fixedlibname)
+function cterminate(libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.cterminate($(io_err), $(libname))
   @cutest_error
   return 
 end
 
-function jl_cterminate!(libname = fixedlibname)
+function cterminate!(libname = fixedlibname)
   io_err = Cint[0]
   @eval CUTEst.cterminate($(io_err), $(libname))
   @cutest_error
   return 
 end
 
-function jl_cterminate(nlp::CUTEstModel)
+function cterminate(nlp::CUTEstModel)
   io_err = Cint[0]
   @eval CUTEst.cterminate($(io_err), $(nlp.libname))
   @cutest_error
   return 
 end
 
-function jl_cterminate!(nlp::CUTEstModel)
+function cterminate!(nlp::CUTEstModel)
   io_err = Cint[0]
   @eval CUTEst.cterminate($(io_err), $(nlp.libname))
   @cutest_error
