@@ -233,8 +233,11 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
             str += s+"for i = 1:{}\n".format(dims[i][0])
             str += s+s+"{}[i] = {}_cp[i]\n".format(arg, arg)
             str += s+"end\n"
-    str += s+"return "+arguments(args, 0, intents, dims, intent="out",
-            use_nlp=use_nlp, use_types=False, all_ptrs=True, inplace=inplace)
+    returns = arguments(args, 0, intents, dims, intent="out", use_nlp=use_nlp,
+        use_types=False, all_ptrs=True, inplace=inplace)
+    if returns != "":
+        returns = " " + returns
+    str += s+"return"+returns
     str += "\nend\n"
     return str
 
