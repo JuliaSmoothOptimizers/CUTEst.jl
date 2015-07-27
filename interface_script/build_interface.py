@@ -226,7 +226,7 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
         libname = "$(nlp.libname)"
     else:
         libname = "$(libname)"
-    str += wrap(s+"@eval CUTEst.{}({})".format(name,\
+    str += wrap(s+"@eval {}({})".format(name,\
         ', '.join(out+[libname]))) + "\n"
     str += s+"@cutest_error\n"
     for i, arg in enumerate(args):
