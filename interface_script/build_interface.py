@@ -20,7 +20,6 @@ nlp_ignore = ["usetup", "csetup"]
 
 s="  "
 el='\n'+2*s
-libeqfixed = "libname = fixedlibname"
 
 def wrap(str):
     return el.join(textwrap.wrap(str))
@@ -162,8 +161,7 @@ def core_function(name, args, types, dims):
     str = ""
     arg_call = arguments(args, types, [], dims, intent="all",
             use_nlp=False, use_types=True, all_ptrs=True, typeset=cutypes)
-    str += "function "+name+"("+wrap( "{}, {}".format(arg_call,
-        libeqfixed))+")\n"
+    str += "function "+name+"("+wrap( "{}, libname".format(arg_call))+")\n"
     str += s+'@eval ccall(("cutest_{}_", $(libname)), Void,\n'.format(name)
     ptrs = ["Ptr{{{}}}".format(cutypes[t]) for t in types]
     if len(ptrs) == 1:
@@ -185,9 +183,9 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     if use_nlp:
         str += wrap("({})".format(arg_call) )+"\n"
     elif arg_call != "":
-        str += wrap("({}, {})".format(arg_call, libeqfixed) )+"\n"
+        str += wrap("({}, libname)".format(arg_call) )+"\n"
     else:
-        str += wrap("({})".format(libeqfixed) )+"\n"
+        str += wrap("(libname)")+"\n"
     for i, arg in enumerate(args):
         if intents[i] == "in":
             if use_nlp and arg in nlp_equivalent.keys():

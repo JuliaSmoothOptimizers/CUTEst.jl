@@ -16,7 +16,6 @@ type CUTEstModel
   libname :: ASCIIString;
 end
 
-const fixedlibname = "libCUTEstJL.jl"
 const cutest_arch  = get(ENV, "MYARCH", "");
 const cutest_dir   = get(ENV, "CUTEST", "");
 const outsdif = "OUTSDIF.d";
