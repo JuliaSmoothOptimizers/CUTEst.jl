@@ -122,7 +122,8 @@ def get_function_data(name):
     return args, types, intents, dims
 
 def arguments (args, types, intents, dims, use_types = True, use_nlp = False,
-        intent = "all", all_ptrs = True, typeset = jltypes, inplace = False):
+        intent = "all", all_ptrs = True, typeset = jltypes, inplace = False,
+        cint_array = False):
     str = []
     for i, arg in enumerate(args):
         if use_nlp and arg == "io_err" and intent != "out":
@@ -146,6 +147,8 @@ def arguments (args, types, intents, dims, use_types = True, use_nlp = False,
         if use_types:
             t = typeset[types[i]]
             if len(dims[i]) > 0 or all_ptrs:
+                if t == "Int" and intents[i] == "out" and inplace and cint_array:
+                    t = "Cint"
                 dim = max(1, len(dims[i]))
                 t = "Array{{{}, {}}}".format(t, dim)
             str.append("{}::{}".format(arg, t))
@@ -172,10 +175,11 @@ def core_function(name, args, types, dims):
     return str
 
 def specialized_function(name, args, types, intents, dims, use_nlp = False,
-        inplace = False):
+        inplace = False, cint_array = False):
     str = ""
     arg_call = arguments(args, types, intents, dims, intent="in",
-            use_nlp=use_nlp, use_types=True, all_ptrs=False, inplace=inplace)
+            use_nlp=use_nlp, use_types=True, all_ptrs=False, inplace=inplace,
+            cint_array=cint_array)
 
     str += "function " + name
     if inplace:
@@ -199,7 +203,7 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
                     str += s+arg+" = " + " + ".join(["nlp.meta."+v for v in \
                             eqs])+"\n"
             continue
-        if len(dims[i]) > 0 and inplace and types[i] != "integer":
+        if len(dims[i]) > 0 and inplace and (types[i] != "integer" or cint_array):
             continue
         t = cutypes[types[i]]
         if len(dims[i]) > 0:
@@ -212,7 +216,7 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     out = []
     for i, arg in enumerate(args):
         if len(dims[i]) > 0:
-            if intents[i] == "out" and types[i] == "integer" and inplace:
+            if intents[i] == "out" and types[i] == "integer" and inplace and not cint_array:
                 out.append("$({}_cp)".format(arg))
             else:
                 out.append("$({})".format(arg))
@@ -229,12 +233,12 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     str += s+"@cutest_error\n"
     for i, arg in enumerate(args):
         if len(dims[i]) > 0 and intents[i] == "out" and types[i] == "integer" \
-                and inplace:
+                and inplace and not cint_array:
             str += s+"for i = 1:{}\n".format(dims[i][0])
             str += s+s+"{}[i] = {}_cp[i]\n".format(arg, arg)
             str += s+"end\n"
     returns = arguments(args, 0, intents, dims, intent="out", use_nlp=use_nlp,
-        use_types=False, all_ptrs=True, inplace=inplace)
+        use_types=False, all_ptrs=True, inplace=inplace, cint_array=cint_array)
     if returns != "":
         returns = " " + returns
     str += s+"return"+returns
@@ -257,10 +261,17 @@ for name in names:
     for use_nlp in [False, True]:
         if use_nlp and name in nlp_ignore:
             continue
-        for inplace in [False, True]:
+        inter_file.write(specialized_function(name, args, types,
+            intents, dims, use_nlp=use_nlp, inplace=False))
+        inter_file.write("\n")
+        inter_file.write(specialized_function(name, args, types,
+            intents, dims, use_nlp=use_nlp, inplace=True))
+        inter_file.write("\n")
+        if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
             inter_file.write(specialized_function(name, args, types,
-                intents, dims, use_nlp=use_nlp, inplace=inplace))
-            inter_file.write("\n")
+                intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
+        inter_file.write("\n")
+
 
 core_file.close()
 inter_file.close()

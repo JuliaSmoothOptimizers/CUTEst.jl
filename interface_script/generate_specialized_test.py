@@ -135,6 +135,7 @@ def generate_test_for_function (foo):
     str = ""
     fname = foo.split("(")[0].strip()
     inplace = fname[-1] == "!"
+    cint = "Cint" in foo.split(")")[0]
     inputs = []
     for x in foo[foo.find("(")+1:foo.find(")")].split(","):
 
@@ -186,13 +187,16 @@ def generate_test_for_function (foo):
                     str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, \
                             special[fname][x])
                 else:
-                    str = spc+"{} = zeros({})\n".format(x,sizeof[x]) + str
+                    arg = sizeof[x]
+                    if cint and "Int" in sizeof[x]:
+                        arg = arg.replace("Int", "Cint")
+                    str = spc+"{} = zeros({})\n".format(x,arg) + str
                     if x not in ignore:
                         str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
     if match != "":
         str += "end\n"
 
-    return head+str
+    return head+str+"\n"
 
 filename = "src/specialized_interface.jl"
 content = ''.join(open(filename, "r").readlines()).split("function")[1:]
