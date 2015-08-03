@@ -5,7 +5,7 @@
 
 
 This is work in progress to create an interface to CUTEst based on
-[NLP.jl](https://github.com/optimizers/NLP.jl).
+[NLP.jl](https://github.com/JuliaOpt/MathProgBase.jl/tree/master/src/NLP).
 
 ## Installing
 
@@ -14,7 +14,6 @@ To install CUTEst, we suggest using the [Homebrew](https://github.com/Homebrew)
 shared library.
 
 ````JULIA
-julia> Pkg.clone("https://github.com/optimizers/NLP.jl.git")
 julia> Pkg.clone("https://github.com/optimizers/CUTEst.jl.git")
 ````
 
@@ -34,7 +33,8 @@ H = hess(nlp, nlp.meta.x0));
 
 ## Related Packages
 
-[ampl.jl](https://github.com/dpo/ampl.jl) provides an interface to
-[AMPL](http://www.ampl.com) models based on [NLP.jl](https://github.com/optimizers/NLP.jl).
+[AmplNLReader.jl](https://github.com/dpo/AmplNLReader.jl) provides an interface to
+[AMPL](http://www.ampl.com) models based on
+[NLP.jl](https://github.com/JuliaOpt/MathProgBase.jl/tree/master/src/NLP).
 
 [![GPLv3](http://www.gnu.org/graphics/lgplv3-88x31.png)](http://www.gnu.org/licenses/lgpl.html "LGPLv3")
