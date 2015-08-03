@@ -16,12 +16,11 @@ type CUTEstModel
   libname :: ASCIIString;
 end
 
-const fixedlibname = "libCUTEstJL.jl"
 const cutest_arch  = get(ENV, "MYARCH", "");
 const cutest_dir   = get(ENV, "CUTEST", "");
 const outsdif = "OUTSDIF.d";
 const automat = "AUTOMAT.d";
-const funit   = int32(42);
+const funit   = convert(Int32, 42);
 @osx? (const linker = "gfortran") : (const linker = "ld")
 @osx? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
 @osx? (const soname = "dylib") : (const soname = "so");
@@ -44,7 +43,7 @@ type CUTEstException <: Exception
   end
 end
 
-CUTEstException(info :: Integer) = CUTEstException(int32(info));
+CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
 
 macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
@@ -87,7 +86,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   nvar = Cint[0];
   ncon = Cint[0];
 
-  CUTEst.cdimen(io_err, [funit], nvar, ncon, libname)
+  cdimen(io_err, [funit], nvar, ncon, libname)
   @cutest_error
   nvar = nvar[1];
   ncon = ncon[1];
@@ -103,10 +102,10 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
 
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
-    CUTEst.csetup(io_err, [funit], Cint[5], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
+    csetup(io_err, [funit], Cint[5], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
       equatn, linear, Cint[1], Cint[1], Cint[1], libname)
   else
-    CUTEst.usetup(io_err, [funit], Cint[5], Cint[6], [nvar], x, bl, bu, libname)
+    usetup(io_err, [funit], Cint[5], Cint[6], [nvar], x, bl, bu, libname)
   end
   @cutest_error
 
@@ -119,11 +118,11 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   nnzj = Cint[0];
 
   if ncon > 0
-    CUTEst.cdimsh(io_err, nnzh, libname)
-    CUTEst.cdimsj(io_err, nnzj, libname)
+    cdimsh(io_err, nnzh, libname)
+    cdimsj(io_err, nnzj, libname)
     nnzj[1] -= nvar;  # nnzj also counts the nonzeros in the objective gradient.
   else
-    CUTEst.udimsh(io_err, nnzh, libname)
+    udimsh(io_err, nnzh, libname)
   end
   @cutest_error
 
@@ -154,9 +153,9 @@ function cutest_finalize(nlp :: CUTEstModel)
   cutest_instances == 0 && return;
   io_err = Cint[0];
   if nlp.meta.ncon > 0
-    CUTEst.cterminate(io_err, nlp.libname)
+    cterminate(io_err, nlp.libname)
   else
-    CUTEst.uterminate(io_err, nlp.libname)
+    uterminate(io_err, nlp.libname)
   end
   @cutest_error
   cutest_instances -= 1;
