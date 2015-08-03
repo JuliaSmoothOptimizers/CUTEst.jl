@@ -66,10 +66,16 @@ function sifdecoder(name :: ASCIIString)
 end
 
 # Initialize problem.
-function CUTEstModel(name :: ASCIIString)
+function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
-  libname = sifdecoder(name);
+  if !decode
+    (isfile(outsdif) & isfile(automat)) || error("CUTEst: no decoded problem found")
+    libname = "lib$name"
+    isfile("$libname.$soname") || error("CUTEst: lib not found; decode problem first")
+  else
+    libname = sifdecoder(name)
+  end
   io_err = Cint[0];
 
   @eval ccall((:fortran_open_, $(libname)), Void,
@@ -126,7 +132,6 @@ function CUTEstModel(name :: ASCIIString)
   @eval ccall((:fortran_close_, $(libname)), Void,
               (Ptr{Int32}, Ptr{Int32}), &funit, $(io_err));
   @cutest_error
-  run(`rm $outsdif $automat`);
 
   meta = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
                       ncon=ncon, y0=v, lcon=cl, ucon=cu,
