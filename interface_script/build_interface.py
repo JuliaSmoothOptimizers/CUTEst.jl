@@ -174,15 +174,105 @@ def core_function(name, args, types, dims):
     str += "end\n"
     return str
 
+def specialized_function(name, args, types, intents, dims, use_nlp = False,
+        inplace = False, cint_array = False):
+    str = ""
+    arg_call = arguments(args, types, intents, dims, intent="in",
+            use_nlp=use_nlp, use_types=True, all_ptrs=False, inplace=inplace,
+            cint_array=cint_array)
+
+    str += "function " + name
+    if inplace:
+        str += "!"
+    if use_nlp:
+        str += wrap("({})".format(arg_call) )+"\n"
+    elif arg_call != "":
+        str += wrap("({}, libname)".format(arg_call) )+"\n"
+    else:
+        str += wrap("(libname)")+"\n"
+    for i, arg in enumerate(args):
+        if intents[i] == "in":
+            if use_nlp and arg in nlp_equivalent.keys():
+                if name in nlp_exception.keys() and arg in nlp_exception[name]:
+                    eqs = nlp_exception[name][arg]
+                else:
+                    eqs = nlp_equivalent[arg]
+                if type(eqs) == type("str"):
+                    str += s+"{} = nlp.meta.{}\n".format(arg, nlp_equivalent[arg])
+                else:
+                    str += s+arg+" = " + " + ".join(["nlp.meta."+v for v in \
+                            eqs])+"\n"
+            continue
+        if len(dims[i]) > 0 and inplace and (types[i] != "integer" or cint_array):
+            continue
+        t = cutypes[types[i]]
+        if len(dims[i]) > 0:
+            str += s+"{}".format(arg)
+            if intents[i] == "out" and types[i] == "integer" and inplace:
+                str += "_cp"
+            str += " = Array({}, {})\n".format(t, ', '.join(dims[i]))
+        else:
+            str += s+"{} = {}[0]\n".format(arg, t)
+    out = []
+    for i, arg in enumerate(args):
+        if len(dims[i]) > 0:
+            if intents[i] == "out" and types[i] == "integer" and inplace and not cint_array:
+                out.append("$({}_cp)".format(arg))
+            else:
+                out.append("$({})".format(arg))
+        elif intents[i] == "out":
+            out.append("$({})".format(arg))
+        else:
+            out.append("$({}[{}])".format(cutypes[types[i]], arg))
+    if use_nlp:
+        libname = "$(nlp.libname)"
+    else:
+        libname = "$(libname)"
+    str += wrap(s+"@eval {}({})".format(name,\
+        ', '.join(out+[libname]))) + "\n"
+    str += s+"@cutest_error\n"
+    for i, arg in enumerate(args):
+        if len(dims[i]) > 0 and intents[i] == "out" and types[i] == "integer" \
+                and inplace and not cint_array:
+            str += s+"for i = 1:{}\n".format(dims[i][0])
+            str += s+s+"{}[i] = {}_cp[i]\n".format(arg, arg)
+            str += s+"end\n"
+    returns = arguments(args, 0, intents, dims, intent="out", use_nlp=use_nlp,
+        use_types=False, all_ptrs=True, inplace=inplace, cint_array=cint_array)
+    if returns != "":
+        returns = " " + returns
+    str += s+"return"+returns
+    str += "\nend\n"
+    return str
+
 core_file = open("src/core_interface.jl", "w")
+inter_file = open("src/specialized_interface.jl", "w")
 
 names = function_names()
 
 core_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
+inter_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
+inter_file.write(wrap("export " + ', '.join([x+"!" for x in names]))+"\n")
+inter_file.write("\n")
 for name in names:
     args, types, intents, dims = get_function_data(name)
     core_file.write(core_function(name, args, types, dims))
     core_file.write("\n")
+    for use_nlp in [False, True]:
+        if use_nlp and name in nlp_ignore:
+            continue
+        inter_file.write(specialized_function(name, args, types,
+            intents, dims, use_nlp=use_nlp, inplace=False))
+        inter_file.write("\n")
+        inter_file.write(specialized_function(name, args, types,
+            intents, dims, use_nlp=use_nlp, inplace=True))
+        inter_file.write("\n")
+        if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
+            inter_file.write(specialized_function(name, args, types,
+                intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
+        inter_file.write("\n")
+
 
 core_file.close()
+inter_file.close()
 
