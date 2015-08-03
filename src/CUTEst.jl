@@ -152,8 +152,11 @@ function cutest_finalize(nlp :: CUTEstModel)
   global cutest_instances
   cutest_instances == 0 && return;
   io_err = Cint[0];
-  terminate = nlp.meta.ncon > 0 ? "cutest_cterminate_" : "cutest_uterminate_";
-  CUTEst.cterminate(io_err, nlp.libname)
+  if nlp.meta.ncon > 0
+    CUTEst.cterminate(io_err, nlp.libname)
+  else
+    CUTEst.uterminate(io_err, nlp.libname)
+  end
   @cutest_error
   cutest_instances -= 1;
   return;
