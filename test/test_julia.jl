@@ -39,8 +39,12 @@ v = rand(nlp.meta.nvar);
 hv = hprod(nlp, x0, v);
 println("H(x0) * v = ", hv);
 @test_approx_eq_eps hv Hx*v 1e-8
+hprod!(nlp, x0, v, hv)
+@test_approx_eq_eps hv Hx*v 1e-8
 if nlp.meta.ncon > 0
   hv = hprod(nlp, x0, ones(nlp.meta.ncon), v);
   println("H(x0,ones) * v = ", hv);
+  @test_approx_eq_eps hv Wx*v 1e-8
+  hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv);
   @test_approx_eq_eps hv Wx*v 1e-8
 end

@@ -1,4 +1,4 @@
-export objcons, objgrad, obj, cons_coord, cons, hess_coord, hess, hprod
+export objcons, objgrad, obj, cons_coord, cons, hess_coord, hess, hprod, hprod!
 
 function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   nvar = nlp.meta.nvar;
@@ -142,4 +142,25 @@ function hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1},
   return hv;
 end
 
+function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1})
+  nvar = nlp.meta.nvar;
+  ncon = nlp.meta.ncon;
+  io_err = Cint[0];
+  goth = Cint[0];
+  if ncon > 0
+    @eval ccall((:cutest_chprod_, $(nlp.libname)), Void,
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+                 $(io_err),  &$(nvar),   &$(ncon),   $(goth),    $(x),         $(y),         $(v),         $(hv));
+  else
+    @eval ccall((:cutest_uhprod_, $(nlp.libname)), Void,
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+                 $(io_err),  &$(nvar),   $(goth),    $(x),         $(v),         $(hv));
+  end
+  @cutest_error
+
+  return hv;
+end
+
 hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}) = hprod(nlp, x, zeros(nlp.meta.ncon), v)
+
+hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1}) = hprod!(nlp, x, zeros(nlp.meta.ncon), v, hv)
