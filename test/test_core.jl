@@ -31,15 +31,15 @@ Hrow = Array(Cint, nlp.meta.nnzh)
 Hcol = Array(Cint, nlp.meta.nnzh)
 
 if (ncon[1] > 0)
-  CUTEst.cfn(st, nvar, ncon, x0, fx, cx, nlp.libname)
+  cfn(st, nvar, ncon, x0, fx, cx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
   @test_approx_eq_eps cx c(x0) 1e-8
 
-  CUTEst.cofg(st, nvar, x0, fx, gx, True, nlp.libname)
+  cofg(st, nvar, x0, fx, gx, True, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
   @test_approx_eq_eps gx g(x0) 1e-8
 
-  CUTEst.cofsg(st, nvar, x0, fx, nnzg, nvar, gval, gvar, True, nlp.libname)
+  cofsg(st, nvar, x0, fx, nnzg, nvar, gval, gvar, True, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
   gx = zeros(nvar[1])
   for i = 1:nnzg[1]
@@ -47,33 +47,33 @@ if (ncon[1] > 0)
   end
   @test_approx_eq_eps gx g(x0) 1e-8
 
-  CUTEst.ccfg(st, nvar, ncon, x0, cx, True, nvar, ncon, Jtx, True, nlp.libname)
+  ccfg(st, nvar, ncon, x0, cx, True, nvar, ncon, Jtx, True, nlp.libname)
   @test_approx_eq_eps Jtx J(x0)' 1e-8
-  CUTEst.ccfg(st, nvar, ncon, x0, cx, False, ncon, nvar, Jx, True, nlp.libname)
+  ccfg(st, nvar, ncon, x0, cx, False, ncon, nvar, Jx, True, nlp.libname)
   @test_approx_eq_eps Jx J(x0) 1e-8
 
-  CUTEst.clfg(st, nvar, ncon, x0, y0, lx, glx, True, nlp.libname)
+  clfg(st, nvar, ncon, x0, y0, lx, glx, True, nlp.libname)
   @test_approx_eq_eps lx[1] f(x0)+dot(y0,cx) 1e-8
   @test_approx_eq_eps glx g(x0)+J(x0)'*y0 1e-8
 
-  CUTEst.cgr(st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx,
+  cgr(st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx,
       nlp.libname)
   @test_approx_eq_eps gx g(x0) 1e-8
   @test_approx_eq_eps Jtx J(x0)' 1e-8
-  CUTEst.cgr(st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx,
+  cgr(st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx,
       nlp.libname)
   @test_approx_eq_eps gx g(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
-  CUTEst.cgr(st, nvar, ncon, x0, y0, True, glx, True, nvar, ncon, Jtx,
+  cgr(st, nvar, ncon, x0, y0, True, glx, True, nvar, ncon, Jtx,
       nlp.libname)
   @test_approx_eq_eps glx g(x0)+J(x0)'*y0 1e-8
   @test_approx_eq_eps Jtx J(x0)' 1e-8
-  CUTEst.cgr(st, nvar, ncon, x0, y0, True, glx, False, ncon, nvar, Jx,
+  cgr(st, nvar, ncon, x0, y0, True, glx, False, ncon, nvar, Jx,
       nlp.libname)
   @test_approx_eq_eps glx g(x0)+J(x0)'*y0 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
 
-  CUTEst.csgr(st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun,
+  csgr(st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun,
       nlp.libname)
   glx = zeros(nvar[1])
   Jx = zeros(nvar[1], ncon[1])
@@ -86,7 +86,7 @@ if (ncon[1] > 0)
   end
   @test_approx_eq_eps glx g(x0)+J(x0)'*y0 1e-8
   @test_approx_eq_eps Jtx J(x0)' 1e-8
-  CUTEst.csgr(st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun,
+  csgr(st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun,
       nlp.libname)
   gx = zeros(nvar[1])
   Jx = zeros(ncon[1], nvar[1])
@@ -100,7 +100,7 @@ if (ncon[1] > 0)
   @test_approx_eq_eps gx g(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
 
-  CUTEst.ccfsg(st, nvar, ncon, x0, cx, nnzj, lj, Jval, Jvar, Jfun, True,
+  ccfsg(st, nvar, ncon, x0, cx, nnzj, lj, Jval, Jvar, Jfun, True,
       nlp.libname)
   Jx = zeros(ncon[1], nvar[1])
   for k = 1:nnzj[1]
@@ -110,7 +110,7 @@ if (ncon[1] > 0)
   @test_approx_eq_eps Jx J(x0) 1e-8
 
   for j = 1:ncon[1]
-    CUTEst.ccifg(st, nvar, Cint[j], x0, ci, gci, True, nlp.libname)
+    ccifg(st, nvar, Cint[j], x0, ci, gci, True, nlp.libname)
     cx[j] = ci[1]
     Jx[j,:] = gci'
   end
@@ -119,7 +119,7 @@ if (ncon[1] > 0)
 
   Jx = zeros(ncon[1], nvar[1])
   for j = 1:ncon[1]
-    CUTEst.ccifsg(st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True,
+    ccifsg(st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True,
         nlp.libname)
     cx[j] = ci[1]
     for k = 1:nnzj[1]
@@ -129,31 +129,31 @@ if (ncon[1] > 0)
   @test_approx_eq_eps cx c(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
 
-  CUTEst.cgrdh(st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar,
+  cgrdh(st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar,
       Wx, nlp.libname)
   @test_approx_eq_eps gx g(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
-  CUTEst.cgrdh(st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar,
+  cgrdh(st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar,
       Wx, nlp.libname)
   @test_approx_eq_eps gx g(x0) 1e-8
   @test_approx_eq_eps Jtx J(x0)' 1e-8
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
-  CUTEst.cgrdh(st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar,
+  cgrdh(st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar,
       Wx, nlp.libname)
   @test_approx_eq_eps gx g(x0)+J(x0)'*y0 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
-  CUTEst.cgrdh(st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar,
+  cgrdh(st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar,
       Wx, nlp.libname)
   @test_approx_eq_eps gx g(x0)+J(x0)'*y0 1e-8
   @test_approx_eq_eps Jtx J(x0)' 1e-8
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
 
-  CUTEst.cdh(st, nvar, ncon, x0, y0, nvar, Wx, nlp.libname)
+  cdh(st, nvar, ncon, x0, y0, nvar, Wx, nlp.libname)
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
 
-  CUTEst.csh(st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  csh(st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
   Wx = zeros(nvar[1], nvar[1])
   for k = 1:nnzh[1]
     i = Hrow[k]; j = Hcol[k];
@@ -162,7 +162,7 @@ if (ncon[1] > 0)
   end
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
 
-  CUTEst.cshc(st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  cshc(st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
   Cx = zeros(nvar[1], nvar[1])
   for k = 1:nnzh[1]
     i = Hrow[k]; j = Hcol[k];
@@ -171,17 +171,17 @@ if (ncon[1] > 0)
   end
   @test_approx_eq_eps Cx (W(x0,y0)-H(x0)) 1e-8
 
-  CUTEst.cidh(st, nvar, x0, Cint[0], nvar, Hx, nlp.libname)
+  cidh(st, nvar, x0, Cint[0], nvar, Hx, nlp.libname)
   @test_approx_eq_eps Hx H(x0) 1e-8
   y1 = zeros(ncon[1])
   for k = 1:ncon[1]
-    CUTEst.cidh(st, nvar, x0, Cint[k], nvar, Cx, nlp.libname)
+    cidh(st, nvar, x0, Cint[k], nvar, Cx, nlp.libname)
     y1[k] = 1.0
     @test_approx_eq_eps Cx (W(x0,y1)-H(x0)) 1e-8
     y1[k] = 0.0
   end
 
-  CUTEst.cish(st, nvar, x0, Cint[0], nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  cish(st, nvar, x0, Cint[0], nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
   Hx = zeros(nvar[1], nvar[1])
   for k = 1:nnzh[1]
     i = Hrow[k]; j = Hcol[k];
@@ -191,7 +191,7 @@ if (ncon[1] > 0)
   @test_approx_eq_eps Hx H(x0) 1e-8
   y1 = zeros(ncon[1])
   for k = 1:ncon[1]
-    CUTEst.cish(st, nvar, x0, Cint[k], nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+    cish(st, nvar, x0, Cint[k], nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
     Cx = zeros(nvar[1], nvar[1])
     for k2 = 1:nnzh[1]
       i = Hrow[k2]; j = Hcol[k2];
@@ -203,7 +203,7 @@ if (ncon[1] > 0)
     y1[k] = 0.0
   end
 
-  CUTEst.csgrsh(st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun, nnzh,
+  csgrsh(st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun, nnzh,
       lh, Hval, Hrow, Hcol, nlp.libname)
   gx = zeros(nvar[1])
   Jx = zeros(ncon[1], nvar[1])
@@ -223,7 +223,7 @@ if (ncon[1] > 0)
   @test_approx_eq_eps gx g(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
-  CUTEst.csgrsh(st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun, nnzh,
+  csgrsh(st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun, nnzh,
       lh, Hval, Hrow, Hcol, nlp.libname)
   glx = zeros(nvar[1])
   Jx = zeros(ncon[1], nvar[1])
@@ -246,28 +246,62 @@ if (ncon[1] > 0)
 
   v = ones(nvar[1])
   Hv = Array(Cdouble, nvar[1])
-  CUTEst.chprod(st, nvar, ncon, False, x0, y0, v, Hv, nlp.libname)
+  chprod(st, nvar, ncon, False, x0, y0, v, Hv, nlp.libname)
   @test_approx_eq_eps Hv W(x0,y0)*v 1e-8
 
   Hv = Array(Cdouble, nvar[1])
-  CUTEst.chcprod(st, nvar, ncon, False, x0, y0, v, Hv, nlp.libname)
+  chcprod(st, nvar, ncon, False, x0, y0, v, Hv, nlp.libname)
   @test_approx_eq_eps Hv (W(x0,y0)-H(x0))*v 1e-8
 
   v = ones(nvar[1])
   Jv = Array(Cdouble, ncon[1])
-  CUTEst.cjprod(st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon,
+  cjprod(st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon,
       nlp.libname)
   @test_approx_eq_eps Jv J(x0)*v 1e-8
   v = ones(ncon[1])
   Jtv = Array(Cdouble, nvar[1])
-  CUTEst.cjprod(st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar,
+  cjprod(st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar,
       nlp.libname)
   @test_approx_eq_eps Jtv J(x0)'*v 1e-8
 else
-  CUTEst.ufn(st, nvar, x0, fx, nlp.libname)
+  ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
 
-  CUTEst.uofg(st, nvar, x0, fx, gx, grad, nlp.libname)
+  ugr(st, nvar, x0, gx, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+
+  udh(st, nvar, x0, nvar, Hx, nlp.libname)
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  ush(st, nvar, x0, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  Hx = zeros(nvar[1], nvar[1])
+  for k = 1:nnzh[1]
+    i = Hrow[k]; j = Hcol[k];
+    Hx[i,j] = Hval[k]
+    i != j && (Hx[j,i] = Hval[k])
+  end
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  ugrdh(st, nvar, x0, gx, nvar, Hx, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  ugrsh(st, nvar, x0, gx, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+  Hx = zeros(nvar[1], nvar[1])
+  for k = 1:nnzh[1]
+    i = Hrow[k]; j = Hcol[k];
+    Hx[i,j] = Hval[k]
+    i != j && (Hx[j,i] = Hval[k])
+  end
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  v = ones(nvar[1])
+  Hv = Array(Cdouble, nvar[1])
+  uhprod(st, nvar, False, x0, v, Hv, nlp.libname)
+  @test_approx_eq_eps Hv H(x0)*v 1e-8
+
+  uofg(st, nvar, x0, fx, gx, True, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
   @test_approx_eq_eps gx g(x0) 1e-8
 end
@@ -279,4 +313,6 @@ if (ncon[1] > 0)
   println("J(x0) = "); println(Jx)
 end
 println("H(x0) = "); println(Hx)
-println("H(x0,y0) = "); println(Wx)
+if (ncon[1] > 0)
+  println("H(x0,y0) = "); println(Wx)
+end
