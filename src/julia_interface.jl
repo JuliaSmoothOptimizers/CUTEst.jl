@@ -2,11 +2,11 @@ export objcons, objgrad, obj, cons_coord, cons, hess_coord, hess, hprod, hprod!
 
 """objcons(nlp, x)
 
-  Computes the objective function and constraint vector values at x.
-  Usage:
+Computes the objective function and constraint vector values at x.
+Usage:
 
-      f, c = objcons(nlp, x) # If the problem is constrained
-      f = objcons(nlp, x)    # If the problem is unconstrained
+    f, c = objcons(nlp, x) # If the problem is constrained
+    f = objcons(nlp, x)    # If the problem is unconstrained
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -35,11 +35,11 @@ end
 
 """objgrad(nlp, x, grad)
 
-  Computes the objective function value and, if grad is `true`, gradient at x.
-  Usage:
+Computes the objective function value and, if grad is `true`, gradient at x.
+Usage:
 
-      f, g = objgrad(nlp, x, true)
-      f = objgrad(nlp, x)
+    f, g = objgrad(nlp, x, true)
+    f = objgrad(nlp, x)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
@@ -72,12 +72,12 @@ obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
 
 """cons_coord(nlp, x, jac)
 
-  Computes the constraint vector and, if jac is `true`, the Jacobian in
-  coordinate format.
-  Usage:
+Computes the constraint vector and, if jac is `true`, the Jacobian in
+coordinate format.
+Usage:
 
-      c, jrow, jcol, jval = cons_coord(nlp, x, true)
-      c = cons_coord(nlp, x, false)
+    c, jrow, jcol, jval = cons_coord(nlp, x, true)
+    c = cons_coord(nlp, x, false)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
@@ -109,12 +109,12 @@ end
 
 """cons(nlp, x, jac)
 
-  Computes the constraint vector and, if jac is `true`, the Jacobian using the
-  internal sparse format.
-  Usage:
+Computes the constraint vector and, if jac is `true`, the Jacobian using the
+internal sparse format.
+Usage:
 
-      c, J = cons(nlp, x, true)
-      c = cons(nlp, x, false)
+    c, J = cons(nlp, x, true)
+    c = cons(nlp, x, false)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
@@ -133,10 +133,10 @@ end
 
 """cons(nlp, x)
 
-  Computes the constraint vector value.
-  Usage:
+Computes the constraint vector value.
+Usage:
 
-      c = cons(nlp, x)
+    c = cons(nlp, x)
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -146,12 +146,12 @@ cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
 
 """hess_coord(nlp, x, y)
 
-  Computes the Hessian matrix in coordinate format of the Lagrangian function at
-  x with Lagrange multipliers y for a constrained problem, or the
-  objective function at x for an unconstrained problem.
-  Usage:
+Computes the Hessian matrix in coordinate format of the Lagrangian function at
+x with Lagrange multipliers y for a constrained problem, or the
+objective function at x for an unconstrained problem.
+Usage:
 
-      hrow, hcol, hval = hess_coord(nlp, x, y)
+    hrow, hcol, hval = hess_coord(nlp, x, y)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
@@ -185,10 +185,10 @@ end
 
 """hess_coord(nlp, x)
 
-  Computes the Hessian of the objective function at x in coordinate format.
-  Usage:
+Computes the Hessian of the objective function at x in coordinate format.
+Usage:
 
-      hrow, hcol, hval = hess_coord(nlp, x)
+    hrow, hcol, hval = hess_coord(nlp, x)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
@@ -202,12 +202,12 @@ end
 
 """hess(nlp, x, y)
 
-  Computes the Hessian of the Lagrangian function at x with Lagrange
-  multipliers y for a constrained problem or the Hessian of the objective
-  function at x for an unconstrained problem.
-  Usage:
+Computes the Hessian of the Lagrangian function at x with Lagrange
+multipliers y for a constrained problem or the Hessian of the objective
+function at x for an unconstrained problem.
+Usage:
 
-      H = hess(nlp, x, y)
+    H = hess(nlp, x, y)
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -230,10 +230,10 @@ end
 
 """hess(nlp, x)
 
-  Computes the Hessian of the objective function.
-  Usage:
+Computes the Hessian of the objective function.
+Usage:
 
-      H = hess(nlp, x)
+    H = hess(nlp, x)
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -245,14 +245,13 @@ end
 
 """hprod(nlp, x, y, v)
 
-  Computes the matrix-vector product between the Hessian matrix and the vector
-  v.
-  If the problem is constrained, the Hessian is of the Lagrangian function at
-  x with Lagrange multipliers y, otherwise the Hessian is of the objective
-  function at x.
-  Usage:
+Computes the matrix-vector product between the Hessian matrix and the vector v.
+If the problem is constrained, the Hessian is of the Lagrangian function at
+x with Lagrange multipliers y, otherwise the Hessian is of the objective
+function at x.
+Usage:
 
-      Hv = hprod(nlp, x, y, v)
+    Hv = hprod(nlp, x, y, v)
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -281,14 +280,14 @@ end
 
 """hprod!(nlp, x, y, v, Hv)
 
-  Computes the matrix-vector product between the Hessian matrix and the vector
-  v and write the result to vector Hv.
-  If the problem is constrained, the Hessian is of the Lagrangian function at
-  x with Lagrange multipliers y, otherwise the Hessian is of the objective
-  function at x.
-  Usage:
+Computes the matrix-vector product between the Hessian matrix and the vector
+v and write the result to vector Hv.
+If the problem is constrained, the Hessian is of the Lagrangian function at
+x with Lagrange multipliers y, otherwise the Hessian is of the objective
+function at x.
+Usage:
 
-      hprod!(nlp, x, y, v, Hv)
+    hprod!(nlp, x, y, v, Hv)
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -316,11 +315,11 @@ end
 
 """hprod(nlp, x, v)
 
-  Computes the matrix-vector product between the Hessian matrix of the objective
-  function at x and the vector v.
-  Usage:
+Computes the matrix-vector product between the Hessian matrix of the objective
+function at x and the vector v.
+Usage:
 
-      Hv = hprod(nlp, x, v)
+    Hv = hprod(nlp, x, v)
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -330,11 +329,11 @@ hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}) = hprod(
 
 """hprod!(nlp, x, v, Hv)
 
-  Computes the matrix-vector product between the Hessian matrix of the objective
-  function at x and the vector v and writes the result to vector Hv.
-  Usage:
+Computes the matrix-vector product between the Hessian matrix of the objective
+function at x and the vector v and writes the result to vector Hv.
+Usage:
 
-      hprod!(nlp, x, v, Hv)
+    hprod!(nlp, x, v, Hv)
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
