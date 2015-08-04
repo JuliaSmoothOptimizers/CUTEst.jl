@@ -25,7 +25,6 @@ install:
   - for f in archdefs mastsif cutest sifdecode; do . $(brew --prefix $f)/$f.bashrc; done
   - rm ~/julia/lib/julia/libgfortran.so.3
   - julia -e 'versioninfo()'
-  - julia -E 'Pkg.clone("https://github.com/optimizers/NLP.jl.git");'
   - julia -E 'Pkg.clone(pwd());'
   - julia -E 'Pkg.build("CUTEst");'
 
