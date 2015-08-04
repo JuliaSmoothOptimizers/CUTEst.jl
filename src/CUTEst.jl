@@ -2,7 +2,7 @@
 
 module CUTEst
 
-require(Pkg.dir("MathProgBase","src","NLP","NLP.jl"))
+push!(LOAD_PATH, Pkg.dir("MathProgBase","src","NLP"))
 using NLP  # Defines NLPModelMeta.
 using Compat
 
