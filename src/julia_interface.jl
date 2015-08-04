@@ -2,12 +2,11 @@ export objcons, objgrad, obj, cons_coord, cons, hess_coord, hess, hprod, hprod!
 
 """objcons(nlp, x)
 
-  Computes the objective function and constraint vector values at point x.
-  Internally uses `cfn` or `ufn`.
+  Computes the objective function and constraint vector values at x.
   Usage:
 
       f, c = objcons(nlp, x) # If the problem is constrained
-      f = objcons(nlp, x) # If the problem is unconstrained
+      f = objcons(nlp, x)    # If the problem is unconstrained
 
   - nlp: [IN] CUTEstModel
   - x:   [IN] Array{Float64, 1}
@@ -36,9 +35,7 @@ end
 
 """objgrad(nlp, x, grad)
 
-  Computes the objective function value and, if grad is true, gradient at point
-  x.
-  Internally uses `cofg` or `uofg`.
+  Computes the objective function value and, if grad is `true`, gradient at x.
   Usage:
 
       f, g = objgrad(nlp, x, true)
@@ -73,11 +70,10 @@ end
 
 obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
 
-"""cons_coord(nlp, x, grad)
+"""cons_coord(nlp, x, jac)
 
-  Computes the constraint vector and, if grad is true, the Jacobian in triplet
-  format.
-  Internally uses `ccfsg`.
+  Computes the constraint vector and, if jac is `true`, the Jacobian in
+  coordinate format.
   Usage:
 
       c, jrow, jcol, jval = cons_coord(nlp, x, true)
@@ -85,20 +81,20 @@ obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
-  - grad: [IN] Bool
+  - jac:  [IN] Bool
   - c:    [OUT] Array{Float64, 1}
   - jrow: [OUT] Array{Int32, 1}
   - jcol: [OUT] Array{Int32, 1}
   - jval: [OUT] Array{Float64, 1}
 """
-function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
+function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzj = nlp.meta.nnzj;
   io_err = Cint[0];
   c = Array(Float64, ncon);
-  jsize = grad ? nlp.meta.nnzj : 0;
-  get_j = grad ? 1 : 0;
+  jsize = jac ? nlp.meta.nnzj : 0;
+  get_j = jac ? 1 : 0;
   jval = Array(Float64, jsize);
   jrow = Array(Int32, jsize);
   jcol = Array(Int32, jsize);
@@ -108,14 +104,13 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
                $(io_err),  &$(nvar),   &$(ncon),   $(x),         $(c),         &$(nnzj),   &$(jsize),  $(jval),      $(jcol),    $(jrow),    &$(get_j));
   @cutest_error
 
-  return grad ? (c, jrow, jcol, jval) : c;
+  return jac ? (c, jrow, jcol, jval) : c;
 end
 
-"""cons(nlp, x, grad)
+"""cons(nlp, x, jac)
 
-  Computes the constraint vector and, if grad is true, the Jacobian using the
+  Computes the constraint vector and, if jac is `true`, the Jacobian using the
   internal sparse format.
-  Internally uses `ccfsg`.
   Usage:
 
       c, J = cons(nlp, x, true)
@@ -123,23 +118,22 @@ end
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
-  - grad: [IN] Bool
+  - jac:  [IN] Bool
   - c:    [OUT] Array{Float64, 1}
   - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}
 """
-function cons(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
-  if grad
-    (c, jrow, jcol, jval) = cons_coord(nlp, x, grad);
+function cons(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
+  if jac
+    (c, jrow, jcol, jval) = cons_coord(nlp, x, jac);
     return (c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar))
   else
-    return cons_coord(nlp, x, grad);
+    return cons_coord(nlp, x, jac);
   end
 end
 
 """cons(nlp, x)
 
   Computes the constraint vector value.
-  Internally uses `ccfsg`.
   Usage:
 
       c = cons(nlp, x)
@@ -152,10 +146,9 @@ cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
 
 """hess_coord(nlp, x, y)
 
-  Computes the Hessian matrix in triplet format of the Lagrangian function at
-  point x with Lagrange multipliers y for a constrained problem, or the
-  objective function at point x for an unconstrained problem.
-  Internally uses `csh` or `ush`.
+  Computes the Hessian matrix in coordinate format of the Lagrangian function at
+  x with Lagrange multipliers y for a constrained problem, or the
+  objective function at x for an unconstrained problem.
   Usage:
 
       hrow, hcol, hval = hess_coord(nlp, x, y)
@@ -192,8 +185,7 @@ end
 
 """hess_coord(nlp, x)
 
-  Computes the Hessian of the objective function at point x in triplet format.
-  Internally uses `csh` or `ush`.
+  Computes the Hessian of the objective function at x in coordinate format.
   Usage:
 
       hrow, hcol, hval = hess_coord(nlp, x)
@@ -210,10 +202,9 @@ end
 
 """hess(nlp, x, y)
 
-  Computes the Hessian of the Lagrangian function at point x with Lagrange
+  Computes the Hessian of the Lagrangian function at x with Lagrange
   multipliers y for a constrained problem or the Hessian of the objective
-  function at point x for an unconstrained problem.
-  Internally uses `csh` or `ush`.
+  function at x for an unconstrained problem.
   Usage:
 
       H = hess(nlp, x, y)
@@ -240,7 +231,6 @@ end
 """hess(nlp, x)
 
   Computes the Hessian of the objective function.
-  Internally uses `csh` or `ush`.
   Usage:
 
       H = hess(nlp, x)
@@ -258,9 +248,8 @@ end
   Computes the matrix-vector product between the Hessian matrix and the vector
   v.
   If the problem is constrained, the Hessian is of the Lagrangian function at
-  point x with Lagrang multipliers y, otherwise the Hessian is of the objective
-  function at point x.
-  Internally uses `chprod` or `uhprod`.
+  x with Lagrange multipliers y, otherwise the Hessian is of the objective
+  function at x.
   Usage:
 
       Hv = hprod(nlp, x, y, v)
@@ -295,9 +284,8 @@ end
   Computes the matrix-vector product between the Hessian matrix and the vector
   v and write the result to vector Hv.
   If the problem is constrained, the Hessian is of the Lagrangian function at
-  point x with Lagrang multipliers y, otherwise the Hessian is of the objective
-  function at point x.
-  Internally uses `chprod` or `uhprod`.
+  x with Lagrange multipliers y, otherwise the Hessian is of the objective
+  function at x.
   Usage:
 
       hprod!(nlp, x, y, v, Hv)
@@ -329,8 +317,7 @@ end
 """hprod(nlp, x, v)
 
   Computes the matrix-vector product between the Hessian matrix of the objective
-  function at point x and the vector v.
-  Internally uses `chprod` or `uhprod`.
+  function at x and the vector v.
   Usage:
 
       Hv = hprod(nlp, x, v)
@@ -344,8 +331,7 @@ hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}) = hprod(
 """hprod!(nlp, x, v, Hv)
 
   Computes the matrix-vector product between the Hessian matrix of the objective
-  function at point x and the vector v and writes the result to vector Hv.
-  Internally uses `chprod` or `uhprod`.
+  function at x and the vector v and writes the result to vector Hv.
   Usage:
 
       hprod!(nlp, x, v, Hv)
