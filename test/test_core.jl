@@ -267,7 +267,41 @@ else
   ufn(st, nvar, x0, fx, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
 
-  uofg(st, nvar, x0, fx, gx, grad, nlp.libname)
+  ugr(st, nvar, x0, gx, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+
+  udh(st, nvar, x0, nvar, Hx, nlp.libname)
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  ush(st, nvar, x0, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  Hx = zeros(nvar[1], nvar[1])
+  for k = 1:nnzh[1]
+    i = Hrow[k]; j = Hcol[k];
+    Hx[i,j] = Hval[k]
+    i != j && (Hx[j,i] = Hval[k])
+  end
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  ugrdh(st, nvar, x0, gx, nvar, Hx, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  ugrsh(st, nvar, x0, gx, nnzh, lh, Hval, Hrow, Hcol, nlp.libname)
+  @test_approx_eq_eps gx g(x0) 1e-8
+  Hx = zeros(nvar[1], nvar[1])
+  for k = 1:nnzh[1]
+    i = Hrow[k]; j = Hcol[k];
+    Hx[i,j] = Hval[k]
+    i != j && (Hx[j,i] = Hval[k])
+  end
+  @test_approx_eq_eps Hx H(x0) 1e-8
+
+  v = ones(nvar[1])
+  Hv = Array(Cdouble, nvar[1])
+  uhprod(st, nvar, False, x0, v, Hv, nlp.libname)
+  @test_approx_eq_eps Hv H(x0)*v 1e-8
+
+  uofg(st, nvar, x0, fx, gx, True, nlp.libname)
   @test_approx_eq_eps fx[1] f(x0) 1e-8
   @test_approx_eq_eps gx g(x0) 1e-8
 end
@@ -279,4 +313,6 @@ if (ncon[1] > 0)
   println("J(x0) = "); println(Jx)
 end
 println("H(x0) = "); println(Hx)
-println("H(x0,y0) = "); println(Wx)
+if (ncon[1] > 0)
+  println("H(x0,y0) = "); println(Wx)
+end
