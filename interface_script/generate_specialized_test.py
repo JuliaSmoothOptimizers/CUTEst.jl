@@ -3,9 +3,11 @@
 import re
 import sys
 
-foos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cdh", "cfn", "cgr", "cgrdh",
+cfoos = [ "ccfg", "ccfsg", "ccifg", "ccifsg", "cdh", "cfn", "cgr", "cgrdh",
         "chcprod", "chprod", "cidh", "cish", "cjprod", "clfg", "cofg", "cofsg",
         "csgr", "csgrsh", "csh", "cshc" ]
+
+ufoos = [ "ufn", "ugr", "uofg", "udh", "ush", "uhprod" ]
 
 trip_comp = [ "j_var", "j_fun", "h_row", "h_col" ]
 triplet = { "Jx": "J", "Wx": "W" }
@@ -59,13 +61,16 @@ hs = {
 special = {
     "cshc": { "W": "W(x0,y0)-H(x0)"},
     "cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)" },
-    "clfg": { "fx": "f(x0)+dot(y0,c(x0))", "gx": "g(x0)+J(x0)'*y0" }
+    "clfg": { "fx": "f(x0)+dot(y0,c(x0))", "gx": "g(x0)+J(x0)'*y0" },
+    "udh": { "h": "H(x0)" },
+    "ush": { "W": "H(x0)" }
     }
 
 results = {
     "chprod": "W(x0,y0)*v",
     "chcprod": "(W(x0,y0)-H(x0))*v",
-    "cjprod": "J(x0)*v" }
+    "cjprod": "J(x0)*v",
+    "uhprod": "H(x0)*v" }
 
 sizeof = {
     "gx": "nlp.meta.nvar",
@@ -127,10 +132,10 @@ def generate_test_for_function (foo):
             match = mult
             break
     if match != "":
-        head = "for j = 1:" + multiples[match] + "\n"
-        spc = "  "
+        head = "  for j = 1:" + multiples[match] + "\n"
+        spc = "    "
     else:
-        spc = ""
+        spc = "  "
         head = ''
     str = ""
     fname = foo.split("(")[0].strip()
@@ -194,20 +199,28 @@ def generate_test_for_function (foo):
                     if x not in ignore:
                         str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
     if match != "":
-        str += "end\n"
+        str += "  end\n"
 
     return head+str+"\n"
 
 filename = "src/specialized_interface.jl"
 content = ''.join(open(filename, "r").readlines()).split("function")[1:]
 
-selection = []
+cselection = []
+uselection = []
 for x in content:
-    if any([foo+"(" in x for foo in foos]):
-        selection.append(x)
+    if any([foo+"(" in x for foo in cfoos]):
+        cselection.append(x)
+    elif any([foo+"(" in x for foo in ufoos]):
+        uselection.append(x)
 
 with open("test/test_specialized.jl","w") as f:
     f.write('println("\\nTesting the Specialized interface\\n")\n\n')
     f.write('v = ones(nlp.meta.nvar)\n')
-    for x in selection:
+    f.write('if nlp.meta.ncon > 0\n')
+    for x in cselection:
         f.write(generate_test_for_function(x))
+    f.write('else\n')
+    for x in uselection:
+        f.write(generate_test_for_function(x))
+    f.write('end\n')
