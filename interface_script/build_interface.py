@@ -57,7 +57,6 @@ def get_function_data(name):
         start_fundef = False
         for line in f:
             line = line.strip().lower()
-            #print(line)
             if "subroutine cutest_"+name+"(" in line:
                 start_function = True
                 start_fundef = True
@@ -245,6 +244,10 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     str += "\nend\n"
     return str
 
+def need_inplace(intents, dims):
+    n = len(intents)
+    return any([intents[i] == "out" and len(dims[i]) > 0 for i in range(n)])
+
 core_file = open("src/core_interface.jl", "w")
 inter_file = open("src/specialized_interface.jl", "w")
 
@@ -254,6 +257,7 @@ core_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
 inter_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
 inter_file.write(wrap("export " + ', '.join([x+"!" for x in names]))+"\n")
 inter_file.write("\n")
+
 for name in names:
     args, types, intents, dims = get_function_data(name)
     core_file.write(core_function(name, args, types, dims))
@@ -264,9 +268,10 @@ for name in names:
         inter_file.write(specialized_function(name, args, types,
             intents, dims, use_nlp=use_nlp, inplace=False))
         inter_file.write("\n")
-        inter_file.write(specialized_function(name, args, types,
-            intents, dims, use_nlp=use_nlp, inplace=True))
-        inter_file.write("\n")
+        if need_inplace(intents, dims):
+            inter_file.write(specialized_function(name, args, types,
+                intents, dims, use_nlp=use_nlp, inplace=True))
+            inter_file.write("\n")
         if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
             inter_file.write(specialized_function(name, args, types,
                 intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
