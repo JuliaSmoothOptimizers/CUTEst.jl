@@ -76,24 +76,8 @@ function udimen(input::Int, libname)
   return n[1]
 end
 
-function udimen!(input::Int, libname)
-  io_err = Cint[0]
-  n = Cint[0]
-  @eval udimen($(io_err), $(Cint[input]), $(n), $(libname))
-  @cutest_error
-  return n[1]
-end
-
 
 function udimen(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  n = Cint[0]
-  @eval udimen($(io_err), $(Cint[input]), $(n), $(nlp.libname))
-  @cutest_error
-  return n[1]
-end
-
-function udimen!(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   n = Cint[0]
   @eval udimen($(io_err), $(Cint[input]), $(n), $(nlp.libname))
@@ -110,24 +94,8 @@ function udimsh(libname)
   return nnzh[1]
 end
 
-function udimsh!(libname)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval udimsh($(io_err), $(nnzh), $(libname))
-  @cutest_error
-  return nnzh[1]
-end
-
 
 function udimsh(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval udimsh($(io_err), $(nnzh), $(nlp.libname))
-  @cutest_error
-  return nnzh[1]
-end
-
-function udimsh!(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval udimsh($(io_err), $(nnzh), $(nlp.libname))
@@ -147,30 +115,8 @@ function udimse(libname)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function udimse!(libname)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval udimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
 
 function udimse(nlp::CUTEstModel)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval udimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(nlp.libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
-function udimse!(nlp::CUTEstModel)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -320,26 +266,8 @@ function cdimen(input::Int, libname)
   return n[1], m[1]
 end
 
-function cdimen!(input::Int, libname)
-  io_err = Cint[0]
-  n = Cint[0]
-  m = Cint[0]
-  @eval cdimen($(io_err), $(Cint[input]), $(n), $(m), $(libname))
-  @cutest_error
-  return n[1], m[1]
-end
-
 
 function cdimen(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  n = Cint[0]
-  m = Cint[0]
-  @eval cdimen($(io_err), $(Cint[input]), $(n), $(m), $(nlp.libname))
-  @cutest_error
-  return n[1], m[1]
-end
-
-function cdimen!(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   n = Cint[0]
   m = Cint[0]
@@ -357,24 +285,8 @@ function cdimsj(libname)
   return nnzj[1]
 end
 
-function cdimsj!(libname)
-  io_err = Cint[0]
-  nnzj = Cint[0]
-  @eval cdimsj($(io_err), $(nnzj), $(libname))
-  @cutest_error
-  return nnzj[1]
-end
-
 
 function cdimsj(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzj = Cint[0]
-  @eval cdimsj($(io_err), $(nnzj), $(nlp.libname))
-  @cutest_error
-  return nnzj[1]
-end
-
-function cdimsj!(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzj = Cint[0]
   @eval cdimsj($(io_err), $(nnzj), $(nlp.libname))
@@ -391,24 +303,8 @@ function cdimsh(libname)
   return nnzh[1]
 end
 
-function cdimsh!(libname)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval cdimsh($(io_err), $(nnzh), $(libname))
-  @cutest_error
-  return nnzh[1]
-end
-
 
 function cdimsh(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval cdimsh($(io_err), $(nnzh), $(nlp.libname))
-  @cutest_error
-  return nnzh[1]
-end
-
-function cdimsh!(nlp::CUTEstModel)
   io_err = Cint[0]
   nnzh = Cint[0]
   @eval cdimsh($(io_err), $(nnzh), $(nlp.libname))
@@ -428,30 +324,8 @@ function cdimse(libname)
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
 
-function cdimse!(libname)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval cdimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
 
 function cdimse(nlp::CUTEstModel)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval cdimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(nlp.libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
-function cdimse!(nlp::CUTEstModel)
   io_err = Cint[0]
   ne = Cint[0]
   he_val_ne = Cint[0]
@@ -476,34 +350,8 @@ function cstats(libname)
   return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
 
-function cstats!(libname)
-  io_err = Cint[0]
-  nonlinear_variables_objective = Cint[0]
-  nonlinear_variables_constraints = Cint[0]
-  equality_constraints = Cint[0]
-  linear_constraints = Cint[0]
-  @eval cstats($(io_err), $(nonlinear_variables_objective),
-    $(nonlinear_variables_constraints), $(equality_constraints),
-    $(linear_constraints), $(libname))
-  @cutest_error
-  return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
-end
-
 
 function cstats(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nonlinear_variables_objective = Cint[0]
-  nonlinear_variables_constraints = Cint[0]
-  equality_constraints = Cint[0]
-  linear_constraints = Cint[0]
-  @eval cstats($(io_err), $(nonlinear_variables_objective),
-    $(nonlinear_variables_constraints), $(equality_constraints),
-    $(linear_constraints), $(nlp.libname))
-  @cutest_error
-  return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
-end
-
-function cstats!(nlp::CUTEstModel)
   io_err = Cint[0]
   nonlinear_variables_objective = Cint[0]
   nonlinear_variables_constraints = Cint[0]
@@ -695,24 +543,8 @@ function pname(input::Int, libname)
   return pname[1]
 end
 
-function pname!(input::Int, libname)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval pname($(io_err), $(Cint[input]), $(pname), $(libname))
-  @cutest_error
-  return pname[1]
-end
-
 
 function pname(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval pname($(io_err), $(Cint[input]), $(pname), $(nlp.libname))
-  @cutest_error
-  return pname[1]
-end
-
-function pname!(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval pname($(io_err), $(Cint[input]), $(pname), $(nlp.libname))
@@ -729,24 +561,8 @@ function probname(libname)
   return pname[1]
 end
 
-function probname!(libname)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval probname($(io_err), $(pname), $(libname))
-  @cutest_error
-  return pname[1]
-end
-
 
 function probname(nlp::CUTEstModel)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval probname($(io_err), $(pname), $(nlp.libname))
-  @cutest_error
-  return pname[1]
-end
-
-function probname!(nlp::CUTEstModel)
   io_err = Cint[0]
   pname = Cchar[0]
   @eval probname($(io_err), $(pname), $(nlp.libname))
@@ -797,25 +613,8 @@ function ufn(n::Int, x::Array{Float64, 1}, libname)
   return f[1]
 end
 
-function ufn!(n::Int, x::Array{Float64, 1}, libname)
-  io_err = Cint[0]
-  f = Cdouble[0]
-  @eval ufn($(io_err), $(Cint[n]), $(x), $(f), $(libname))
-  @cutest_error
-  return f[1]
-end
-
 
 function ufn(nlp::CUTEstModel, x::Array{Float64, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  f = Cdouble[0]
-  @eval ufn($(io_err), $(Cint[n]), $(x), $(f), $(nlp.libname))
-  @cutest_error
-  return f[1]
-end
-
-function ufn!(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
   n = nlp.meta.nvar
   f = Cdouble[0]
@@ -3096,22 +2895,8 @@ function uterminate(libname)
   return
 end
 
-function uterminate!(libname)
-  io_err = Cint[0]
-  @eval uterminate($(io_err), $(libname))
-  @cutest_error
-  return
-end
-
 
 function uterminate(nlp::CUTEstModel)
-  io_err = Cint[0]
-  @eval uterminate($(io_err), $(nlp.libname))
-  @cutest_error
-  return
-end
-
-function uterminate!(nlp::CUTEstModel)
   io_err = Cint[0]
   @eval uterminate($(io_err), $(nlp.libname))
   @cutest_error
@@ -3126,22 +2911,8 @@ function cterminate(libname)
   return
 end
 
-function cterminate!(libname)
-  io_err = Cint[0]
-  @eval cterminate($(io_err), $(libname))
-  @cutest_error
-  return
-end
-
 
 function cterminate(nlp::CUTEstModel)
-  io_err = Cint[0]
-  @eval cterminate($(io_err), $(nlp.libname))
-  @cutest_error
-  return
-end
-
-function cterminate!(nlp::CUTEstModel)
   io_err = Cint[0]
   @eval cterminate($(io_err), $(nlp.libname))
   @cutest_error
