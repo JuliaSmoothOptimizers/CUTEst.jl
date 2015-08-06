@@ -2,6 +2,7 @@
 
 import os
 import re
+import subprocess
 import textwrap
 
 # Type conversion
@@ -23,8 +24,8 @@ nlp_ignore = [ "usetup", "csetup", "udimen", "cdimen", "udimsh", "cdimsh",
 s="  "
 el='\n'+2*s
 
-def wrap(str):
-    return el.join(textwrap.wrap(str))
+def wrap(str, spc=el):
+    return spc.join(textwrap.wrap(str))
 
 # Workarounds
 ignore_intent = ["ureport", "creport"]
@@ -33,6 +34,24 @@ cutest = os.getenv('CUTEST', "")
 if cutest is "":
     print("ERROR: Variable CUTEST not set. Verify your CUTEst installation.")
     exit(1)
+
+# Read from $CUTEST/man/man3/cutest_... between DESCRIPTION and ARGUMENTS
+def man_description(name):
+    out = subprocess.check_output(["man", "-P", "cat", "cutest_"+name],
+            universal_newlines = True)
+    desc = []
+    parsing = False
+    for line in out.split("\n"):
+        if "DESCRIPTION" in line:
+            parsing = True
+            continue
+        if "ARGUMENTS" in line:
+            break
+        if parsing:
+            desc.append(line.strip())
+    s = re.sub('CUTEST_', ' ', " ".join(desc))
+    s = re.sub(' +', ' ', s)
+    return wrap(s, "\n")
 
 # The function definitions are being read from the C include file.
 # This should probably be improved to obtain more information about the
@@ -161,6 +180,29 @@ def arguments (args, types, intents, dims, use_types = True, use_nlp = False,
     return ', '.join(str)
 
 
+def core_doc(name, args, types, intents, dims):
+    if name != "cstats":
+        help_args = arguments(args, types, [], dims, intent="all",
+                use_nlp=False, use_types=False, all_ptrs=True, typeset=cutypes)
+        str = '"""    ' + name
+        str += "(" + wrap(help_args, "\n") + ", libname)"
+        str += "\n\n"
+        str += man_description(name) + "\n\n"
+        n = max([7] + [len(arg) for arg in args])
+        for i, arg in enumerate(args):
+            k = n - len(arg)
+            d = max([len(dims[i]), 1])
+            str += "  - {}: {}[{}] Array{{{}, {}}}\n".format(arg, " "*k,
+                    intents[i].upper(), cutypes[types[i]], d)
+        str += "  - libname: {}[IN] ASCIIString\n\n".format(" "*(n-7))
+        str += "This help was generated automatically and may contain\n"
+        str += "errors. For more information, run the shell command\n\n"
+        str += "    man cutest_" + name + "\n\n"
+        str += '"""\n' + name + "\n\n"
+    else:
+        str = ""
+    return str
+
 def core_function(name, args, types, dims):
     str = ""
     arg_call = arguments(args, types, [], dims, intent="all",
@@ -252,10 +294,11 @@ def need_inplace(intents, dims):
 
 core_file = open("src/core_interface.jl", "w")
 inter_file = open("src/specialized_interface.jl", "w")
+core_doc_file = open("src/core_documentation.jl", "w")
 
 names = function_names()
 
-core_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
+core_file.write(wrap("export " + ', '.join([x for x in names]))+"\n\n")
 inter_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
 inter_file.write(wrap("export " + ', '.join([x+"!" for x in names]))+"\n")
 inter_file.write("\n")
@@ -264,6 +307,7 @@ for name in names:
     args, types, intents, dims = get_function_data(name)
     core_file.write(core_function(name, args, types, dims))
     core_file.write("\n")
+    core_doc_file.write(core_doc(name, args, types, intents, dims))
     for use_nlp in [False, True]:
         # Some functions return values that should be obtained while creating nlp
         if use_nlp and name in nlp_ignore:
@@ -282,7 +326,7 @@ for name in names:
                     intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
                 inter_file.write("\n")
 
-
+core_file.write("include(\"core_documentation.jl\")\n")
 core_file.close()
 inter_file.close()
-
+core_doc_file.close()
