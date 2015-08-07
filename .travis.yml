@@ -1,5 +1,9 @@
 language: julia
 
+os:
+  - linux
+  - osx
+
 julia:
   - release
   - nightly
@@ -8,13 +12,11 @@ sudo: required
 
 before_install:
   # Install Linuxbrew.
-  - unset DYLD_LIBRARY_PATH
-  - bash travisCI/setup_travis_linux.sh;
-  - export PATH="$HOME/.linuxbrew/bin:$PATH";
-  - export LD_LIBRARY_PATH="$HOME/.linuxbrew/lib:$LD_LIBRARY_PATH";
+  - if [ `uname` == "Linux" ]; then unset DYLD_LIBRARY_PATH; bash travisCI/setup_travis_linux.sh; export PATH="$HOME/.linuxbrew/bin:$PATH"; export LD_LIBRARY_PATH="$HOME/.linuxbrew/lib:$LD_LIBRARY_PATH"; fi
   - brew --config
+  - brew doctor || true
   - brew update
-  - brew install pkg-config;
+  - if [ `uname` == "Linux" ]; then brew install pkg-config; fi
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 
 install:
@@ -23,7 +25,7 @@ install:
   - brew install cutest --HEAD
   - brew install mastsif --HEAD
   - for f in archdefs mastsif cutest sifdecode; do . $(brew --prefix $f)/$f.bashrc; done
-  - rm ~/julia/lib/julia/libgfortran.so.3
+  - if [ `uname` == "Linux" ]; then rm ~/julia/lib/julia/libgfortran.so.3; fi
   - julia -e 'versioninfo()'
   - julia -E 'Pkg.clone(pwd());'
   - julia -E 'Pkg.build("CUTEst");'
@@ -31,5 +33,6 @@ install:
 script:
   - julia --check-bounds=yes -E 'Pkg.test("CUTEst"; coverage=true)'
   - julia --check-bounds=yes -E 'cd(Pkg.dir("CUTEst")); include("test/runtests_unc.jl")'
+
 after_success:
   - julia -e 'cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
