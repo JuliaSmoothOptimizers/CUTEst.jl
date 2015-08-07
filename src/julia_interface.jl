@@ -1,4 +1,6 @@
-export objcons, objgrad, obj, cons_coord, cons, hess_coord, hess, hprod, hprod!
+export objcons, objgrad, obj, grad, grad!,
+       cons_coord, cons, cons!,
+       hess_coord, hess, hprod, hprod!
 
 """    objcons(nlp, x)
 
@@ -59,8 +61,8 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
     g = Array(Float64, 0);
     get_grad = 0;
   end
-  cutest_fcn = ncon > 0 ? "cutest_cofg_" : "cutest_uofg_";  # How do you do this with symbols?
-  @eval ccall(($(cutest_fcn), $(nlp.libname)), Void,
+  cutest_ofg = ncon > 0 ? "cutest_cofg_" : "cutest_uofg_";  # How do you do this with symbols?
+  @eval ccall(($(cutest_ofg), $(nlp.libname)), Void,
             (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
              $(io_err),  &$(nvar),   $(x),         $(f),         $(g),         &$(get_grad));
   @cutest_error
@@ -81,6 +83,47 @@ Usage:
 """
 obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
 
+"""    grad(nlp, x)
+
+Computes the objective gradient at x.
+Usage:
+
+    g = grad(nlp, x)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - g:    [OUT] Array{Float64, 1}
+"""
+function grad(nlp :: CUTEstModel, x :: Array{Float64,1})
+  f, g = objgrad(nlp, x, true)
+  return g
+end
+
+"""    grad!(nlp, x, g)
+
+Computes the objective function gradient at x in place.
+Usage:
+
+    grad!(nlp, x, g)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - g:    [OUT] Array{Float64, 1}
+"""
+function grad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
+  nvar = nlp.meta.nvar;
+  ncon = nlp.meta.ncon;
+  f = Cdouble[0];
+  io_err = Cint[0];
+  get_grad = 1;
+  cutest_ofg = ncon > 0 ? "cutest_cofg_" : "cutest_uofg_";  # How do you do this with symbols?
+  @eval ccall(($(cutest_ofg), $(nlp.libname)), Void,
+            (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
+             $(io_err),  &$(nvar),   $(x),         $(f),         $(g),         &$(get_grad));
+  @cutest_error
+
+  return g
+end
 """    cons_coord(nlp, x, jac)
 
 Computes the constraint vector and, if jac is `true`, the Jacobian in
@@ -154,6 +197,37 @@ Usage:
   - c:   [OUT] Array{Float64, 1}
 """
 cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
+
+"""    cons!(nlp, x, c)
+
+Computes the constraint vector value in place.
+Usage:
+
+    c = cons!(nlp, x, c)
+
+  - nlp: [IN] CUTEstModel
+  - x:   [IN] Array{Float64, 1}
+  - c:   [OUT] Array{Float64, 1}
+"""
+function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
+  nvar = nlp.meta.nvar;
+  ncon = nlp.meta.ncon;
+  ncon > 0 || return c
+  io_err = Cint[0];
+  nnzj = 0;
+  jsize = 0;
+  get_j = 0;
+  jval = Array(Float64, jsize);
+  jrow = Array(Int32, jsize);
+  jcol = Array(Int32, jsize);
+
+  @eval ccall((:cutest_ccfsg_, $(nlp.libname)), Void,
+              (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
+               $(io_err),  &$(nvar),   &$(ncon),   $(x),         $(c),         &$(nnzj),   &$(jsize),  $(jval),      $(jcol),    $(jrow),    &$(get_j));
+  @cutest_error
+
+  return c;
+end
 
 """    hess_coord(nlp, x, y)
 

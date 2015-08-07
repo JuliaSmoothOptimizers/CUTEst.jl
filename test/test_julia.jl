@@ -6,6 +6,13 @@ fx = obj(nlp, x0);
 @test_approx_eq_eps fx f(x0) 1e-8
 @test_approx_eq_eps gx g(x0) 1e-8
 
+gx = grad(nlp, x0)
+@test_approx_eq_eps gx g(x0) 1e-8
+
+fill!(gx, 0.0)
+grad!(nlp, x0, gx)
+@test_approx_eq_eps gx g(x0) 1e-8
+
 println("f(x0) = ", fx)
 println("∇f(x0) = ", gx)
 if nlp.meta.ncon > 0
@@ -19,7 +26,12 @@ if nlp.meta.ncon > 0
 
   cx = cons(nlp, x0, false)
   @test_approx_eq_eps cx c(x0) 1e-8
+
   cx = cons(nlp, x0) # This is here to improve coverage
+  @test_approx_eq_eps cx c(x0) 1e-8
+
+  fill!(cx, 0.0)
+  cons!(nlp, x0, cx)
   @test_approx_eq_eps cx c(x0) 1e-8
 
   println("c(x0) = ", cx);
@@ -39,12 +51,17 @@ v = rand(nlp.meta.nvar);
 hv = hprod(nlp, x0, v);
 println("H(x0) * v = ", hv);
 @test_approx_eq_eps hv Hx*v 1e-8
+
+fill!(hv, 0.0)
 hprod!(nlp, x0, v, hv)
 @test_approx_eq_eps hv Hx*v 1e-8
+
 if nlp.meta.ncon > 0
   hv = hprod(nlp, x0, ones(nlp.meta.ncon), v);
   println("H(x0,ones) * v = ", hv);
   @test_approx_eq_eps hv Wx*v 1e-8
+
+  fill!(hv, 0.0)
   hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv);
   @test_approx_eq_eps hv Wx*v 1e-8
 end
