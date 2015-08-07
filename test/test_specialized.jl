@@ -766,13 +766,7 @@ else
   fx = ufn(nlp.meta.nvar, x0, nlp.libname)
   @test_approx_eq_eps fx f(x0) 1e-8
 
-  fx = ufn!(nlp.meta.nvar, x0, nlp.libname)
-  @test_approx_eq_eps fx f(x0) 1e-8
-
   fx = ufn(nlp, x0)
-  @test_approx_eq_eps fx f(x0) 1e-8
-
-  fx = ufn!(nlp, x0)
   @test_approx_eq_eps fx f(x0) 1e-8
 
   gx = ugr(nlp.meta.nvar, x0, nlp.libname)

@@ -16,7 +16,9 @@ nlp_exception  = {
     "csgr": { "lj":["nnzj","nvar"] },
     "csgrsh": { "lj":["nnzj","nvar"] }
     }
-nlp_ignore = ["usetup", "csetup"]
+nlp_ignore = [ "usetup", "csetup", "udimen", "cdimen", "udimsh", "cdimsh",
+    "udimse", "cdimse", "cdimsj", "unames", "cnames" "connames", "varnames",
+    "uvartype", "cvartype", "cterminate", "uterminate" ]
 
 s="  "
 el='\n'+2*s
@@ -263,19 +265,22 @@ for name in names:
     core_file.write(core_function(name, args, types, dims))
     core_file.write("\n")
     for use_nlp in [False, True]:
+        # Some functions return values that should be obtained while creating nlp
         if use_nlp and name in nlp_ignore:
             continue
         inter_file.write(specialized_function(name, args, types,
             intents, dims, use_nlp=use_nlp, inplace=False))
         inter_file.write("\n")
+        # Some functions don't need a ! version
         if need_inplace(intents, dims):
             inter_file.write(specialized_function(name, args, types,
                 intents, dims, use_nlp=use_nlp, inplace=True))
             inter_file.write("\n")
-        if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
-            inter_file.write(specialized_function(name, args, types,
-                intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
-        inter_file.write("\n")
+            # Integer arrays passed as inplace can be Int64 or Int32
+            if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
+                inter_file.write(specialized_function(name, args, types,
+                    intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
+                inter_file.write("\n")
 
 
 core_file.close()
