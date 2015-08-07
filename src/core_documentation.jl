@@ -1,11 +1,11 @@
 """    usetup(io_err, input, out, io_buffer, n, x, x_l, x_u, libname)
 
-The usetup subroutine sets up the correct data structures for sub‐
-sequent computations in the case where the only possible constraints
-are bound constraints. The problem under consideration is to minimize
-or maximize an objective function f(x) over all x ∈ Rn subject to the
-simple bounds xl≤x≤xu. The objective function is group-partially
-separable.
+The usetup subroutine sets up the correct data structures for
+subsequent computations in the case where the only possible
+constraints are bound constraints. The problem under consideration is
+to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to the simple bounds xl≤x≤xu. The objective function is group-
+partially separable.
 
   - io_err:    [OUT] Array{Cint, 1}
   - input:     [IN] Array{Cint, 1}
@@ -28,13 +28,13 @@ usetup
 """    csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
 linear, e_order, l_order, v_order, libname)
 
-The csetup subroutine sets up the correct data structures for sub‐
-sequent computations on the problem decoded from a SIF file by the
+The csetup subroutine sets up the correct data structures for
+subsequent computations on the problem decoded from a SIF file by the
 script sifdecoder. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group- partially separable and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:    [OUT] Array{Cint, 1}
@@ -180,10 +180,10 @@ unames
 
 The ureport subroutine obtains statistics concerning function
 evaluation and CPU time used for unconstrained or bound-constrained
-opti‐ mization in a standardized format. The problem under
-consideration is to minimize or maximize an objective function f(x)
-over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
-function is group-partially separable.
+optimization in a standardized format. The problem under consideration
+is to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to the simple bounds xl≤x≤xu. The objective function is group-
+partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
@@ -201,13 +201,13 @@ ureport
 """    cdimen(io_err, input, n, m, libname)
 
 The cdimen subroutine discovers how many variables and constraints are
-involved in the problem decoded from a SIF file by the script sifde‐
-coder. The problem under consideration is to minimize or maximize an
-objective function f(x) over all x ∈ Rn subject to general equations
-ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈
-mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
-group-partially separa‐ ble and all constraint functions are partially
-separable.
+involved in the problem decoded from a SIF file by the script
+sifdecoder. The problem under consideration is to minimize or maximize
+an objective function f(x) over all x ∈ Rn subject to general
+equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
+ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
+objective function is group-partially separable and all constraint
+functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - input:   [IN] Array{Cint, 1}
@@ -228,12 +228,12 @@ cdimen
 The cdimsj subroutine determines the number of nonzero elements
 required to store the matrix of gradients of the objective function
 and constraint functions for the problem decoded into OUTSDIF.d in the
-con‐ strained minimization case. The matrix is stored in sparse
-format. The problem under consideration is to minimize or maximize an
+constrained minimization case. The matrix is stored in sparse format.
+The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to general equations
 ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈
 mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
-group-partially separa‐ ble and all constraint functions are partially
+group-partially separable and all constraint functions are partially
 separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -258,7 +258,7 @@ under consideration is to minimize or maximize an objective function
 f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
 and simple bounds xl≤x≤xu. The objective function is group-partially
-separa‐ ble and all constraint functions are partially separable.
+separable and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - nnzh:    [OUT] Array{Cint, 1}
@@ -283,7 +283,7 @@ Hessian matrix. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:    [OUT] Array{Cint, 1}
@@ -308,7 +308,7 @@ the script sifdecoder. The problem under consideration is to minimize
 or maximize an objective function f(x) over all x ∈ Rn subject to
 general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -326,12 +326,12 @@ cvartype
 
 """    cnames(io_err, n, m, pname, vname, cname, libname)
 
-The cnames subroutine obtains the names of the problem, its vari‐
-ables and general constraints. The problem under consideration is to
+The cnames subroutine obtains the names of the problem, its variables
+and general constraints. The problem under consideration is to
 minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
 inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
-xl≤x≤xu. The objective function is group-partially separa‐ ble and all
+xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -354,11 +354,11 @@ cnames
 
 The creport subroutine obtains statistics concerning function
 evaluation and CPU time used for constrained optimization in a
-standard‐ ized format. The problem under consideration is to minimize
-or maximize an objective function f(x) over all x ∈ Rn subject to
-general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
+standardized format. The problem under consideration is to minimize or
+maximize an objective function f(x) over all x ∈ Rn subject to general
+equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -376,12 +376,12 @@ creport
 
 """    connames(io_err, m, cname, libname)
 
-The connames subroutine obtains the names of the general con‐ straints
+The connames subroutine obtains the names of the general constraints
 of the problem. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -405,7 +405,7 @@ decoding a SIF file. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -428,7 +428,7 @@ under consideration is to minimize or maximize an objective function
 f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
 and simple bounds xl≤x≤xu. The objective function is group-partially
-separa‐ ble and all constraint functions are partially separable.
+separable and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
@@ -444,12 +444,12 @@ probname
 
 """    varnames(io_err, n, vname, libname)
 
-The varnames subroutine obtains the names of the problem vari‐ ables.
+The varnames subroutine obtains the names of the problem variables.
 The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to general equations
 ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈
 mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
-group-partially separa‐ ble and all constraint functions are partially
+group-partially separable and all constraint functions are partially
 separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -489,8 +489,8 @@ ufn
 
 """    ugr(io_err, n, x, g, libname)
 
-The ugr subroutine evaluates the gradient of the objective func‐ tion
-of the problem decoded from a SIF file by the script sifdecoder at the
+The ugr subroutine evaluates the gradient of the objective function of
+the problem decoded from a SIF file by the script sifdecoder at the
 point X. The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
@@ -590,7 +590,7 @@ udh
 The ush subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X. This Hessian matrix is stored as a sparse
-matrix in coor‐ dinate format. The problem under consideration is to
+matrix in coordinate format. The problem under consideration is to
 minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
@@ -740,7 +740,7 @@ ugreh
 
 """    uhprod(io_err, n, goth, x, vector, result, libname)
 
-The uhprod subroutine forms the product of a vector with the Hes‐ sian
+The uhprod subroutine forms the product of a vector with the Hessian
 matrix of the objective function of the problem decoded from a SIF
 file by the script sifdecoder at the point X. The problem under
 consideration is to minimize or maximize an objective function f(x)
@@ -771,7 +771,7 @@ the script sifdecoder at the point X. The problem under consideration
 is to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
 inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
-xl≤x≤xu. The objective function is group-partially separa‐ ble and all
+xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -798,7 +798,7 @@ point X, and possibly its gradient. The problem under consideration is
 to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
 inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
-xl≤x≤xu. The objective function is group-partially separa‐ ble and all
+xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -825,7 +825,7 @@ point X, and possibly its gradient in sparse format. The problem under
 consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
 general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
-bounds xl≤x≤xu. The objective function is group-partially separa‐ ble
+bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -849,14 +849,14 @@ cofsg
 
 """    ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, libname)
 
-The ccfg subroutine evaluates the values of the constraint func‐ tions
+The ccfg subroutine evaluates the values of the constraint functions
 of the problem decoded from a SIF file by the script sifdecoder at the
-point X, and possibly their gradients. The problem under considera‐
-tion is to minimize or maximize an objective function f(x) over all x
-∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
-inequal‐ ities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
+point X, and possibly their gradients. The problem under consideration
+is to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
+inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
-constraint func‐ tions are partially separable.
+constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -887,7 +887,7 @@ problem under consideration is to minimize or maximize an objective
 function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
 ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
 and simple bounds xl≤x≤xu. The objective function is group-partially
-separa‐ ble and all constraint functions are partially separable.
+separable and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -909,15 +909,15 @@ clfg
 
 """    cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, libname)
 
-The cgr subroutine evaluates the gradients of the general con‐
-straints and of either the objective function f(x) or the Lagrangian
-function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from
-a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
-problem under consideration is to minimize or maximize an objective
-function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
-∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
+The cgr subroutine evaluates the gradients of the general constraints
+and of either the objective function f(x) or the Lagrangian function
+l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF
+file by the script sifdecoder at the point (x,y)= (X,Y). The problem
+under consideration is to minimize or maximize an objective function
+f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
+1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
 and simple bounds xl≤x≤xu. The objective function is group-partially
-separa‐ ble and all constraint functions are partially separable.
+separable and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -942,16 +942,16 @@ cgr
 
 """    csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, libname)
 
-The csgr subroutine evaluates the gradients of the general con‐
-straints and of either the objective function or the Lagrangian
-function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from
-a SIF file by the script sifdecoder at the point (x,y)= (X,Y). It also
+The csgr subroutine evaluates the gradients of the general constraints
+and of either the objective function or the Lagrangian function
+l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF
+file by the script sifdecoder at the point (x,y)= (X,Y). It also
 evaluates the Hessian matrix of the Lagrangian function at (x,y). The
 gradients are stored in a sparse format. The problem under
 consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
 general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
-bounds xl≤x≤xu. The objective function is group-partially separa‐ ble
+bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -977,15 +977,15 @@ csgr
 
 """    ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad, libname)
 
-The ccfsg subroutine evaluates the values of the constraint func‐
-tions of the problem decoded from a SIF file by the script sifdecoder
-at the point X, and possibly their gradients in the constrained
-minimization case. The gradients are stored in sparse format. The
-problem under consideration is to minimize or maximize an objective
-function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
-∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
-and simple bounds xl≤x≤xu. The objective function is group-partially
-separa‐ ble and all constraint functions are partially separable.
+The ccfsg subroutine evaluates the values of the constraint functions
+of the problem decoded from a SIF file by the script sifdecoder at the
+point X, and possibly their gradients in the constrained minimization
+case. The gradients are stored in sparse format. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
+general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
+bounds xl≤x≤xu. The objective function is group-partially separable
+and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1010,7 +1010,7 @@ ccfsg
 
 """    ccifg(io_err, n, icon, x, ci, gci, grad, libname)
 
-The ccifg subroutine evaluates the value of a particular con‐ straint
+The ccifg subroutine evaluates the value of a particular constraint
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X, and possibly its gradient in the
 constrained minimization case. The problem under consideration is to
@@ -1018,7 +1018,7 @@ minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
 inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
-constraint func‐ tions are partially separable.
+constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1039,7 +1039,7 @@ ccifg
 
 """    ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad, libname)
 
-The ccifsg subroutine evaluates the value of a particular con‐ straint
+The ccifsg subroutine evaluates the value of a particular constraint
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X, and possibly its gradient in the
 constrained minimization case. The gradient is stored in sparse
@@ -1072,17 +1072,17 @@ ccifsg
 
 """    cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val, libname)
 
-The cgrdh subroutine evaluates the gradients of the general con‐
-straints and of either the objective function f(x) or the Lagrangian
-function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from
-a SIF file by the script sifdecoder at the point (x,y)= (X,Y). It also
-evaluates the Hessian matrix of the Lagrangian function at (x,y). The
-gradients and matrices are stored in a dense format. The problem under
-consideration is to minimize or maximize an objective function f(x)
-over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
-general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
-bounds xl≤x≤xu. The objective function is group-partially separa‐ ble
-and all constraint functions are partially separable.
+The cgrdh subroutine evaluates the gradients of the general
+constraints and of either the objective function f(x) or the
+Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem
+decoded from a SIF file by the script sifdecoder at the point (x,y)=
+(X,Y). It also evaluates the Hessian matrix of the Lagrangian function
+at (x,y). The gradients and matrices are stored in a dense format. The
+problem under consideration is to minimize or maximize an objective
+function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
+∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
+and simple bounds xl≤x≤xu. The objective function is group-partially
+separable and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1116,7 +1116,7 @@ as a dense matrix. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -1138,14 +1138,14 @@ cdh
 
 """    csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col, libname)
 
-The csh subroutine evaluates the Hessian of the Lagrangian func‐ tion
+The csh subroutine evaluates the Hessian of the Lagrangian function
 l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the
 script sifdecoder at the point (x,y)= (X,Y). The matrix is stored in
 sparse format. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -1177,7 +1177,7 @@ stored in sparse format. The problem under consideration is to
 minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
 inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
-xl≤x≤xu. The objective function is group-partially separa‐ ble and all
+xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -1212,7 +1212,7 @@ The problem under consideration consists in minimizing (or maximizing)
 an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group- partially separable and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:     [OUT] Array{Cint, 1}
@@ -1244,12 +1244,12 @@ ceh
 The cidh subroutine evaluates the Hessian matrix of either the
 objective function or a constraint function for the problem decoded
 from a SIF file by the script sifdecoder at the point X, and possibly
-its gra‐ dient. The matrix is stored as a dense matrix. The problem
+its gradient. The matrix is stored as a dense matrix. The problem
 under consideration is to minimize or maximize an objective function
 f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
 and simple bounds xl≤x≤xu. The objective function is group-partially
-separa‐ ble and all constraint functions are partially separable.
+separable and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1269,14 +1269,14 @@ cidh
 
 """    cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col, libname)
 
-The cish subroutine evaluates the Hessian of a particular con‐ straint
+The cish subroutine evaluates the Hessian of a particular constraint
 function or the objective function for the problem decoded from a SIF
-file by the script sifdecoder at the point X, and possibly its gradi‐
-ent. The matrix is stored in sparse format. The problem under
+file by the script sifdecoder at the point X, and possibly its
+gradient. The matrix is stored in sparse format. The problem under
 consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
 general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
-bounds xl≤x≤xu. The objective function is group-partially separa‐ ble
+bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -1301,8 +1301,8 @@ cish
 """    csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
 h_val, h_row, h_col, libname)
 
-The csgrsh subroutine evaluates the gradients of the general con‐
-straints, the Hessian matrix of the Lagrangian function
+The csgrsh subroutine evaluates the gradients of the general
+constraints, the Hessian matrix of the Lagrangian function
 l(x,y)=f(x)+yTc(x) and the gradient of either the objective function
 or the Lagrangian corresponding to the problem decoded from a SIF file
 by the script sifdecoder at the point (x,y)= (X,Y). The data is stored
@@ -1310,7 +1310,7 @@ in sparse format. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -1355,7 +1355,7 @@ under consideration consists in minimizing (or maximizing) an
 objective function f(x) over all x ∈ Rn subject to general equations
 ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈
 mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
-group- partially separable and all constraint functions are partially
+group-partially separable and all constraint functions are partially
 separable.
 
   - io_err:     [OUT] Array{Cint, 1}
@@ -1390,14 +1390,14 @@ csgreh
 
 """    chprod(io_err, n, m, goth, x, y, vector, result, libname)
 
-The chprod subroutine forms the product of a vector with the Hes‐ sian
+The chprod subroutine forms the product of a vector with the Hessian
 matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to
 the problem decoded from a SIF file by the script sifdecoder at the
 point (x,y)= (X,Y). The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -1420,14 +1420,14 @@ chprod
 
 """    chcprod(io_err, n, m, goth, x, y, vector, result, libname)
 
-The chcprod subroutine forms the product of a vector with the Hes‐
-sian matrix of the constraint part of the Lagrangian function yTc(x)
-of the problem decoded from a SIF file by the script sifdecoder at the
-point (x,y)= (X,Y). The problem under consideration is to minimize or
+The chcprod subroutine forms the product of a vector with the Hessian
+matrix of the constraint part of the Lagrangian function yTc(x) of the
+problem decoded from a SIF file by the script sifdecoder at the point
+(x,y)= (X,Y). The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
@@ -1450,14 +1450,14 @@ chcprod
 
 """    cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult, libname)
 
-The cjprod subroutine forms the product of a vector with the Jaco‐
-bian matrix, or with its transpose, of the constraint functions of the
+The cjprod subroutine forms the product of a vector with the Jacobian
+matrix, or with its transpose, of the constraint functions of the
 problem decoded from a SIF file by the script sifdecoder evaluated at
 the point X. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
 equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
 ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
-objective function is group-partially separa‐ ble and all constraint
+objective function is group-partially separable and all constraint
 functions are partially separable.
 
   - io_err:  [OUT] Array{Cint, 1}
