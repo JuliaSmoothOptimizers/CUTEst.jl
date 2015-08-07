@@ -37,8 +37,10 @@ if cutest is "":
 
 # Read from $CUTEST/man/man3/cutest_... between DESCRIPTION and ARGUMENTS
 def man_description(name):
+    my_env = os.environ
+    my_env["MANWIDTH"] = "1000"
     out = subprocess.check_output(["man", "-P", "cat", "cutest_"+name],
-            universal_newlines = True)
+            universal_newlines = True, env = my_env)
     desc = []
     parsing = False
     for line in out.split("\n"):
