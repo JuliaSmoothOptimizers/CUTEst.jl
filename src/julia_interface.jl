@@ -68,6 +68,17 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
   return grad ? (f[1], g) : f[1];
 end
 
+"""    obj(nlp, x)
+
+Computes the objective function value at x.
+Usage:
+
+    f = obj(nlp, x)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - f:    [OUT] Float64
+"""
 obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
 
 """    cons_coord(nlp, x, jac)
