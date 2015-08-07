@@ -1,5 +1,5 @@
 export objcons, objgrad, obj, grad, grad!,
-       cons_coord, cons, cons!,
+       cons_coord, cons, cons!, jac_coord, jac,
        hess_coord, hess, hprod, hprod!
 
 """    objcons(nlp, x)
@@ -124,6 +124,7 @@ function grad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
 
   return g
 end
+
 """    cons_coord(nlp, x, jac)
 
 Computes the constraint vector and, if jac is `true`, the Jacobian in
@@ -227,6 +228,40 @@ function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
   @cutest_error
 
   return c;
+end
+
+"""    jac_coord(nlp, x)
+
+Computes the constraint Jacobian in coordinate format.
+Usage:
+
+    jrow, jcol, jval = cons_coord(nlp, x)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - jrow: [OUT] Array{Int32, 1}
+  - jcol: [OUT] Array{Int32, 1}
+  - jval: [OUT] Array{Float64, 1}
+"""
+function jac_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
+  c, jrow, jcol, jval = cons_coord(nlp, x, true)
+  return (jrow, jcol, jval)
+end
+
+"""    jac(nlp, x)
+
+Computes the constraint Jacobian using the internal sparse format.
+Usage:
+
+    J = jac (nlp, x)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}
+"""
+function jac(nlp :: CUTEstModel, x :: Array{Float64,1})
+  c, J = cons(nlp, x, true)
+  return J
 end
 
 """    hess_coord(nlp, x, y)

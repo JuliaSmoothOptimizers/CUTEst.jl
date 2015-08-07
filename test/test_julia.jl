@@ -20,6 +20,11 @@ if nlp.meta.ncon > 0
   @test_approx_eq_eps fx f(x0) 1e-8
   @test_approx_eq_eps cx c(x0) 1e-8
 
+  (cx, jrow, jcol, jval) = cons_coord(nlp, x0, true)
+  Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
+  @test_approx_eq_eps cx c(x0) 1e-8
+  @test_approx_eq_eps Jx J(x0) 1e-8
+
   (cx, Jx) = cons(nlp, x0, true);
   @test_approx_eq_eps cx c(x0) 1e-8
   @test_approx_eq_eps Jx J(x0) 1e-8
@@ -33,6 +38,13 @@ if nlp.meta.ncon > 0
   fill!(cx, 0.0)
   cons!(nlp, x0, cx)
   @test_approx_eq_eps cx c(x0) 1e-8
+
+  (jrow, jcol, jval) = jac_coord(nlp, x0)
+  Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
+  @test_approx_eq_eps Jx J(x0) 1e-8
+
+  Jx = jac(nlp, x0)
+  @test_approx_eq_eps Jx J(x0) 1e-8
 
   println("c(x0) = ", cx);
   println("J(x0) = "); println(full(Jx));
