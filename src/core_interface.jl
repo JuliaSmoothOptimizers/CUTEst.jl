@@ -513,4 +513,3 @@ function cterminate(io_err::Array{Cint, 1}, libname)
     $(io_err))
 end
 
-include("core_documentation.jl")
