@@ -33,7 +33,6 @@ function usetup!(input::Int, out::Int, io_buffer::Int, n::Int, x::Array{Float64,
   return
 end
 
-
 function csetup(input::Int, out::Int, io_buffer::Int, n::Int, m::Int, e_order::Int,
     l_order::Int, v_order::Int, libname)
   io_err = Cint[0]
@@ -67,7 +66,6 @@ function csetup!(input::Int, out::Int, io_buffer::Int, n::Int, m::Int,
   return
 end
 
-
 function udimen(input::Int, libname)
   io_err = Cint[0]
   n = Cint[0]
@@ -76,32 +74,6 @@ function udimen(input::Int, libname)
   return n[1]
 end
 
-function udimen!(input::Int, libname)
-  io_err = Cint[0]
-  n = Cint[0]
-  @eval udimen($(io_err), $(Cint[input]), $(n), $(libname))
-  @cutest_error
-  return n[1]
-end
-
-
-function udimen(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  n = Cint[0]
-  @eval udimen($(io_err), $(Cint[input]), $(n), $(nlp.libname))
-  @cutest_error
-  return n[1]
-end
-
-function udimen!(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  n = Cint[0]
-  @eval udimen($(io_err), $(Cint[input]), $(n), $(nlp.libname))
-  @cutest_error
-  return n[1]
-end
-
-
 function udimsh(libname)
   io_err = Cint[0]
   nnzh = Cint[0]
@@ -109,32 +81,6 @@ function udimsh(libname)
   @cutest_error
   return nnzh[1]
 end
-
-function udimsh!(libname)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval udimsh($(io_err), $(nnzh), $(libname))
-  @cutest_error
-  return nnzh[1]
-end
-
-
-function udimsh(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval udimsh($(io_err), $(nnzh), $(nlp.libname))
-  @cutest_error
-  return nnzh[1]
-end
-
-function udimsh!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval udimsh($(io_err), $(nnzh), $(nlp.libname))
-  @cutest_error
-  return nnzh[1]
-end
-
 
 function udimse(libname)
   io_err = Cint[0]
@@ -146,41 +92,6 @@ function udimse(libname)
   @cutest_error
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
-
-function udimse!(libname)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval udimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
-
-function udimse(nlp::CUTEstModel)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval udimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(nlp.libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
-function udimse!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval udimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(nlp.libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
 
 function uvartype(n::Int, libname)
   io_err = Cint[0]
@@ -208,35 +119,6 @@ function uvartype!(n::Int, x_type::Array{Cint, 1}, libname)
   return
 end
 
-function uvartype(nlp::CUTEstModel)
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  x_type = Array(Cint, n)
-  @eval uvartype($(io_err), $(Cint[n]), $(x_type), $(nlp.libname))
-  @cutest_error
-  return x_type
-end
-
-function uvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  x_type_cp = Array(Cint, n)
-  @eval uvartype($(io_err), $(Cint[n]), $(x_type_cp), $(nlp.libname))
-  @cutest_error
-  for i = 1:n
-    x_type[i] = x_type_cp[i]
-  end
-  return
-end
-
-function uvartype!(nlp::CUTEstModel, x_type::Array{Cint, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  @eval uvartype($(io_err), $(Cint[n]), $(x_type), $(nlp.libname))
-  @cutest_error
-  return
-end
-
 function unames(n::Int, libname)
   io_err = Cint[0]
   pname = Cchar[0]
@@ -254,29 +136,6 @@ function unames!(n::Int, vname::Array{Uint8, 1}, libname)
   return pname[1]
 end
 
-
-function unames(nlp::CUTEstModel)
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  pname = Cchar[0]
-  vname = Array(Cchar, n)
-  @eval unames($(io_err), $(Cint[n]), $(pname), $(vname),
-    $(nlp.libname))
-  @cutest_error
-  return pname[1], vname
-end
-
-function unames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  pname = Cchar[0]
-  @eval unames($(io_err), $(Cint[n]), $(pname), $(vname),
-    $(nlp.libname))
-  @cutest_error
-  return pname[1]
-end
-
-
 function ureport(libname)
   io_err = Cint[0]
   calls = Array(Cdouble, 4)
@@ -292,7 +151,6 @@ function ureport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname)
   @cutest_error
   return
 end
-
 
 function ureport(nlp::CUTEstModel)
   io_err = Cint[0]
@@ -310,7 +168,6 @@ function ureport!(nlp::CUTEstModel, calls::Array{Float64, 1}, time::Array{Float6
   return
 end
 
-
 function cdimen(input::Int, libname)
   io_err = Cint[0]
   n = Cint[0]
@@ -320,35 +177,6 @@ function cdimen(input::Int, libname)
   return n[1], m[1]
 end
 
-function cdimen!(input::Int, libname)
-  io_err = Cint[0]
-  n = Cint[0]
-  m = Cint[0]
-  @eval cdimen($(io_err), $(Cint[input]), $(n), $(m), $(libname))
-  @cutest_error
-  return n[1], m[1]
-end
-
-
-function cdimen(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  n = Cint[0]
-  m = Cint[0]
-  @eval cdimen($(io_err), $(Cint[input]), $(n), $(m), $(nlp.libname))
-  @cutest_error
-  return n[1], m[1]
-end
-
-function cdimen!(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  n = Cint[0]
-  m = Cint[0]
-  @eval cdimen($(io_err), $(Cint[input]), $(n), $(m), $(nlp.libname))
-  @cutest_error
-  return n[1], m[1]
-end
-
-
 function cdimsj(libname)
   io_err = Cint[0]
   nnzj = Cint[0]
@@ -357,32 +185,6 @@ function cdimsj(libname)
   return nnzj[1]
 end
 
-function cdimsj!(libname)
-  io_err = Cint[0]
-  nnzj = Cint[0]
-  @eval cdimsj($(io_err), $(nnzj), $(libname))
-  @cutest_error
-  return nnzj[1]
-end
-
-
-function cdimsj(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzj = Cint[0]
-  @eval cdimsj($(io_err), $(nnzj), $(nlp.libname))
-  @cutest_error
-  return nnzj[1]
-end
-
-function cdimsj!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzj = Cint[0]
-  @eval cdimsj($(io_err), $(nnzj), $(nlp.libname))
-  @cutest_error
-  return nnzj[1]
-end
-
-
 function cdimsh(libname)
   io_err = Cint[0]
   nnzh = Cint[0]
@@ -390,32 +192,6 @@ function cdimsh(libname)
   @cutest_error
   return nnzh[1]
 end
-
-function cdimsh!(libname)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval cdimsh($(io_err), $(nnzh), $(libname))
-  @cutest_error
-  return nnzh[1]
-end
-
-
-function cdimsh(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval cdimsh($(io_err), $(nnzh), $(nlp.libname))
-  @cutest_error
-  return nnzh[1]
-end
-
-function cdimsh!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nnzh = Cint[0]
-  @eval cdimsh($(io_err), $(nnzh), $(nlp.libname))
-  @cutest_error
-  return nnzh[1]
-end
-
 
 function cdimse(libname)
   io_err = Cint[0]
@@ -427,41 +203,6 @@ function cdimse(libname)
   @cutest_error
   return ne[1], he_val_ne[1], he_row_ne[1]
 end
-
-function cdimse!(libname)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval cdimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
-
-function cdimse(nlp::CUTEstModel)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval cdimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(nlp.libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
-function cdimse!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  ne = Cint[0]
-  he_val_ne = Cint[0]
-  he_row_ne = Cint[0]
-  @eval cdimse($(io_err), $(ne), $(he_val_ne), $(he_row_ne),
-    $(nlp.libname))
-  @cutest_error
-  return ne[1], he_val_ne[1], he_row_ne[1]
-end
-
 
 function cstats(libname)
   io_err = Cint[0]
@@ -476,20 +217,6 @@ function cstats(libname)
   return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
 
-function cstats!(libname)
-  io_err = Cint[0]
-  nonlinear_variables_objective = Cint[0]
-  nonlinear_variables_constraints = Cint[0]
-  equality_constraints = Cint[0]
-  linear_constraints = Cint[0]
-  @eval cstats($(io_err), $(nonlinear_variables_objective),
-    $(nonlinear_variables_constraints), $(equality_constraints),
-    $(linear_constraints), $(libname))
-  @cutest_error
-  return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
-end
-
-
 function cstats(nlp::CUTEstModel)
   io_err = Cint[0]
   nonlinear_variables_objective = Cint[0]
@@ -502,20 +229,6 @@ function cstats(nlp::CUTEstModel)
   @cutest_error
   return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
 end
-
-function cstats!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  nonlinear_variables_objective = Cint[0]
-  nonlinear_variables_constraints = Cint[0]
-  equality_constraints = Cint[0]
-  linear_constraints = Cint[0]
-  @eval cstats($(io_err), $(nonlinear_variables_objective),
-    $(nonlinear_variables_constraints), $(equality_constraints),
-    $(linear_constraints), $(nlp.libname))
-  @cutest_error
-  return nonlinear_variables_objective[1], nonlinear_variables_constraints[1], equality_constraints[1], linear_constraints[1]
-end
-
 
 function cvartype(n::Int, libname)
   io_err = Cint[0]
@@ -543,35 +256,6 @@ function cvartype!(n::Int, x_type::Array{Cint, 1}, libname)
   return
 end
 
-function cvartype(nlp::CUTEstModel)
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  x_type = Array(Cint, n)
-  @eval cvartype($(io_err), $(Cint[n]), $(x_type), $(nlp.libname))
-  @cutest_error
-  return x_type
-end
-
-function cvartype!(nlp::CUTEstModel, x_type::Array{Int, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  x_type_cp = Array(Cint, n)
-  @eval cvartype($(io_err), $(Cint[n]), $(x_type_cp), $(nlp.libname))
-  @cutest_error
-  for i = 1:n
-    x_type[i] = x_type_cp[i]
-  end
-  return
-end
-
-function cvartype!(nlp::CUTEstModel, x_type::Array{Cint, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  @eval cvartype($(io_err), $(Cint[n]), $(x_type), $(nlp.libname))
-  @cutest_error
-  return
-end
-
 function cnames(n::Int, m::Int, libname)
   io_err = Cint[0]
   pname = Cchar[0]
@@ -592,7 +276,6 @@ function cnames!(n::Int, m::Int, vname::Array{Uint8, 1}, cname::Array{Uint8, 1},
   @cutest_error
   return pname[1]
 end
-
 
 function cnames(nlp::CUTEstModel)
   io_err = Cint[0]
@@ -618,7 +301,6 @@ function cnames!(nlp::CUTEstModel, vname::Array{Uint8, 1}, cname::Array{Uint8, 1
   return pname[1]
 end
 
-
 function creport(libname)
   io_err = Cint[0]
   calls = Array(Cdouble, 7)
@@ -634,7 +316,6 @@ function creport!(calls::Array{Float64, 1}, time::Array{Float64, 1}, libname)
   @cutest_error
   return
 end
-
 
 function creport(nlp::CUTEstModel)
   io_err = Cint[0]
@@ -652,7 +333,6 @@ function creport!(nlp::CUTEstModel, calls::Array{Float64, 1}, time::Array{Float6
   return
 end
 
-
 function connames(m::Int, libname)
   io_err = Cint[0]
   cname = Array(Cchar, m)
@@ -667,7 +347,6 @@ function connames!(m::Int, cname::Array{Uint8, 1}, libname)
   @cutest_error
   return
 end
-
 
 function connames(nlp::CUTEstModel)
   io_err = Cint[0]
@@ -686,7 +365,6 @@ function connames!(nlp::CUTEstModel, cname::Array{Uint8, 1})
   return
 end
 
-
 function pname(input::Int, libname)
   io_err = Cint[0]
   pname = Cchar[0]
@@ -694,15 +372,6 @@ function pname(input::Int, libname)
   @cutest_error
   return pname[1]
 end
-
-function pname!(input::Int, libname)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval pname($(io_err), $(Cint[input]), $(pname), $(libname))
-  @cutest_error
-  return pname[1]
-end
-
 
 function pname(nlp::CUTEstModel, input::Int)
   io_err = Cint[0]
@@ -712,15 +381,6 @@ function pname(nlp::CUTEstModel, input::Int)
   return pname[1]
 end
 
-function pname!(nlp::CUTEstModel, input::Int)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval pname($(io_err), $(Cint[input]), $(pname), $(nlp.libname))
-  @cutest_error
-  return pname[1]
-end
-
-
 function probname(libname)
   io_err = Cint[0]
   pname = Cchar[0]
@@ -729,15 +389,6 @@ function probname(libname)
   return pname[1]
 end
 
-function probname!(libname)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval probname($(io_err), $(pname), $(libname))
-  @cutest_error
-  return pname[1]
-end
-
-
 function probname(nlp::CUTEstModel)
   io_err = Cint[0]
   pname = Cchar[0]
@@ -745,15 +396,6 @@ function probname(nlp::CUTEstModel)
   @cutest_error
   return pname[1]
 end
-
-function probname!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  pname = Cchar[0]
-  @eval probname($(io_err), $(pname), $(nlp.libname))
-  @cutest_error
-  return pname[1]
-end
-
 
 function varnames(n::Int, libname)
   io_err = Cint[0]
@@ -770,25 +412,6 @@ function varnames!(n::Int, vname::Array{Uint8, 1}, libname)
   return
 end
 
-
-function varnames(nlp::CUTEstModel)
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  vname = Array(Cchar, n)
-  @eval varnames($(io_err), $(Cint[n]), $(vname), $(nlp.libname))
-  @cutest_error
-  return vname
-end
-
-function varnames!(nlp::CUTEstModel, vname::Array{Uint8, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  @eval varnames($(io_err), $(Cint[n]), $(vname), $(nlp.libname))
-  @cutest_error
-  return
-end
-
-
 function ufn(n::Int, x::Array{Float64, 1}, libname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -796,15 +419,6 @@ function ufn(n::Int, x::Array{Float64, 1}, libname)
   @cutest_error
   return f[1]
 end
-
-function ufn!(n::Int, x::Array{Float64, 1}, libname)
-  io_err = Cint[0]
-  f = Cdouble[0]
-  @eval ufn($(io_err), $(Cint[n]), $(x), $(f), $(libname))
-  @cutest_error
-  return f[1]
-end
-
 
 function ufn(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
@@ -814,16 +428,6 @@ function ufn(nlp::CUTEstModel, x::Array{Float64, 1})
   @cutest_error
   return f[1]
 end
-
-function ufn!(nlp::CUTEstModel, x::Array{Float64, 1})
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  f = Cdouble[0]
-  @eval ufn($(io_err), $(Cint[n]), $(x), $(f), $(nlp.libname))
-  @cutest_error
-  return f[1]
-end
-
 
 function ugr(n::Int, x::Array{Float64, 1}, libname)
   io_err = Cint[0]
@@ -839,7 +443,6 @@ function ugr!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, libname)
   @cutest_error
   return
 end
-
 
 function ugr(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
@@ -857,7 +460,6 @@ function ugr!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1})
   @cutest_error
   return
 end
-
 
 function uofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname)
   io_err = Cint[0]
@@ -878,7 +480,6 @@ function uofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool,
   @cutest_error
   return f[1]
 end
-
 
 function uofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
@@ -902,7 +503,6 @@ function uofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   return f[1]
 end
 
-
 function ubandh(n::Int, x::Array{Float64, 1}, semibandwidth::Int, lbandh::Int,
     libname)
   io_err = Cint[0]
@@ -923,7 +523,6 @@ function ubandh!(n::Int, x::Array{Float64, 1}, semibandwidth::Int,
   @cutest_error
   return max_semibandwidth[1]
 end
-
 
 function ubandh(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
     lbandh::Int)
@@ -948,7 +547,6 @@ function ubandh!(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
   return max_semibandwidth[1]
 end
 
-
 function udh(n::Int, x::Array{Float64, 1}, lh1::Int, libname)
   io_err = Cint[0]
   h = Array(Cdouble, lh1, n)
@@ -966,7 +564,6 @@ function udh!(n::Int, x::Array{Float64, 1}, lh1::Int, h::Array{Float64, 2},
   @cutest_error
   return
 end
-
 
 function udh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
   io_err = Cint[0]
@@ -987,7 +584,6 @@ function udh!(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int, h::Array{Float64
   @cutest_error
   return
 end
-
 
 function ush(n::Int, x::Array{Float64, 1}, lh::Int, libname)
   io_err = Cint[0]
@@ -1201,7 +797,6 @@ function ugrdh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh1::Int,
   return
 end
 
-
 function ugrdh(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -1222,7 +817,6 @@ function ugrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   @cutest_error
   return
 end
-
 
 function ugrsh(n::Int, x::Array{Float64, 1}, lh::Int, libname)
   io_err = Cint[0]
@@ -1449,7 +1043,6 @@ function uhprod!(n::Int, goth::Bool, x::Array{Float64, 1}, vector::Array{Float64
   return
 end
 
-
 function uhprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1})
   io_err = Cint[0]
@@ -1471,7 +1064,6 @@ function uhprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
   return
 end
 
-
 function cfn(n::Int, m::Int, x::Array{Float64, 1}, libname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1490,7 +1082,6 @@ function cfn!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, libnam
   @cutest_error
   return f[1]
 end
-
 
 function cfn(nlp::CUTEstModel, x::Array{Float64, 1})
   io_err = Cint[0]
@@ -1515,7 +1106,6 @@ function cfn!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1})
   return f[1]
 end
 
-
 function cofg(n::Int, x::Array{Float64, 1}, grad::Bool, libname)
   io_err = Cint[0]
   f = Cdouble[0]
@@ -1535,7 +1125,6 @@ function cofg!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, grad::Bool,
   @cutest_error
   return f[1]
 end
-
 
 function cofg(nlp::CUTEstModel, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
@@ -1558,7 +1147,6 @@ function cofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
   @cutest_error
   return f[1]
 end
-
 
 function cofsg(n::Int, x::Array{Float64, 1}, lg::Int, grad::Bool, libname)
   io_err = Cint[0]
@@ -1662,7 +1250,6 @@ function ccfg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1},
   return
 end
 
-
 function ccfg(nlp::CUTEstModel, x::Array{Float64, 1}, jtrans::Bool, lcjac1::Int,
     lcjac2::Int, grad::Bool)
   io_err = Cint[0]
@@ -1690,7 +1277,6 @@ function ccfg!(nlp::CUTEstModel, x::Array{Float64, 1}, c::Array{Float64, 1},
   return
 end
 
-
 function clfg(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grad::Bool, libname)
   io_err = Cint[0]
@@ -1711,7 +1297,6 @@ function clfg!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   @cutest_error
   return f[1]
 end
-
 
 function clfg(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grad::Bool)
@@ -1738,7 +1323,6 @@ function clfg!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return f[1]
 end
 
-
 function cgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, jtrans::Bool, lj1::Int, lj2::Int, libname)
   io_err = Cint[0]
@@ -1761,7 +1345,6 @@ function cgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   @cutest_error
   return
 end
-
 
 function cgr(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, jtrans::Bool, lj1::Int, lj2::Int)
@@ -1789,7 +1372,6 @@ function cgr!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   @cutest_error
   return
 end
-
 
 function csgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, libname)
@@ -2011,7 +1593,6 @@ function ccifg!(n::Int, icon::Int, x::Array{Float64, 1}, gci::Array{Float64, 1},
   return ci[1]
 end
 
-
 function ccifg(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2033,7 +1614,6 @@ function ccifg!(nlp::CUTEstModel, icon::Int, x::Array{Float64, 1},
   @cutest_error
   return ci[1]
 end
-
 
 function ccifsg(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int, grad::Bool,
     libname)
@@ -2148,7 +1728,6 @@ function cgrdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
   return
 end
 
-
 function cgrdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, jtrans::Bool, lj1::Int, lj2::Int, lh1::Int)
   io_err = Cint[0]
@@ -2177,7 +1756,6 @@ function cgrdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   return
 end
 
-
 function cdh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::Int,
     libname)
   io_err = Cint[0]
@@ -2196,7 +1774,6 @@ function cdh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::I
   @cutest_error
   return
 end
-
 
 function cdh(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
     lh1::Int)
@@ -2220,7 +1797,6 @@ function cdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
   @cutest_error
   return
 end
-
 
 function csh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
     libname)
@@ -2542,7 +2118,6 @@ function cidh!(n::Int, x::Array{Float64, 1}, iprob::Int, lh1::Int, h::Array{Floa
   return
 end
 
-
 function cidh(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int)
   io_err = Cint[0]
   n = nlp.meta.nvar
@@ -2562,7 +2137,6 @@ function cidh!(nlp::CUTEstModel, x::Array{Float64, 1}, iprob::Int, lh1::Int,
   @cutest_error
   return
 end
-
 
 function cish(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int, libname)
   io_err = Cint[0]
@@ -2970,7 +2544,6 @@ function chprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Floa
   return
 end
 
-
 function chprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1})
   io_err = Cint[0]
@@ -2994,7 +2567,6 @@ function chprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Fl
   return
 end
 
-
 function chcprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1}, libname)
   io_err = Cint[0]
@@ -3013,7 +2585,6 @@ function chcprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Flo
   @cutest_error
   return
 end
-
 
 function chcprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
     1}, vector::Array{Float64, 1})
@@ -3038,7 +2609,6 @@ function chcprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{F
   return
 end
 
-
 function cjprod(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, lvector::Int, lresult::Int, libname)
   io_err = Cint[0]
@@ -3060,7 +2630,6 @@ function cjprod!(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
   @cutest_error
   return
 end
-
 
 function cjprod(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, lvector::Int, lresult::Int)
@@ -3088,7 +2657,6 @@ function cjprod!(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1
   return
 end
 
-
 function uterminate(libname)
   io_err = Cint[0]
   @eval uterminate($(io_err), $(libname))
@@ -3096,56 +2664,10 @@ function uterminate(libname)
   return
 end
 
-function uterminate!(libname)
-  io_err = Cint[0]
-  @eval uterminate($(io_err), $(libname))
-  @cutest_error
-  return
-end
-
-
-function uterminate(nlp::CUTEstModel)
-  io_err = Cint[0]
-  @eval uterminate($(io_err), $(nlp.libname))
-  @cutest_error
-  return
-end
-
-function uterminate!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  @eval uterminate($(io_err), $(nlp.libname))
-  @cutest_error
-  return
-end
-
-
 function cterminate(libname)
   io_err = Cint[0]
   @eval cterminate($(io_err), $(libname))
   @cutest_error
   return
 end
-
-function cterminate!(libname)
-  io_err = Cint[0]
-  @eval cterminate($(io_err), $(libname))
-  @cutest_error
-  return
-end
-
-
-function cterminate(nlp::CUTEstModel)
-  io_err = Cint[0]
-  @eval cterminate($(io_err), $(nlp.libname))
-  @cutest_error
-  return
-end
-
-function cterminate!(nlp::CUTEstModel)
-  io_err = Cint[0]
-  @eval cterminate($(io_err), $(nlp.libname))
-  @cutest_error
-  return
-end
-
 
