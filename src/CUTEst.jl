@@ -52,6 +52,7 @@ end
 include("core_interface.jl")
 include("specialized_interface.jl")
 include("julia_interface.jl")
+include("documentation.jl")
 
 # Decode problem and build shared library.
 function sifdecoder(name :: ASCIIString)

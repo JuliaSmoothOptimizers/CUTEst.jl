@@ -5,6 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh, cdh, csh, cshc, ceh,
     cidh, cish, csgrsh, csgreh, chprod, chcprod, cjprod, uterminate,
     cterminate
+
 function usetup(io_err::Array{Cint, 1}, input::Array{Cint, 1}, out::Array{Cint, 1},
     io_buffer::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
     x_l::Array{Cdouble, 1}, x_u::Array{Cdouble, 1}, libname)

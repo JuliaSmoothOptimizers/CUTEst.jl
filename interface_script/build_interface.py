@@ -2,6 +2,7 @@
 
 import os
 import re
+import subprocess
 import textwrap
 
 # Type conversion
@@ -23,8 +24,8 @@ nlp_ignore = [ "usetup", "csetup", "udimen", "cdimen", "udimsh", "cdimsh",
 s="  "
 el='\n'+2*s
 
-def wrap(str):
-    return el.join(textwrap.wrap(str))
+def wrap(str, spc=el):
+    return spc.join(textwrap.wrap(str))
 
 # Workarounds
 ignore_intent = ["ureport", "creport"]
@@ -33,6 +34,26 @@ cutest = os.getenv('CUTEST', "")
 if cutest is "":
     print("ERROR: Variable CUTEST not set. Verify your CUTEst installation.")
     exit(1)
+
+# Read from $CUTEST/man/man3/cutest_... between DESCRIPTION and ARGUMENTS
+def man_description(name):
+    my_env = os.environ
+    my_env["MANWIDTH"] = "1000"
+    out = subprocess.check_output(["man", "-P", "cat", "cutest_"+name],
+            universal_newlines = True, env = my_env)
+    desc = []
+    parsing = False
+    for line in out.split("\n"):
+        if "DESCRIPTION" in line:
+            parsing = True
+            continue
+        if "ARGUMENTS" in line:
+            break
+        if parsing:
+            desc.append(line.strip())
+    s = re.sub('CUTEST_', ' ', " ".join(desc))
+    s = re.sub(' +', ' ', s)
+    return wrap(s, "\n")
 
 # The function definitions are being read from the C include file.
 # This should probably be improved to obtain more information about the
@@ -160,6 +181,72 @@ def arguments (args, types, intents, dims, use_types = True, use_nlp = False,
                 str.append(arg)
     return ', '.join(str)
 
+def header_doc(name):
+    str = '"""# {}\n'.format(name)
+    if name == "cstats":
+        return str
+    str += man_description(name) + "\n\n"
+    str += "This help was generated automatically and may contain\n"
+    str += "errors. For more information, run the shell command\n\n"
+    str += "    man cutest_" + name + "\n\n"
+    str += "Usage:\n\n"
+    return str
+
+def core_doc(name, args, types, intents, dims):
+    help_args = arguments(args, types, [], dims, intent="all",
+            use_nlp=False, use_types=False, all_ptrs=True, typeset=cutypes)
+    str = "    " + name + "(" + wrap(help_args, "\n") + ", libname)\n\n"
+    n = max([7] + [len(arg) for arg in args])
+    for i, arg in enumerate(args):
+        k = n - len(arg)
+        d = max([len(dims[i]), 1])
+        str += "  - {}: {}[{}] Array{{{}, {}}}\n".format(arg, " "*k,
+                intents[i].upper(), cutypes[types[i]], d)
+    str += "  - libname: {}[IN] ASCIIString\n\n".format(" "*(n-7))
+    return str
+
+def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
+    if name == "cstats":
+        return ""
+    in_args = arguments(args, types, intents, dims, intent="in",
+            use_nlp=use_nlp, use_types=False, all_ptrs=False, inplace=inplace)
+    out_args = arguments(args, types, intents, dims, intent="out",
+            use_nlp=use_nlp, use_types=False, all_ptrs=False, inplace=inplace)
+    if use_nlp:
+        in_args = in_args.replace("::CUTEstModel","")
+    else:
+        in_args += ", libname"
+
+    str = ""
+    if inplace:
+        name += "!"
+    str += "    "
+    if out_args != "":
+        str += "{} = ".format(out_args)
+    str += "{}({})\n\n".format(name, in_args)
+
+    n = max([7] + [len(arg) for arg in args])
+    if use_nlp:
+        str += "  - nlp: {}[IN] CUTEstModel\n".format(" "*(n-3))
+    for i, arg in enumerate(args):
+        if arg == "io_err":
+            continue
+        if use_nlp and arg not in in_args.split(', ')+out_args.split(', '):
+            continue
+        k = n - len(arg)
+        t = jltypes[types[i]]
+        if len(dims[i]) > 0:
+            t = "Array{{{}, {}}}".format(t, len(dims[i]))
+        str += "  - {}: {}[{}] {}\n".format(arg, " "*k,
+                intents[i].upper(), t)
+    if use_nlp:
+        str += "\n"
+    else:
+        str += "  - libname: {}[IN] ASCIIString\n\n".format(" "*(n-7))
+    return str
+
+def footer_doc(name):
+    return '"""\n' + name + "\n\n"
 
 def core_function(name, args, types, dims):
     str = ""
@@ -251,38 +338,47 @@ def need_inplace(intents, dims):
     return any([intents[i] == "out" and len(dims[i]) > 0 for i in range(n)])
 
 core_file = open("src/core_interface.jl", "w")
-inter_file = open("src/specialized_interface.jl", "w")
+spec_file = open("src/specialized_interface.jl", "w")
+docs_file = open("src/documentation.jl", "w")
 
 names = function_names()
 
-core_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
-inter_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
-inter_file.write(wrap("export " + ', '.join([x+"!" for x in names]))+"\n")
-inter_file.write("\n")
+core_file.write(wrap("export " + ', '.join([x for x in names]))+"\n\n")
+spec_file.write(wrap("export " + ', '.join([x for x in names]))+"\n")
+spec_file.write(wrap("export " + ', '.join([x+"!" for x in names]))+"\n")
+spec_file.write("\n")
 
 for name in names:
     args, types, intents, dims = get_function_data(name)
     core_file.write(core_function(name, args, types, dims))
     core_file.write("\n")
+    doc = header_doc(name)
+    doc += core_doc(name, args, types, intents, dims)
     for use_nlp in [False, True]:
         # Some functions return values that should be obtained while creating nlp
         if use_nlp and name in nlp_ignore:
             continue
-        inter_file.write(specialized_function(name, args, types,
+        spec_file.write(specialized_function(name, args, types,
             intents, dims, use_nlp=use_nlp, inplace=False))
-        inter_file.write("\n")
+        spec_file.write("\n")
+        doc += spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
+                inplace=False)
         # Some functions don't need a ! version
         if need_inplace(intents, dims):
-            inter_file.write(specialized_function(name, args, types,
-                intents, dims, use_nlp=use_nlp, inplace=True))
-            inter_file.write("\n")
+            spec_file.write(specialized_function(name, args, types, intents,
+                    dims, use_nlp=use_nlp, inplace=True))
+            spec_file.write("\n")
+            doc += spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
+                    inplace=True)
             # Integer arrays passed as inplace can be Int64 or Int32
             if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
-                inter_file.write(specialized_function(name, args, types,
+                spec_file.write(specialized_function(name, args, types,
                     intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
-                inter_file.write("\n")
-
+                spec_file.write("\n")
+    docs_file.write(doc + footer_doc(name))
+    if need_inplace(intents, dims):
+        docs_file.write(doc + footer_doc(name+"!"))
 
 core_file.close()
-inter_file.close()
-
+spec_file.close()
+docs_file.close()
