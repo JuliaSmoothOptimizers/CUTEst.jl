@@ -139,7 +139,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
                       ncon=ncon, y0=v, lcon=cl, ucon=cu,
                       nnzj=nnzj, nnzh=nnzh,
                       lin=lin, nln=nln,
-                      nlin=nlin, nnln=nnln, nnet=0,
+                      nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
   nlp = CUTEstModel(meta, libname);
