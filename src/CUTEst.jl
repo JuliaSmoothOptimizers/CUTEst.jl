@@ -13,7 +13,7 @@ cutest_instances = 0;
 
 type CUTEstModel
   meta    :: NLPModelMeta;
-  libname :: ASCIIString;
+  cutest_lib :: Ptr{Void}
 end
 
 const cutest_arch  = get(ENV, "MYARCH", "");
@@ -49,6 +49,23 @@ macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
 end
 
+# Taken from
+# http://docs.julialang.org/en/release-0.4/manual/calling-c-and-fortran-code/#indirect-calls
+macro dlsym(func, lib)
+  z, zlocal = gensym(string(func)), gensym()
+  eval(current_module(), :(global $z = C_NULL))
+  z = esc(z)
+  quote
+    let $zlocal::Ptr{Void} = $z::Ptr{Void}
+      if $zlocal == C_NULL
+        $zlocal = Libdl.dlsym($(esc(lib))::Ptr{Void}, $(esc(func)))
+        global $z = $zlocal
+      end
+      $zlocal
+    end
+  end
+end
+
 include("core_interface.jl")
 include("specialized_interface.jl")
 include("julia_interface.jl")
@@ -64,7 +81,8 @@ function sifdecoder(name :: ASCIIString)
   run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -L$cutest_dir/objects/$cutest_arch/double -lcutest_double`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
   push!(Libdl.DL_LOAD_PATH,".")
-  return libname
+  cutest_lib = Libdl.dlopen(libname)
+  return cutest_lib
 end
 
 # Initialize problem.
@@ -75,20 +93,21 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
     (isfile(outsdif) & isfile(automat)) || error("CUTEst: no decoded problem found")
     libname = "lib$name"
     isfile("$libname.$soname") || error("CUTEst: lib not found; decode problem first")
+    cutest_lib = Libdl.dlopen(libname)
   else
-    libname = sifdecoder(name)
+    cutest_lib = sifdecoder(name)
   end
   io_err = Cint[0];
 
-  @eval ccall((:fortran_open_, $(libname)), Void,
-              (Ptr{Int32}, Ptr{Uint8}, Ptr{Int32}), &funit, outsdif, $(io_err));
+  ccall(@dlsym(:fortran_open_, cutest_lib), Void,
+      (Ptr{Int32}, Ptr{UInt8}, Ptr{Int32}), &funit, outsdif, io_err);
   @cutest_error
 
   # Obtain problem size.
   nvar = Cint[0];
   ncon = Cint[0];
 
-  cdimen(io_err, [funit], nvar, ncon, libname)
+  cdimen(io_err, [funit], nvar, ncon, cutest_lib)
   @cutest_error
   nvar = nvar[1];
   ncon = ncon[1];
@@ -105,9 +124,9 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
     csetup(io_err, [funit], Cint[5], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
-      equatn, linear, Cint[1], Cint[1], Cint[1], libname)
+      equatn, linear, Cint[1], Cint[1], Cint[1], cutest_lib)
   else
-    usetup(io_err, [funit], Cint[5], Cint[6], [nvar], x, bl, bu, libname)
+    usetup(io_err, [funit], Cint[5], Cint[6], [nvar], x, bl, bu, cutest_lib)
   end
   @cutest_error
 
@@ -120,19 +139,19 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   nnzj = Cint[0];
 
   if ncon > 0
-    cdimsh(io_err, nnzh, libname)
-    cdimsj(io_err, nnzj, libname)
+    cdimsh(io_err, nnzh, cutest_lib)
+    cdimsj(io_err, nnzj, cutest_lib)
     nnzj[1] -= nvar;  # nnzj also counts the nonzeros in the objective gradient.
   else
-    udimsh(io_err, nnzh, libname)
+    udimsh(io_err, nnzh, cutest_lib)
   end
   @cutest_error
 
   nnzh = nnzh[1];
   nnzj = nnzj[1];
 
-  @eval ccall((:fortran_close_, $(libname)), Void,
-              (Ptr{Int32}, Ptr{Int32}), &funit, $(io_err));
+  ccall(@dlsym(:fortran_close_, cutest_lib), Void,
+      (Ptr{Int32}, Ptr{Int32}), &funit, io_err);
   @cutest_error
 
   meta = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
@@ -142,7 +161,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta, libname);
+  nlp = CUTEstModel(meta, cutest_lib);
 
   finalizer(nlp, cutest_finalize);
   cutest_instances += 1;
@@ -155,9 +174,9 @@ function cutest_finalize(nlp :: CUTEstModel)
   cutest_instances == 0 && return;
   io_err = Cint[0];
   if nlp.meta.ncon > 0
-    cterminate(io_err, nlp.libname)
+    cterminate(io_err, nlp.cutest_lib)
   else
-    uterminate(io_err, nlp.libname)
+    uterminate(io_err, nlp.cutest_lib)
   end
   @cutest_error
   cutest_instances -= 1;

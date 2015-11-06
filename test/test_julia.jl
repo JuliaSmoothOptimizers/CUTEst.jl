@@ -77,3 +77,31 @@ if nlp.meta.ncon > 0
   hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv);
   @test_approx_eq_eps hv Wx*v 1e-8
 end
+
+print("Julia interface stress test... ")
+for i = 1:100000
+  fx = obj(nlp, x0);
+  (fx, gx) = objgrad(nlp, x0, true);
+  gx = grad(nlp, x0)
+  grad!(nlp, x0, gx)
+  Hx = hess(nlp, x0);
+  v = rand(nlp.meta.nvar);
+  hv = hprod(nlp, x0, v);
+  hprod!(nlp, x0, v, hv)
+  if nlp.meta.ncon > 0
+    (fx, cx) = objcons(nlp, x0)
+    (cx, jrow, jcol, jval) = cons_coord(nlp, x0, true)
+    Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
+    (cx, Jx) = cons(nlp, x0, true);
+    cx = cons(nlp, x0, false)
+    cx = cons(nlp, x0)
+    cons!(nlp, x0, cx)
+    (jrow, jcol, jval) = jac_coord(nlp, x0)
+    Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
+    Jx = jac(nlp, x0)
+    Wx = hess(nlp, x0, ones(nlp.meta.ncon));
+    hv = hprod(nlp, x0, ones(nlp.meta.ncon), v);
+    hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv);
+  end
+end
+println("Passed")
