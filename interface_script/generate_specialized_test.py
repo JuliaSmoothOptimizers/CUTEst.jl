@@ -98,7 +98,7 @@ multiples = {
 
 zero_index = [ "csgr", "csgrsh" ]
 
-def addTriplet(trip, spc, fname):
+def addTriplet(trip, spc, fname, use_test = True):
     str = spc+"{}_val = copy({}x)\n".format(trip.lower(), trip)
     if trip == "J":
         str += spc+"Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)\n"
@@ -117,12 +117,13 @@ def addTriplet(trip, spc, fname):
     if trip != "J":
         str += spc+"  {}x[{}[k],{}[k]] = {}_val[k]\n".format(trip, j, i, trip.lower())
     str += spc+"end\n"
-    if fname in special and trip in special[fname]:
-        str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
-                special[fname][trip])
-    else:
-        str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
-                hs[trip+"x"])
+    if use_test:
+        if fname in special and trip in special[fname]:
+            str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
+                    special[fname][trip])
+        else:
+            str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
+                    hs[trip+"x"])
     return str
 
 def generate_test_for_function (foo):
@@ -138,14 +139,15 @@ def generate_test_for_function (foo):
         spc = "  "
         head = ''
     str = ""
+    stress = head
     fname = foo.split("(")[0].strip()
     inplace = fname[-1] == "!"
     cint = "Cint" in foo.split(")")[0]
     inputs = []
     for x in foo[foo.find("(")+1:foo.find(")")].split(","):
 
-        if "libname" in x:
-            inputs.append("nlp.libname")
+        if "cutest_lib" in x:
+            inputs.append("nlp.cutest_lib")
         else:
             x = x[0:x.find(":")].strip()
             if x not in ["1", "2", "3"]:
@@ -162,9 +164,12 @@ def generate_test_for_function (foo):
         outputs.append(x)
 
     str += spc
+    stress += spc
     if len(outputs) > 0:
         str += ', '.join(outputs) + " = "
+        stress += ', '.join(outputs) + " = "
     str += "{}({})\n".format(fname, ', '.join(inputs))
+    stress += "{}({})\n".format(fname, ', '.join(inputs))
 
     if inplace:
         fname = fname[0:len(fname)-1]
@@ -184,6 +189,7 @@ def generate_test_for_function (foo):
         for x in inputs:
             if x == "result":
                 str = spc+"{} = zeros({})\n".format(x,results[fname]) + str
+                stress = spc+"{} = zeros({})\n".format(x,results[fname]) + stress
             if x in sizeof:
                 if x in triplet and trip_resp[x] in inputs:
                     str = spc+"{} = zeros({})\n".format(x,sizeofsp[x]) + str
@@ -196,12 +202,14 @@ def generate_test_for_function (foo):
                     if cint and "Int" in sizeof[x]:
                         arg = arg.replace("Int", "Cint")
                     str = spc+"{} = zeros({})\n".format(x,arg) + str
+                    stress = spc+"{} = zeros({})\n".format(x,arg) + stress
                     if x not in ignore:
                         str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
     if match != "":
         str += "  end\n"
+        stress += "  end\n"
 
-    return head+str+"\n"
+    return head+str+"\n", stress
 
 filename = "src/specialized_interface.jl"
 content = ''.join(open(filename, "r").readlines()).split("function")[1:]
@@ -218,9 +226,21 @@ with open("test/test_specialized.jl","w") as f:
     f.write('println("\\nTesting the Specialized interface\\n")\n\n')
     f.write('v = ones(nlp.meta.nvar)\n')
     f.write('if nlp.meta.ncon > 0\n')
+    stress = "  if nlp.meta.ncon > 0\n"
     for x in cselection:
-        f.write(generate_test_for_function(x))
+        str, ss = generate_test_for_function(x)
+        f.write(str)
+        stress += ss
     f.write('else\n')
+    stress += "  else\n"
     for x in uselection:
-        f.write(generate_test_for_function(x))
+        str, ss = generate_test_for_function(x)
+        f.write(str)
+        stress += ss
+    f.write('end\n\n')
+    stress += "  end\n"
+    f.write('print("Specialized interface stress test... ")\n')
+    f.write('for i = 1:100000\n')
+    f.write(stress)
     f.write('end\n')
+    f.write('println("passed")\n\n')
