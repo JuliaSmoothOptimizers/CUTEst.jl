@@ -23,7 +23,7 @@ Usage:
   - x:         [OUT] Array{Cdouble, 1}
   - x_l:       [OUT] Array{Cdouble, 1}
   - x_u:       [OUT] Array{Cdouble, 1}
-  - cutest_lib:   [IN] CUTEst library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x, x_l, x_u = usetup(input, out, io_buffer, n, cutest_lib)
 
@@ -34,7 +34,7 @@ Usage:
   - x:         [OUT] Array{Float64, 1}
   - x_l:       [OUT] Array{Float64, 1}
   - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     usetup!(input, out, io_buffer, n, x, x_l, x_u, cutest_lib)
 
@@ -45,7 +45,7 @@ Usage:
   - x:         [OUT] Array{Float64, 1}
   - x_l:       [OUT] Array{Float64, 1}
   - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 usetup
@@ -75,7 +75,7 @@ Usage:
   - x:         [OUT] Array{Cdouble, 1}
   - x_l:       [OUT] Array{Cdouble, 1}
   - x_u:       [OUT] Array{Cdouble, 1}
-  - cutest_lib:   [IN] CUTEst library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x, x_l, x_u = usetup(input, out, io_buffer, n, cutest_lib)
 
@@ -86,7 +86,7 @@ Usage:
   - x:         [OUT] Array{Float64, 1}
   - x_l:       [OUT] Array{Float64, 1}
   - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     usetup!(input, out, io_buffer, n, x, x_l, x_u, cutest_lib)
 
@@ -97,7 +97,7 @@ Usage:
   - x:         [OUT] Array{Float64, 1}
   - x_l:       [OUT] Array{Float64, 1}
   - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 usetup!
@@ -139,7 +139,7 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Array{Cint, 1}
   - l_order:   [IN] Array{Cint, 1}
   - v_order:   [IN] Array{Cint, 1}
-  - cutest_lib:   [IN] CUTEst library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order, cutest_lib)
 
@@ -159,7 +159,7 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Int
   - l_order:   [IN] Int
   - v_order:   [IN] Int
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order, cutest_lib)
 
@@ -179,7 +179,7 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Int
   - l_order:   [IN] Int
   - v_order:   [IN] Int
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 csetup
@@ -221,7 +221,7 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Array{Cint, 1}
   - l_order:   [IN] Array{Cint, 1}
   - v_order:   [IN] Array{Cint, 1}
-  - cutest_lib:   [IN] CUTEst library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order, cutest_lib)
 
@@ -241,7 +241,7 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Int
   - l_order:   [IN] Int
   - v_order:   [IN] Int
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order, cutest_lib)
 
@@ -261,7 +261,7 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Int
   - l_order:   [IN] Int
   - v_order:   [IN] Int
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 csetup!
@@ -285,13 +285,13 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - input:   [IN] Array{Cint, 1}
   - n:       [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     n = udimen(input, cutest_lib)
 
   - input:   [IN] Int
   - n:       [OUT] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 udimen
@@ -316,12 +316,12 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - nnzh:    [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = udimsh(, cutest_lib)
 
   - nnzh:    [OUT] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 udimsh
@@ -350,14 +350,14 @@ Usage:
   - ne:        [OUT] Array{Cint, 1}
   - he_val_ne: [OUT] Array{Cint, 1}
   - he_row_ne: [OUT] Array{Cint, 1}
-  - cutest_lib:   [IN] CUTEst library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_val_ne, he_row_ne = udimse(, cutest_lib)
 
   - ne:        [OUT] Int
   - he_val_ne: [OUT] Int
   - he_row_ne: [OUT] Int
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 udimse
@@ -382,19 +382,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x_type = uvartype(n, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     uvartype!(n, x_type, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 uvartype
@@ -419,19 +419,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x_type = uvartype(n, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     uvartype!(n, x_type, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 uvartype!
@@ -455,21 +455,21 @@ Usage:
   - n:       [IN] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname, vname = unames(n, cutest_lib)
 
   - n:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = unames!(n, vname, cutest_lib)
 
   - n:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 unames
@@ -493,21 +493,21 @@ Usage:
   - n:       [IN] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname, vname = unames(n, cutest_lib)
 
   - n:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = unames!(n, vname, cutest_lib)
 
   - n:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 unames!
@@ -532,19 +532,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = ureport(, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ureport!(calls, time, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = ureport(nlp)
 
@@ -581,19 +581,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = ureport(, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ureport!(calls, time, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = ureport(nlp)
 
@@ -633,14 +633,14 @@ Usage:
   - input:   [IN] Array{Cint, 1}
   - n:       [OUT] Array{Cint, 1}
   - m:       [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     n, m = cdimen(input, cutest_lib)
 
   - input:   [IN] Int
   - n:       [OUT] Int
   - m:       [OUT] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimen
@@ -668,12 +668,12 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - nnzj:    [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj = cdimsj(, cutest_lib)
 
   - nnzj:    [OUT] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimsj
@@ -700,12 +700,12 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - nnzh:    [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = cdimsh(, cutest_lib)
 
   - nnzh:    [OUT] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimsh
@@ -736,14 +736,14 @@ Usage:
   - ne:        [OUT] Array{Cint, 1}
   - he_val_ne: [OUT] Array{Cint, 1}
   - he_row_ne: [OUT] Array{Cint, 1}
-  - cutest_lib:   [IN] CUTEst library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_val_ne, he_row_ne = cdimse(, cutest_lib)
 
   - ne:        [OUT] Int
   - he_val_ne: [OUT] Int
   - he_row_ne: [OUT] Int
-  - cutest_lib:   [IN] Cutest library from sifdecode
+  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimse
@@ -758,7 +758,7 @@ linear_constraints, cutest_lib)
   - nonlinear_variables_constraints: [OUT] Array{Cint, 1}
   - equality_constraints:            [OUT] Array{Cint, 1}
   - linear_constraints:              [OUT] Array{Cint, 1}
-  - cutest_lib:                         [IN] CUTEst library from sifdecode
+  - cutest_lib:                         [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cstats
@@ -785,19 +785,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x_type = cvartype(n, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cvartype!(n, x_type, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cvartype
@@ -824,19 +824,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     x_type = cvartype(n, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cvartype!(n, x_type, cutest_lib)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cvartype!
@@ -865,7 +865,7 @@ Usage:
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname, vname, cname = cnames(n, m, cutest_lib)
 
@@ -874,7 +874,7 @@ Usage:
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = cnames!(n, m, vname, cname, cutest_lib)
 
@@ -883,7 +883,7 @@ Usage:
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname, vname, cname = cnames(nlp)
 
@@ -926,7 +926,7 @@ Usage:
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname, vname, cname = cnames(n, m, cutest_lib)
 
@@ -935,7 +935,7 @@ Usage:
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = cnames!(n, m, vname, cname, cutest_lib)
 
@@ -944,7 +944,7 @@ Usage:
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname, vname, cname = cnames(nlp)
 
@@ -985,19 +985,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = creport(, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     creport!(calls, time, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = creport(nlp)
 
@@ -1036,19 +1036,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = creport(, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     creport!(calls, time, cutest_lib)
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     calls, time = creport(nlp)
 
@@ -1086,19 +1086,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - m:       [IN] Array{Cint, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cname = connames(m, cutest_lib)
 
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     connames!(m, cname, cutest_lib)
 
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cname = connames(nlp)
 
@@ -1134,19 +1134,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - m:       [IN] Array{Cint, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cname = connames(m, cutest_lib)
 
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     connames!(m, cname, cutest_lib)
 
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cname = connames(nlp)
 
@@ -1183,13 +1183,13 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - input:   [IN] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = pname(input, cutest_lib)
 
   - input:   [IN] Int
   - pname:   [OUT] UInt8
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = pname(nlp, input)
 
@@ -1219,12 +1219,12 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = probname(, cutest_lib)
 
   - pname:   [OUT] UInt8
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = probname(nlp)
 
@@ -1255,19 +1255,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     vname = varnames(n, cutest_lib)
 
   - n:       [IN] Int
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     varnames!(n, vname, cutest_lib)
 
   - n:       [IN] Int
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 varnames
@@ -1293,19 +1293,19 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     vname = varnames(n, cutest_lib)
 
   - n:       [IN] Int
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     varnames!(n, vname, cutest_lib)
 
   - n:       [IN] Int
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 varnames!
@@ -1330,14 +1330,14 @@ Usage:
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - f:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = ufn(n, x, cutest_lib)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = ufn(nlp, x)
 
@@ -1368,21 +1368,21 @@ Usage:
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g = ugr(n, x, cutest_lib)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ugr!(n, x, g, cutest_lib)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g = ugr(nlp, x)
 
@@ -1419,21 +1419,21 @@ Usage:
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g = ugr(n, x, cutest_lib)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ugr!(n, x, g, cutest_lib)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g = ugr(nlp, x)
 
@@ -1473,7 +1473,7 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = uofg(n, x, grad, cutest_lib)
 
@@ -1482,7 +1482,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = uofg!(n, x, g, grad, cutest_lib)
 
@@ -1491,7 +1491,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = uofg(nlp, x, grad)
 
@@ -1535,7 +1535,7 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = uofg(n, x, grad, cutest_lib)
 
@@ -1544,7 +1544,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = uofg!(n, x, g, grad, cutest_lib)
 
@@ -1553,7 +1553,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = uofg(nlp, x, grad)
 
@@ -1599,7 +1599,7 @@ Usage:
   - h_band:            [OUT] Array{Cdouble, 2}
   - lbandh:            [IN] Array{Cint, 1}
   - max_semibandwidth: [OUT] Array{Cint, 1}
-  - cutest_lib:           [IN] CUTEst library from sifdecode
+  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh, cutest_lib)
 
@@ -1609,7 +1609,7 @@ Usage:
   - h_band:            [OUT] Array{Float64, 2}
   - lbandh:            [IN] Int
   - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] Cutest library from sifdecode
+  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh, cutest_lib)
 
@@ -1619,7 +1619,7 @@ Usage:
   - h_band:            [OUT] Array{Float64, 2}
   - lbandh:            [IN] Int
   - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] Cutest library from sifdecode
+  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
 
@@ -1667,7 +1667,7 @@ Usage:
   - h_band:            [OUT] Array{Cdouble, 2}
   - lbandh:            [IN] Array{Cint, 1}
   - max_semibandwidth: [OUT] Array{Cint, 1}
-  - cutest_lib:           [IN] CUTEst library from sifdecode
+  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh, cutest_lib)
 
@@ -1677,7 +1677,7 @@ Usage:
   - h_band:            [OUT] Array{Float64, 2}
   - lbandh:            [IN] Int
   - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] Cutest library from sifdecode
+  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh, cutest_lib)
 
@@ -1687,7 +1687,7 @@ Usage:
   - h_band:            [OUT] Array{Float64, 2}
   - lbandh:            [IN] Int
   - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] Cutest library from sifdecode
+  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
 
@@ -1732,7 +1732,7 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = udh(n, x, lh1, cutest_lib)
 
@@ -1740,7 +1740,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     udh!(n, x, lh1, h, cutest_lib)
 
@@ -1748,7 +1748,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = udh(nlp, x, lh1)
 
@@ -1789,7 +1789,7 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = udh(n, x, lh1, cutest_lib)
 
@@ -1797,7 +1797,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     udh!(n, x, lh1, h, cutest_lib)
 
@@ -1805,7 +1805,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = udh(nlp, x, lh1)
 
@@ -1850,7 +1850,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = ush(n, x, lh, cutest_lib)
 
@@ -1861,7 +1861,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = ush!(n, x, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -1872,7 +1872,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = ush(nlp, x)
 
@@ -1921,7 +1921,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = ush(n, x, lh, cutest_lib)
 
@@ -1932,7 +1932,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = ush!(n, x, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -1943,7 +1943,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = ush(nlp, x)
 
@@ -1998,7 +1998,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -2013,7 +2013,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -2028,7 +2028,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2093,7 +2093,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -2108,7 +2108,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -2123,7 +2123,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2180,7 +2180,7 @@ Usage:
   - g:       [OUT] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, h = ugrdh(n, x, lh1, cutest_lib)
 
@@ -2189,7 +2189,7 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ugrdh!(n, x, g, lh1, h, cutest_lib)
 
@@ -2198,7 +2198,7 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, h = ugrdh(nlp, x, lh1)
 
@@ -2243,7 +2243,7 @@ Usage:
   - g:       [OUT] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, h = ugrdh(n, x, lh1, cutest_lib)
 
@@ -2252,7 +2252,7 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ugrdh!(n, x, g, lh1, h, cutest_lib)
 
@@ -2261,7 +2261,7 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, h = ugrdh(nlp, x, lh1)
 
@@ -2309,7 +2309,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh, cutest_lib)
 
@@ -2321,7 +2321,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -2333,7 +2333,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
 
@@ -2385,7 +2385,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh, cutest_lib)
 
@@ -2397,7 +2397,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -2409,7 +2409,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
 
@@ -2468,7 +2468,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -2484,7 +2484,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -2500,7 +2500,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2569,7 +2569,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -2585,7 +2585,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -2601,7 +2601,7 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2659,7 +2659,7 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = uhprod(n, goth, x, vector, cutest_lib)
 
@@ -2668,7 +2668,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     uhprod!(n, goth, x, vector, result, cutest_lib)
 
@@ -2677,7 +2677,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = uhprod(nlp, goth, x, vector)
 
@@ -2721,7 +2721,7 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = uhprod(n, goth, x, vector, cutest_lib)
 
@@ -2730,7 +2730,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     uhprod!(n, goth, x, vector, result, cutest_lib)
 
@@ -2739,7 +2739,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = uhprod(nlp, goth, x, vector)
 
@@ -2785,7 +2785,7 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - f:       [OUT] Array{Cdouble, 1}
   - c:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, c = cfn(n, m, x, cutest_lib)
 
@@ -2794,7 +2794,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = cfn!(n, m, x, c, cutest_lib)
 
@@ -2803,7 +2803,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, c = cfn(nlp, x)
 
@@ -2847,7 +2847,7 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - f:       [OUT] Array{Cdouble, 1}
   - c:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, c = cfn(n, m, x, cutest_lib)
 
@@ -2856,7 +2856,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = cfn!(n, m, x, c, cutest_lib)
 
@@ -2865,7 +2865,7 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, c = cfn(nlp, x)
 
@@ -2909,7 +2909,7 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = cofg(n, x, grad, cutest_lib)
 
@@ -2918,7 +2918,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = cofg!(n, x, g, grad, cutest_lib)
 
@@ -2927,7 +2927,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = cofg(nlp, x, grad)
 
@@ -2973,7 +2973,7 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = cofg(n, x, grad, cutest_lib)
 
@@ -2982,7 +2982,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = cofg!(n, x, g, grad, cutest_lib)
 
@@ -2991,7 +2991,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = cofg(nlp, x, grad)
 
@@ -3040,7 +3040,7 @@ Usage:
   - g_val:   [OUT] Array{Cdouble, 1}
   - g_var:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, nnzg, g_val, g_var = cofsg(n, x, lg, grad, cutest_lib)
 
@@ -3052,7 +3052,7 @@ Usage:
   - g_val:   [OUT] Array{Float64, 1}
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad, cutest_lib)
 
@@ -3064,7 +3064,7 @@ Usage:
   - g_val:   [OUT] Array{Float64, 1}
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
 
@@ -3119,7 +3119,7 @@ Usage:
   - g_val:   [OUT] Array{Cdouble, 1}
   - g_var:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, nnzg, g_val, g_var = cofsg(n, x, lg, grad, cutest_lib)
 
@@ -3131,7 +3131,7 @@ Usage:
   - g_val:   [OUT] Array{Float64, 1}
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad, cutest_lib)
 
@@ -3143,7 +3143,7 @@ Usage:
   - g_val:   [OUT] Array{Float64, 1}
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
 
@@ -3199,7 +3199,7 @@ Usage:
   - lcjac2:  [IN] Array{Cint, 1}
   - cjac:    [OUT] Array{Cdouble, 2}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad, cutest_lib)
 
@@ -3212,7 +3212,7 @@ Usage:
   - lcjac2:  [IN] Int
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, cutest_lib)
 
@@ -3225,7 +3225,7 @@ Usage:
   - lcjac2:  [IN] Int
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
 
@@ -3281,7 +3281,7 @@ Usage:
   - lcjac2:  [IN] Array{Cint, 1}
   - cjac:    [OUT] Array{Cdouble, 2}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad, cutest_lib)
 
@@ -3294,7 +3294,7 @@ Usage:
   - lcjac2:  [IN] Int
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, cutest_lib)
 
@@ -3307,7 +3307,7 @@ Usage:
   - lcjac2:  [IN] Int
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
 
@@ -3361,7 +3361,7 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = clfg(n, m, x, y, grad, cutest_lib)
 
@@ -3372,7 +3372,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = clfg!(n, m, x, y, g, grad, cutest_lib)
 
@@ -3383,7 +3383,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = clfg(nlp, x, y, grad)
 
@@ -3433,7 +3433,7 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = clfg(n, m, x, y, grad, cutest_lib)
 
@@ -3444,7 +3444,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = clfg!(n, m, x, y, g, grad, cutest_lib)
 
@@ -3455,7 +3455,7 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f, g = clfg(nlp, x, y, grad)
 
@@ -3509,7 +3509,7 @@ Usage:
   - lj1:     [IN] Array{Cint, 1}
   - lj2:     [IN] Array{Cint, 1}
   - j_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2, cutest_lib)
 
@@ -3523,7 +3523,7 @@ Usage:
   - lj1:     [IN] Int
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, cutest_lib)
 
@@ -3537,7 +3537,7 @@ Usage:
   - lj1:     [IN] Int
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
 
@@ -3597,7 +3597,7 @@ Usage:
   - lj1:     [IN] Array{Cint, 1}
   - lj2:     [IN] Array{Cint, 1}
   - j_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2, cutest_lib)
 
@@ -3611,7 +3611,7 @@ Usage:
   - lj1:     [IN] Int
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, cutest_lib)
 
@@ -3625,7 +3625,7 @@ Usage:
   - lj1:     [IN] Int
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
 
@@ -3687,7 +3687,7 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 1}
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj, cutest_lib)
 
@@ -3701,7 +3701,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 1}
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, cutest_lib)
 
@@ -3715,7 +3715,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 1}
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
 
@@ -3775,7 +3775,7 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 1}
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj, cutest_lib)
 
@@ -3789,7 +3789,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 1}
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, cutest_lib)
 
@@ -3803,7 +3803,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 1}
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
 
@@ -3861,7 +3861,7 @@ Usage:
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad, cutest_lib)
 
@@ -3875,7 +3875,7 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad, cutest_lib)
 
@@ -3889,7 +3889,7 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
 
@@ -3947,7 +3947,7 @@ Usage:
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad, cutest_lib)
 
@@ -3961,7 +3961,7 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad, cutest_lib)
 
@@ -3975,7 +3975,7 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
 
@@ -4029,7 +4029,7 @@ Usage:
   - ci:      [OUT] Array{Cdouble, 1}
   - gci:     [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, gci = ccifg(n, icon, x, grad, cutest_lib)
 
@@ -4039,7 +4039,7 @@ Usage:
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci = ccifg!(n, icon, x, gci, grad, cutest_lib)
 
@@ -4049,7 +4049,7 @@ Usage:
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, gci = ccifg(nlp, icon, x, grad)
 
@@ -4099,7 +4099,7 @@ Usage:
   - ci:      [OUT] Array{Cdouble, 1}
   - gci:     [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, gci = ccifg(n, icon, x, grad, cutest_lib)
 
@@ -4109,7 +4109,7 @@ Usage:
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci = ccifg!(n, icon, x, gci, grad, cutest_lib)
 
@@ -4119,7 +4119,7 @@ Usage:
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, gci = ccifg(nlp, icon, x, grad)
 
@@ -4173,7 +4173,7 @@ Usage:
   - gci_val: [OUT] Array{Cdouble, 1}
   - gci_var: [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad, cutest_lib)
 
@@ -4186,7 +4186,7 @@ Usage:
   - gci_val: [OUT] Array{Float64, 1}
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad, cutest_lib)
 
@@ -4199,7 +4199,7 @@ Usage:
   - gci_val: [OUT] Array{Float64, 1}
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
 
@@ -4259,7 +4259,7 @@ Usage:
   - gci_val: [OUT] Array{Cdouble, 1}
   - gci_var: [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad, cutest_lib)
 
@@ -4272,7 +4272,7 @@ Usage:
   - gci_val: [OUT] Array{Float64, 1}
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad, cutest_lib)
 
@@ -4285,7 +4285,7 @@ Usage:
   - gci_val: [OUT] Array{Float64, 1}
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
 
@@ -4349,7 +4349,7 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 2}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1, cutest_lib)
 
@@ -4365,7 +4365,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 2}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val, cutest_lib)
 
@@ -4381,7 +4381,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 2}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
 
@@ -4449,7 +4449,7 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 2}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1, cutest_lib)
 
@@ -4465,7 +4465,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 2}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val, cutest_lib)
 
@@ -4481,7 +4481,7 @@ Usage:
   - j_val:   [OUT] Array{Float64, 2}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
 
@@ -4541,7 +4541,7 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_val = cdh(n, m, x, y, lh1, cutest_lib)
 
@@ -4551,7 +4551,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cdh!(n, m, x, y, lh1, h_val, cutest_lib)
 
@@ -4561,7 +4561,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_val = cdh(nlp, x, y, lh1)
 
@@ -4609,7 +4609,7 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_val = cdh(n, m, x, y, lh1, cutest_lib)
 
@@ -4619,7 +4619,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cdh!(n, m, x, y, lh1, h_val, cutest_lib)
 
@@ -4629,7 +4629,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h_val = cdh(nlp, x, y, lh1)
 
@@ -4680,7 +4680,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh, cutest_lib)
 
@@ -4693,7 +4693,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -4706,7 +4706,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = csh(nlp, x, y)
 
@@ -4761,7 +4761,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh, cutest_lib)
 
@@ -4774,7 +4774,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -4787,7 +4787,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = csh(nlp, x, y)
 
@@ -4842,7 +4842,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh, cutest_lib)
 
@@ -4855,7 +4855,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -4868,7 +4868,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
 
@@ -4923,7 +4923,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh, cutest_lib)
 
@@ -4936,7 +4936,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -4949,7 +4949,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
 
@@ -5011,7 +5011,7 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -5028,7 +5028,7 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -5045,7 +5045,7 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -5117,7 +5117,7 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -5134,7 +5134,7 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -5151,7 +5151,7 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -5212,7 +5212,7 @@ Usage:
   - iprob:   [IN] Array{Cint, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = cidh(n, x, iprob, lh1, cutest_lib)
 
@@ -5221,7 +5221,7 @@ Usage:
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cidh!(n, x, iprob, lh1, h, cutest_lib)
 
@@ -5230,7 +5230,7 @@ Usage:
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = cidh(nlp, x, iprob, lh1)
 
@@ -5277,7 +5277,7 @@ Usage:
   - iprob:   [IN] Array{Cint, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = cidh(n, x, iprob, lh1, cutest_lib)
 
@@ -5286,7 +5286,7 @@ Usage:
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cidh!(n, x, iprob, lh1, h, cutest_lib)
 
@@ -5295,7 +5295,7 @@ Usage:
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     h = cidh(nlp, x, iprob, lh1)
 
@@ -5345,7 +5345,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh, cutest_lib)
 
@@ -5357,7 +5357,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -5369,7 +5369,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
 
@@ -5423,7 +5423,7 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh, cutest_lib)
 
@@ -5435,7 +5435,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -5447,7 +5447,7 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
 
@@ -5511,7 +5511,7 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh, cutest_lib)
 
@@ -5530,7 +5530,7 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -5549,7 +5549,7 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
 
@@ -5623,7 +5623,7 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh, cutest_lib)
 
@@ -5642,7 +5642,7 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col, cutest_lib)
 
@@ -5661,7 +5661,7 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
 
@@ -5743,7 +5743,7 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -5766,7 +5766,7 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -5789,7 +5789,7 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -5881,7 +5881,7 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] CUTEst library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
@@ -5904,7 +5904,7 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
 
@@ -5927,7 +5927,7 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] Cutest library from sifdecode
+  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -6000,7 +6000,7 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chprod(n, m, goth, x, y, vector, cutest_lib)
 
@@ -6011,7 +6011,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     chprod!(n, m, goth, x, y, vector, result, cutest_lib)
 
@@ -6022,7 +6022,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chprod(nlp, goth, x, y, vector)
 
@@ -6073,7 +6073,7 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chprod(n, m, goth, x, y, vector, cutest_lib)
 
@@ -6084,7 +6084,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     chprod!(n, m, goth, x, y, vector, result, cutest_lib)
 
@@ -6095,7 +6095,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chprod(nlp, goth, x, y, vector)
 
@@ -6146,7 +6146,7 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chcprod(n, m, goth, x, y, vector, cutest_lib)
 
@@ -6157,7 +6157,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     chcprod!(n, m, goth, x, y, vector, result, cutest_lib)
 
@@ -6168,7 +6168,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chcprod(nlp, goth, x, y, vector)
 
@@ -6219,7 +6219,7 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chcprod(n, m, goth, x, y, vector, cutest_lib)
 
@@ -6230,7 +6230,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     chcprod!(n, m, goth, x, y, vector, result, cutest_lib)
 
@@ -6241,7 +6241,7 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = chcprod(nlp, goth, x, y, vector)
 
@@ -6294,7 +6294,7 @@ Usage:
   - lvector: [IN] Array{Cint, 1}
   - result:  [OUT] Array{Cdouble, 1}
   - lresult: [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult, cutest_lib)
 
@@ -6307,7 +6307,7 @@ Usage:
   - lvector: [IN] Int
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult, cutest_lib)
 
@@ -6320,7 +6320,7 @@ Usage:
   - lvector: [IN] Int
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
 
@@ -6377,7 +6377,7 @@ Usage:
   - lvector: [IN] Array{Cint, 1}
   - result:  [OUT] Array{Cdouble, 1}
   - lresult: [IN] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult, cutest_lib)
 
@@ -6390,7 +6390,7 @@ Usage:
   - lvector: [IN] Int
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult, cutest_lib)
 
@@ -6403,7 +6403,7 @@ Usage:
   - lvector: [IN] Int
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
 
@@ -6444,11 +6444,11 @@ Usage:
     uterminate(io_err, cutest_lib)
 
   - io_err:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     uterminate(, cutest_lib)
 
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 uterminate
@@ -6467,11 +6467,11 @@ Usage:
     cterminate(io_err, cutest_lib)
 
   - io_err:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] CUTEst library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     cterminate(, cutest_lib)
 
-  - cutest_lib: [IN] Cutest library from sifdecode
+  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cterminate

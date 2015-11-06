@@ -202,7 +202,7 @@ def core_doc(name, args, types, intents, dims):
         d = max([len(dims[i]), 1])
         str += "  - {}: {}[{}] Array{{{}, {}}}\n".format(arg, " "*k,
                 intents[i].upper(), cutypes[types[i]], d)
-    str += "  - cutest_lib: {}[IN] CUTEst library from sifdecode\n\n".format(" "*(n-7))
+    str += "  - cutest_lib: {}[IN] ASCIIString or Ptr{{Void}} with CUTEst library from sifdecode\n\n".format(" "*(n-7))
     return str
 
 def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
@@ -242,17 +242,21 @@ def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
     if use_nlp:
         str += "\n"
     else:
-        str += "  - cutest_lib: {}[IN] Cutest library from sifdecode\n\n".format(" "*(n-7))
+        str += "  - cutest_lib: {}[IN] ASCIIString or Ptr{{Void}} with CUTEst library from sifdecode\n\n".format(" "*(n-7))
     return str
 
 def footer_doc(name):
     return '"""\n' + name + "\n\n"
 
-def core_function(name, args, types, dims):
+def core_function(name, args, types, dims, use_libname):
     str = ""
     arg_call = arguments(args, types, [], dims, intent="all",
             use_nlp=False, use_types=True, all_ptrs=True, typeset=cutypes)
-    str += "function "+name+"("+wrap( "{}, cutest_lib".format(arg_call))+")\n"
+    if use_libname:
+        str += "function "+name+"("+wrap( "{}, libname::ASCIIString".format(arg_call))+")\n"
+        str += s+"cutest_lib = Libdl.dlopen(libname)\n"
+    else:
+        str += "function "+name+"("+wrap( "{}, cutest_lib::Ptr{{Void}}".format(arg_call))+")\n"
     str += s+'ccall(@dlsym("cutest_{}_", cutest_lib), Void,\n'.format(name)
     ptrs = ["Ptr{{{}}}".format(cutypes[t]) for t in types]
     if len(ptrs) == 1:
@@ -350,7 +354,9 @@ spec_file.write("\n")
 
 for name in names:
     args, types, intents, dims = get_function_data(name)
-    core_file.write(core_function(name, args, types, dims))
+    core_file.write(core_function(name, args, types, dims, True))
+    core_file.write("\n")
+    core_file.write(core_function(name, args, types, dims, False))
     core_file.write("\n")
     doc = header_doc(name)
     doc += core_doc(name, args, types, intents, dims)

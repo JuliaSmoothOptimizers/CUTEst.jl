@@ -13,8 +13,7 @@ cutest_instances = 0;
 
 type CUTEstModel
   meta    :: NLPModelMeta;
-  libname :: ASCIIString;
-  cutest_lib :: Any # Or Ptr{Void} ?
+  cutest_lib :: Ptr{Void}
 end
 
 const cutest_arch  = get(ENV, "MYARCH", "");
@@ -50,6 +49,8 @@ macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
 end
 
+# Taken from
+# http://docs.julialang.org/en/release-0.4/manual/calling-c-and-fortran-code/#indirect-calls
 macro dlsym(func, lib)
   z, zlocal = gensym(string(func)), gensym()
   eval(current_module(), :(global $z = C_NULL))
@@ -81,7 +82,7 @@ function sifdecoder(name :: ASCIIString)
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
   push!(Libdl.DL_LOAD_PATH,".")
   cutest_lib = Libdl.dlopen(libname)
-  return libname, cutest_lib
+  return cutest_lib
 end
 
 # Initialize problem.
@@ -91,10 +92,10 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   if !decode
     (isfile(outsdif) & isfile(automat)) || error("CUTEst: no decoded problem found")
     libname = "lib$name"
-    cutest_lib = Libdl.dlopen(libname)
     isfile("$libname.$soname") || error("CUTEst: lib not found; decode problem first")
+    cutest_lib = Libdl.dlopen(libname)
   else
-    libname, cutest_lib = sifdecoder(name)
+    cutest_lib = sifdecoder(name)
   end
   io_err = Cint[0];
 
@@ -160,7 +161,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta, libname, cutest_lib);
+  nlp = CUTEstModel(meta, cutest_lib);
 
   finalizer(nlp, cutest_finalize);
   cutest_instances += 1;
