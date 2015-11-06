@@ -9,7 +9,7 @@ import textwrap
 cutypes = {"integer":"Cint", "doublereal":"Cdouble", "logical":"Cint",
         "char":"Cchar", "real":"Cdouble"}
 jltypes = {"integer":"Int", "doublereal":"Float64", "logical":"Bool",
-        "char":"Uint8", "real":"Float64"}
+        "char":"UInt8", "real":"Float64"}
 
 # NLP related
 nlp_equivalent = {"n":"nvar", "m":"ncon", "lj":"nnzj", "lh":"nnzh"}
@@ -195,14 +195,14 @@ def header_doc(name):
 def core_doc(name, args, types, intents, dims):
     help_args = arguments(args, types, [], dims, intent="all",
             use_nlp=False, use_types=False, all_ptrs=True, typeset=cutypes)
-    str = "    " + name + "(" + wrap(help_args, "\n") + ", libname)\n\n"
+    str = "    " + name + "(" + wrap(help_args, "\n") + ", cutest_lib)\n\n"
     n = max([7] + [len(arg) for arg in args])
     for i, arg in enumerate(args):
         k = n - len(arg)
         d = max([len(dims[i]), 1])
         str += "  - {}: {}[{}] Array{{{}, {}}}\n".format(arg, " "*k,
                 intents[i].upper(), cutypes[types[i]], d)
-    str += "  - libname: {}[IN] ASCIIString\n\n".format(" "*(n-7))
+    str += "  - cutest_lib: {}[IN] CUTEst library from sifdecode\n\n".format(" "*(n-7))
     return str
 
 def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
@@ -215,7 +215,7 @@ def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
     if use_nlp:
         in_args = in_args.replace("::CUTEstModel","")
     else:
-        in_args += ", libname"
+        in_args += ", cutest_lib"
 
     str = ""
     if inplace:
@@ -242,7 +242,7 @@ def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
     if use_nlp:
         str += "\n"
     else:
-        str += "  - libname: {}[IN] ASCIIString\n\n".format(" "*(n-7))
+        str += "  - cutest_lib: {}[IN] Cutest library from sifdecode\n\n".format(" "*(n-7))
     return str
 
 def footer_doc(name):
@@ -252,13 +252,13 @@ def core_function(name, args, types, dims):
     str = ""
     arg_call = arguments(args, types, [], dims, intent="all",
             use_nlp=False, use_types=True, all_ptrs=True, typeset=cutypes)
-    str += "function "+name+"("+wrap( "{}, libname".format(arg_call))+")\n"
-    str += s+'@eval ccall(("cutest_{}_", $(libname)), Void,\n'.format(name)
+    str += "function "+name+"("+wrap( "{}, cutest_lib".format(arg_call))+")\n"
+    str += s+'ccall(@dlsym("cutest_{}_", cutest_lib), Void,\n'.format(name)
     ptrs = ["Ptr{{{}}}".format(cutypes[t]) for t in types]
     if len(ptrs) == 1:
         ptrs.append('')
     str += 2*s + "(" + wrap(', '.join(ptrs)) + "),\n"
-    str += 2*s + wrap(', '.join(["$({})".format(v) for v in args])) + ")\n"
+    str += 2*s + wrap(', '.join(["{}".format(v) for v in args])) + ")\n"
     str += "end\n"
     return str
 
@@ -275,9 +275,9 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     if use_nlp:
         str += wrap("({})".format(arg_call) )+"\n"
     elif arg_call != "":
-        str += wrap("({}, libname)".format(arg_call) )+"\n"
+        str += wrap("({}, cutest_lib)".format(arg_call) )+"\n"
     else:
-        str += wrap("(libname)")+"\n"
+        str += wrap("(cutest_lib)")+"\n"
     for i, arg in enumerate(args):
         if intents[i] == "in":
             if use_nlp and arg in nlp_equivalent.keys():
@@ -305,19 +305,19 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     for i, arg in enumerate(args):
         if len(dims[i]) > 0:
             if intents[i] == "out" and types[i] == "integer" and inplace and not cint_array:
-                out.append("$({}_cp)".format(arg))
+                out.append("{}_cp".format(arg))
             else:
-                out.append("$({})".format(arg))
+                out.append("{}".format(arg))
         elif intents[i] == "out":
-            out.append("$({})".format(arg))
+            out.append("{}".format(arg))
         else:
-            out.append("$({}[{}])".format(cutypes[types[i]], arg))
+            out.append("{}[{}]".format(cutypes[types[i]], arg))
     if use_nlp:
-        libname = "$(nlp.libname)"
+        cutest_lib = "nlp.cutest_lib"
     else:
-        libname = "$(libname)"
-    str += wrap(s+"@eval {}({})".format(name,\
-        ', '.join(out+[libname]))) + "\n"
+        cutest_lib = "cutest_lib"
+    str += wrap(s+"{}({})".format(name,\
+        ', '.join(out+[cutest_lib]))) + "\n"
     str += s+"@cutest_error\n"
     for i, arg in enumerate(args):
         if len(dims[i]) > 0 and intents[i] == "out" and types[i] == "integer" \
