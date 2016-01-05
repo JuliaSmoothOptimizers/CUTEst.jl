@@ -32,7 +32,6 @@ install:
 
 script:
   - julia --check-bounds=yes -E 'Pkg.test("CUTEst"; coverage=true)'
-  - julia --check-bounds=yes -E 'cd(Pkg.dir("CUTEst")); include("test/runtests_unc.jl")'
 
 after_success:
   - julia -e 'cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
