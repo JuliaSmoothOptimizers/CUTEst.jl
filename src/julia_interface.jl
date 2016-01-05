@@ -22,11 +22,11 @@ function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   f = Cdouble[0];
   c = Array(Float64, ncon);
   if ncon > 0
-    ccall(@dlsym(:cutest_cfn_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_cfn_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,   &ncon,   x,         f,         c);
   else
-    ccall(@dlsym(:cutest_ufn_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_ufn_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,    x,         f);
   end
@@ -61,10 +61,15 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
     g = Array(Float64, 0);
     get_grad = 0;
   end
-  cutest_ofg = ncon > 0 ? "cutest_cofg_" : "cutest_uofg_";  # How do you do this with symbols?
-  ccall(@dlsym(cutest_ofg, nlp.cutest_lib), Void,
-            (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
-             io_err,  &nvar,   x,         f,         g,         &get_grad);
+  if ncon > 0
+    ccall(dlsym(cutest_lib, "cutest_cofg_"), Void,
+        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
+             io_err,      &nvar,            x,            f,            g,  &get_grad);
+  else
+    ccall(dlsym(cutest_lib, "cutest_uofg_"), Void,
+        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
+             io_err,      &nvar,            x,            f,            g,  &get_grad);
+  end
   @cutest_error
 
   return grad ? (f[1], g) : f[1];
@@ -116,10 +121,15 @@ function grad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
   f = Cdouble[0];
   io_err = Cint[0];
   get_grad = 1;
-  cutest_ofg = ncon > 0 ? "cutest_cofg_" : "cutest_uofg_";  # How do you do this with symbols?
-  ccall(@dlsym(cutest_ofg, nlp.cutest_lib), Void,
-            (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
-             io_err,  &nvar,   x,         f,         g,         &get_grad);
+  if ncon > 0
+    ccall(dlsym(cutest_lib, "cutest_cofg_"), Void,
+        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
+             io_err,      &nvar,            x,            f,            g,  &get_grad);
+  else
+    ccall(dlsym(cutest_lib, "cutest_uofg_"), Void,
+        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
+             io_err,      &nvar,            x,            f,            g,  &get_grad);
+  end
   @cutest_error
 
   return g
@@ -154,7 +164,7 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
   jrow = Array(Int32, jsize);
   jcol = Array(Int32, jsize);
 
-  ccall(@dlsym(:cutest_ccfsg_, nlp.cutest_lib), Void,
+  ccall(dlsym(cutest_lib, :cutest_ccfsg_), Void,
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
                io_err,  &nvar,   &ncon,   x,         c,         &nnzj,   &jsize,  jval,      jcol,    jrow,    &get_j);
   @cutest_error
@@ -222,7 +232,7 @@ function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
   jrow = Array(Int32, jsize);
   jcol = Array(Int32, jsize);
 
-  ccall(@dlsym(:cutest_ccfsg_, nlp.cutest_lib), Void,
+  ccall(dlsym(cutest_lib, :cutest_ccfsg_), Void,
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
                io_err,  &nvar,   &ncon,   x,         c,         &nnzj,   &jsize,  jval,      jcol,    jrow,    &get_j);
   @cutest_error
@@ -290,11 +300,11 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float6
   hcol = Array(Int32, nnzh);
   this_nnzh = Cint[0];
   if ncon > 0
-    ccall(@dlsym(:cutest_csh_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_csh_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32},   Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
                  io_err,  &nvar,   &ncon,   x,         y,         this_nnzh, &nnzh,   hval,      hrow,    hcol);
   else
-    ccall(@dlsym(:cutest_ush_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_ush_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32},   Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
                  io_err,  &nvar,   x,         this_nnzh,   &nnzh, hval,      hrow,    hcol);
   end
@@ -386,11 +396,11 @@ function hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1},
   hv = Array(Float64, nvar);
   goth = Cint[0];
   if ncon > 0
-    ccall(@dlsym(:cutest_chprod_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_chprod_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,   &ncon,   goth,    x,         y,         v,         hv);
   else
-    ccall(@dlsym(:cutest_uhprod_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_uhprod_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,   goth,    x,         v,         hv);
   end
@@ -422,11 +432,11 @@ function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}
   io_err = Cint[0];
   goth = Cint[0];
   if ncon > 0
-    ccall(@dlsym(:cutest_chprod_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_chprod_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,   &ncon,   goth,    x,         y,         v,         hv);
   else
-    ccall(@dlsym(:cutest_uhprod_, nlp.cutest_lib), Void,
+    ccall(dlsym(cutest_lib, :cutest_uhprod_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,   goth,    x,         v,         hv);
   end
