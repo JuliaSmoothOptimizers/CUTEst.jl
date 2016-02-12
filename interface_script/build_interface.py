@@ -112,7 +112,7 @@ def get_function_data(name):
                         intent = "in"
                     if "dimension" in line:
                         is_ptr = True
-                        dim = re.search("dimension\(([ a-z_,:0-9]*)\)",
+                        dim = re.search("dimension\(([ a-z_+,:0-9]*)\)",
                                 line).group(1).split(',')
                     else:
                         is_ptr = False
@@ -149,7 +149,6 @@ def arguments (args, types, intents, dims, use_types = True, use_nlp = False,
     str = []
     for i, arg in enumerate(args):
         if use_nlp and arg == "io_err" and intent != "out":
-            str.append("nlp::CUTEstModel")
             continue
         # When using nlp, every `in` argument that is integer is inside nlp
         if use_nlp and intents[i] == "in" and arg in nlp_equivalent.keys():
@@ -212,8 +211,6 @@ def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
             use_nlp=use_nlp, use_types=False, all_ptrs=False, inplace=inplace)
     out_args = arguments(args, types, intents, dims, intent="out",
             use_nlp=use_nlp, use_types=False, all_ptrs=False, inplace=inplace)
-    if use_nlp:
-        in_args = in_args.replace("::CUTEstModel","")
 
     str = ""
     if inplace:
@@ -224,8 +221,6 @@ def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
     str += "{}({})\n\n".format(name, in_args)
 
     n = max([7] + [len(arg) for arg in args])
-    if use_nlp:
-        str += "  - nlp: {}[IN] CUTEstModel\n".format(" "*(n-3))
     for i, arg in enumerate(args):
         if arg == "io_err":
             continue
@@ -281,9 +276,9 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
                 else:
                     eqs = nlp_equivalent[arg]
                 if type(eqs) == type("str"):
-                    str += s+"{} = nlp.meta.{}\n".format(arg, nlp_equivalent[arg])
+                    str += s+"{} = nlp.{}\n".format(arg, nlp_equivalent[arg])
                 else:
-                    str += s+arg+" = " + " + ".join(["nlp.meta."+v for v in \
+                    str += s+arg+" = " + " + ".join(["nlp."+v for v in \
                             eqs])+"\n"
             continue
         if len(dims[i]) > 0 and inplace and (types[i] != "integer" or cint_array):

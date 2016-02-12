@@ -7,14 +7,10 @@ using NLP  # Defines NLPModelMeta.
 using Compat
 import Base.Libdl.dlsym
 
+global nlp
+
 # Only one problem can be interfaced at any given time.
-global cutest_instances = 0
-
-export CUTEstModel, sifdecoder, cutest_finalize
-
-type CUTEstModel
-  meta    :: NLPModelMeta;
-end
+export sifdecoder, cutest_finalize, loadProblem, nlp
 
 const cutest_arch  = get(ENV, "MYARCH", "");
 const cutest_dir   = get(ENV, "CUTEST", "");
@@ -43,6 +39,11 @@ type CUTEstException <: Exception
   end
 end
 
+function __init__()
+  global nlp_is_loaded = false
+  global cutest_lib = C_NULL
+end
+
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
 
 macro cutest_error()  # Handle nonzero exit codes.
@@ -69,9 +70,12 @@ function sifdecoder(name :: ASCIIString)
 end
 
 # Initialize problem.
-function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
-  global cutest_instances
-  cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
+function loadProblem(name :: ASCIIString; decode :: Bool=true)
+  global nlp_is_loaded, nlp
+  if nlp_is_loaded
+    cutest_finalize(nlp)
+    nlp_is_loaded = false
+  end
   global cutest_lib
   if !decode
     (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
@@ -138,47 +142,42 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
       (Ptr{Int32}, Ptr{Int32}), &funit, io_err);
   @cutest_error
 
-  meta = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
+  nlp = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
                       ncon=ncon, y0=v, lcon=cl, ucon=cu,
                       nnzj=nnzj, nnzh=nnzh,
                       lin=lin, nln=nln,
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta)
-
-  cutest_instances += 1;
-  return nlp
+  nlp_is_loaded = true
 end
 
 
-function cutest_finalize(nlp :: CUTEstModel)
-  global cutest_instances
-  cutest_instances == 0 && return;
+function cutest_finalize()
+  global nlp_is_loaded, nlp
+  nlp_is_loaded || return
   global cutest_lib
   io_err = Cint[0];
-  if nlp.meta.ncon > 0
+  if nlp.ncon > 0
     cterminate(io_err)
   else
     uterminate(io_err)
   end
   @cutest_error
   Libdl.dlclose(cutest_lib)
-  cutest_instances -= 1;
+  nlp_is_loaded = false
   cutest_lib = C_NULL
-  return;
 end
 
 
-# Displaying CUTEstModel instances.
+# Displaying instances.
 
-import Base.show, Base.print
-function show(io :: IO, nlp :: CUTEstModel)
-  show(io, nlp.meta);
+function cutest_show()
+  show(io, nlp)
 end
 
-function print(io :: IO, nlp :: CUTEstModel)
-  print(io, nlp.meta);
+function cutest_print()
+  print(io, nlp)
 end
 
 end  # module CUTEst.

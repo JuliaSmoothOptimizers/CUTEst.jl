@@ -1,9 +1,10 @@
 export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
-    ureport, cdimen, cdimsj, cdimsh, cdimse, cstats, cvartype, cnames,
-    creport, connames, pname, probname, varnames, ufn, ugr, uofg, ubandh,
-    udh, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, cfn, cofg, cofsg, ccfg,
-    clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh, cdh, csh, cshc, ceh,
-    cidh, cish, csgrsh, csgreh, chprod, chcprod, cjprod, uterminate,
+    ureport, cdimen, cdimsj, cdimsh, cdimchp, cdimse, cstats, cvartype,
+    cnames, creport, connames, pname, probname, varnames, ufn, ugr, uofg,
+    udh, ushp, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, ushprod, ubandh,
+    cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
+    cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
+    cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, uterminate,
     cterminate
 
 function usetup(io_err::Array{Cint, 1}, input::Array{Cint, 1}, out::Array{Cint, 1},
@@ -85,6 +86,12 @@ function cdimsh(io_err::Array{Cint, 1}, nnzh::Array{Cint, 1})
   ccall(dlsym(cutest_lib, "cutest_cdimsh_"), Void,
     (Ptr{Cint}, Ptr{Cint}),
     io_err, nnzh)
+end
+
+function cdimchp(io_err::Array{Cint, 1}, nnzchp::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cdimchp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}),
+    io_err, nnzchp)
 end
 
 function cdimse(io_err::Array{Cint, 1}, ne::Array{Cint, 1}, he_val_ne::Array{Cint, 1},
@@ -171,20 +178,18 @@ function uofg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
     io_err, n, x, f, g, grad)
 end
 
-function ubandh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    semibandwidth::Array{Cint, 1}, h_band::Array{Cdouble, 2},
-    lbandh::Array{Cint, 1}, max_semibandwidth::Array{Cint, 1})
-  ccall(dlsym(cutest_lib, "cutest_ubandh_"), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble},
-    Ptr{Cint}, Ptr{Cint}),
-    io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
-end
-
 function udh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
     lh1::Array{Cint, 1}, h::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_udh_"), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
     io_err, n, x, lh1, h)
+end
+
+function ushp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzh::Array{Cint, 1},
+    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_ushp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    io_err, n, nnzh, lh, h_row, h_col)
 end
 
 function ush(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
@@ -245,6 +250,27 @@ function uhprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cdouble}),
     io_err, n, goth, x, vector, result)
+end
+
+function ushprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
+    x::Array{Cdouble, 1}, nnz_vector::Array{Cint, 1},
+    index_nz_vector::Array{Cint, 1}, vector::Array{Cdouble, 1},
+    nnz_result::Array{Cint, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Cdouble, 1})
+  ccall(dlsym(cutest_lib, "cutest_ushprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+end
+
+function ubandh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
+    semibandwidth::Array{Cint, 1}, h_band::Array{Cdouble, 2},
+    lbandh::Array{Cint, 1}, max_semibandwidth::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_ubandh_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}),
+    io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
 end
 
 function cfn(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
@@ -361,6 +387,22 @@ function cdh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     io_err, n, m, x, y, lh1, h_val)
 end
 
+function cdhc(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, lh1::Array{Cint, 1},
+    h_val::Array{Cdouble, 2})
+  ccall(dlsym(cutest_lib, "cutest_cdhc_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, m, x, y, lh1, h_val)
+end
+
+function cshp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzh::Array{Cint, 1},
+    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cshp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    io_err, n, nnzh, lh, h_row, h_col)
+end
+
 function csh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, nnzh::Array{Cint, 1},
     lh::Array{Cint, 1}, h_val::Array{Cdouble, 1}, h_row::Array{Cint, 1},
@@ -452,6 +494,19 @@ function chprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     io_err, n, m, goth, x, y, vector, result)
 end
 
+function cshprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
+    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
+    vector::Array{Cdouble, 1}, nnz_result::Array{Cint, 1},
+    index_nz_result::Array{Cint, 1}, result::Array{Cdouble, 1})
+  ccall(dlsym(cutest_lib, "cutest_cshprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+    nnz_result, index_nz_result, result)
+end
+
 function chcprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
     vector::Array{Cdouble, 1}, result::Array{Cdouble, 1})
@@ -459,6 +514,19 @@ function chcprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, n, m, goth, x, y, vector, result)
+end
+
+function cshcprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
+    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
+    vector::Array{Cdouble, 1}, nnz_result::Array{Cint, 1},
+    index_nz_result::Array{Cint, 1}, result::Array{Cdouble, 1})
+  ccall(dlsym(cutest_lib, "cutest_cshcprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+    nnz_result, index_nz_result, result)
 end
 
 function cjprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
@@ -469,6 +537,30 @@ function cjprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
     io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+end
+
+function csjprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    gotj::Array{Cint, 1}, jtrans::Array{Cint, 1}, x::Array{Cdouble, 1},
+    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
+    vector::Array{Cdouble, 1}, lvector::Array{Cint, 1},
+    nnz_result::Array{Cint, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Cdouble, 1}, lresult::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_csjprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cdouble}, Ptr{Cint}),
+    io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
+    lvector, nnz_result, index_nz_result, result, lresult)
+end
+
+function cchprods(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, vector::Array{Cdouble, 1},
+    lchp::Array{Cint, 1}, chp_val::Array{Cdouble, 1}, chp_ind::Array{Cint,
+    1}, chp_ptr::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cchprods_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
 end
 
 function uterminate(io_err::Array{Cint, 1})

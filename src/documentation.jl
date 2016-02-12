@@ -525,15 +525,13 @@ Usage:
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    calls, time = ureport(nlp)
+    calls, time = ureport()
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    ureport!(nlp, calls, time)
+    ureport!(calls, time)
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
@@ -572,15 +570,13 @@ Usage:
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    calls, time = ureport(nlp)
+    calls, time = ureport()
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    ureport!(nlp, calls, time)
+    ureport!(calls, time)
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
@@ -683,6 +679,41 @@ Usage:
 
 """
 cdimsh
+
+"""# cdimchp
+The cdimchp subroutine determines the number of nonzero elements
+required to store the products of the Hessian matrices of the
+constraint functions with a specified vector for the problem decoded
+into OUTSDIF.d in the constrained minimization case. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
+general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
+bounds xl≤x≤xu. The objective function is group-partially separable
+and all constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cdimchp
+
+Usage:
+
+    cdimchp(io_err, nnzchp)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - nnzchp:  [OUT] Array{Cint, 1}
+
+
+    nnzchp = cdimchp()
+
+  - nnzchp:  [OUT] Int
+
+    nnzchp = cdimchp()
+
+  - nnzchp:  [OUT] Int
+
+"""
+cdimchp
 
 """# cdimse
 The cdimse subroutine determines the number of nonzero elements
@@ -852,16 +883,14 @@ Usage:
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
 
-    pname, vname, cname = cnames(nlp)
+    pname, vname, cname = cnames()
 
-  - nlp:     [IN] CUTEstModel
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
 
-    pname = cnames!(nlp, vname, cname)
+    pname = cnames!(vname, cname)
 
-  - nlp:     [IN] CUTEstModel
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
@@ -911,16 +940,14 @@ Usage:
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
 
-    pname, vname, cname = cnames(nlp)
+    pname, vname, cname = cnames()
 
-  - nlp:     [IN] CUTEstModel
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
 
-    pname = cnames!(nlp, vname, cname)
+    pname = cnames!(vname, cname)
 
-  - nlp:     [IN] CUTEstModel
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
@@ -962,15 +989,13 @@ Usage:
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    calls, time = creport(nlp)
+    calls, time = creport()
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    creport!(nlp, calls, time)
+    creport!(calls, time)
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
@@ -1011,15 +1036,13 @@ Usage:
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    calls, time = creport(nlp)
+    calls, time = creport()
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
-    creport!(nlp, calls, time)
+    creport!(calls, time)
 
-  - nlp:     [IN] CUTEstModel
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
 
@@ -1059,14 +1082,12 @@ Usage:
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
 
-    cname = connames(nlp)
+    cname = connames()
 
-  - nlp:     [IN] CUTEstModel
   - cname:   [OUT] Array{UInt8, 1}
 
-    connames!(nlp, cname)
+    connames!(cname)
 
-  - nlp:     [IN] CUTEstModel
   - cname:   [OUT] Array{UInt8, 1}
 
 """
@@ -1105,14 +1126,12 @@ Usage:
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
 
-    cname = connames(nlp)
+    cname = connames()
 
-  - nlp:     [IN] CUTEstModel
   - cname:   [OUT] Array{UInt8, 1}
 
-    connames!(nlp, cname)
+    connames!(cname)
 
-  - nlp:     [IN] CUTEstModel
   - cname:   [OUT] Array{UInt8, 1}
 
 """
@@ -1147,9 +1166,8 @@ Usage:
   - input:   [IN] Int
   - pname:   [OUT] UInt8
 
-    pname = pname(nlp, input)
+    pname = pname(input)
 
-  - nlp:     [IN] CUTEstModel
   - input:   [IN] Int
   - pname:   [OUT] UInt8
 
@@ -1181,9 +1199,8 @@ Usage:
 
   - pname:   [OUT] UInt8
 
-    pname = probname(nlp)
+    pname = probname()
 
-  - nlp:     [IN] CUTEstModel
   - pname:   [OUT] UInt8
 
 """
@@ -1289,9 +1306,8 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
 
-    f = ufn(nlp, x)
+    f = ufn(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
 
@@ -1332,15 +1348,13 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
 
-    g = ugr(nlp, x)
+    g = ugr(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
 
-    ugr!(nlp, x, g)
+    ugr!(x, g)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
 
@@ -1381,15 +1395,13 @@ Usage:
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
 
-    g = ugr(nlp, x)
+    g = ugr(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
 
-    ugr!(nlp, x, g)
+    ugr!(x, g)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
 
@@ -1437,17 +1449,15 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f, g = uofg(nlp, x, grad)
+    f, g = uofg(x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f = uofg!(nlp, x, g, grad)
+    f = uofg!(x, g, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
@@ -1497,17 +1507,15 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f, g = uofg(nlp, x, grad)
+    f, g = uofg(x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f = uofg!(nlp, x, g, grad)
+    f = uofg!(x, g, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
@@ -1515,138 +1523,6 @@ Usage:
 
 """
 uofg!
-
-"""# ubandh
-The ubandh subroutine extracts the elements which lie within a band of
-given semi-bandwidth out of the Hessian matrix of the objective
-function of the problem decoded from a SIF file by the script
-sifdecoder at the point X. The problem under consideration is to
-minimize or maximize an objective function f(x) over all x ∈ Rn
-subject to the simple bounds xl≤x≤xu. The objective function is group-
-partially separable.
-
-This help was generated automatically and may contain
-errors. For more information, run the shell command
-
-    man cutest_ubandh
-
-Usage:
-
-    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
-
-  - io_err:            [OUT] Array{Cint, 1}
-  - n:                 [IN] Array{Cint, 1}
-  - x:                 [IN] Array{Cdouble, 1}
-  - semibandwidth:     [IN] Array{Cint, 1}
-  - h_band:            [OUT] Array{Cdouble, 2}
-  - lbandh:            [IN] Array{Cint, 1}
-  - max_semibandwidth: [OUT] Array{Cint, 1}
-
-
-    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
-
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
-
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-    h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
-
-  - nlp:               [IN] CUTEstModel
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-    max_semibandwidth = ubandh!(nlp, x, semibandwidth, h_band, lbandh)
-
-  - nlp:               [IN] CUTEstModel
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-"""
-ubandh
-
-"""# ubandh
-The ubandh subroutine extracts the elements which lie within a band of
-given semi-bandwidth out of the Hessian matrix of the objective
-function of the problem decoded from a SIF file by the script
-sifdecoder at the point X. The problem under consideration is to
-minimize or maximize an objective function f(x) over all x ∈ Rn
-subject to the simple bounds xl≤x≤xu. The objective function is group-
-partially separable.
-
-This help was generated automatically and may contain
-errors. For more information, run the shell command
-
-    man cutest_ubandh
-
-Usage:
-
-    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
-
-  - io_err:            [OUT] Array{Cint, 1}
-  - n:                 [IN] Array{Cint, 1}
-  - x:                 [IN] Array{Cdouble, 1}
-  - semibandwidth:     [IN] Array{Cint, 1}
-  - h_band:            [OUT] Array{Cdouble, 2}
-  - lbandh:            [IN] Array{Cint, 1}
-  - max_semibandwidth: [OUT] Array{Cint, 1}
-
-
-    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
-
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
-
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-    h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
-
-  - nlp:               [IN] CUTEstModel
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-    max_semibandwidth = ubandh!(nlp, x, semibandwidth, h_band, lbandh)
-
-  - nlp:               [IN] CUTEstModel
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-
-"""
-ubandh!
 
 """# udh
 The udh subroutine evaluates the Hessian matrix of the objective
@@ -1686,16 +1562,14 @@ Usage:
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    h = udh(nlp, x, lh1)
+    h = udh(x, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    udh!(nlp, x, lh1, h)
+    udh!(x, lh1, h)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
@@ -1741,22 +1615,132 @@ Usage:
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    h = udh(nlp, x, lh1)
+    h = udh(x, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    udh!(nlp, x, lh1, h)
+    udh!(x, lh1, h)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
 """
 udh!
+
+"""# ushp
+The ushp subroutine evaluates the sparsity pattern of the Hessian
+matrix of the objective function of the problem, decoded from a SIF
+file by the script sifdecoder, in coordinate format. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
+function is group-partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_ushp
+
+Usage:
+
+    ushp(io_err, n, nnzh, lh, h_row, h_col)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - nnzh:    [OUT] Array{Cint, 1}
+  - lh:      [IN] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+
+
+    nnzh, h_row, h_col = ushp(n, lh)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = ushp!(n, lh, h_row, h_col)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh, h_row, h_col = ushp()
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = ushp!(h_row, h_col)
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+"""
+ushp
+
+"""# ushp
+The ushp subroutine evaluates the sparsity pattern of the Hessian
+matrix of the objective function of the problem, decoded from a SIF
+file by the script sifdecoder, in coordinate format. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
+function is group-partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_ushp
+
+Usage:
+
+    ushp(io_err, n, nnzh, lh, h_row, h_col)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - nnzh:    [OUT] Array{Cint, 1}
+  - lh:      [IN] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+
+
+    nnzh, h_row, h_col = ushp(n, lh)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = ushp!(n, lh, h_row, h_col)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh, h_row, h_col = ushp()
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = ushp!(h_row, h_col)
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+"""
+ushp!
 
 """# ush
 The ush subroutine evaluates the Hessian matrix of the objective
@@ -1806,18 +1790,16 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = ush(nlp, x)
+    nnzh, h_val, h_row, h_col = ush(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = ush!(nlp, x, h_val, h_row, h_col)
+    nnzh = ush!(x, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
   - h_val:   [OUT] Array{Float64, 1}
@@ -1875,18 +1857,16 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = ush(nlp, x)
+    nnzh, h_val, h_row, h_col = ush(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = ush!(nlp, x, h_val, h_row, h_col)
+    nnzh = ush!(x, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
   - h_val:   [OUT] Array{Float64, 1}
@@ -1958,9 +1938,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(x, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
@@ -1972,9 +1951,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne = ueh!(nlp, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ne = ueh!(x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
@@ -2051,9 +2029,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(x, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
@@ -2065,9 +2042,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne = ueh!(nlp, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ne = ueh!(x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
@@ -2124,17 +2100,15 @@ Usage:
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    g, h = ugrdh(nlp, x, lh1)
+    g, h = ugrdh(x, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    ugrdh!(nlp, x, g, lh1, h)
+    ugrdh!(x, g, lh1, h)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
@@ -2185,17 +2159,15 @@ Usage:
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    g, h = ugrdh(nlp, x, lh1)
+    g, h = ugrdh(x, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    ugrdh!(nlp, x, g, lh1, h)
+    ugrdh!(x, g, lh1, h)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
@@ -2255,9 +2227,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
+    g, nnzh, h_val, h_row, h_col = ugrsh(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -2265,9 +2236,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = ugrsh!(nlp, x, g, h_val, h_row, h_col)
+    nnzh = ugrsh!(x, g, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -2329,9 +2299,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
+    g, nnzh, h_val, h_row, h_col = ugrsh(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -2339,9 +2308,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = ugrsh!(nlp, x, g, h_val, h_row, h_col)
+    nnzh = ugrsh!(x, g, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -2418,9 +2386,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
+    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(x, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - g:          [OUT] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -2433,9 +2400,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne = ugreh!(nlp, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ne = ugreh!(x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - g:          [OUT] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -2517,9 +2483,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
+    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(x, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - g:          [OUT] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -2532,9 +2497,8 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne = ugreh!(nlp, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ne = ugreh!(x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - g:          [OUT] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -2591,17 +2555,15 @@ Usage:
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    result = uhprod(nlp, goth, x, vector)
+    result = uhprod(goth, x, vector)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    uhprod!(nlp, goth, x, vector, result)
+    uhprod!(goth, x, vector, result)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
@@ -2651,17 +2613,15 @@ Usage:
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    result = uhprod(nlp, goth, x, vector)
+    result = uhprod(goth, x, vector)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    uhprod!(nlp, goth, x, vector, result)
+    uhprod!(goth, x, vector, result)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
@@ -2669,6 +2629,292 @@ Usage:
 
 """
 uhprod!
+
+"""# ushprod
+The ushprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the objective function of the problem decoded from a
+SIF file by the script sifdecoder at the point X. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
+function is group-partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_ushprod
+
+Usage:
+
+    ushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
+index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+
+
+    nnz_result, index_nz_result, result = ushprod(n, goth, x, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = ushprod!(n, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result, index_nz_result, result = ushprod(goth, x, nnz_vector, index_nz_vector, vector)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = ushprod!(goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+"""
+ushprod
+
+"""# ushprod
+The ushprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the objective function of the problem decoded from a
+SIF file by the script sifdecoder at the point X. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
+function is group-partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_ushprod
+
+Usage:
+
+    ushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
+index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+
+
+    nnz_result, index_nz_result, result = ushprod(n, goth, x, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = ushprod!(n, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result, index_nz_result, result = ushprod(goth, x, nnz_vector, index_nz_vector, vector)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = ushprod!(goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+"""
+ushprod!
+
+"""# ubandh
+The ubandh subroutine extracts the elements which lie within a band of
+given semi-bandwidth out of the Hessian matrix of the objective
+function of the problem decoded from a SIF file by the script
+sifdecoder at the point X. The problem under consideration is to
+minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to the simple bounds xl≤x≤xu. The objective function is group-
+partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_ubandh
+
+Usage:
+
+    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+
+  - io_err:            [OUT] Array{Cint, 1}
+  - n:                 [IN] Array{Cint, 1}
+  - x:                 [IN] Array{Cdouble, 1}
+  - semibandwidth:     [IN] Array{Cint, 1}
+  - h_band:            [OUT] Array{Cdouble, 2}
+  - lbandh:            [IN] Array{Cint, 1}
+  - max_semibandwidth: [OUT] Array{Cint, 1}
+
+
+    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+    h_band, max_semibandwidth = ubandh(x, semibandwidth, lbandh)
+
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+    max_semibandwidth = ubandh!(x, semibandwidth, h_band, lbandh)
+
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+"""
+ubandh
+
+"""# ubandh
+The ubandh subroutine extracts the elements which lie within a band of
+given semi-bandwidth out of the Hessian matrix of the objective
+function of the problem decoded from a SIF file by the script
+sifdecoder at the point X. The problem under consideration is to
+minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to the simple bounds xl≤x≤xu. The objective function is group-
+partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_ubandh
+
+Usage:
+
+    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+
+  - io_err:            [OUT] Array{Cint, 1}
+  - n:                 [IN] Array{Cint, 1}
+  - x:                 [IN] Array{Cdouble, 1}
+  - semibandwidth:     [IN] Array{Cint, 1}
+  - h_band:            [OUT] Array{Cdouble, 2}
+  - lbandh:            [IN] Array{Cint, 1}
+  - max_semibandwidth: [OUT] Array{Cint, 1}
+
+
+    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+    h_band, max_semibandwidth = ubandh(x, semibandwidth, lbandh)
+
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+    max_semibandwidth = ubandh!(x, semibandwidth, h_band, lbandh)
+
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+
+"""
+ubandh!
 
 """# cfn
 The cfn subroutine evaluates the value of the objective function and
@@ -2713,16 +2959,14 @@ Usage:
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
 
-    f, c = cfn(nlp, x)
+    f, c = cfn(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
 
-    f = cfn!(nlp, x, c)
+    f = cfn!(x, c)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
@@ -2773,16 +3017,14 @@ Usage:
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
 
-    f, c = cfn(nlp, x)
+    f, c = cfn(x)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
 
-    f = cfn!(nlp, x, c)
+    f = cfn!(x, c)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
@@ -2833,17 +3075,15 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f, g = cofg(nlp, x, grad)
+    f, g = cofg(x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f = cofg!(nlp, x, g, grad)
+    f = cofg!(x, g, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
@@ -2895,17 +3135,15 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f, g = cofg(nlp, x, grad)
+    f, g = cofg(x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f = cofg!(nlp, x, g, grad)
+    f = cofg!(x, g, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
@@ -2966,9 +3204,8 @@ Usage:
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
+    f, nnzg, g_val, g_var = cofsg(x, lg, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - nnzg:    [OUT] Int
@@ -2977,9 +3214,8 @@ Usage:
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    f, nnzg = cofsg!(nlp, x, lg, g_val, g_var, grad)
+    f, nnzg = cofsg!(x, lg, g_val, g_var, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - nnzg:    [OUT] Int
@@ -3043,9 +3279,8 @@ Usage:
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
+    f, nnzg, g_val, g_var = cofsg(x, lg, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - nnzg:    [OUT] Int
@@ -3054,9 +3289,8 @@ Usage:
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    f, nnzg = cofsg!(nlp, x, lg, g_val, g_var, grad)
+    f, nnzg = cofsg!(x, lg, g_val, g_var, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - nnzg:    [OUT] Int
@@ -3123,9 +3357,8 @@ Usage:
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
 
-    c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
+    c, cjac = ccfg(x, jtrans, lcjac1, lcjac2, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - jtrans:  [IN] Bool
@@ -3134,9 +3367,8 @@ Usage:
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
 
-    ccfg!(nlp, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+    ccfg!(x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - jtrans:  [IN] Bool
@@ -3203,9 +3435,8 @@ Usage:
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
 
-    c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
+    c, cjac = ccfg(x, jtrans, lcjac1, lcjac2, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - jtrans:  [IN] Bool
@@ -3214,9 +3445,8 @@ Usage:
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
 
-    ccfg!(nlp, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+    ccfg!(x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - jtrans:  [IN] Bool
@@ -3277,18 +3507,16 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f, g = clfg(nlp, x, y, grad)
+    f, g = clfg(x, y, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f = clfg!(nlp, x, y, g, grad)
+    f = clfg!(x, y, g, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
@@ -3347,18 +3575,16 @@ Usage:
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f, g = clfg(nlp, x, y, grad)
+    f, g = clfg(x, y, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    f = clfg!(nlp, x, y, g, grad)
+    f = clfg!(x, y, g, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
@@ -3427,9 +3653,8 @@ Usage:
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
 
-    g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
+    g, j_val = cgr(x, y, grlagf, jtrans, lj1, lj2)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3439,9 +3664,8 @@ Usage:
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
 
-    cgr!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+    cgr!(x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3513,9 +3737,8 @@ Usage:
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
 
-    g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
+    g, j_val = cgr(x, y, grlagf, jtrans, lj1, lj2)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3525,9 +3748,8 @@ Usage:
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
 
-    cgr!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+    cgr!(x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3601,9 +3823,8 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
 
-    nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
+    nnzj, j_val, j_var, j_fun = csgr(x, y, grlagf)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3612,9 +3833,8 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
 
-    nnzj = csgr!(nlp, x, y, grlagf, j_val, j_var, j_fun)
+    nnzj = csgr!(x, y, grlagf, j_val, j_var, j_fun)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3687,9 +3907,8 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
 
-    nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
+    nnzj, j_val, j_var, j_fun = csgr(x, y, grlagf)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3698,9 +3917,8 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
 
-    nnzj = csgr!(nlp, x, y, grlagf, j_val, j_var, j_fun)
+    nnzj = csgr!(x, y, grlagf, j_val, j_var, j_fun)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -3771,9 +3989,8 @@ Usage:
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
+    c, nnzj, j_val, j_var, j_fun = ccfsg(x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - nnzj:    [OUT] Int
@@ -3782,9 +3999,8 @@ Usage:
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    nnzj = ccfsg!(nlp, x, c, j_val, j_var, j_fun, grad)
+    nnzj = ccfsg!(x, c, j_val, j_var, j_fun, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - nnzj:    [OUT] Int
@@ -3855,9 +4071,8 @@ Usage:
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
+    c, nnzj, j_val, j_var, j_fun = ccfsg(x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - nnzj:    [OUT] Int
@@ -3866,9 +4081,8 @@ Usage:
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    nnzj = ccfsg!(nlp, x, c, j_val, j_var, j_fun, grad)
+    nnzj = ccfsg!(x, c, j_val, j_var, j_fun, grad)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - c:       [OUT] Array{Float64, 1}
   - nnzj:    [OUT] Int
@@ -3927,18 +4141,16 @@ Usage:
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    ci, gci = ccifg(nlp, icon, x, grad)
+    ci, gci = ccifg(icon, x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    ci = ccifg!(nlp, icon, x, gci, grad)
+    ci = ccifg!(icon, x, gci, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
@@ -3995,18 +4207,16 @@ Usage:
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    ci, gci = ccifg(nlp, icon, x, grad)
+    ci, gci = ccifg(icon, x, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
 
-    ci = ccifg!(nlp, icon, x, gci, grad)
+    ci = ccifg!(icon, x, gci, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
@@ -4073,9 +4283,8 @@ Usage:
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
+    ci, nnzgci, gci_val, gci_var = ccifsg(icon, x, lgci, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
@@ -4085,9 +4294,8 @@ Usage:
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    ci, nnzgci = ccifsg!(nlp, icon, x, lgci, gci_val, gci_var, grad)
+    ci, nnzgci = ccifsg!(icon, x, lgci, gci_val, gci_var, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
@@ -4157,9 +4365,8 @@ Usage:
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
+    ci, nnzgci, gci_val, gci_var = ccifsg(icon, x, lgci, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
@@ -4169,9 +4376,8 @@ Usage:
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
 
-    ci, nnzgci = ccifsg!(nlp, icon, x, lgci, gci_val, gci_var, grad)
+    ci, nnzgci = ccifsg!(icon, x, lgci, gci_val, gci_var, grad)
 
-  - nlp:     [IN] CUTEstModel
   - icon:    [IN] Int
   - x:       [IN] Array{Float64, 1}
   - ci:      [OUT] Float64
@@ -4251,9 +4457,8 @@ Usage:
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
+    g, j_val, h_val = cgrdh(x, y, grlagf, jtrans, lj1, lj2, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -4265,9 +4470,8 @@ Usage:
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    cgrdh!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+    cgrdh!(x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -4349,9 +4553,8 @@ Usage:
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
+    g, j_val, h_val = cgrdh(x, y, grlagf, jtrans, lj1, lj2, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -4363,9 +4566,8 @@ Usage:
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    cgrdh!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+    cgrdh!(x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -4427,17 +4629,15 @@ Usage:
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    h_val = cdh(nlp, x, y, lh1)
+    h_val = cdh(x, y, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    cdh!(nlp, x, y, lh1, h_val)
+    cdh!(x, y, lh1, h_val)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
@@ -4493,17 +4693,15 @@ Usage:
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    h_val = cdh(nlp, x, y, lh1)
+    h_val = cdh(x, y, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
 
-    cdh!(nlp, x, y, lh1, h_val)
+    cdh!(x, y, lh1, h_val)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
@@ -4511,6 +4709,250 @@ Usage:
 
 """
 cdh!
+
+"""# cdhc
+The cdhc subroutine evaluates the Hessian matrix of the constraint
+part of the Lagrangian function yTc(x) for the problem decoded from a
+SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
+matrix is stored as a dense matrix. The problem under consideration is
+to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
+inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
+xl≤x≤xu. The objective function is group-partially separable and all
+constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cdhc
+
+Usage:
+
+    cdhc(io_err, n, m, x, y, lh1, h_val)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - m:       [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - y:       [IN] Array{Cdouble, 1}
+  - lh1:     [IN] Array{Cint, 1}
+  - h_val:   [OUT] Array{Cdouble, 2}
+
+
+    h_val = cdhc(n, m, x, y, lh1)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+    cdhc!(n, m, x, y, lh1, h_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+    h_val = cdhc(x, y, lh1)
+
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+    cdhc!(x, y, lh1, h_val)
+
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+"""
+cdhc
+
+"""# cdhc
+The cdhc subroutine evaluates the Hessian matrix of the constraint
+part of the Lagrangian function yTc(x) for the problem decoded from a
+SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
+matrix is stored as a dense matrix. The problem under consideration is
+to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
+inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
+xl≤x≤xu. The objective function is group-partially separable and all
+constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cdhc
+
+Usage:
+
+    cdhc(io_err, n, m, x, y, lh1, h_val)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - m:       [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - y:       [IN] Array{Cdouble, 1}
+  - lh1:     [IN] Array{Cint, 1}
+  - h_val:   [OUT] Array{Cdouble, 2}
+
+
+    h_val = cdhc(n, m, x, y, lh1)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+    cdhc!(n, m, x, y, lh1, h_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+    h_val = cdhc(x, y, lh1)
+
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+    cdhc!(x, y, lh1, h_val)
+
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+
+"""
+cdhc!
+
+"""# cshp
+The cshp subroutine evaluates the sparsity pattern of the Hessian of
+the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem, decoded
+from a SIF file by the script sifdecoder, in coordinate format. The
+problem under consideration is to minimize or maximize an objective
+function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
+∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
+and simple bounds xl≤x≤xu. The objective function is group-partially
+separable and all constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cshp
+
+Usage:
+
+    cshp(io_err, n, nnzh, lh, h_row, h_col)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - nnzh:    [OUT] Array{Cint, 1}
+  - lh:      [IN] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+
+
+    nnzh, h_row, h_col = cshp(n, lh)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = cshp!(n, lh, h_row, h_col)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh, h_row, h_col = cshp()
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = cshp!(h_row, h_col)
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+"""
+cshp
+
+"""# cshp
+The cshp subroutine evaluates the sparsity pattern of the Hessian of
+the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem, decoded
+from a SIF file by the script sifdecoder, in coordinate format. The
+problem under consideration is to minimize or maximize an objective
+function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
+∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
+and simple bounds xl≤x≤xu. The objective function is group-partially
+separable and all constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cshp
+
+Usage:
+
+    cshp(io_err, n, nnzh, lh, h_row, h_col)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - nnzh:    [OUT] Array{Cint, 1}
+  - lh:      [IN] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+
+
+    nnzh, h_row, h_col = cshp(n, lh)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = cshp!(n, lh, h_row, h_col)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh, h_row, h_col = cshp()
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+    nnzh = cshp!(h_row, h_col)
+
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+
+"""
+cshp!
 
 """# csh
 The csh subroutine evaluates the Hessian of the Lagrangian function
@@ -4568,9 +5010,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = csh(nlp, x, y)
+    nnzh, h_val, h_row, h_col = csh(x, y)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4578,9 +5019,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = csh!(nlp, x, y, h_val, h_row, h_col)
+    nnzh = csh!(x, y, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4647,9 +5087,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = csh(nlp, x, y)
+    nnzh, h_val, h_row, h_col = csh(x, y)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4657,9 +5096,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = csh!(nlp, x, y, h_val, h_row, h_col)
+    nnzh = csh!(x, y, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4671,11 +5109,11 @@ Usage:
 csh!
 
 """# cshc
-The cshc subroutine evaluates the constraint part of the Hessian of
-the Lagrangian function yTc(x) for the problem decoded from a SIF file
-by the script sifdecoder at the point (x,y)= (X,Y). The matrix is
-stored in sparse format. The problem under consideration is to
-minimize or maximize an objective function f(x) over all x ∈ Rn
+The cshc subroutine evaluates the Hessian matrix of the constraint
+part of the Lagrangian function yTc(x) for the problem decoded from a
+SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
+matrix is stored in sparse format. The problem under consideration is
+to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
 inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
@@ -4726,9 +5164,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
+    nnzh, h_val, h_row, h_col = cshc(x, y)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4736,9 +5173,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = cshc!(nlp, x, y, h_val, h_row, h_col)
+    nnzh = cshc!(x, y, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4750,11 +5186,11 @@ Usage:
 cshc
 
 """# cshc
-The cshc subroutine evaluates the constraint part of the Hessian of
-the Lagrangian function yTc(x) for the problem decoded from a SIF file
-by the script sifdecoder at the point (x,y)= (X,Y). The matrix is
-stored in sparse format. The problem under consideration is to
-minimize or maximize an objective function f(x) over all x ∈ Rn
+The cshc subroutine evaluates the Hessian matrix of the constraint
+part of the Lagrangian function yTc(x) for the problem decoded from a
+SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
+matrix is stored in sparse format. The problem under consideration is
+to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
 inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
@@ -4805,9 +5241,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
+    nnzh, h_val, h_row, h_col = cshc(x, y)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4815,9 +5250,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = cshc!(nlp, x, y, h_val, h_row, h_col)
+    nnzh = cshc!(x, y, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - nnzh:    [OUT] Int
@@ -4899,9 +5333,8 @@ he_row, lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -4914,9 +5347,8 @@ he_row, lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne = ceh!(nlp, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ne = ceh!(x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -5003,9 +5435,8 @@ he_row, lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -5018,9 +5449,8 @@ he_row, lhe_val, he_val, byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    ne = ceh!(nlp, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ne = ceh!(x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
@@ -5080,17 +5510,15 @@ Usage:
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    h = cidh(nlp, x, iprob, lh1)
+    h = cidh(x, iprob, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    cidh!(nlp, x, iprob, lh1, h)
+    cidh!(x, iprob, lh1, h)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - lh1:     [IN] Int
@@ -5143,17 +5571,15 @@ Usage:
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    h = cidh(nlp, x, iprob, lh1)
+    h = cidh(x, iprob, lh1)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
 
-    cidh!(nlp, x, iprob, lh1, h)
+    cidh!(x, iprob, lh1, h)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - lh1:     [IN] Int
@@ -5215,9 +5641,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
+    nnzh, h_val, h_row, h_col = cish(x, iprob)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - nnzh:    [OUT] Int
@@ -5225,9 +5650,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = cish!(nlp, x, iprob, h_val, h_row, h_col)
+    nnzh = cish!(x, iprob, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - nnzh:    [OUT] Int
@@ -5291,9 +5715,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
+    nnzh, h_val, h_row, h_col = cish(x, iprob)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - nnzh:    [OUT] Int
@@ -5301,9 +5724,8 @@ Usage:
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzh = cish!(nlp, x, iprob, h_val, h_row, h_col)
+    nnzh = cish!(x, iprob, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - nnzh:    [OUT] Int
@@ -5391,9 +5813,8 @@ h_val, h_row, h_col)
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
+    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(x, y, grlagf)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -5406,9 +5827,8 @@ h_val, h_row, h_col)
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzj, nnzh = csgrsh!(nlp, x, y, grlagf, j_val, j_var, j_fun, h_val, h_row, h_col)
+    nnzj, nnzh = csgrsh!(x, y, grlagf, j_val, j_var, j_fun, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -5501,9 +5921,8 @@ h_val, h_row, h_col)
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
+    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(x, y, grlagf)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -5516,9 +5935,8 @@ h_val, h_row, h_col)
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
 
-    nnzj, nnzh = csgrsh!(nlp, x, y, grlagf, j_val, j_var, j_fun, h_val, h_row, h_col)
+    nnzj, nnzh = csgrsh!(x, y, grlagf, j_val, j_var, j_fun, h_val, h_row, h_col)
 
-  - nlp:     [IN] CUTEstModel
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - grlagf:  [IN] Bool
@@ -5627,9 +6045,8 @@ byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
+    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - grlagf:     [IN] Bool
@@ -5647,9 +6064,8 @@ byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    nnzj, ne = csgreh!(nlp, x, y, grlagf, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    nnzj, ne = csgreh!(x, y, grlagf, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - grlagf:     [IN] Bool
@@ -5763,9 +6179,8 @@ byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
+    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - grlagf:     [IN] Bool
@@ -5783,9 +6198,8 @@ byrows)
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 
-    nnzj, ne = csgreh!(nlp, x, y, grlagf, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    nnzj, ne = csgreh!(x, y, grlagf, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
-  - nlp:        [IN] CUTEstModel
   - x:          [IN] Array{Float64, 1}
   - y:          [IN] Array{Float64, 1}
   - grlagf:     [IN] Bool
@@ -5856,18 +6270,16 @@ Usage:
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    result = chprod(nlp, goth, x, y, vector)
+    result = chprod(goth, x, y, vector)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    chprod!(nlp, goth, x, y, vector, result)
+    chprod!(goth, x, y, vector, result)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
@@ -5927,18 +6339,16 @@ Usage:
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    result = chprod(nlp, goth, x, y, vector)
+    result = chprod(goth, x, y, vector)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    chprod!(nlp, goth, x, y, vector, result)
+    chprod!(goth, x, y, vector, result)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
@@ -5947,6 +6357,186 @@ Usage:
 
 """
 chprod!
+
+"""# cshprod
+The cshprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x)
+corresponding to the problem decoded from a SIF file by the script
+sifdecoder at the point (x,y)= (X,Y). The problem under consideration
+is to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
+inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
+xl≤x≤xu. The objective function is group-partially separable and all
+constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cshprod
+
+Usage:
+
+    cshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+nnz_result, index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - y:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+
+
+    nnz_result, index_nz_result, result = cshprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result, index_nz_result, result = cshprod(goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshprod!(goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+"""
+cshprod
+
+"""# cshprod
+The cshprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x)
+corresponding to the problem decoded from a SIF file by the script
+sifdecoder at the point (x,y)= (X,Y). The problem under consideration
+is to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
+inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
+xl≤x≤xu. The objective function is group-partially separable and all
+constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cshprod
+
+Usage:
+
+    cshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+nnz_result, index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - y:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+
+
+    nnz_result, index_nz_result, result = cshprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result, index_nz_result, result = cshprod(goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshprod!(goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+"""
+cshprod!
 
 """# chcprod
 The chcprod subroutine forms the product of a vector with the Hessian
@@ -5998,18 +6588,16 @@ Usage:
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    result = chcprod(nlp, goth, x, y, vector)
+    result = chcprod(goth, x, y, vector)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    chcprod!(nlp, goth, x, y, vector, result)
+    chcprod!(goth, x, y, vector, result)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
@@ -6069,18 +6657,16 @@ Usage:
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    result = chcprod(nlp, goth, x, y, vector)
+    result = chcprod(goth, x, y, vector)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
 
-    chcprod!(nlp, goth, x, y, vector, result)
+    chcprod!(goth, x, y, vector, result)
 
-  - nlp:     [IN] CUTEstModel
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - y:       [IN] Array{Float64, 1}
@@ -6089,6 +6675,186 @@ Usage:
 
 """
 chcprod!
+
+"""# cshcprod
+The cshcprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the constraint part of the Lagrangian function
+yTc(x) corresponding to the problem decoded from a SIF file by the
+script sifdecoder at the point (x,y)= (X,Y). The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
+general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
+bounds xl≤x≤xu. The objective function is group-partially separable
+and all constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cshcprod
+
+Usage:
+
+    cshcprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+nnz_result, index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - y:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+
+
+    nnz_result, index_nz_result, result = cshcprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshcprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result, index_nz_result, result = cshcprod(goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshcprod!(goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+"""
+cshcprod
+
+"""# cshcprod
+The cshcprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the constraint part of the Lagrangian function
+yTc(x) corresponding to the problem decoded from a SIF file by the
+script sifdecoder at the point (x,y)= (X,Y). The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
+general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
+bounds xl≤x≤xu. The objective function is group-partially separable
+and all constraint functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cshcprod
+
+Usage:
+
+    cshcprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+nnz_result, index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - y:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+
+
+    nnz_result, index_nz_result, result = cshcprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshcprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result, index_nz_result, result = cshcprod(goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+    nnz_result = cshcprod!(goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+
+"""
+cshcprod!
 
 """# cjprod
 The cjprod subroutine forms the product of a vector with the Jacobian
@@ -6146,9 +6912,8 @@ Usage:
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
 
-    result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
+    result = cjprod(gotj, jtrans, x, vector, lvector, lresult)
 
-  - nlp:     [IN] CUTEstModel
   - gotj:    [IN] Bool
   - jtrans:  [IN] Bool
   - x:       [IN] Array{Float64, 1}
@@ -6157,9 +6922,8 @@ Usage:
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
 
-    cjprod!(nlp, gotj, jtrans, x, vector, lvector, result, lresult)
+    cjprod!(gotj, jtrans, x, vector, lvector, result, lresult)
 
-  - nlp:     [IN] CUTEstModel
   - gotj:    [IN] Bool
   - jtrans:  [IN] Bool
   - x:       [IN] Array{Float64, 1}
@@ -6227,9 +6991,8 @@ Usage:
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
 
-    result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
+    result = cjprod(gotj, jtrans, x, vector, lvector, lresult)
 
-  - nlp:     [IN] CUTEstModel
   - gotj:    [IN] Bool
   - jtrans:  [IN] Bool
   - x:       [IN] Array{Float64, 1}
@@ -6238,9 +7001,8 @@ Usage:
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
 
-    cjprod!(nlp, gotj, jtrans, x, vector, lvector, result, lresult)
+    cjprod!(gotj, jtrans, x, vector, lvector, result, lresult)
 
-  - nlp:     [IN] CUTEstModel
   - gotj:    [IN] Bool
   - jtrans:  [IN] Bool
   - x:       [IN] Array{Float64, 1}
@@ -6251,6 +7013,364 @@ Usage:
 
 """
 cjprod!
+
+"""# csjprod
+The csjprod subroutine forms the product of a sparse vector with the
+Jacobian matrix, or with its transpose, of the constraint functions of
+the problem decoded from a SIF file by the script sifdecoder evaluated
+at the point X. The problem under consideration is to minimize or
+maximize an objective function f(x) over all x ∈ Rn subject to general
+equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
+ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
+objective function is group-partially separable and all constraint
+functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_csjprod
+
+Usage:
+
+    csjprod(io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
+lvector, nnz_result, index_nz_result, result, lresult)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - gotj:            [IN] Array{Cint, 1}
+  - jtrans:          [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - lvector:         [IN] Array{Cint, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+  - lresult:         [IN] Array{Cint, 1}
+
+
+    nnz_result, index_nz_result, result = csjprod(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+    nnz_result = csjprod!(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+    nnz_result, index_nz_result, result = csjprod(gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+    nnz_result = csjprod!(gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+"""
+csjprod
+
+"""# csjprod
+The csjprod subroutine forms the product of a sparse vector with the
+Jacobian matrix, or with its transpose, of the constraint functions of
+the problem decoded from a SIF file by the script sifdecoder evaluated
+at the point X. The problem under consideration is to minimize or
+maximize an objective function f(x) over all x ∈ Rn subject to general
+equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
+ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
+objective function is group-partially separable and all constraint
+functions are partially separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_csjprod
+
+Usage:
+
+    csjprod(io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
+lvector, nnz_result, index_nz_result, result, lresult)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - gotj:            [IN] Array{Cint, 1}
+  - jtrans:          [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - lvector:         [IN] Array{Cint, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+  - lresult:         [IN] Array{Cint, 1}
+
+
+    nnz_result, index_nz_result, result = csjprod(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+    nnz_result = csjprod!(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+    nnz_result, index_nz_result, result = csjprod(gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+    nnz_result = csjprod!(gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+
+"""
+csjprod!
+
+"""# cchprods
+The cchprods subroutine forms the product of a vector with each of the
+Hessian matrix of the constraint functions c(x) corresponding to the
+problem decoded from a SIF file by the script sifdecoder at the point
+x= X. The problem under consideration is to minimize or maximize an
+objective function f(x) over all x ∈ Rn subject to general equations
+ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈
+mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
+group-partially separable and all constraint functions are partially
+separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cchprods
+
+Usage:
+
+    cchprods(io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - m:       [IN] Array{Cint, 1}
+  - goth:    [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - vector:  [IN] Array{Cdouble, 1}
+  - lchp:    [IN] Array{Cint, 1}
+  - chp_val: [OUT] Array{Cdouble, 1}
+  - chp_ind: [IN] Array{Cint, 1}
+  - chp_ptr: [IN] Array{Cint, 1}
+
+
+    chp_val = cchprods(n, m, goth, x, vector, lchp, chp_ind, chp_ptr)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+    cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+    chp_val = cchprods(goth, x, vector, lchp, chp_ind, chp_ptr)
+
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+    cchprods!(goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+"""
+cchprods
+
+"""# cchprods
+The cchprods subroutine forms the product of a vector with each of the
+Hessian matrix of the constraint functions c(x) corresponding to the
+problem decoded from a SIF file by the script sifdecoder at the point
+x= X. The problem under consideration is to minimize or maximize an
+objective function f(x) over all x ∈ Rn subject to general equations
+ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈
+mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
+group-partially separable and all constraint functions are partially
+separable.
+
+This help was generated automatically and may contain
+errors. For more information, run the shell command
+
+    man cutest_cchprods
+
+Usage:
+
+    cchprods(io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - m:       [IN] Array{Cint, 1}
+  - goth:    [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - vector:  [IN] Array{Cdouble, 1}
+  - lchp:    [IN] Array{Cint, 1}
+  - chp_val: [OUT] Array{Cdouble, 1}
+  - chp_ind: [IN] Array{Cint, 1}
+  - chp_ptr: [IN] Array{Cint, 1}
+
+
+    chp_val = cchprods(n, m, goth, x, vector, lchp, chp_ind, chp_ptr)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+    cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+    chp_val = cchprods(goth, x, vector, lchp, chp_ind, chp_ptr)
+
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+    cchprods!(goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+
+"""
+cchprods!
 
 """# uterminate
 The uterminate subroutine deallocates all workspace arrays created

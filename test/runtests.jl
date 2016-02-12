@@ -16,11 +16,11 @@ for p in problems
   end
   p = p[1:end-4]
 
-  nlp = CUTEstModel(p)
-  x0 = nlp.meta.x0
-  nvar, ncon = nlp.meta.nvar, nlp.meta.ncon
+  loadProblem(p)
+  x0 = nlp.x0
+  nvar, ncon = nlp.nvar, nlp.ncon
 
-  println("$p: julia interface: f(x₀) = $(obj(nlp, x0))")
+  println("$p: julia interface: f(x₀) = $(obj(x0))")
 
   io_err = Cint[0]
   fval = [0.0]
@@ -36,11 +36,11 @@ for p in problems
     cx = zeros(ncon)
     println("$p: specialized interface: f(x₀) = $(cfn(nvar, ncon, x0)[1])")
     println("$p: specialized interface: f(x₀) = $(cfn!(nvar, ncon, x0, cx)[1])")
-    println("$p: specialized interface: f(x₀) = $(cfn(nlp, x0)[1])")
-    println("$p: specialized interface: f(x₀) = $(cfn!(nlp, x0, cx)[1])")
+    println("$p: specialized interface: f(x₀) = $(cfn(x0)[1])")
+    println("$p: specialized interface: f(x₀) = $(cfn!(x0, cx)[1])")
   else
     println("$p: specialized interface: f(x₀) = $(ufn(nvar, x0))")
-    println("$p: specialized interface: f(x₀) = $(ufn(nlp, x0))")
+    println("$p: specialized interface: f(x₀) = $(ufn(x0))")
   end
-  cutest_finalize(nlp)
+  cutest_finalize()
 end

@@ -16,9 +16,9 @@ trip_resp = { "Jx": "j_var", "Wx": "h_row" }
 ignore = trip_comp + [ "nnzj", "nnzh", "nnzg", "nnzgci", "gci_var", "g_var" ]
 
 translate = {
-    "n": "nlp.meta.nvar",
-    "m": "nlp.meta.ncon",
-    "lgci": "nlp.meta.nvar",
+    "n": "nlp.nvar",
+    "m": "nlp.ncon",
+    "lgci": "nlp.nvar",
     "x": "x0",
     "c": "cx",
     "f": "fx",
@@ -32,25 +32,25 @@ translate = {
     "j_val": "Jx",
     "h_val": "Wx",
     "jtrans": "false",
-    "lcjac1": "nlp.meta.ncon",
-    "lcjac2": "nlp.meta.nvar",
-    "lg": "nlp.meta.nvar",
+    "lcjac1": "nlp.ncon",
+    "lcjac2": "nlp.nvar",
+    "lg": "nlp.nvar",
     "y": "y0",
     "grlagf": "false",
-    "lj": "nlp.meta.nnzj+nlp.meta.nvar",
-    "lj1": "nlp.meta.ncon",
-    "lj2": "nlp.meta.nvar",
-    "lh1": "nlp.meta.nvar",
-    "lh": "nlp.meta.nnzh",
-    "lvector": "nlp.meta.nvar",
-    "lresult": "nlp.meta.ncon",
-    "vector": "ones(nlp.meta.nvar)" }
+    "lj": "nlp.nnzj+nlp.nvar",
+    "lj1": "nlp.ncon",
+    "lj2": "nlp.nvar",
+    "lh1": "nlp.nvar",
+    "lh": "nlp.nnzh",
+    "lvector": "nlp.nvar",
+    "lresult": "nlp.ncon",
+    "vector": "ones(nlp.nvar)" }
 
 hs = {
     "fx": "f(x0)",
     "cx": "c(x0)",
     "ci": "c(x0)[j]",
-    "h": "(W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0))",
+    "h": "(W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.ncon])-H(x0))",
     "gx": "g(x0)",
     "Jx": "J(x0)",
     "gci": "J(x0)[j,:]",
@@ -60,7 +60,7 @@ hs = {
 
 special = {
     "cshc": { "W": "W(x0,y0)-H(x0)"},
-    "cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)" },
+    "cish": { "W": "W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.ncon])-H(x0)" },
     "clfg": { "fx": "f(x0)+dot(y0,c(x0))", "gx": "g(x0)+J(x0)'*y0" },
     "udh": { "h": "H(x0)" },
     "ush": { "W": "H(x0)" }
@@ -73,40 +73,40 @@ results = {
     "uhprod": "H(x0)*v" }
 
 sizeof = {
-    "gx": "nlp.meta.nvar",
-    "cx": "nlp.meta.ncon",
-    "Jx": "nlp.meta.ncon, nlp.meta.nvar",
-    "Wx": "nlp.meta.nvar, nlp.meta.nvar",
-    "j_var": "Int, nlp.meta.nnzj+nlp.meta.nvar",
-    "j_fun": "Int, nlp.meta.nnzj+nlp.meta.nvar",
-    "h_row": "Int, nlp.meta.nnzh",
-    "h_col": "Int, nlp.meta.nnzh",
-    "gci_val": "nlp.meta.nvar",
-    "gci_var": "Int, nlp.meta.nvar",
-    "g_val": "nlp.meta.nvar",
-    "g_var": "Int, nlp.meta.nvar",
-    "h": "nlp.meta.nvar, nlp.meta.nvar" }
+    "gx": "nlp.nvar",
+    "cx": "nlp.ncon",
+    "Jx": "nlp.ncon, nlp.nvar",
+    "Wx": "nlp.nvar, nlp.nvar",
+    "j_var": "Int, nlp.nnzj+nlp.nvar",
+    "j_fun": "Int, nlp.nnzj+nlp.nvar",
+    "h_row": "Int, nlp.nnzh",
+    "h_col": "Int, nlp.nnzh",
+    "gci_val": "nlp.nvar",
+    "gci_var": "Int, nlp.nvar",
+    "g_val": "nlp.nvar",
+    "g_var": "Int, nlp.nvar",
+    "h": "nlp.nvar, nlp.nvar" }
 
 
 sizeofsp = {
-    "Jx": "nlp.meta.nnzj+nlp.meta.nvar",
-    "Wx": "nlp.meta.nnzh" }
+    "Jx": "nlp.nnzj+nlp.nvar",
+    "Wx": "nlp.nnzh" }
 
 multiples = {
-    "icon": "nlp.meta.ncon",
-    "iprob": "nlp.meta.ncon" }
+    "icon": "nlp.ncon",
+    "iprob": "nlp.ncon" }
 
 zero_index = [ "csgr", "csgrsh" ]
 
 def addTriplet(trip, spc, fname, use_test = True):
     str = spc+"{}_val = copy({}x)\n".format(trip.lower(), trip)
     if trip == "J":
-        str += spc+"Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)\n"
+        str += spc+"Jx = zeros(nlp.ncon, nlp.nvar)\n"
         i = "j_fun"
         j = "j_var"
         z = "j"
     else:
-        str += spc+"{}x = zeros(nlp.meta.nvar, nlp.meta.nvar)\n".format(trip)
+        str += spc+"{}x = zeros(nlp.nvar, nlp.nvar)\n".format(trip)
         i = "h_row"
         j = "h_col"
         z = "h"
@@ -224,9 +224,9 @@ for x in content:
 
 with open("test/test_specialized.jl","w") as f:
     f.write('println("\\nTesting the Specialized interface\\n")\n\n')
-    f.write('v = ones(nlp.meta.nvar)\n')
-    f.write('if nlp.meta.ncon > 0\n')
-    stress = "  if nlp.meta.ncon > 0\n"
+    f.write('v = ones(nlp.nvar)\n')
+    f.write('if nlp.ncon > 0\n')
+    stress = "  if nlp.ncon > 0\n"
     for x in cselection:
         str, ss = generate_test_for_function(x)
         f.write(str)

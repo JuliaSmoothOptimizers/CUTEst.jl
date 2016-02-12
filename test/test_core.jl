@@ -1,7 +1,7 @@
 println("\nTesting the core interface\n")
 st = Cint[0]
-nvar = Cint[nlp.meta.nvar]
-ncon = Cint[nlp.meta.ncon]
+nvar = Cint[nlp.nvar]
+ncon = Cint[nlp.ncon]
 fx = [0.0]
 lx = [0.0]
 ci = [0.0]
@@ -11,8 +11,8 @@ gci = Array(Cdouble, nvar[1])
 glx = Array(Cdouble, nvar[1])
 gval = Array(Cdouble, nvar[1])
 gvar = Array(Cint, nvar[1])
-lj = Cint[nlp.meta.nnzj+nlp.meta.nvar]
-lh = Cint[nlp.meta.nnzh]
+lj = Cint[nlp.nnzj+nlp.nvar]
+lh = Cint[nlp.nnzh]
 nnzg = Cint[0]
 nnzj = Cint[0]
 nnzh = Cint[0]
@@ -20,15 +20,15 @@ True = Cint[true]
 False = Cint[false]
 Jx = Array(Cdouble, ncon[1],nvar[1])
 Jtx = Array(Cdouble, nvar[1],ncon[1])
-Jval = Array(Cdouble, nlp.meta.nnzj+nlp.meta.nvar)
-Jvar = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
-Jfun = Array(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+Jval = Array(Cdouble, nlp.nnzj+nlp.nvar)
+Jvar = Array(Cint, nlp.nnzj+nlp.nvar)
+Jfun = Array(Cint, nlp.nnzj+nlp.nvar)
 Hx = Array(Cdouble, nvar[1], nvar[1])
 Wx = Array(Cdouble, nvar[1], nvar[1])
 Cx = Array(Cdouble, nvar[1], nvar[1])
-Hval = Array(Cdouble, nlp.meta.nnzh)
-Hrow = Array(Cint, nlp.meta.nnzh)
-Hcol = Array(Cint, nlp.meta.nnzh)
+Hval = Array(Cdouble, nlp.nnzh)
+Hrow = Array(Cint, nlp.nnzh)
+Hcol = Array(Cint, nlp.nnzh)
 
 if (ncon[1] > 0)
   cfn(st, nvar, ncon, x0, fx, cx)

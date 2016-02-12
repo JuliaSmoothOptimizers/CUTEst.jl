@@ -1,5 +1,5 @@
 println("Finalizing")
-cutest_finalize(nlp);
+cutest_finalize();
 
 # Return to initial directory.
 cd(curdir);
