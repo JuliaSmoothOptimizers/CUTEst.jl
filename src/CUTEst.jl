@@ -5,16 +5,12 @@ module CUTEst
 push!(LOAD_PATH, Pkg.dir("MathProgBase","src","NLP"))
 using NLP  # Defines NLPModelMeta.
 using Compat
+import Base.Libdl.dlsym
 
-export CUTEstModel, sifdecoder, cutest_finalize
+global nlp
 
 # Only one problem can be interfaced at any given time.
-cutest_instances = 0;
-
-type CUTEstModel
-  meta    :: NLPModelMeta;
-  cutest_lib :: Ptr{Void}
-end
+export sifdecoder, cutest_finalize, loadProblem, nlp
 
 const cutest_arch  = get(ENV, "MYARCH", "");
 const cutest_dir   = get(ENV, "CUTEST", "");
@@ -43,27 +39,15 @@ type CUTEstException <: Exception
   end
 end
 
+function __init__()
+  global nlp_is_loaded = false
+  global cutest_lib = C_NULL
+end
+
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
 
 macro cutest_error()  # Handle nonzero exit codes.
   :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
-end
-
-# Taken from
-# http://docs.julialang.org/en/release-0.4/manual/calling-c-and-fortran-code/#indirect-calls
-macro dlsym(func, lib)
-  z, zlocal = gensym(string(func)), gensym()
-  eval(current_module(), :(global $z = C_NULL))
-  z = esc(z)
-  quote
-    let $zlocal::Ptr{Void} = $z::Ptr{Void}
-      if $zlocal == C_NULL
-        $zlocal = Libdl.dlsym($(esc(lib))::Ptr{Void}, $(esc(func)))
-        global $z = $zlocal
-      end
-      $zlocal
-    end
-  end
 end
 
 include("core_interface.jl")
@@ -71,7 +55,7 @@ include("specialized_interface.jl")
 include("julia_interface.jl")
 include("documentation.jl")
 
-# Decode problem and build shared library.
+  # Decode problem and build shared library.
 function sifdecoder(name :: ASCIIString)
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(name);
@@ -80,26 +64,30 @@ function sifdecoder(name :: ASCIIString)
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -L$cutest_dir/objects/$cutest_arch/double -lcutest_double`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
-  push!(Libdl.DL_LOAD_PATH,".")
-  cutest_lib = Libdl.dlopen(libname)
-  return cutest_lib
+  push!(Libdl.DL_LOAD_PATH, ".")
+  global cutest_lib = Libdl.dlopen(libname,
+      Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
 end
 
 # Initialize problem.
-function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
-  global cutest_instances
-  cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
+function loadProblem(name :: ASCIIString; decode :: Bool=true)
+  global nlp_is_loaded, nlp
+  if nlp_is_loaded
+    cutest_finalize()
+    nlp_is_loaded = false
+  end
+  global cutest_lib
   if !decode
-    (isfile(outsdif) & isfile(automat)) || error("CUTEst: no decoded problem found")
+    (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
     libname = "lib$name"
     isfile("$libname.$soname") || error("CUTEst: lib not found; decode problem first")
-    cutest_lib = Libdl.dlopen(libname)
+    cutest_lib = Libdl.dlopen(libname,
+        Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
   else
-    cutest_lib = sifdecoder(name)
+    sifdecoder(name)
   end
   io_err = Cint[0];
-
-  ccall(@dlsym(:fortran_open_, cutest_lib), Void,
+  ccall(dlsym(cutest_lib, :fortran_open_), Void,
       (Ptr{Int32}, Ptr{UInt8}, Ptr{Int32}), &funit, outsdif, io_err);
   @cutest_error
 
@@ -107,7 +95,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   nvar = Cint[0];
   ncon = Cint[0];
 
-  cdimen(io_err, [funit], nvar, ncon, cutest_lib)
+  cdimen(io_err, [funit], nvar, ncon)
   @cutest_error
   nvar = nvar[1];
   ncon = ncon[1];
@@ -123,10 +111,10 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
 
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
-    csetup(io_err, [funit], Cint[5], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
-      equatn, linear, Cint[1], Cint[1], Cint[1], cutest_lib)
+    csetup(io_err, [funit], Cint[0], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
+      equatn, linear, Cint[1], Cint[1], Cint[1])
   else
-    usetup(io_err, [funit], Cint[5], Cint[6], [nvar], x, bl, bu, cutest_lib)
+    usetup(io_err, [funit], Cint[0], Cint[6], [nvar], x, bl, bu)
   end
   @cutest_error
 
@@ -139,60 +127,57 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
   nnzj = Cint[0];
 
   if ncon > 0
-    cdimsh(io_err, nnzh, cutest_lib)
-    cdimsj(io_err, nnzj, cutest_lib)
+    cdimsh(io_err, nnzh)
+    cdimsj(io_err, nnzj)
     nnzj[1] -= nvar;  # nnzj also counts the nonzeros in the objective gradient.
   else
-    udimsh(io_err, nnzh, cutest_lib)
+    udimsh(io_err, nnzh)
   end
   @cutest_error
 
   nnzh = nnzh[1];
   nnzj = nnzj[1];
 
-  ccall(@dlsym(:fortran_close_, cutest_lib), Void,
+  ccall(dlsym(cutest_lib, :fortran_close_), Void,
       (Ptr{Int32}, Ptr{Int32}), &funit, io_err);
   @cutest_error
 
-  meta = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
+  nlp = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
                       ncon=ncon, y0=v, lcon=cl, ucon=cu,
                       nnzj=nnzj, nnzh=nnzh,
                       lin=lin, nln=nln,
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta, cutest_lib);
-
-  finalizer(nlp, cutest_finalize);
-  cutest_instances += 1;
-  return nlp
+  nlp_is_loaded = true
 end
 
 
-function cutest_finalize(nlp :: CUTEstModel)
-  global cutest_instances
-  cutest_instances == 0 && return;
+function cutest_finalize()
+  global nlp_is_loaded, nlp
+  nlp_is_loaded || return
+  global cutest_lib
   io_err = Cint[0];
-  if nlp.meta.ncon > 0
-    cterminate(io_err, nlp.cutest_lib)
+  if nlp.ncon > 0
+    cterminate(io_err)
   else
-    uterminate(io_err, nlp.cutest_lib)
+    uterminate(io_err)
   end
   @cutest_error
-  cutest_instances -= 1;
-  return;
+  Libdl.dlclose(cutest_lib)
+  nlp_is_loaded = false
+  cutest_lib = C_NULL
 end
 
 
-# Displaying CUTEstModel instances.
+# Displaying instances.
 
-import Base.show, Base.print
-function show(io :: IO, nlp :: CUTEstModel)
-  show(io, nlp.meta);
+function cutest_show()
+  show(io, nlp)
 end
 
-function print(io :: IO, nlp :: CUTEstModel)
-  print(io, nlp.meta);
+function cutest_print()
+  print(io, nlp)
 end
 
 end  # module CUTEst.

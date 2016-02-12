@@ -4,6 +4,10 @@ os:
   - linux
   - osx
 
+matrix:
+  allow_failures:
+    - os: osx
+
 julia:
   - release
   - nightly
@@ -21,7 +25,7 @@ before_install:
 
 install:
   # Install CUTEst.
-  - brew tap dpo/cutest
+  - brew tap optimizers/cutest
   - brew install cutest --HEAD
   - brew install mastsif --HEAD
   - for f in archdefs mastsif cutest sifdecode; do . $(brew --prefix $f)/$f.bashrc; done
@@ -32,7 +36,6 @@ install:
 
 script:
   - julia --check-bounds=yes -E 'Pkg.test("CUTEst"; coverage=true)'
-  - julia --check-bounds=yes -E 'cd(Pkg.dir("CUTEst")); include("test/runtests_unc.jl")'
 
 after_success:
   - julia -e 'cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
