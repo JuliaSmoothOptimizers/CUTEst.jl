@@ -73,7 +73,7 @@ end
 function loadProblem(name :: ASCIIString; decode :: Bool=true)
   global nlp_is_loaded, nlp
   if nlp_is_loaded
-    cutest_finalize(nlp)
+    cutest_finalize()
     nlp_is_loaded = false
   end
   global cutest_lib
