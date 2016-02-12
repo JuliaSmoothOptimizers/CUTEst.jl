@@ -25,7 +25,7 @@ before_install:
 
 install:
   # Install CUTEst.
-  - brew tap dpo/cutest
+  - brew tap optimizers/cutest
   - brew install cutest --HEAD
   - brew install mastsif --HEAD
   - for f in archdefs mastsif cutest sifdecode; do . $(brew --prefix $f)/$f.bashrc; done
