@@ -55,11 +55,12 @@ include("julia_interface.jl")
 include("documentation.jl")
 
   # Decode problem and build shared library.
-function sifdecoder(name :: ASCIIString)
+function sifdecoder(name :: ASCIIString; verbose = false)
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(name);
   libname = "lib$pname";
-  run(`sifdecoder $name`);
+  out = readall(`sifdecoder $name`)
+  verbose && println(out)
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -L$cutest_dir/objects/$cutest_arch/double -lcutest_double`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
@@ -69,7 +70,7 @@ function sifdecoder(name :: ASCIIString)
 end
 
 # Initialize problem.
-function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
+function CUTEstModel(name :: ASCIIString; decode :: Bool=true, verbose = false)
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
   global cutest_lib
@@ -80,7 +81,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true)
     cutest_lib = Libdl.dlopen(libname,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
   else
-    sifdecoder(name)
+    sifdecoder(name, verbose=verbose)
   end
   io_err = Cint[0];
   ccall(dlsym(cutest_lib, :fortran_open_), Void,
