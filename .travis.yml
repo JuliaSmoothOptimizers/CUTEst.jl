@@ -4,10 +4,6 @@ os:
   - linux
   - osx
 
-matrix:
-  allow_failures:
-    - os: osx
-
 julia:
   - release
   - nightly
@@ -16,7 +12,7 @@ sudo: required
 
 before_install:
   # Install Linuxbrew.
-  - if [ `uname` == "Linux" ]; then unset DYLD_LIBRARY_PATH; bash travisCI/setup_travis_linux.sh; export PATH="$HOME/.linuxbrew/bin:$PATH"; export LD_LIBRARY_PATH="$HOME/.linuxbrew/lib:$LD_LIBRARY_PATH"; fi
+  - if [ `uname` == "Linux" ]; then unset DYLD_LIBRARY_PATH; bash travisCI/setup_travis_linux.sh; export PATH="$HOME/.linuxbrew/bin:$PATH"; export LD_LIBRARY_PATH="$HOME/.linuxbrew/lib:$LD_LIBRARY_PATH"; export HOMEBREW_BUILD_FROM_SOURCE=1; fi
   - brew --config
   - brew doctor || true
   - brew update
@@ -25,9 +21,9 @@ before_install:
 
 install:
   # Install CUTEst.
-  - brew tap dpo/cutest
-  - brew install cutest --HEAD
-  - brew install mastsif --HEAD
+  - brew tap optimizers/cutest
+  - brew install cutest
+  - brew install mastsif
   - for f in archdefs mastsif cutest sifdecode; do . $(brew --prefix $f)/$f.bashrc; done
   - if [ `uname` == "Linux" ]; then rm ~/julia/lib/julia/libgfortran.so.3; fi
   - julia -e 'versioninfo()'
