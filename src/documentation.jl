@@ -13,7 +13,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    usetup(io_err, input, out, io_buffer, n, x, x_l, x_u, cutest_lib)
+    usetup(io_err, input, out, io_buffer, n, x, x_l, x_u)
 
   - io_err:    [OUT] Array{Cint, 1}
   - input:     [IN] Array{Cint, 1}
@@ -23,20 +23,9 @@ Usage:
   - x:         [OUT] Array{Cdouble, 1}
   - x_l:       [OUT] Array{Cdouble, 1}
   - x_u:       [OUT] Array{Cdouble, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x, x_l, x_u = usetup(input, out, io_buffer, n, cutest_lib)
 
-  - input:     [IN] Int
-  - out:       [IN] Int
-  - io_buffer: [IN] Int
-  - n:         [IN] Int
-  - x:         [OUT] Array{Float64, 1}
-  - x_l:       [OUT] Array{Float64, 1}
-  - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    usetup!(input, out, io_buffer, n, x, x_l, x_u, cutest_lib)
+    x, x_l, x_u = usetup(input, out, io_buffer, n)
 
   - input:     [IN] Int
   - out:       [IN] Int
@@ -45,7 +34,16 @@ Usage:
   - x:         [OUT] Array{Float64, 1}
   - x_l:       [OUT] Array{Float64, 1}
   - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    usetup!(input, out, io_buffer, n, x, x_l, x_u)
+
+  - input:     [IN] Int
+  - out:       [IN] Int
+  - io_buffer: [IN] Int
+  - n:         [IN] Int
+  - x:         [OUT] Array{Float64, 1}
+  - x_l:       [OUT] Array{Float64, 1}
+  - x_u:       [OUT] Array{Float64, 1}
 
 """
 usetup
@@ -65,7 +63,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    usetup(io_err, input, out, io_buffer, n, x, x_l, x_u, cutest_lib)
+    usetup(io_err, input, out, io_buffer, n, x, x_l, x_u)
 
   - io_err:    [OUT] Array{Cint, 1}
   - input:     [IN] Array{Cint, 1}
@@ -75,20 +73,9 @@ Usage:
   - x:         [OUT] Array{Cdouble, 1}
   - x_l:       [OUT] Array{Cdouble, 1}
   - x_u:       [OUT] Array{Cdouble, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x, x_l, x_u = usetup(input, out, io_buffer, n, cutest_lib)
 
-  - input:     [IN] Int
-  - out:       [IN] Int
-  - io_buffer: [IN] Int
-  - n:         [IN] Int
-  - x:         [OUT] Array{Float64, 1}
-  - x_l:       [OUT] Array{Float64, 1}
-  - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    usetup!(input, out, io_buffer, n, x, x_l, x_u, cutest_lib)
+    x, x_l, x_u = usetup(input, out, io_buffer, n)
 
   - input:     [IN] Int
   - out:       [IN] Int
@@ -97,7 +84,16 @@ Usage:
   - x:         [OUT] Array{Float64, 1}
   - x_l:       [OUT] Array{Float64, 1}
   - x_u:       [OUT] Array{Float64, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    usetup!(input, out, io_buffer, n, x, x_l, x_u)
+
+  - input:     [IN] Int
+  - out:       [IN] Int
+  - io_buffer: [IN] Int
+  - n:         [IN] Int
+  - x:         [OUT] Array{Float64, 1}
+  - x_l:       [OUT] Array{Float64, 1}
+  - x_u:       [OUT] Array{Float64, 1}
 
 """
 usetup!
@@ -120,7 +116,7 @@ errors. For more information, run the shell command
 Usage:
 
     csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
-linear, e_order, l_order, v_order, cutest_lib)
+linear, e_order, l_order, v_order)
 
   - io_err:    [OUT] Array{Cint, 1}
   - input:     [IN] Array{Cint, 1}
@@ -139,29 +135,9 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Array{Cint, 1}
   - l_order:   [IN] Array{Cint, 1}
   - v_order:   [IN] Array{Cint, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order, cutest_lib)
 
-  - input:     [IN] Int
-  - out:       [IN] Int
-  - io_buffer: [IN] Int
-  - n:         [IN] Int
-  - m:         [IN] Int
-  - x:         [OUT] Array{Float64, 1}
-  - x_l:       [OUT] Array{Float64, 1}
-  - x_u:       [OUT] Array{Float64, 1}
-  - y:         [OUT] Array{Float64, 1}
-  - c_l:       [OUT] Array{Float64, 1}
-  - c_u:       [OUT] Array{Float64, 1}
-  - equatn:    [OUT] Array{Bool, 1}
-  - linear:    [OUT] Array{Bool, 1}
-  - e_order:   [IN] Int
-  - l_order:   [IN] Int
-  - v_order:   [IN] Int
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order, cutest_lib)
+    x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order)
 
   - input:     [IN] Int
   - out:       [IN] Int
@@ -179,7 +155,25 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Int
   - l_order:   [IN] Int
   - v_order:   [IN] Int
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
+
+  - input:     [IN] Int
+  - out:       [IN] Int
+  - io_buffer: [IN] Int
+  - n:         [IN] Int
+  - m:         [IN] Int
+  - x:         [OUT] Array{Float64, 1}
+  - x_l:       [OUT] Array{Float64, 1}
+  - x_u:       [OUT] Array{Float64, 1}
+  - y:         [OUT] Array{Float64, 1}
+  - c_l:       [OUT] Array{Float64, 1}
+  - c_u:       [OUT] Array{Float64, 1}
+  - equatn:    [OUT] Array{Bool, 1}
+  - linear:    [OUT] Array{Bool, 1}
+  - e_order:   [IN] Int
+  - l_order:   [IN] Int
+  - v_order:   [IN] Int
 
 """
 csetup
@@ -202,7 +196,7 @@ errors. For more information, run the shell command
 Usage:
 
     csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
-linear, e_order, l_order, v_order, cutest_lib)
+linear, e_order, l_order, v_order)
 
   - io_err:    [OUT] Array{Cint, 1}
   - input:     [IN] Array{Cint, 1}
@@ -221,29 +215,9 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Array{Cint, 1}
   - l_order:   [IN] Array{Cint, 1}
   - v_order:   [IN] Array{Cint, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order, cutest_lib)
 
-  - input:     [IN] Int
-  - out:       [IN] Int
-  - io_buffer: [IN] Int
-  - n:         [IN] Int
-  - m:         [IN] Int
-  - x:         [OUT] Array{Float64, 1}
-  - x_l:       [OUT] Array{Float64, 1}
-  - x_u:       [OUT] Array{Float64, 1}
-  - y:         [OUT] Array{Float64, 1}
-  - c_l:       [OUT] Array{Float64, 1}
-  - c_u:       [OUT] Array{Float64, 1}
-  - equatn:    [OUT] Array{Bool, 1}
-  - linear:    [OUT] Array{Bool, 1}
-  - e_order:   [IN] Int
-  - l_order:   [IN] Int
-  - v_order:   [IN] Int
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order, cutest_lib)
+    x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order)
 
   - input:     [IN] Int
   - out:       [IN] Int
@@ -261,7 +235,25 @@ linear, e_order, l_order, v_order, cutest_lib)
   - e_order:   [IN] Int
   - l_order:   [IN] Int
   - v_order:   [IN] Int
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
+
+  - input:     [IN] Int
+  - out:       [IN] Int
+  - io_buffer: [IN] Int
+  - n:         [IN] Int
+  - m:         [IN] Int
+  - x:         [OUT] Array{Float64, 1}
+  - x_l:       [OUT] Array{Float64, 1}
+  - x_u:       [OUT] Array{Float64, 1}
+  - y:         [OUT] Array{Float64, 1}
+  - c_l:       [OUT] Array{Float64, 1}
+  - c_u:       [OUT] Array{Float64, 1}
+  - equatn:    [OUT] Array{Bool, 1}
+  - linear:    [OUT] Array{Bool, 1}
+  - e_order:   [IN] Int
+  - l_order:   [IN] Int
+  - v_order:   [IN] Int
 
 """
 csetup!
@@ -280,18 +272,17 @@ errors. For more information, run the shell command
 
 Usage:
 
-    udimen(io_err, input, n, cutest_lib)
+    udimen(io_err, input, n)
 
   - io_err:  [OUT] Array{Cint, 1}
   - input:   [IN] Array{Cint, 1}
   - n:       [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    n = udimen(input, cutest_lib)
+
+    n = udimen(input)
 
   - input:   [IN] Int
   - n:       [OUT] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 udimen
@@ -312,16 +303,15 @@ errors. For more information, run the shell command
 
 Usage:
 
-    udimsh(io_err, nnzh, cutest_lib)
+    udimsh(io_err, nnzh)
 
   - io_err:  [OUT] Array{Cint, 1}
   - nnzh:    [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh = udimsh(, cutest_lib)
+
+    nnzh = udimsh()
 
   - nnzh:    [OUT] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 udimsh
@@ -344,20 +334,19 @@ errors. For more information, run the shell command
 
 Usage:
 
-    udimse(io_err, ne, he_val_ne, he_row_ne, cutest_lib)
+    udimse(io_err, ne, he_val_ne, he_row_ne)
 
   - io_err:    [OUT] Array{Cint, 1}
   - ne:        [OUT] Array{Cint, 1}
   - he_val_ne: [OUT] Array{Cint, 1}
   - he_row_ne: [OUT] Array{Cint, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ne, he_val_ne, he_row_ne = udimse(, cutest_lib)
+
+    ne, he_val_ne, he_row_ne = udimse()
 
   - ne:        [OUT] Int
   - he_val_ne: [OUT] Int
   - he_row_ne: [OUT] Int
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 udimse
@@ -377,24 +366,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    uvartype(io_err, n, x_type, cutest_lib)
+    uvartype(io_err, n, x_type)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x_type = uvartype(n, cutest_lib)
 
-  - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    uvartype!(n, x_type, cutest_lib)
+    x_type = uvartype(n)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    uvartype!(n, x_type)
+
+  - n:       [IN] Int
+  - x_type:  [OUT] Array{Int, 1}
 
 """
 uvartype
@@ -414,24 +401,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    uvartype(io_err, n, x_type, cutest_lib)
+    uvartype(io_err, n, x_type)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x_type = uvartype(n, cutest_lib)
 
-  - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    uvartype!(n, x_type, cutest_lib)
+    x_type = uvartype(n)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    uvartype!(n, x_type)
+
+  - n:       [IN] Int
+  - x_type:  [OUT] Array{Int, 1}
 
 """
 uvartype!
@@ -449,27 +434,25 @@ errors. For more information, run the shell command
 
 Usage:
 
-    unames(io_err, n, pname, vname, cutest_lib)
+    unames(io_err, n, pname, vname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    pname, vname = unames(n, cutest_lib)
 
-  - n:       [IN] Int
-  - pname:   [OUT] UInt8
-  - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    pname = unames!(n, vname, cutest_lib)
+    pname, vname = unames(n)
 
   - n:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    pname = unames!(n, vname)
+
+  - n:       [IN] Int
+  - pname:   [OUT] UInt8
+  - vname:   [OUT] Array{UInt8, 1}
 
 """
 unames
@@ -487,27 +470,25 @@ errors. For more information, run the shell command
 
 Usage:
 
-    unames(io_err, n, pname, vname, cutest_lib)
+    unames(io_err, n, pname, vname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    pname, vname = unames(n, cutest_lib)
 
-  - n:       [IN] Int
-  - pname:   [OUT] UInt8
-  - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    pname = unames!(n, vname, cutest_lib)
+    pname, vname = unames(n)
 
   - n:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    pname = unames!(n, vname)
+
+  - n:       [IN] Int
+  - pname:   [OUT] UInt8
+  - vname:   [OUT] Array{UInt8, 1}
 
 """
 unames!
@@ -527,24 +508,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ureport(io_err, calls, time, cutest_lib)
+    ureport(io_err, calls, time)
 
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    calls, time = ureport(, cutest_lib)
 
-  - calls:   [OUT] Array{Float64, 1}
-  - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ureport!(calls, time, cutest_lib)
+    calls, time = ureport()
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ureport!(calls, time)
+
+  - calls:   [OUT] Array{Float64, 1}
+  - time:    [OUT] Array{Float64, 1}
 
     calls, time = ureport(nlp)
 
@@ -576,24 +555,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ureport(io_err, calls, time, cutest_lib)
+    ureport(io_err, calls, time)
 
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    calls, time = ureport(, cutest_lib)
 
-  - calls:   [OUT] Array{Float64, 1}
-  - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ureport!(calls, time, cutest_lib)
+    calls, time = ureport()
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ureport!(calls, time)
+
+  - calls:   [OUT] Array{Float64, 1}
+  - time:    [OUT] Array{Float64, 1}
 
     calls, time = ureport(nlp)
 
@@ -627,20 +604,19 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cdimen(io_err, input, n, m, cutest_lib)
+    cdimen(io_err, input, n, m)
 
   - io_err:  [OUT] Array{Cint, 1}
   - input:   [IN] Array{Cint, 1}
   - n:       [OUT] Array{Cint, 1}
   - m:       [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    n, m = cdimen(input, cutest_lib)
+
+    n, m = cdimen(input)
 
   - input:   [IN] Int
   - n:       [OUT] Int
   - m:       [OUT] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimen
@@ -664,16 +640,15 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cdimsj(io_err, nnzj, cutest_lib)
+    cdimsj(io_err, nnzj)
 
   - io_err:  [OUT] Array{Cint, 1}
   - nnzj:    [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzj = cdimsj(, cutest_lib)
+
+    nnzj = cdimsj()
 
   - nnzj:    [OUT] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimsj
@@ -696,16 +671,15 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cdimsh(io_err, nnzh, cutest_lib)
+    cdimsh(io_err, nnzh)
 
   - io_err:  [OUT] Array{Cint, 1}
   - nnzh:    [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh = cdimsh(, cutest_lib)
+
+    nnzh = cdimsh()
 
   - nnzh:    [OUT] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimsh
@@ -730,20 +704,19 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cdimse(io_err, ne, he_val_ne, he_row_ne, cutest_lib)
+    cdimse(io_err, ne, he_val_ne, he_row_ne)
 
   - io_err:    [OUT] Array{Cint, 1}
   - ne:        [OUT] Array{Cint, 1}
   - he_val_ne: [OUT] Array{Cint, 1}
   - he_row_ne: [OUT] Array{Cint, 1}
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ne, he_val_ne, he_row_ne = cdimse(, cutest_lib)
+
+    ne, he_val_ne, he_row_ne = cdimse()
 
   - ne:        [OUT] Int
   - he_val_ne: [OUT] Int
   - he_row_ne: [OUT] Int
-  - cutest_lib:   [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
 """
 cdimse
@@ -751,14 +724,14 @@ cdimse
 """# cstats
     cstats(io_err, nonlinear_variables_objective,
 nonlinear_variables_constraints, equality_constraints,
-linear_constraints, cutest_lib)
+linear_constraints)
 
   - io_err:                          [OUT] Array{Cint, 1}
   - nonlinear_variables_objective:   [OUT] Array{Cint, 1}
   - nonlinear_variables_constraints: [OUT] Array{Cint, 1}
   - equality_constraints:            [OUT] Array{Cint, 1}
   - linear_constraints:              [OUT] Array{Cint, 1}
-  - cutest_lib:                         [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
 
 """
 cstats
@@ -780,24 +753,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cvartype(io_err, n, x_type, cutest_lib)
+    cvartype(io_err, n, x_type)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x_type = cvartype(n, cutest_lib)
 
-  - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cvartype!(n, x_type, cutest_lib)
+    x_type = cvartype(n)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cvartype!(n, x_type)
+
+  - n:       [IN] Int
+  - x_type:  [OUT] Array{Int, 1}
 
 """
 cvartype
@@ -819,24 +790,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cvartype(io_err, n, x_type, cutest_lib)
+    cvartype(io_err, n, x_type)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x_type:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    x_type = cvartype(n, cutest_lib)
 
-  - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cvartype!(n, x_type, cutest_lib)
+    x_type = cvartype(n)
 
   - n:       [IN] Int
   - x_type:  [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cvartype!(n, x_type)
+
+  - n:       [IN] Int
+  - x_type:  [OUT] Array{Int, 1}
 
 """
 cvartype!
@@ -857,7 +826,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cnames(io_err, n, m, pname, vname, cname, cutest_lib)
+    cnames(io_err, n, m, pname, vname, cname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -865,25 +834,23 @@ Usage:
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    pname, vname, cname = cnames(n, m, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - pname:   [OUT] UInt8
-  - vname:   [OUT] Array{UInt8, 1}
-  - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    pname = cnames!(n, m, vname, cname, cutest_lib)
+    pname, vname, cname = cnames(n, m)
 
   - n:       [IN] Int
   - m:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    pname = cnames!(n, m, vname, cname)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - pname:   [OUT] UInt8
+  - vname:   [OUT] Array{UInt8, 1}
+  - cname:   [OUT] Array{UInt8, 1}
 
     pname, vname, cname = cnames(nlp)
 
@@ -918,7 +885,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cnames(io_err, n, m, pname, vname, cname, cutest_lib)
+    cnames(io_err, n, m, pname, vname, cname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -926,25 +893,23 @@ Usage:
   - pname:   [OUT] Array{Cchar, 1}
   - vname:   [OUT] Array{Cchar, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    pname, vname, cname = cnames(n, m, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - pname:   [OUT] UInt8
-  - vname:   [OUT] Array{UInt8, 1}
-  - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    pname = cnames!(n, m, vname, cname, cutest_lib)
+    pname, vname, cname = cnames(n, m)
 
   - n:       [IN] Int
   - m:       [IN] Int
   - pname:   [OUT] UInt8
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    pname = cnames!(n, m, vname, cname)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - pname:   [OUT] UInt8
+  - vname:   [OUT] Array{UInt8, 1}
+  - cname:   [OUT] Array{UInt8, 1}
 
     pname, vname, cname = cnames(nlp)
 
@@ -980,24 +945,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    creport(io_err, calls, time, cutest_lib)
+    creport(io_err, calls, time)
 
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    calls, time = creport(, cutest_lib)
 
-  - calls:   [OUT] Array{Float64, 1}
-  - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    creport!(calls, time, cutest_lib)
+    calls, time = creport()
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    creport!(calls, time)
+
+  - calls:   [OUT] Array{Float64, 1}
+  - time:    [OUT] Array{Float64, 1}
 
     calls, time = creport(nlp)
 
@@ -1031,24 +994,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    creport(io_err, calls, time, cutest_lib)
+    creport(io_err, calls, time)
 
   - io_err:  [OUT] Array{Cint, 1}
   - calls:   [OUT] Array{Cdouble, 1}
   - time:    [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    calls, time = creport(, cutest_lib)
 
-  - calls:   [OUT] Array{Float64, 1}
-  - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    creport!(calls, time, cutest_lib)
+    calls, time = creport()
 
   - calls:   [OUT] Array{Float64, 1}
   - time:    [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    creport!(calls, time)
+
+  - calls:   [OUT] Array{Float64, 1}
+  - time:    [OUT] Array{Float64, 1}
 
     calls, time = creport(nlp)
 
@@ -1081,24 +1042,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    connames(io_err, m, cname, cutest_lib)
+    connames(io_err, m, cname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - m:       [IN] Array{Cint, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    cname = connames(m, cutest_lib)
 
-  - m:       [IN] Int
-  - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    connames!(m, cname, cutest_lib)
+    cname = connames(m)
 
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    connames!(m, cname)
+
+  - m:       [IN] Int
+  - cname:   [OUT] Array{UInt8, 1}
 
     cname = connames(nlp)
 
@@ -1129,24 +1088,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    connames(io_err, m, cname, cutest_lib)
+    connames(io_err, m, cname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - m:       [IN] Array{Cint, 1}
   - cname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    cname = connames(m, cutest_lib)
 
-  - m:       [IN] Int
-  - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    connames!(m, cname, cutest_lib)
+    cname = connames(m)
 
   - m:       [IN] Int
   - cname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    connames!(m, cname)
+
+  - m:       [IN] Int
+  - cname:   [OUT] Array{UInt8, 1}
 
     cname = connames(nlp)
 
@@ -1178,18 +1135,17 @@ errors. For more information, run the shell command
 
 Usage:
 
-    pname(io_err, input, pname, cutest_lib)
+    pname(io_err, input, pname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - input:   [IN] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    pname = pname(input, cutest_lib)
+
+    pname = pname(input)
 
   - input:   [IN] Int
   - pname:   [OUT] UInt8
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = pname(nlp, input)
 
@@ -1215,16 +1171,15 @@ errors. For more information, run the shell command
 
 Usage:
 
-    probname(io_err, pname, cutest_lib)
+    probname(io_err, pname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - pname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    pname = probname(, cutest_lib)
+
+    pname = probname()
 
   - pname:   [OUT] UInt8
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     pname = probname(nlp)
 
@@ -1250,24 +1205,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    varnames(io_err, n, vname, cutest_lib)
+    varnames(io_err, n, vname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    vname = varnames(n, cutest_lib)
 
-  - n:       [IN] Int
-  - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    varnames!(n, vname, cutest_lib)
+    vname = varnames(n)
 
   - n:       [IN] Int
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    varnames!(n, vname)
+
+  - n:       [IN] Int
+  - vname:   [OUT] Array{UInt8, 1}
 
 """
 varnames
@@ -1288,24 +1241,22 @@ errors. For more information, run the shell command
 
 Usage:
 
-    varnames(io_err, n, vname, cutest_lib)
+    varnames(io_err, n, vname)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - vname:   [OUT] Array{Cchar, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    vname = varnames(n, cutest_lib)
 
-  - n:       [IN] Int
-  - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    varnames!(n, vname, cutest_lib)
+    vname = varnames(n)
 
   - n:       [IN] Int
   - vname:   [OUT] Array{UInt8, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    varnames!(n, vname)
+
+  - n:       [IN] Int
+  - vname:   [OUT] Array{UInt8, 1}
 
 """
 varnames!
@@ -1324,20 +1275,19 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ufn(io_err, n, x, f, cutest_lib)
+    ufn(io_err, n, x, f)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - f:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f = ufn(n, x, cutest_lib)
+
+    f = ufn(n, x)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
     f = ufn(nlp, x)
 
@@ -1362,27 +1312,25 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ugr(io_err, n, x, g, cutest_lib)
+    ugr(io_err, n, x, g)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g = ugr(n, x, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ugr!(n, x, g, cutest_lib)
+    g = ugr(n, x)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ugr!(n, x, g)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g:       [OUT] Array{Float64, 1}
 
     g = ugr(nlp, x)
 
@@ -1413,27 +1361,25 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ugr(io_err, n, x, g, cutest_lib)
+    ugr(io_err, n, x, g)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g = ugr(n, x, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ugr!(n, x, g, cutest_lib)
+    g = ugr(n, x)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ugr!(n, x, g)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g:       [OUT] Array{Float64, 1}
 
     g = ugr(nlp, x)
 
@@ -1465,7 +1411,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    uofg(io_err, n, x, f, g, grad, cutest_lib)
+    uofg(io_err, n, x, f, g, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1473,25 +1419,23 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, g = uofg(n, x, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - g:       [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = uofg!(n, x, g, grad, cutest_lib)
+    f, g = uofg(n, x, grad)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = uofg!(n, x, g, grad)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - g:       [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     f, g = uofg(nlp, x, grad)
 
@@ -1527,7 +1471,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    uofg(io_err, n, x, f, g, grad, cutest_lib)
+    uofg(io_err, n, x, f, g, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1535,25 +1479,23 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, g = uofg(n, x, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - g:       [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = uofg!(n, x, g, grad, cutest_lib)
+    f, g = uofg(n, x, grad)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = uofg!(n, x, g, grad)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - g:       [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     f, g = uofg(nlp, x, grad)
 
@@ -1590,7 +1532,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth, cutest_lib)
+    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
 
   - io_err:            [OUT] Array{Cint, 1}
   - n:                 [IN] Array{Cint, 1}
@@ -1599,19 +1541,9 @@ Usage:
   - h_band:            [OUT] Array{Cdouble, 2}
   - lbandh:            [IN] Array{Cint, 1}
   - max_semibandwidth: [OUT] Array{Cint, 1}
-  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh, cutest_lib)
 
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh, cutest_lib)
+    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
 
   - n:                 [IN] Int
   - x:                 [IN] Array{Float64, 1}
@@ -1619,7 +1551,15 @@ Usage:
   - h_band:            [OUT] Array{Float64, 2}
   - lbandh:            [IN] Int
   - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
 
     h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
 
@@ -1658,7 +1598,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth, cutest_lib)
+    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
 
   - io_err:            [OUT] Array{Cint, 1}
   - n:                 [IN] Array{Cint, 1}
@@ -1667,19 +1607,9 @@ Usage:
   - h_band:            [OUT] Array{Cdouble, 2}
   - lbandh:            [IN] Array{Cint, 1}
   - max_semibandwidth: [OUT] Array{Cint, 1}
-  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh, cutest_lib)
 
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh, cutest_lib)
+    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
 
   - n:                 [IN] Int
   - x:                 [IN] Array{Float64, 1}
@@ -1687,7 +1617,15 @@ Usage:
   - h_band:            [OUT] Array{Float64, 2}
   - lbandh:            [IN] Int
   - max_semibandwidth: [OUT] Int
-  - cutest_lib:           [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
 
     h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
 
@@ -1725,30 +1663,28 @@ errors. For more information, run the shell command
 
 Usage:
 
-    udh(io_err, n, x, lh1, h, cutest_lib)
+    udh(io_err, n, x, lh1, h)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h = udh(n, x, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - lh1:     [IN] Int
-  - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    udh!(n, x, lh1, h, cutest_lib)
+    h = udh(n, x, lh1)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    udh!(n, x, lh1, h)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h:       [OUT] Array{Float64, 2}
 
     h = udh(nlp, x, lh1)
 
@@ -1782,30 +1718,28 @@ errors. For more information, run the shell command
 
 Usage:
 
-    udh(io_err, n, x, lh1, h, cutest_lib)
+    udh(io_err, n, x, lh1, h)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - x:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h = udh(n, x, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - lh1:     [IN] Int
-  - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    udh!(n, x, lh1, h, cutest_lib)
+    h = udh(n, x, lh1)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    udh!(n, x, lh1, h)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h:       [OUT] Array{Float64, 2}
 
     h = udh(nlp, x, lh1)
 
@@ -1840,7 +1774,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1850,20 +1784,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = ush(n, x, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = ush!(n, x, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = ush(n, x, lh)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -1872,7 +1795,16 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = ush!(n, x, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = ush(nlp, x)
 
@@ -1911,7 +1843,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -1921,20 +1853,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = ush(n, x, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = ush!(n, x, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = ush(n, x, lh)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -1943,7 +1864,16 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = ush!(n, x, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = ush(nlp, x)
 
@@ -1984,7 +1914,7 @@ errors. For more information, run the shell command
 Usage:
 
     ueh(io_err, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-lhe_val, he_val, byrows, cutest_lib)
+lhe_val, he_val, byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -1998,24 +1928,9 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - x:          [IN] Array{Float64, 1}
@@ -2028,7 +1943,20 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2079,7 +2007,7 @@ errors. For more information, run the shell command
 Usage:
 
     ueh(io_err, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-lhe_val, he_val, byrows, cutest_lib)
+lhe_val, he_val, byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -2093,24 +2021,9 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - x:          [IN] Array{Float64, 1}
@@ -2123,7 +2036,20 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2172,7 +2098,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ugrdh(io_err, n, x, g, lh1, h, cutest_lib)
+    ugrdh(io_err, n, x, g, lh1, h)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2180,25 +2106,23 @@ Usage:
   - g:       [OUT] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, h = ugrdh(n, x, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - g:       [OUT] Array{Float64, 1}
-  - lh1:     [IN] Int
-  - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ugrdh!(n, x, g, lh1, h, cutest_lib)
+    g, h = ugrdh(n, x, lh1)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ugrdh!(n, x, g, lh1, h)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g:       [OUT] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h:       [OUT] Array{Float64, 2}
 
     g, h = ugrdh(nlp, x, lh1)
 
@@ -2235,7 +2159,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ugrdh(io_err, n, x, g, lh1, h, cutest_lib)
+    ugrdh(io_err, n, x, g, lh1, h)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2243,25 +2167,23 @@ Usage:
   - g:       [OUT] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, h = ugrdh(n, x, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - g:       [OUT] Array{Float64, 1}
-  - lh1:     [IN] Int
-  - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ugrdh!(n, x, g, lh1, h, cutest_lib)
+    g, h = ugrdh(n, x, lh1)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - g:       [OUT] Array{Float64, 1}
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ugrdh!(n, x, g, lh1, h)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g:       [OUT] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h:       [OUT] Array{Float64, 2}
 
     g, h = ugrdh(nlp, x, lh1)
 
@@ -2298,7 +2220,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2309,21 +2231,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - g:       [OUT] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col, cutest_lib)
+    g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -2333,7 +2243,17 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g:       [OUT] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
 
@@ -2374,7 +2294,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2385,21 +2305,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - g:       [OUT] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col, cutest_lib)
+    g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -2409,7 +2317,17 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g:       [OUT] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
 
@@ -2453,7 +2371,7 @@ errors. For more information, run the shell command
 Usage:
 
     ugreh(io_err, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-lhe_val, he_val, byrows, cutest_lib)
+lhe_val, he_val, byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -2468,25 +2386,9 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - g:          [OUT] Array{Float64, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - x:          [IN] Array{Float64, 1}
@@ -2500,7 +2402,21 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - g:          [OUT] Array{Float64, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2554,7 +2470,7 @@ errors. For more information, run the shell command
 Usage:
 
     ugreh(io_err, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-lhe_val, he_val, byrows, cutest_lib)
+lhe_val, he_val, byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -2569,25 +2485,9 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - g:          [OUT] Array{Float64, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - x:          [IN] Array{Float64, 1}
@@ -2601,7 +2501,21 @@ lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - g:          [OUT] Array{Float64, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -2651,7 +2565,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    uhprod(io_err, n, goth, x, vector, result, cutest_lib)
+    uhprod(io_err, n, goth, x, vector, result)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2659,25 +2573,23 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = uhprod(n, goth, x, vector, cutest_lib)
 
-  - n:       [IN] Int
-  - goth:    [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    uhprod!(n, goth, x, vector, result, cutest_lib)
+    result = uhprod(n, goth, x, vector)
 
   - n:       [IN] Int
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    uhprod!(n, goth, x, vector, result)
+
+  - n:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - result:  [OUT] Array{Float64, 1}
 
     result = uhprod(nlp, goth, x, vector)
 
@@ -2713,7 +2625,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    uhprod(io_err, n, goth, x, vector, result, cutest_lib)
+    uhprod(io_err, n, goth, x, vector, result)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2721,25 +2633,23 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = uhprod(n, goth, x, vector, cutest_lib)
 
-  - n:       [IN] Int
-  - goth:    [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    uhprod!(n, goth, x, vector, result, cutest_lib)
+    result = uhprod(n, goth, x, vector)
 
   - n:       [IN] Int
   - goth:    [IN] Bool
   - x:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    uhprod!(n, goth, x, vector, result)
+
+  - n:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - result:  [OUT] Array{Float64, 1}
 
     result = uhprod(nlp, goth, x, vector)
 
@@ -2777,7 +2687,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cfn(io_err, n, m, x, f, c, cutest_lib)
+    cfn(io_err, n, m, x, f, c)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2785,25 +2695,23 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - f:       [OUT] Array{Cdouble, 1}
   - c:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, c = cfn(n, m, x, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = cfn!(n, m, x, c, cutest_lib)
+    f, c = cfn(n, m, x)
 
   - n:       [IN] Int
   - m:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = cfn!(n, m, x, c)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - c:       [OUT] Array{Float64, 1}
 
     f, c = cfn(nlp, x)
 
@@ -2839,7 +2747,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cfn(io_err, n, m, x, f, c, cutest_lib)
+    cfn(io_err, n, m, x, f, c)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2847,25 +2755,23 @@ Usage:
   - x:       [IN] Array{Cdouble, 1}
   - f:       [OUT] Array{Cdouble, 1}
   - c:       [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, c = cfn(n, m, x, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = cfn!(n, m, x, c, cutest_lib)
+    f, c = cfn(n, m, x)
 
   - n:       [IN] Int
   - m:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - c:       [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = cfn!(n, m, x, c)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - c:       [OUT] Array{Float64, 1}
 
     f, c = cfn(nlp, x)
 
@@ -2901,7 +2807,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cofg(io_err, n, x, f, g, grad, cutest_lib)
+    cofg(io_err, n, x, f, g, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2909,25 +2815,23 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, g = cofg(n, x, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - g:       [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = cofg!(n, x, g, grad, cutest_lib)
+    f, g = cofg(n, x, grad)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = cofg!(n, x, g, grad)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - g:       [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     f, g = cofg(nlp, x, grad)
 
@@ -2965,7 +2869,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cofg(io_err, n, x, f, g, grad, cutest_lib)
+    cofg(io_err, n, x, f, g, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -2973,25 +2877,23 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, g = cofg(n, x, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - g:       [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = cofg!(n, x, g, grad, cutest_lib)
+    f, g = cofg(n, x, grad)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = cofg!(n, x, g, grad)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - g:       [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     f, g = cofg(nlp, x, grad)
 
@@ -3029,7 +2931,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad, cutest_lib)
+    cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3040,21 +2942,9 @@ Usage:
   - g_val:   [OUT] Array{Cdouble, 1}
   - g_var:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, nnzg, g_val, g_var = cofsg(n, x, lg, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - nnzg:    [OUT] Int
-  - lg:      [IN] Int
-  - g_val:   [OUT] Array{Float64, 1}
-  - g_var:   [OUT] Array{Int, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad, cutest_lib)
+    f, nnzg, g_val, g_var = cofsg(n, x, lg, grad)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -3064,7 +2954,17 @@ Usage:
   - g_val:   [OUT] Array{Float64, 1}
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - nnzg:    [OUT] Int
+  - lg:      [IN] Int
+  - g_val:   [OUT] Array{Float64, 1}
+  - g_var:   [OUT] Array{Int, 1}
+  - grad:    [IN] Bool
 
     f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
 
@@ -3108,7 +3008,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad, cutest_lib)
+    cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3119,21 +3019,9 @@ Usage:
   - g_val:   [OUT] Array{Cdouble, 1}
   - g_var:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, nnzg, g_val, g_var = cofsg(n, x, lg, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - nnzg:    [OUT] Int
-  - lg:      [IN] Int
-  - g_val:   [OUT] Array{Float64, 1}
-  - g_var:   [OUT] Array{Int, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad, cutest_lib)
+    f, nnzg, g_val, g_var = cofsg(n, x, lg, grad)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -3143,7 +3031,17 @@ Usage:
   - g_val:   [OUT] Array{Float64, 1}
   - g_var:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - nnzg:    [OUT] Int
+  - lg:      [IN] Int
+  - g_val:   [OUT] Array{Float64, 1}
+  - g_var:   [OUT] Array{Int, 1}
+  - grad:    [IN] Bool
 
     f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
 
@@ -3187,7 +3085,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, cutest_lib)
+    ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3199,22 +3097,9 @@ Usage:
   - lcjac2:  [IN] Array{Cint, 1}
   - cjac:    [OUT] Array{Cdouble, 2}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - c:       [OUT] Array{Float64, 1}
-  - jtrans:  [IN] Bool
-  - lcjac1:  [IN] Int
-  - lcjac2:  [IN] Int
-  - cjac:    [OUT] Array{Float64, 2}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, cutest_lib)
+    c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3225,7 +3110,18 @@ Usage:
   - lcjac2:  [IN] Int
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - c:       [OUT] Array{Float64, 1}
+  - jtrans:  [IN] Bool
+  - lcjac1:  [IN] Int
+  - lcjac2:  [IN] Int
+  - cjac:    [OUT] Array{Float64, 2}
+  - grad:    [IN] Bool
 
     c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
 
@@ -3269,7 +3165,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, cutest_lib)
+    ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3281,22 +3177,9 @@ Usage:
   - lcjac2:  [IN] Array{Cint, 1}
   - cjac:    [OUT] Array{Cdouble, 2}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - c:       [OUT] Array{Float64, 1}
-  - jtrans:  [IN] Bool
-  - lcjac1:  [IN] Int
-  - lcjac2:  [IN] Int
-  - cjac:    [OUT] Array{Float64, 2}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad, cutest_lib)
+    c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3307,7 +3190,18 @@ Usage:
   - lcjac2:  [IN] Int
   - cjac:    [OUT] Array{Float64, 2}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - c:       [OUT] Array{Float64, 1}
+  - jtrans:  [IN] Bool
+  - lcjac1:  [IN] Int
+  - lcjac2:  [IN] Int
+  - cjac:    [OUT] Array{Float64, 2}
+  - grad:    [IN] Bool
 
     c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
 
@@ -3351,7 +3245,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    clfg(io_err, n, m, x, y, f, g, grad, cutest_lib)
+    clfg(io_err, n, m, x, y, f, g, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3361,20 +3255,9 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, g = clfg(n, m, x, y, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - g:       [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = clfg!(n, m, x, y, g, grad, cutest_lib)
+    f, g = clfg(n, m, x, y, grad)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3383,7 +3266,16 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = clfg!(n, m, x, y, g, grad)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - g:       [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     f, g = clfg(nlp, x, y, grad)
 
@@ -3423,7 +3315,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    clfg(io_err, n, m, x, y, f, g, grad, cutest_lib)
+    clfg(io_err, n, m, x, y, f, g, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3433,20 +3325,9 @@ Usage:
   - f:       [OUT] Array{Cdouble, 1}
   - g:       [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    f, g = clfg(n, m, x, y, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - f:       [OUT] Float64
-  - g:       [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    f = clfg!(n, m, x, y, g, grad, cutest_lib)
+    f, g = clfg(n, m, x, y, grad)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3455,7 +3336,16 @@ Usage:
   - f:       [OUT] Float64
   - g:       [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    f = clfg!(n, m, x, y, g, grad)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+  - g:       [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     f, g = clfg(nlp, x, y, grad)
 
@@ -3496,7 +3386,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, cutest_lib)
+    cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3509,23 +3399,9 @@ Usage:
   - lj1:     [IN] Array{Cint, 1}
   - lj2:     [IN] Array{Cint, 1}
   - j_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - g:       [OUT] Array{Float64, 1}
-  - jtrans:  [IN] Bool
-  - lj1:     [IN] Int
-  - lj2:     [IN] Int
-  - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, cutest_lib)
+    g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3537,7 +3413,19 @@ Usage:
   - lj1:     [IN] Int
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - g:       [OUT] Array{Float64, 1}
+  - jtrans:  [IN] Bool
+  - lj1:     [IN] Int
+  - lj2:     [IN] Int
+  - j_val:   [OUT] Array{Float64, 2}
 
     g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
 
@@ -3584,7 +3472,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, cutest_lib)
+    cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3597,23 +3485,9 @@ Usage:
   - lj1:     [IN] Array{Cint, 1}
   - lj2:     [IN] Array{Cint, 1}
   - j_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - g:       [OUT] Array{Float64, 1}
-  - jtrans:  [IN] Bool
-  - lj1:     [IN] Int
-  - lj2:     [IN] Int
-  - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, cutest_lib)
+    g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3625,7 +3499,19 @@ Usage:
   - lj1:     [IN] Int
   - lj2:     [IN] Int
   - j_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - g:       [OUT] Array{Float64, 1}
+  - jtrans:  [IN] Bool
+  - lj1:     [IN] Int
+  - lj2:     [IN] Int
+  - j_val:   [OUT] Array{Float64, 2}
 
     g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
 
@@ -3674,7 +3560,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, cutest_lib)
+    csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3687,23 +3573,9 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 1}
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - nnzj:    [OUT] Int
-  - lj:      [IN] Int
-  - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, cutest_lib)
+    nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3715,7 +3587,19 @@ Usage:
   - j_val:   [OUT] Array{Float64, 1}
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - nnzj:    [OUT] Int
+  - lj:      [IN] Int
+  - j_val:   [OUT] Array{Float64, 1}
+  - j_var:   [OUT] Array{Int, 1}
+  - j_fun:   [OUT] Array{Int, 1}
 
     nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
 
@@ -3762,7 +3646,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, cutest_lib)
+    csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3775,23 +3659,9 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 1}
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - nnzj:    [OUT] Int
-  - lj:      [IN] Int
-  - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, cutest_lib)
+    nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3803,7 +3673,19 @@ Usage:
   - j_val:   [OUT] Array{Float64, 1}
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - nnzj:    [OUT] Int
+  - lj:      [IN] Int
+  - j_val:   [OUT] Array{Float64, 1}
+  - j_var:   [OUT] Array{Int, 1}
+  - j_fun:   [OUT] Array{Int, 1}
 
     nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
 
@@ -3848,7 +3730,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad, cutest_lib)
+    ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3861,23 +3743,9 @@ Usage:
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - c:       [OUT] Array{Float64, 1}
-  - nnzj:    [OUT] Int
-  - lj:      [IN] Int
-  - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad, cutest_lib)
+    c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3889,7 +3757,19 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - c:       [OUT] Array{Float64, 1}
+  - nnzj:    [OUT] Int
+  - lj:      [IN] Int
+  - j_val:   [OUT] Array{Float64, 1}
+  - j_var:   [OUT] Array{Int, 1}
+  - j_fun:   [OUT] Array{Int, 1}
+  - grad:    [IN] Bool
 
     c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
 
@@ -3934,7 +3814,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad, cutest_lib)
+    ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -3947,23 +3827,9 @@ Usage:
   - j_var:   [OUT] Array{Cint, 1}
   - j_fun:   [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - c:       [OUT] Array{Float64, 1}
-  - nnzj:    [OUT] Int
-  - lj:      [IN] Int
-  - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad, cutest_lib)
+    c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -3975,7 +3841,19 @@ Usage:
   - j_var:   [OUT] Array{Int, 1}
   - j_fun:   [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - c:       [OUT] Array{Float64, 1}
+  - nnzj:    [OUT] Int
+  - lj:      [IN] Int
+  - j_val:   [OUT] Array{Float64, 1}
+  - j_var:   [OUT] Array{Int, 1}
+  - j_fun:   [OUT] Array{Int, 1}
+  - grad:    [IN] Bool
 
     c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
 
@@ -4020,7 +3898,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccifg(io_err, n, icon, x, ci, gci, grad, cutest_lib)
+    ccifg(io_err, n, icon, x, ci, gci, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4029,19 +3907,9 @@ Usage:
   - ci:      [OUT] Array{Cdouble, 1}
   - gci:     [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ci, gci = ccifg(n, icon, x, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - icon:    [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - ci:      [OUT] Float64
-  - gci:     [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ci = ccifg!(n, icon, x, gci, grad, cutest_lib)
+    ci, gci = ccifg(n, icon, x, grad)
 
   - n:       [IN] Int
   - icon:    [IN] Int
@@ -4049,7 +3917,15 @@ Usage:
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ci = ccifg!(n, icon, x, gci, grad)
+
+  - n:       [IN] Int
+  - icon:    [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - ci:      [OUT] Float64
+  - gci:     [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     ci, gci = ccifg(nlp, icon, x, grad)
 
@@ -4090,7 +3966,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccifg(io_err, n, icon, x, ci, gci, grad, cutest_lib)
+    ccifg(io_err, n, icon, x, ci, gci, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4099,19 +3975,9 @@ Usage:
   - ci:      [OUT] Array{Cdouble, 1}
   - gci:     [OUT] Array{Cdouble, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ci, gci = ccifg(n, icon, x, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - icon:    [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - ci:      [OUT] Float64
-  - gci:     [OUT] Array{Float64, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ci = ccifg!(n, icon, x, gci, grad, cutest_lib)
+    ci, gci = ccifg(n, icon, x, grad)
 
   - n:       [IN] Int
   - icon:    [IN] Int
@@ -4119,7 +3985,15 @@ Usage:
   - ci:      [OUT] Float64
   - gci:     [OUT] Array{Float64, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ci = ccifg!(n, icon, x, gci, grad)
+
+  - n:       [IN] Int
+  - icon:    [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - ci:      [OUT] Float64
+  - gci:     [OUT] Array{Float64, 1}
+  - grad:    [IN] Bool
 
     ci, gci = ccifg(nlp, icon, x, grad)
 
@@ -4161,7 +4035,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad, cutest_lib)
+    ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4173,22 +4047,9 @@ Usage:
   - gci_val: [OUT] Array{Cdouble, 1}
   - gci_var: [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - icon:    [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - ci:      [OUT] Float64
-  - nnzgci:  [OUT] Int
-  - lgci:    [IN] Int
-  - gci_val: [OUT] Array{Float64, 1}
-  - gci_var: [OUT] Array{Int, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad, cutest_lib)
+    ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad)
 
   - n:       [IN] Int
   - icon:    [IN] Int
@@ -4199,7 +4060,18 @@ Usage:
   - gci_val: [OUT] Array{Float64, 1}
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad)
+
+  - n:       [IN] Int
+  - icon:    [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - ci:      [OUT] Float64
+  - nnzgci:  [OUT] Int
+  - lgci:    [IN] Int
+  - gci_val: [OUT] Array{Float64, 1}
+  - gci_var: [OUT] Array{Int, 1}
+  - grad:    [IN] Bool
 
     ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
 
@@ -4247,7 +4119,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad, cutest_lib)
+    ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4259,22 +4131,9 @@ Usage:
   - gci_val: [OUT] Array{Cdouble, 1}
   - gci_var: [OUT] Array{Cint, 1}
   - grad:    [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad, cutest_lib)
 
-  - n:       [IN] Int
-  - icon:    [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - ci:      [OUT] Float64
-  - nnzgci:  [OUT] Int
-  - lgci:    [IN] Int
-  - gci_val: [OUT] Array{Float64, 1}
-  - gci_var: [OUT] Array{Int, 1}
-  - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad, cutest_lib)
+    ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad)
 
   - n:       [IN] Int
   - icon:    [IN] Int
@@ -4285,7 +4144,18 @@ Usage:
   - gci_val: [OUT] Array{Float64, 1}
   - gci_var: [OUT] Array{Int, 1}
   - grad:    [IN] Bool
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad)
+
+  - n:       [IN] Int
+  - icon:    [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - ci:      [OUT] Float64
+  - nnzgci:  [OUT] Int
+  - lgci:    [IN] Int
+  - gci_val: [OUT] Array{Float64, 1}
+  - gci_var: [OUT] Array{Int, 1}
+  - grad:    [IN] Bool
 
     ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
 
@@ -4334,7 +4204,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val, cutest_lib)
+    cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4349,25 +4219,9 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 2}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - g:       [OUT] Array{Float64, 1}
-  - jtrans:  [IN] Bool
-  - lj1:     [IN] Int
-  - lj2:     [IN] Int
-  - j_val:   [OUT] Array{Float64, 2}
-  - lh1:     [IN] Int
-  - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val, cutest_lib)
+    g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4381,7 +4235,21 @@ Usage:
   - j_val:   [OUT] Array{Float64, 2}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - g:       [OUT] Array{Float64, 1}
+  - jtrans:  [IN] Bool
+  - lj1:     [IN] Int
+  - lj2:     [IN] Int
+  - j_val:   [OUT] Array{Float64, 2}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
 
     g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
 
@@ -4434,7 +4302,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val, cutest_lib)
+    cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4449,25 +4317,9 @@ Usage:
   - j_val:   [OUT] Array{Cdouble, 2}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - g:       [OUT] Array{Float64, 1}
-  - jtrans:  [IN] Bool
-  - lj1:     [IN] Int
-  - lj2:     [IN] Int
-  - j_val:   [OUT] Array{Float64, 2}
-  - lh1:     [IN] Int
-  - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val, cutest_lib)
+    g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4481,7 +4333,21 @@ Usage:
   - j_val:   [OUT] Array{Float64, 2}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - g:       [OUT] Array{Float64, 1}
+  - jtrans:  [IN] Bool
+  - lj1:     [IN] Int
+  - lj2:     [IN] Int
+  - j_val:   [OUT] Array{Float64, 2}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
 
     g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
 
@@ -4532,7 +4398,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cdh(io_err, n, m, x, y, lh1, h_val, cutest_lib)
+    cdh(io_err, n, m, x, y, lh1, h_val)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4541,19 +4407,9 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h_val = cdh(n, m, x, y, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - lh1:     [IN] Int
-  - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cdh!(n, m, x, y, lh1, h_val, cutest_lib)
+    h_val = cdh(n, m, x, y, lh1)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4561,7 +4417,15 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cdh!(n, m, x, y, lh1, h_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
 
     h_val = cdh(nlp, x, y, lh1)
 
@@ -4600,7 +4464,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cdh(io_err, n, m, x, y, lh1, h_val, cutest_lib)
+    cdh(io_err, n, m, x, y, lh1, h_val)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4609,19 +4473,9 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h_val:   [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h_val = cdh(n, m, x, y, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - lh1:     [IN] Int
-  - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cdh!(n, m, x, y, lh1, h_val, cutest_lib)
+    h_val = cdh(n, m, x, y, lh1)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4629,7 +4483,15 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - lh1:     [IN] Int
   - h_val:   [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cdh!(n, m, x, y, lh1, h_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
 
     h_val = cdh(nlp, x, y, lh1)
 
@@ -4668,7 +4530,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4680,22 +4542,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4706,7 +4555,18 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = csh(nlp, x, y)
 
@@ -4749,7 +4609,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4761,22 +4621,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4787,7 +4634,18 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = csh(nlp, x, y)
 
@@ -4830,7 +4688,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4842,22 +4700,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4868,7 +4713,18 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
 
@@ -4911,7 +4767,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -4923,22 +4779,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -4949,7 +4792,18 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
 
@@ -4995,7 +4849,7 @@ errors. For more information, run the shell command
 Usage:
 
     ceh(io_err, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
-he_row, lhe_val, he_val, byrows, cutest_lib)
+he_row, lhe_val, he_val, byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -5011,26 +4865,9 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - m:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - m:          [IN] Int
@@ -5045,7 +4882,22 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - m:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -5101,7 +4953,7 @@ errors. For more information, run the shell command
 Usage:
 
     ceh(io_err, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
-he_row, lhe_val, he_val, byrows, cutest_lib)
+he_row, lhe_val, he_val, byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -5117,26 +4969,9 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - m:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - m:          [IN] Int
@@ -5151,7 +4986,22 @@ he_row, lhe_val, he_val, byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - m:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -5204,7 +5054,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cidh(io_err, n, x, iprob, lh1, h, cutest_lib)
+    cidh(io_err, n, x, iprob, lh1, h)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -5212,25 +5062,23 @@ Usage:
   - iprob:   [IN] Array{Cint, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h = cidh(n, x, iprob, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - iprob:   [IN] Int
-  - lh1:     [IN] Int
-  - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cidh!(n, x, iprob, lh1, h, cutest_lib)
+    h = cidh(n, x, iprob, lh1)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cidh!(n, x, iprob, lh1, h)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - iprob:   [IN] Int
+  - lh1:     [IN] Int
+  - h:       [OUT] Array{Float64, 2}
 
     h = cidh(nlp, x, iprob, lh1)
 
@@ -5269,7 +5117,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cidh(io_err, n, x, iprob, lh1, h, cutest_lib)
+    cidh(io_err, n, x, iprob, lh1, h)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -5277,25 +5125,23 @@ Usage:
   - iprob:   [IN] Array{Cint, 1}
   - lh1:     [IN] Array{Cint, 1}
   - h:       [OUT] Array{Cdouble, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    h = cidh(n, x, iprob, lh1, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - iprob:   [IN] Int
-  - lh1:     [IN] Int
-  - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cidh!(n, x, iprob, lh1, h, cutest_lib)
+    h = cidh(n, x, iprob, lh1)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
   - iprob:   [IN] Int
   - lh1:     [IN] Int
   - h:       [OUT] Array{Float64, 2}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cidh!(n, x, iprob, lh1, h)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - iprob:   [IN] Int
+  - lh1:     [IN] Int
+  - h:       [OUT] Array{Float64, 2}
 
     h = cidh(nlp, x, iprob, lh1)
 
@@ -5334,7 +5180,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -5345,21 +5191,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - iprob:   [IN] Int
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -5369,7 +5203,17 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - iprob:   [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
 
@@ -5412,7 +5256,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col, cutest_lib)
+    cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -5423,21 +5267,9 @@ Usage:
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - iprob:   [IN] Int
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col, cutest_lib)
+    nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh)
 
   - n:       [IN] Int
   - x:       [IN] Array{Float64, 1}
@@ -5447,7 +5279,17 @@ Usage:
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - iprob:   [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
 
@@ -5493,7 +5335,7 @@ errors. For more information, run the shell command
 Usage:
 
     csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
-h_val, h_row, h_col, cutest_lib)
+h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -5511,28 +5353,9 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - nnzj:    [OUT] Int
-  - lj:      [IN] Int
-  - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col, cutest_lib)
+    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -5549,7 +5372,24 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - nnzj:    [OUT] Int
+  - lj:      [IN] Int
+  - j_val:   [OUT] Array{Float64, 1}
+  - j_var:   [OUT] Array{Int, 1}
+  - j_fun:   [OUT] Array{Int, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
 
@@ -5605,7 +5445,7 @@ errors. For more information, run the shell command
 Usage:
 
     csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
-h_val, h_row, h_col, cutest_lib)
+h_val, h_row, h_col)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -5623,28 +5463,9 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Cdouble, 1}
   - h_row:   [OUT] Array{Cint, 1}
   - h_col:   [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - grlagf:  [IN] Bool
-  - nnzj:    [OUT] Int
-  - lj:      [IN] Int
-  - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
-  - nnzh:    [OUT] Int
-  - lh:      [IN] Int
-  - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col, cutest_lib)
+    nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -5661,7 +5482,24 @@ h_val, h_row, h_col, cutest_lib)
   - h_val:   [OUT] Array{Float64, 1}
   - h_row:   [OUT] Array{Int, 1}
   - h_col:   [OUT] Array{Int, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - grlagf:  [IN] Bool
+  - nnzj:    [OUT] Int
+  - lj:      [IN] Int
+  - j_val:   [OUT] Array{Float64, 1}
+  - j_var:   [OUT] Array{Int, 1}
+  - j_fun:   [OUT] Array{Int, 1}
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_val:   [OUT] Array{Float64, 1}
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
 
     nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
 
@@ -5721,7 +5559,7 @@ Usage:
 
     csgreh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne,
 lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val,
-byrows, cutest_lib)
+byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -5743,32 +5581,9 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - m:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1}
-  - grlagf:     [IN] Bool
-  - nnzj:       [OUT] Int
-  - lj:         [IN] Int
-  - j_val:      [OUT] Array{Float64, 1}
-  - j_var:      [OUT] Array{Int, 1}
-  - j_fun:      [OUT] Array{Int, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - m:          [IN] Int
@@ -5789,7 +5604,28 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - m:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - grlagf:     [IN] Bool
+  - nnzj:       [OUT] Int
+  - lj:         [IN] Int
+  - j_val:      [OUT] Array{Float64, 1}
+  - j_var:      [OUT] Array{Int, 1}
+  - j_fun:      [OUT] Array{Int, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -5859,7 +5695,7 @@ Usage:
 
     csgreh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne,
 lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val,
-byrows, cutest_lib)
+byrows)
 
   - io_err:     [OUT] Array{Cint, 1}
   - n:          [IN] Array{Cint, 1}
@@ -5881,32 +5717,9 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Array{Cint, 1}
   - he_val:     [OUT] Array{Cdouble, 1}
   - byrows:     [IN] Array{Cint, 1}
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows, cutest_lib)
 
-  - n:          [IN] Int
-  - m:          [IN] Int
-  - x:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1}
-  - grlagf:     [IN] Bool
-  - nnzj:       [OUT] Int
-  - lj:         [IN] Int
-  - j_val:      [OUT] Array{Float64, 1}
-  - j_var:      [OUT] Array{Int, 1}
-  - j_fun:      [OUT] Array{Int, 1}
-  - ne:         [OUT] Int
-  - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
-  - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
-  - lhe_val:    [IN] Int
-  - he_val:     [OUT] Array{Float64, 1}
-  - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows, cutest_lib)
+    nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows)
 
   - n:          [IN] Int
   - m:          [IN] Int
@@ -5927,7 +5740,28 @@ byrows, cutest_lib)
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
-  - cutest_lib:    [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
+  - n:          [IN] Int
+  - m:          [IN] Int
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - grlagf:     [IN] Bool
+  - nnzj:       [OUT] Int
+  - lj:         [IN] Int
+  - j_val:      [OUT] Array{Float64, 1}
+  - j_var:      [OUT] Array{Int, 1}
+  - j_fun:      [OUT] Array{Int, 1}
+  - ne:         [OUT] Int
+  - lhe_ptr:    [IN] Int
+  - he_row_ptr: [OUT] Array{Int, 1}
+  - he_val_ptr: [OUT] Array{Int, 1}
+  - lhe_row:    [IN] Int
+  - he_row:     [OUT] Array{Int, 1}
+  - lhe_val:    [IN] Int
+  - he_val:     [OUT] Array{Float64, 1}
+  - byrows:     [IN] Bool
 
     nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
 
@@ -5990,7 +5824,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    chprod(io_err, n, m, goth, x, y, vector, result, cutest_lib)
+    chprod(io_err, n, m, goth, x, y, vector, result)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -6000,20 +5834,9 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = chprod(n, m, goth, x, y, vector, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - goth:    [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    chprod!(n, m, goth, x, y, vector, result, cutest_lib)
+    result = chprod(n, m, goth, x, y, vector)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -6022,7 +5845,16 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    chprod!(n, m, goth, x, y, vector, result)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - result:  [OUT] Array{Float64, 1}
 
     result = chprod(nlp, goth, x, y, vector)
 
@@ -6063,7 +5895,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    chprod(io_err, n, m, goth, x, y, vector, result, cutest_lib)
+    chprod(io_err, n, m, goth, x, y, vector, result)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -6073,20 +5905,9 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = chprod(n, m, goth, x, y, vector, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - goth:    [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    chprod!(n, m, goth, x, y, vector, result, cutest_lib)
+    result = chprod(n, m, goth, x, y, vector)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -6095,7 +5916,16 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    chprod!(n, m, goth, x, y, vector, result)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - result:  [OUT] Array{Float64, 1}
 
     result = chprod(nlp, goth, x, y, vector)
 
@@ -6136,7 +5966,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    chcprod(io_err, n, m, goth, x, y, vector, result, cutest_lib)
+    chcprod(io_err, n, m, goth, x, y, vector, result)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -6146,20 +5976,9 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = chcprod(n, m, goth, x, y, vector, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - goth:    [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    chcprod!(n, m, goth, x, y, vector, result, cutest_lib)
+    result = chcprod(n, m, goth, x, y, vector)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -6168,7 +5987,16 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    chcprod!(n, m, goth, x, y, vector, result)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - result:  [OUT] Array{Float64, 1}
 
     result = chcprod(nlp, goth, x, y, vector)
 
@@ -6209,7 +6037,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    chcprod(io_err, n, m, goth, x, y, vector, result, cutest_lib)
+    chcprod(io_err, n, m, goth, x, y, vector, result)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -6219,20 +6047,9 @@ Usage:
   - y:       [IN] Array{Cdouble, 1}
   - vector:  [IN] Array{Cdouble, 1}
   - result:  [OUT] Array{Cdouble, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = chcprod(n, m, goth, x, y, vector, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - goth:    [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - y:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    chcprod!(n, m, goth, x, y, vector, result, cutest_lib)
+    result = chcprod(n, m, goth, x, y, vector)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -6241,7 +6058,16 @@ Usage:
   - y:       [IN] Array{Float64, 1}
   - vector:  [IN] Array{Float64, 1}
   - result:  [OUT] Array{Float64, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    chcprod!(n, m, goth, x, y, vector, result)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - result:  [OUT] Array{Float64, 1}
 
     result = chcprod(nlp, goth, x, y, vector)
 
@@ -6282,7 +6108,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult, cutest_lib)
+    cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -6294,22 +6120,9 @@ Usage:
   - lvector: [IN] Array{Cint, 1}
   - result:  [OUT] Array{Cdouble, 1}
   - lresult: [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - gotj:    [IN] Bool
-  - jtrans:  [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - lvector: [IN] Int
-  - result:  [OUT] Array{Float64, 1}
-  - lresult: [IN] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult, cutest_lib)
+    result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -6320,7 +6133,18 @@ Usage:
   - lvector: [IN] Int
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - gotj:    [IN] Bool
+  - jtrans:  [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lvector: [IN] Int
+  - result:  [OUT] Array{Float64, 1}
+  - lresult: [IN] Int
 
     result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
 
@@ -6365,7 +6189,7 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult, cutest_lib)
+    cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
@@ -6377,22 +6201,9 @@ Usage:
   - lvector: [IN] Array{Cint, 1}
   - result:  [OUT] Array{Cdouble, 1}
   - lresult: [IN] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult, cutest_lib)
 
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - gotj:    [IN] Bool
-  - jtrans:  [IN] Bool
-  - x:       [IN] Array{Float64, 1}
-  - vector:  [IN] Array{Float64, 1}
-  - lvector: [IN] Int
-  - result:  [OUT] Array{Float64, 1}
-  - lresult: [IN] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
-
-    cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult, cutest_lib)
+    result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult)
 
   - n:       [IN] Int
   - m:       [IN] Int
@@ -6403,7 +6214,18 @@ Usage:
   - lvector: [IN] Int
   - result:  [OUT] Array{Float64, 1}
   - lresult: [IN] Int
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+
+    cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - gotj:    [IN] Bool
+  - jtrans:  [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lvector: [IN] Int
+  - result:  [OUT] Array{Float64, 1}
+  - lresult: [IN] Int
 
     result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
 
@@ -6441,14 +6263,13 @@ errors. For more information, run the shell command
 
 Usage:
 
-    uterminate(io_err, cutest_lib)
+    uterminate(io_err)
 
   - io_err:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    uterminate(, cutest_lib)
 
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+    uterminate()
+
 
 """
 uterminate
@@ -6464,14 +6285,13 @@ errors. For more information, run the shell command
 
 Usage:
 
-    cterminate(io_err, cutest_lib)
+    cterminate(io_err)
 
   - io_err:  [OUT] Array{Cint, 1}
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
 
-    cterminate(, cutest_lib)
 
-  - cutest_lib: [IN] ASCIIString or Ptr{Void} with CUTEst library from sifdecode
+    cterminate()
+
 
 """
 cterminate
