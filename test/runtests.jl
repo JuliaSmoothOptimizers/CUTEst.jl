@@ -8,7 +8,7 @@ for problem in ["HS32", "HS4"]
   include("finalize_test.jl")
 end
 
-problems = readdir(get(ENV, "MASTSIF", "") )
+problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.05)
 
 for p in problems
   if !contains(p, "SIF")

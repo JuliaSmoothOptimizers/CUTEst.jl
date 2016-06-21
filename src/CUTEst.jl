@@ -2,8 +2,7 @@
 
 module CUTEst
 
-push!(LOAD_PATH, Pkg.dir("MathProgBase","src","NLP"))
-using NLP  # Defines NLPModelMeta.
+importall NLPModels
 using Compat
 import Base.Libdl.dlsym
 
@@ -12,8 +11,10 @@ global cutest_instances = 0
 
 export CUTEstModel, sifdecoder, cutest_finalize
 
-type CUTEstModel
+type CUTEstModel <: AbstractNLPModel
   meta    :: NLPModelMeta;
+
+  counters :: Counters
 end
 
 const outsdif = "OUTSDIF.d";
@@ -155,7 +156,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true, verbose = false)
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta)
+  nlp = CUTEstModel(meta, Counters())
 
   cutest_instances += 1;
   return nlp
