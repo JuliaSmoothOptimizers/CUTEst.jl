@@ -2,6 +2,20 @@ export objcons, objgrad, obj, grad, grad!,
        cons_coord, cons, cons!, jac_coord, jac,
        hess_coord, hess, hprod, hprod!
 
+import NLPModels.obj
+import NLPModels.grad
+import NLPModels.grad!
+import NLPModels.hess
+import NLPModels.hprod
+import NLPModels.hprod!
+import NLPModels.cons
+import NLPModels.cons!
+import NLPModels.jac
+import NLPModels.jprod
+import NLPModels.jprod!
+import NLPModels.jtprod
+import NLPModels.jtprod!
+
 """    objcons(nlp, x)
 
 Computes the objective function and constraint vector values at x.
