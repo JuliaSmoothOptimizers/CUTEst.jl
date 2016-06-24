@@ -20,17 +20,19 @@ cd(dirname(@__FILE__))
 end
 
 @osx_only begin
-  try
-    run(`brew doctor`)
+  @eval using Homebrew
+
+  Homebrew.update()
+  Homebrew.add("homebrew/versions/gcc5")
+  ENV["CUTEST_GCC"] = "gcc-5"
+  ENV["CUTEST_GFORTRAN"] = "gfortran-5"
+  for p in ["archdefs", "cutest", "mastsif"]
+    Homebrew.add("optimizers/cutest/$p")
   end
-  run(`brew update`)
-  run(`brew tap optimizers/cutest`)
-  run(`brew install cutest`)
-  run(`brew install mastsif`)
 
   open("cutestenv.jl", "w") do cenv
     for p in ["archdefs", "cutest", "sifdecode", "mastsif"]
-      prefix = chomp(readall(`brew --prefix $p`))
+      prefix = Homebrew.prefix(p)
       open("$prefix/$p.bashrc") do f
         for line in readlines(f)
           var = split(split(line, "=")[1])[2]
