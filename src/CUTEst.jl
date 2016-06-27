@@ -2,8 +2,7 @@
 
 module CUTEst
 
-push!(LOAD_PATH, Pkg.dir("MathProgBase","src","NLP"))
-using NLP  # Defines NLPModelMeta.
+importall NLPModels
 using Compat
 import Base.Libdl.dlsym
 
@@ -12,12 +11,12 @@ global cutest_instances = 0
 
 export CUTEstModel, sifdecoder, cutest_finalize
 
-type CUTEstModel
+type CUTEstModel <: AbstractNLPModel
   meta    :: NLPModelMeta;
+
+  counters :: Counters
 end
 
-const cutest_arch  = get(ENV, "MYARCH", "");
-const cutest_dir   = get(ENV, "CUTEST", "");
 const outsdif = "OUTSDIF.d";
 const automat = "AUTOMAT.d";
 const funit   = convert(Int32, 42);
@@ -43,6 +42,18 @@ type CUTEstException <: Exception
   end
 end
 
+function __init__()
+  global cutest_lib = C_NULL
+  deps = joinpath(dirname(@__FILE__), "../deps")
+  include(joinpath(deps, "cutestenv.jl"))
+  global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
+
+  global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
+      "double/libcutest_double.$soname")
+
+  push!(Libdl.DL_LOAD_PATH, ".")
+end
+
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
 
 macro cutest_error()  # Handle nonzero exit codes.
@@ -59,12 +70,11 @@ function sifdecoder(name :: ASCIIString; verbose = false)
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(name);
   libname = "lib$pname";
-  out = readall(`sifdecoder $name`)
+  out = readall(`$sifdecoderbin $name`);
   verbose && println(out)
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-  run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o -L$cutest_dir/objects/$cutest_arch/double -lcutest_double`);
+  run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
-  push!(Libdl.DL_LOAD_PATH, ".")
   global cutest_lib = Libdl.dlopen(libname,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
 end
@@ -146,7 +156,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true, verbose = false)
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta)
+  nlp = CUTEstModel(meta, Counters())
 
   cutest_instances += 1;
   return nlp
