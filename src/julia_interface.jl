@@ -293,6 +293,7 @@ end
 Computes the Hessian matrix in coordinate format of the Lagrangian function at
 x with Lagrange multipliers y for a constrained problem, or the
 objective function at x for an unconstrained problem.
+Only the lower triangle is returned.
 Usage:
 
     hrow, hcol, hval = hess_coord(nlp, x, y)
@@ -324,7 +325,7 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float6
   end
   @cutest_error
 
-  return (hrow, hcol, hval);
+  return (hcol, hrow, hval);  # swap rows and column
 end
 
 """    hess_coord(nlp, x)
@@ -349,6 +350,7 @@ end
 Computes the Hessian of the Lagrangian function at x with Lagrange
 multipliers y for a constrained problem or the Hessian of the objective
 function at x for an unconstrained problem.
+Only the lower triangle is returned.
 Usage:
 
     H = hess(nlp, x, y)
@@ -360,21 +362,13 @@ Usage:
 """
 function hess(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1})
   (hrow, hcol, hval) = hess_coord(nlp, x, y);
-  H = spzeros(nlp.meta.nvar, nlp.meta.nvar)
-  for k = 1:length(hval)
-    i = hrow[k]
-    j = hcol[k]
-    H[i,j] = hval[k]
-    if i != j
-      H[j,i] = hval[k]
-    end
-  end
-  return H
+  return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar)
 end
 
 """    hess(nlp, x)
 
 Computes the Hessian of the objective function.
+Only the lower triangle is returned.
 Usage:
 
     H = hess(nlp, x)
