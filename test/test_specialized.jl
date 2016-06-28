@@ -894,7 +894,7 @@ else
 end
 
 print("Specialized interface stress test... ")
-for i = 1:100000
+for i = 1:10000
   if nlp.meta.ncon > 0
   fx, cx = cfn(nlp.meta.nvar, nlp.meta.ncon, x0)
   cx = zeros(nlp.meta.ncon)

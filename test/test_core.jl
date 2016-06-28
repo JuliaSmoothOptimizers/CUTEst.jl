@@ -308,7 +308,7 @@ if (ncon[1] > 0)
 end
 
 print("Core interface stress test... ")
-for i = 1:100000
+for i = 1:10000
   if (ncon[1] > 0)
     cfn(st, nvar, ncon, x0, fx, cx)
     cofg(st, nvar, x0, fx, gx, True)
