@@ -1,4 +1,10 @@
 println("\nTesting the Julia interface\n")
+
+if nlp.meta.ncon > 0
+  v = ones(nlp.meta.nvar)
+  u = ones(nlp.meta.ncon)
+end
+
 fx = obj(nlp, x0);
 @test_approx_eq_eps fx f(x0) 1e-8
 
@@ -48,6 +54,16 @@ if nlp.meta.ncon > 0
 
   println("c(x0) = ", cx);
   println("J(x0) = "); println(full(Jx));
+
+  Jv = jprod(nlp, x0, v)
+  @test_approx_eq_eps Jv J(x0)*v 1e-8
+
+  println("J(x0)*e = ", Jv)
+
+  Jtu = jtprod(nlp, x0, u)
+  @test_approx_eq_eps Jtu J(x0)'*u 1e-8
+
+  println("J(x0)'*e = ", Jtu)
 end
 
 Hx = hess(nlp, x0);
@@ -100,6 +116,8 @@ for i = 1:100000
     (jrow, jcol, jval) = jac_coord(nlp, x0)
     Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
     Jx = jac(nlp, x0)
+    jv = jprod(nlp, x0, v)
+    jtu = jtprod(nlp, x0, u)
     Wx = hess(nlp, x0, ones(nlp.meta.ncon));
     hv = hprod(nlp, x0, ones(nlp.meta.ncon), v);
     hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv);
