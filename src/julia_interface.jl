@@ -1,5 +1,6 @@
 export objcons, objgrad, obj, grad, grad!,
-       cons_coord, cons, cons!, jac_coord, jac,
+       cons_coord, cons, cons!,
+       jac_coord, jac, jprod, jprod!, jtprod, jtprod!,
        hess_coord, hess, hprod, hprod!
 
 import NLPModels.obj
@@ -286,6 +287,90 @@ Usage:
 function jac(nlp :: CUTEstModel, x :: Array{Float64,1})
   c, J = cons(nlp, x, true)
   return J
+end
+
+"""    jprod(nlp, x, v)
+
+Computes the product of the constraint Jacobian with a vector.
+Usage:
+
+    jv = jprod(nlp, x, v)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - v:    [IN] Array{Float64, 1}
+  - jv:   [OUT] Array{Float64, 1}
+"""
+function jprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1})
+  jv = zeros(nlp.meta.ncon)
+  jprod!(nlp, x, v, jv)
+end
+
+"""    jprod!(nlp, x, v, jv)
+
+Computes the product of the constraint Jacobian with a vector.
+Usage:
+
+    jprod!(nlp, x, v, jv)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - v:    [IN] Array{Float64, 1}
+  - jv:   [OUT] Array{Float64, 1}
+"""
+function jprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, jv :: Array{Float64,1})
+  nvar = nlp.meta.nvar
+  ncon = nlp.meta.ncon
+  got_j = 0
+  jtrans = 0
+  io_err = Cint[0];
+  ccall(dlsym(cutest_lib, :cutest_cjprod_), Void,
+              (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}),
+               io_err,     &nvar,      &ncon,      &got_j,     &jtrans,    x,            v,            &nvar,      jv,           &ncon);
+  @cutest_error
+  return jv
+end
+
+"""    jtprod(nlp, x, v)
+
+Computes the product of the transposed constraint Jacobian with a vector.
+Usage:
+
+    jtv = jtprod(nlp, x, v)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - v:    [IN] Array{Float64, 1}
+  - jtv:  [OUT] Array{Float64, 1}
+"""
+function jtprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1})
+  jtv = zeros(nlp.meta.nvar)
+  jtprod!(nlp, x, v, jtv)
+end
+
+"""    jtprod!(nlp, x, v, jv)
+
+Computes the product of the transposed constraint Jacobian with a vector.
+Usage:
+
+    jtprod!(nlp, x, v, jv)
+
+  - nlp:  [IN] CUTEstModel
+  - x:    [IN] Array{Float64, 1}
+  - v:    [IN] Array{Float64, 1}
+  - jtv:  [OUT] Array{Float64, 1}
+"""
+function jtprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, jtv :: Array{Float64,1})
+  nvar = nlp.meta.nvar
+  ncon = nlp.meta.ncon
+  got_j = 0
+  jtrans = 1
+  io_err = Cint[0];
+  ccall(dlsym(cutest_lib, :cutest_cjprod_), Void,
+              (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}),
+               io_err,     &nvar,      &ncon,      &got_j,     &jtrans,    x,            v,            &ncon,      jtv,          &nvar);
+  @cutest_error
+  return jtv
 end
 
 """    hess_coord(nlp, x, y)
