@@ -44,3 +44,5 @@ for p in problems
   end
   cutest_finalize(nlp)
 end
+
+include("test_mpb.jl")
