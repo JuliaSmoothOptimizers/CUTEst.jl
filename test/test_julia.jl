@@ -66,33 +66,35 @@ if nlp.meta.ncon > 0
   println("J(x0)'*e = ", Jtu)
 end
 
-Hx = hess(nlp, x0);
-println("Hx=", full(Hx)); println("H(x0)=", H(x0));
-@test_approx_eq_eps Hx tril(H(x0)) 1e-8
-println("H(x0) = "); println(full(Hx));
-if nlp.meta.ncon > 0
-  Wx = hess(nlp, x0, ones(nlp.meta.ncon));
-  @test_approx_eq_eps Wx tril(W(x0, ones(nlp.meta.ncon))) 1e-8
-  println("H(x0,ones) = "); println(full(Wx));
-end
-
 v = rand(nlp.meta.nvar);
-hv = hprod(nlp, x0, v);
-println("H(x0) * v = ", hv);
-@test_approx_eq_eps hv H(x0)*v 1e-8
+for obj_weight in [0.0, 1.0, 3.141592]
+  Hx = hess(nlp, x0, obj_weight=obj_weight);
+  @test_approx_eq_eps Hx tril(H(x0, obj_weight=obj_weight)) 1e-7
+  println("H(x0) = "); println(full(Hx));
+  if nlp.meta.ncon > 0
+    Wx = hess(nlp, x0, ones(nlp.meta.ncon), obj_weight=obj_weight);
+    @test_approx_eq_eps Wx tril(W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)) 1e-7
+    println("H(x0,ones,", obj_weight, ") = "); println(full(Wx));
+  end
 
-fill!(hv, 0.0)
-hprod!(nlp, x0, v, hv)
-@test_approx_eq_eps hv H(x0)*v 1e-8
-
-if nlp.meta.ncon > 0
-  hv = hprod(nlp, x0, ones(nlp.meta.ncon), v);
-  println("H(x0,ones) * v = ", hv);
-  @test_approx_eq_eps hv W(x0, ones(nlp.meta.ncon))*v 1e-8
+  hv = hprod(nlp, x0, v, obj_weight=obj_weight);
+  println("H(x0,", obj_weight, ") * v = ", hv);
+  @test_approx_eq_eps hv H(x0, obj_weight=obj_weight)*v 1e-7
 
   fill!(hv, 0.0)
-  hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv);
-  @test_approx_eq_eps hv W(x0, ones(nlp.meta.ncon))*v 1e-8
+  hprod!(nlp, x0, v, hv, obj_weight=obj_weight)
+  println("obj_weight = ", obj_weight)
+  @test_approx_eq_eps hv H(x0, obj_weight=obj_weight)*v 1e-7
+
+  if nlp.meta.ncon > 0
+    hv = hprod(nlp, x0, ones(nlp.meta.ncon), v, obj_weight=obj_weight);
+    println("H(x0,ones,", obj_weight, ") * v = ", hv);
+    @test_approx_eq_eps hv W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)*v 1e-7
+
+    fill!(hv, 0.0)
+    hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv, obj_weight=obj_weight);
+    @test_approx_eq_eps hv W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)*v 1e-7
+  end
 end
 
 print("Julia interface stress test... ")

@@ -373,7 +373,7 @@ function jtprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1
   return jtv
 end
 
-"""    hess_coord(nlp, x, y)
+"""    hess_coord(nlp, x, y, obj_weight)
 
 Computes the Hessian matrix in coordinate format of the Lagrangian function at
 x with Lagrange multipliers y for a constrained problem, or the
@@ -381,16 +381,17 @@ objective function at x for an unconstrained problem.
 Only the lower triangle is returned.
 Usage:
 
-    hrow, hcol, hval = hess_coord(nlp, x, y)
+    hrow, hcol, hval = hess_coord(nlp, x, y, obj_weight)
 
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - y:    [IN] Array{Float64, 1}
-  - hrow: [OUT] Array{Int32, 1}
-  - hcol: [OUT] Array{Int32, 1}
-  - hval: [OUT] Array{Float64, 1}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
+  - hrow:       [OUT] Array{Int32, 1}
+  - hcol:       [OUT] Array{Int32, 1}
+  - hval:       [OUT] Array{Float64, 1}
 """
-function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1})
+function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}; obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzh = nlp.meta.nnzh;
@@ -399,7 +400,19 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float6
   hrow = Array(Int32, nnzh);
   hcol = Array(Int32, nnzh);
   this_nnzh = Cint[0];
+
+  if obj_weight == 0.0 && ncon > 0
+    ccall(dlsym(cutest_lib, :cutest_cshc_), Void,
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
+                 io_err,     &nvar,      &ncon,      x,            y,            this_nnzh,  &nnzh,      hval,         hrow,       hcol);
+    @cutest_error
+    return (hrow, hcol, hval)
+  end
+
   if ncon > 0
+    # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
+    obj_weight != 1.0 && (y /= obj_weight)
+
     ccall(dlsym(cutest_lib, :cutest_csh_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32},   Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
                  io_err,  &nvar,   &ncon,   x,         y,         this_nnzh, &nnzh,   hval,      hrow,    hcol);
@@ -410,27 +423,27 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float6
   end
   @cutest_error
 
+  obj_weight != 1.0 && (hval[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   return (hcol, hrow, hval);  # swap rows and column
 end
 
-"""    hess_coord(nlp, x)
+"""    hess_coord(nlp, x, obj_weight)
 
 Computes the Hessian of the objective function at x in coordinate format.
 Usage:
 
-    hrow, hcol, hval = hess_coord(nlp, x)
+    hrow, hcol, hval = hess_coord(nlp, x, obj_weight)
 
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - hrow: [OUT] Array{Int32, 1}
-  - hcol: [OUT] Array{Int32, 1}
-  - hval: [OUT] Array{Float64, 1}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
+  - hrow:       [OUT] Array{Int32, 1}
+  - hcol:       [OUT] Array{Int32, 1}
+  - hval:       [OUT] Array{Float64, 1}
 """
-function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
-  hess_coord(nlp, x, zeros(nlp.meta.ncon))
-end
+hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; obj_weight :: Float64=1.0) = hess_coord(nlp, x, zeros(nlp.meta.ncon), obj_weight=obj_weight)
 
-"""    hess(nlp, x, y)
+"""    hess(nlp, x, y, obj_weight)
 
 Computes the Hessian of the Lagrangian function at x with Lagrange
 multipliers y for a constrained problem or the Hessian of the objective
@@ -438,35 +451,35 @@ function at x for an unconstrained problem.
 Only the lower triangle is returned.
 Usage:
 
-    H = hess(nlp, x, y)
+    H = hess(nlp, x, y, obj_weight)
 
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - y:   [IN] Array{Float64, 1}
-  - H:   [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64, Int64}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
+  - H:          [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64, Int64}
 """
-function hess(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1})
-  (hrow, hcol, hval) = hess_coord(nlp, x, y);
+function hess(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}; obj_weight :: Float64=1.0)
+  (hrow, hcol, hval) = hess_coord(nlp, x, y, obj_weight=obj_weight)
   return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar)
 end
 
-"""    hess(nlp, x)
+"""    hess(nlp, x, obj_weight)
 
 Computes the Hessian of the objective function.
 Only the lower triangle is returned.
 Usage:
 
-    H = hess(nlp, x)
+    H = hess(nlp, x, obj_weight)
 
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - H:   [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64, Int64}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
+  - H:          [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64, Int64}
 """
-function hess(nlp :: CUTEstModel, x :: Array{Float64,1})
-  hess(nlp, x, zeros(nlp.meta.ncon))
-end
+hess(nlp :: CUTEstModel, x :: Array{Float64,1}; obj_weight :: Float64=1.0) = hess(nlp, x, zeros(nlp.meta.ncon), obj_weight=obj_weight)
 
-"""    hprod(nlp, x, y, v)
+"""    hprod(nlp, x, y, v, obj_weight)
 
 Computes the matrix-vector product between the Hessian matrix and the vector v.
 If the problem is constrained, the Hessian is of the Lagrangian function at
@@ -474,35 +487,21 @@ x with Lagrange multipliers y, otherwise the Hessian is of the objective
 function at x.
 Usage:
 
-    Hv = hprod(nlp, x, y, v)
+    Hv = hprod(nlp, x, y, v, obj_weight)
 
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - y:   [IN] Array{Float64, 1}
-  - v:   [IN] Array{Float64, 1}
-  - Hv:  [OUT] Array{Float64, 1}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - v:          [IN] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
+  - Hv:         [OUT] Array{Float64, 1}
 """
-function hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}, v :: Array{Float64,1})
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  io_err = Cint[0];
-  hv = Array(Float64, nvar);
-  goth = Cint[0];
-  if ncon > 0
-    ccall(dlsym(cutest_lib, :cutest_chprod_), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,  &nvar,   &ncon,   goth,    x,         y,         v,         hv);
-  else
-    ccall(dlsym(cutest_lib, :cutest_uhprod_), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,  &nvar,   goth,    x,         v,         hv);
-  end
-  @cutest_error
-
-  return hv;
+function hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}, v :: Array{Float64,1}; obj_weight :: Float64=1.0)
+  hv = Array(Float64, nlp.meta.nvar);
+  return hprod!(nlp, x, y, v, hv, obj_weight=obj_weight)
 end
 
-"""    hprod!(nlp, x, y, v, Hv)
+"""    hprod!(nlp, x, y, v, Hv, obj_weight)
 
 Computes the matrix-vector product between the Hessian matrix and the vector
 v and write the result to vector Hv.
@@ -511,20 +510,33 @@ x with Lagrange multipliers y, otherwise the Hessian is of the objective
 function at x.
 Usage:
 
-    hprod!(nlp, x, y, v, Hv)
+    hprod!(nlp, x, y, v, Hv, obj_weight)
 
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - y:   [IN] Array{Float64, 1}
-  - v:   [IN] Array{Float64, 1}
-  - Hv:  [OUT] Array{Float64, 1}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - y:          [IN] Array{Float64, 1}
+  - v:          [IN] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
+  - Hv:         [OUT] Array{Float64, 1}
 """
-function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1})
+function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1}; obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   io_err = Cint[0];
   goth = Cint[0];
+
+  if obj_weight == 0.0 && ncon > 0
+    ccall(dlsym(cutest_lib, :cutest_chcprod_), Void,
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+                 io_err,     &nvar,      &ncon,      goth,       x,            y,            v,            hv);
+    @cutest_error
+    return hv
+  end
+
   if ncon > 0
+    # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
+    obj_weight != 1.0 && (y /= obj_weight)
+
     ccall(dlsym(cutest_lib, :cutest_chprod_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,   &ncon,   goth,    x,         y,         v,         hv);
@@ -535,35 +547,39 @@ function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}
   end
   @cutest_error
 
-  return hv;
+  obj_weight != 1.0 && (hv[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
+
+  return hv
 end
 
-"""    hprod(nlp, x, v)
+"""    hprod(nlp, x, v, obj_weight)
 
 Computes the matrix-vector product between the Hessian matrix of the objective
 function at x and the vector v.
 Usage:
 
-    Hv = hprod(nlp, x, v)
+    Hv = hprod(nlp, x, v, obj_weight)
 
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - v:   [IN] Array{Float64, 1}
-  - Hv:  [OUT] Array{Float64, 1}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - v:          [IN] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
+  - Hv:         [OUT] Array{Float64, 1}
 """
-hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}) = hprod(nlp, x, zeros(nlp.meta.ncon), v)
+hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}; obj_weight :: Float64=1.0) = hprod(nlp, x, zeros(nlp.meta.ncon), v, obj_weight=obj_weight)
 
-"""    hprod!(nlp, x, v, Hv)
+"""    hprod!(nlp, x, v, Hv, obj_weight)
 
 Computes the matrix-vector product between the Hessian matrix of the objective
 function at x and the vector v and writes the result to vector Hv.
 Usage:
 
-    hprod!(nlp, x, v, Hv)
+    hprod!(nlp, x, v, Hv, obj_weight)
 
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - v:   [IN] Array{Float64, 1}
-  - Hv:  [OUT] Array{Float64, 1}
+  - nlp:        [IN] CUTEstModel
+  - x:          [IN] Array{Float64, 1}
+  - v:          [IN] Array{Float64, 1}
+  - Hv:         [OUT] Array{Float64, 1}
+  - obj_weight: [IN] Float64 (optional, =1)
 """
-hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1}) = hprod!(nlp, x, zeros(nlp.meta.ncon), v, hv)
+hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1}; obj_weight :: Float64=1.0) = hprod!(nlp, x, zeros(nlp.meta.ncon), v, hv, obj_weight=obj_weight)
