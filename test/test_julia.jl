@@ -96,7 +96,7 @@ if nlp.meta.ncon > 0
 end
 
 print("Julia interface stress test... ")
-for i = 1:100000
+for i = 1:10000
   fx = obj(nlp, x0);
   (fx, gx) = objgrad(nlp, x0, true);
   gx = grad(nlp, x0)
