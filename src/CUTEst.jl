@@ -126,6 +126,11 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true, verbose = false)
   end
   @cutest_error
 
+  for lim in Any[bl, bu, cl, cu]
+    I = find(abs(lim) .>= 1e20)
+    lim[I] = Inf * lim[I]
+  end
+
   lin = find(linear);
   nln = setdiff(1:ncon, lin);
   nlin = sum(linear);

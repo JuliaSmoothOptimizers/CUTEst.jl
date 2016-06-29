@@ -73,7 +73,7 @@ for obj_weight in obj_weights
   @test_approx_eq_eps Hx tril(H(x0, obj_weight=obj_weight)) 1e-7
   println("H(x0) = "); println(full(Hx));
   if nlp.meta.ncon > 0
-    Wx = hess(nlp, x0, ones(nlp.meta.ncon), obj_weight=obj_weight);
+    Wx = hess(nlp, x0, y=ones(nlp.meta.ncon), obj_weight=obj_weight);
     @test_approx_eq_eps Wx tril(W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)) 1e-7
     println("H(x0,ones,", obj_weight, ") = "); println(full(Wx));
   end
@@ -88,12 +88,12 @@ for obj_weight in obj_weights
   @test_approx_eq_eps hv H(x0, obj_weight=obj_weight)*v 1e-7
 
   if nlp.meta.ncon > 0
-    hv = hprod(nlp, x0, ones(nlp.meta.ncon), v, obj_weight=obj_weight);
+    hv = hprod(nlp, x0, v, y=ones(nlp.meta.ncon), obj_weight=obj_weight);
     println("H(x0,ones,", obj_weight, ") * v = ", hv);
     @test_approx_eq_eps hv W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)*v 1e-7
 
     fill!(hv, 0.0)
-    hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv, obj_weight=obj_weight);
+    hprod!(nlp, x0, v, hv, y=ones(nlp.meta.ncon), obj_weight=obj_weight);
     @test_approx_eq_eps hv W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)*v 1e-7
   end
 end
@@ -141,9 +141,9 @@ for i = 1:10000
     Jx = jac(nlp, x0)
     jv = jprod(nlp, x0, v)
     jtu = jtprod(nlp, x0, u)
-    Wx = hess(nlp, x0, ones(nlp.meta.ncon));
-    hv = hprod(nlp, x0, ones(nlp.meta.ncon), v);
-    hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv);
+    Wx = hess(nlp, x0, y=ones(nlp.meta.ncon));
+    hv = hprod(nlp, x0, v, y=ones(nlp.meta.ncon));
+    hprod!(nlp, x0, v, hv, y=ones(nlp.meta.ncon));
   end
 end
 println("Passed")

@@ -26,7 +26,7 @@ function MathProgBase.jac_structure(d::CUTEstNLPEvaluator)
 end
 
 function MathProgBase.hesslag_structure(d::CUTEstNLPEvaluator)
-  rows, cols, vals = hess_coord(d.nlp, d.nlp.meta.x0, ones(d.nlp.meta.ncon))
+  rows, cols, vals = hess_coord(d.nlp, d.nlp.meta.x0, y=ones(d.nlp.meta.ncon))
   return rows, cols
 end
 
@@ -49,7 +49,7 @@ function MathProgBase.eval_hesslag_prod(d::CUTEstNLPEvaluator, h, x, v, σ, μ)
 end
 
 function MathProgBase.eval_hesslag(d::CUTEstNLPEvaluator, H, x, σ, μ)
-  rows, cols, vals = hess_coord(d.nlp, x, μ, obj_weight=σ)
+  rows, cols, vals = hess_coord(d.nlp, x, y=μ, obj_weight=σ)
   copy!(H, vals)
 end
 

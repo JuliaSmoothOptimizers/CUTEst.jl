@@ -10,3 +10,4 @@ model = NLPtoMPB(nlp, IpoptSolver())
 @assert isa(model, Ipopt.IpoptMathProgModel)
 MathProgBase.optimize!(model)
 @assert MathProgBase.getobjval(model) ≈ 0.0
+cutest_finalize(nlp)
