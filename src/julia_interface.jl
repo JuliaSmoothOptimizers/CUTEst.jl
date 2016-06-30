@@ -115,8 +115,8 @@ Usage:
   - g:    [OUT] Array{Float64, 1}
 """
 function grad(nlp :: CUTEstModel, x :: Array{Float64,1})
-  f, g = objgrad(nlp, x, true)
-  return g
+  g = Array(Float64, nlp.meta.nvar)
+  return grad!(nlp, x, g)
 end
 
 """    grad!(nlp, x, g)
