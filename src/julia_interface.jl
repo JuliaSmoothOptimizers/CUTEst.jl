@@ -40,11 +40,13 @@ function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
     ccall(dlsym(cutest_lib, :cutest_cfn_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,   &ncon,   x,         f,         c);
+    nlp.counters.neval_cons += 1
   else
     ccall(dlsym(cutest_lib, :cutest_ufn_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}),
                  io_err,  &nvar,    x,         f);
   end
+  nlp.counters.neval_obj += 1
   @cutest_error
 
   return ncon > 0 ? (f[1], c) : f[1];
@@ -85,6 +87,8 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
         (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
              io_err,      &nvar,            x,            f,            g,  &get_grad);
   end
+  nlp.counters.neval_obj += 1
+  grad && (nlp.counters.neval_grad += 1)
   @cutest_error
 
   return grad ? (f[1], g) : f[1];
@@ -146,7 +150,7 @@ function grad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
              io_err,      &nvar,            x,            f,            g,  &get_grad);
   end
   @cutest_error
-
+  nlp.counters.neval_grad += 1
   return g
 end
 
@@ -183,7 +187,8 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
                io_err,  &nvar,   &ncon,   x,         c,         &nnzj,   &jsize,  jval,      jcol,    jrow,    &get_j);
   @cutest_error
-
+  nlp.counters.neval_cons += 1
+  jac && (nlp.counters.neval_jac += 1)
   return jac ? (c, jrow, jcol, jval) : c;
 end
 
@@ -251,7 +256,7 @@ function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
                io_err,  &nvar,   &ncon,   x,         c,         &nnzj,   &jsize,  jval,      jcol,    jrow,    &get_j);
   @cutest_error
-
+  nlp.counters.neval_cons += 1
   return c;
 end
 
@@ -270,6 +275,7 @@ Usage:
 """
 function jac_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
   c, jrow, jcol, jval = cons_coord(nlp, x, true)
+  nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return (jrow, jcol, jval)
 end
 
@@ -286,6 +292,7 @@ Usage:
 """
 function jac(nlp :: CUTEstModel, x :: Array{Float64,1})
   c, J = cons(nlp, x, true)
+  nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return J
 end
 
@@ -328,6 +335,7 @@ function jprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}),
                io_err,     &nvar,      &ncon,      &got_j,     &jtrans,    x,            v,            &nvar,      jv,           &ncon);
   @cutest_error
+  nlp.counters.neval_jprod += 1
   return jv
 end
 
@@ -370,6 +378,7 @@ function jtprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}),
                io_err,     &nvar,      &ncon,      &got_j,     &jtrans,    x,            v,            &ncon,      jtv,          &nvar);
   @cutest_error
+  nlp.counters.neval_jtprod += 1
   return jtv
 end
 
@@ -406,6 +415,7 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float6
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
                  io_err,     &nvar,      &ncon,      x,            y,            this_nnzh,  &nnzh,      hval,         hrow,       hcol);
     @cutest_error
+    nlp.counters.neval_hess += 1
     return (hrow, hcol, hval)
   end
 
@@ -424,6 +434,7 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float6
   @cutest_error
 
   obj_weight != 1.0 && (hval[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
+  nlp.counters.neval_hess += 1
   return (hcol, hrow, hval);  # swap rows and column
 end
 
@@ -530,6 +541,7 @@ function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
                  io_err,     &nvar,      &ncon,      goth,       x,            y,            v,            hv);
     @cutest_error
+    nlp.counters.neval_hprod += 1
     return hv
   end
 
@@ -548,7 +560,7 @@ function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, y :: Array{Float64,1}
   @cutest_error
 
   obj_weight != 1.0 && (hv[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
-
+  nlp.counters.neval_hprod += 1
   return hv
 end
 
