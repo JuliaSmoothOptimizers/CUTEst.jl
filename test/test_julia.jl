@@ -67,7 +67,8 @@ if nlp.meta.ncon > 0
 end
 
 v = rand(nlp.meta.nvar);
-for obj_weight in [0.0, 1.0, 3.141592]
+obj_weights = [0.0, 1.0, 3.141592]
+for obj_weight in obj_weights
   Hx = hess(nlp, x0, obj_weight=obj_weight);
   @test_approx_eq_eps Hx tril(H(x0, obj_weight=obj_weight)) 1e-7
   println("H(x0) = "); println(full(Hx));
@@ -95,6 +96,26 @@ for obj_weight in [0.0, 1.0, 3.141592]
     hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv, obj_weight=obj_weight);
     @test_approx_eq_eps hv W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)*v 1e-7
   end
+end
+
+if nlp.meta.ncon > 0
+  @assert nlp.counters.neval_obj == 3
+  @assert nlp.counters.neval_grad == 3
+  @assert nlp.counters.neval_cons == 6
+  @assert nlp.counters.neval_jac == 4
+  @assert nlp.counters.neval_jprod == 1
+  @assert nlp.counters.neval_jtprod == 1
+  @assert nlp.counters.neval_hess == 2 * length(obj_weights)
+  @assert nlp.counters.neval_hprod == 4 * length(obj_weights)
+else
+  @assert nlp.counters.neval_obj == 2
+  @assert nlp.counters.neval_grad == 3
+  @assert nlp.counters.neval_cons == 0
+  @assert nlp.counters.neval_jac == 0
+  @assert nlp.counters.neval_jprod == 0
+  @assert nlp.counters.neval_jtprod == 0
+  @assert nlp.counters.neval_hess == 1 * length(obj_weights)
+  @assert nlp.counters.neval_hprod == 2 * length(obj_weights)
 end
 
 print("Julia interface stress test... ")
