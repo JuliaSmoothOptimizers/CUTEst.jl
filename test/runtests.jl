@@ -8,6 +8,8 @@ for problem in ["HS32", "HS4"]
   include("finalize_test.jl")
 end
 
+include("test_mpb.jl")
+
 problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.05)
 
 for p in problems
@@ -44,5 +46,3 @@ for p in problems
   end
   cutest_finalize(nlp)
 end
-
-include("test_mpb.jl")
