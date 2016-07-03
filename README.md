@@ -1,7 +1,6 @@
 # CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki) Interface
 
-This is work in progress to create an interface to CUTEst based on
-[NLP.jl](https://github.com/optimizers/NLP.jl).
+This is a work in progress to create an interface to CUTEst, a repository for testing and comparing nonlinear programming algorithms, which is bases on [NLP.jl](https://github.com/optimizers/NLP.jl).
 
 ## Installing
 
