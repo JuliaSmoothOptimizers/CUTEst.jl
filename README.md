@@ -4,7 +4,9 @@
 [![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=develop)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=develop)
 
 
-This is work in progress to create an interface to CUTEst based on
+This is a work in progress to create an interface to CUTEst, a repository of
+constrained and unconstrained nonlinear programming problems for testing and
+comparing optimization algorithms, derived from the abstract model on
 [NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
 
 ## Installing
