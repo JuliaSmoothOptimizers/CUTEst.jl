@@ -13,7 +13,7 @@ sudo: required
 before_install:
   - if [ `uname` == "Linux" ]; then unset DYLD_LIBRARY_PATH; bash travisCI/setup_travis_linux.sh; fi
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -E 'Pkg.clone("https://github.com/abelsiqueira/NLPModels.jl");
+  - julia -E 'Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl");
     Pkg.checkout("NLPModels", "develop")'
 
 install:
