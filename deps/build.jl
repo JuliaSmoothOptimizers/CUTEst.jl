@@ -23,9 +23,6 @@ end
   @eval using Homebrew
 
   Homebrew.update()
-  Homebrew.add("homebrew/versions/gcc5")
-  ENV["CUTEST_GCC"] = "gcc-5"
-  ENV["CUTEST_GFORTRAN"] = "gfortran-5"
   for p in ["archdefs", "cutest", "mastsif"]
     Homebrew.add("optimizers/cutest/$p")
   end
