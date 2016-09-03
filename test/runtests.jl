@@ -46,3 +46,12 @@ for p in problems
   end
   cutest_finalize(nlp)
 end
+
+# test arguments passed to decoder
+nlp = CUTEstModel("DIXMAANJ", "-param", "M=5")
+@assert nlp.meta.nvar == 15
+cutest_finalize(nlp)
+
+nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
+@assert nlp.meta.nvar == 90
+cutest_finalize(nlp)

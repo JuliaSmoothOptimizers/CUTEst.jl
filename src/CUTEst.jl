@@ -66,13 +66,25 @@ include("julia_interface.jl")
 include("mpb_interface.jl")
 include("documentation.jl")
 
-  # Decode problem and build shared library.
-function sifdecoder(name :: ASCIIString; verbose = false)
+"""Decode problem and build shared library.
+
+Optional arguments are passed directly to the SIF decoder.
+Example:
+    `sifdecoder("DIXMAANJ", "-param", "M=30")`.
+"""
+function sifdecoder(name :: ASCIIString, args...; verbose :: Bool=false)
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(name);
   libname = "lib$pname";
-  out = readall(`$sifdecoderbin $name`);
-  verbose && println(out)
+
+  # work around bogus "ERROR: failed process"
+  # should be more elegant after https://github.com/JuliaLang/julia/pull/12807
+  outlog = tempname()
+  errlog = tempname()
+  run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
+  println(readall(errlog))
+  verbose && println(readall(outlog))
+
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
@@ -81,7 +93,7 @@ function sifdecoder(name :: ASCIIString; verbose = false)
 end
 
 # Initialize problem.
-function CUTEstModel(name :: ASCIIString; decode :: Bool=true, verbose = false)
+function CUTEstModel(name :: ASCIIString, args...; decode :: Bool=true, verbose ::Bool=false)
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
   global cutest_lib
@@ -92,7 +104,7 @@ function CUTEstModel(name :: ASCIIString; decode :: Bool=true, verbose = false)
     cutest_lib = Libdl.dlopen(libname,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
   else
-    sifdecoder(name, verbose=verbose)
+    sifdecoder(name, args..., verbose=verbose)
   end
   io_err = Cint[0];
   ccall(dlsym(cutest_lib, :fortran_open_), Void,
