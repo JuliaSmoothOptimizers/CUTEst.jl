@@ -82,7 +82,7 @@ function sifdecoder(name :: ASCIIString, args...; verbose :: Bool=false)
   outlog = tempname()
   errlog = tempname()
   run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
-  println(readall(errlog))
+  print(readall(errlog))
   verbose && println(readall(outlog))
 
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
