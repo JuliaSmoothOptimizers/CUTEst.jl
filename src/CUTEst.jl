@@ -69,6 +69,7 @@ include("julia_interface.jl")
 if Pkg.installed("MathProgBase") != nothing
   include("mpb_interface.jl")
 end
+include("classification.jl")
 
 """Decode problem and build shared library.
 
