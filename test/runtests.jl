@@ -55,3 +55,15 @@ cutest_finalize(nlp)
 nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
 @assert nlp.meta.nvar == 90
 cutest_finalize(nlp)
+
+# clean up the test directory
+
+path = dirname(@__FILE__)
+list_so_files = filter(x->contains(x,".so"), readdir(path))
+
+for so_file=list_so_files
+    run(`rm $path/$so_file `)
+end
+
+run(`rm $path/AUTOMAT.d`)
+run(`rm $path/OUTSDIF.d`)
