@@ -26,6 +26,7 @@ end
 
 include("consistency.jl")
 include("test_mpb.jl")
+include("test_select.jl")
 
 problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.01)
 
