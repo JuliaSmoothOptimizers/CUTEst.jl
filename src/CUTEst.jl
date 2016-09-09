@@ -45,7 +45,7 @@ end
 function __init__()
   global cutest_lib = C_NULL
   deps = joinpath(dirname(@__FILE__), "../deps")
-  include(joinpath(deps, "cutestenv.jl"))
+  # include(joinpath(deps, "cutestenv.jl"))  # JPD file cutestenv.jl not present makes the build crash, works without it.
   global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
 
   global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
