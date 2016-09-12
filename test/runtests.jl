@@ -10,7 +10,7 @@ end
 
 include("test_mpb.jl")
 
-problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.05)
+problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.01)
 
 for p in problems
   if !contains(p, "SIF")
@@ -55,3 +55,15 @@ cutest_finalize(nlp)
 nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
 @assert nlp.meta.nvar == 90
 cutest_finalize(nlp)
+
+# clean up the test directory
+here = dirname(@__FILE__)
+so_files = filter(x -> (ismatch(r".so$", x) || ismatch(r".dylib$", x)), readdir(here))
+
+for so_file in so_files
+  rm(joinpath(here, so_file))
+end
+
+rm(joinpath(here, "AUTOMAT.d"))
+rm(joinpath(here, "OUTSDIF.d"))
+

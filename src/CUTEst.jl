@@ -45,7 +45,8 @@ end
 function __init__()
   global cutest_lib = C_NULL
   deps = joinpath(dirname(@__FILE__), "../deps")
-  include(joinpath(deps, "cutestenv.jl"))
+  cutestenv = joinpath(deps, "cutestenv.jl")
+  ispath(cutestenv) && include(cutestenv)
   global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
 
   global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
