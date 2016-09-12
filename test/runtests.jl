@@ -10,7 +10,7 @@ end
 
 include("test_mpb.jl")
 
-problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.05)
+problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.01)
 
 for p in problems
   if !contains(p, "SIF")
