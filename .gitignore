@@ -3,3 +3,6 @@
 
 deps/*
 !deps/build.jl
+
+docs/build
+docs/site
