@@ -112,7 +112,7 @@ def get_function_data(name):
                         intent = "in"
                     if "dimension" in line:
                         is_ptr = True
-                        dim = re.search("dimension\(([ a-z_,:0-9]*)\)",
+                        dim = re.search("dimension\(([ a-z_,:0-9+]*)\)",
                                 line).group(1).split(',')
                     else:
                         is_ptr = False
@@ -186,8 +186,7 @@ def header_doc(name):
     if name == "cstats":
         return str
     str += man_description(name) + "\n\n"
-    str += "This help was generated automatically and may contain\n"
-    str += "errors. For more information, run the shell command\n\n"
+    str += "For more information, run the shell command\n\n"
     str += "    man cutest_" + name + "\n\n"
     str += "Usage:\n\n"
     return str
