@@ -16,7 +16,7 @@ version of CUTEst, this will conflict with it. Check the issues for a fix, or
 open one for help.
 
 The following commands should automatically download NLPModels.jl and CUTEst,
-installing it.
+and install them.
 ````julia
 Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git")
 Pkg.checkout("NLPModels", "develop")
@@ -44,4 +44,4 @@ Check the [API](api/#nlpmodels-api)
 
 There is also a specialized API which provides a more CUTEst-like interface, and
 a core API which is only a wrapper for CUTEst.
-The documentation os these is under construction.
+The documentation of these is under construction.
