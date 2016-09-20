@@ -202,7 +202,6 @@ def core_doc(name, args, types, intents, dims):
         d = max([len(dims[i]), 1])
         str += "  - {}: {}[{}] Array{{{}, {}}}\n".format(arg, " "*k,
                 intents[i].upper(), cutypes[types[i]], d)
-    str += "\n\n"
     return str
 
 def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
@@ -237,7 +236,6 @@ def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
             t = "Array{{{}, {}}}".format(t, len(dims[i]))
         str += "  - {}: {}[{}] {}\n".format(arg, " "*k,
                 intents[i].upper(), t)
-    str += "\n"
     return str
 
 def footer_doc(name):
@@ -272,7 +270,7 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     elif arg_call != "":
         str += wrap("({})".format(arg_call) )+"\n"
     else:
-        str += wrap("()\n")
+        str += "()\n"
     for i, arg in enumerate(args):
         if intents[i] == "in":
             if use_nlp and arg in nlp_equivalent.keys():
@@ -329,7 +327,7 @@ def need_inplace(intents, dims):
 
 core_file = open("src/core_interface.jl", "w")
 spec_file = open("src/specialized_interface.jl", "w")
-docs_file = open("src/documentation.jl", "w")
+#docs_file = open("src/documentation.jl", "w")
 
 names = function_names()
 
@@ -340,35 +338,39 @@ spec_file.write("\n")
 
 for name in names:
     args, types, intents, dims = get_function_data(name)
+    core_file.write(header_doc(name))
+    core_file.write(core_doc(name, args, types, intents, dims))
+    core_file.write('"""\n')
     core_file.write(core_function(name, args, types, dims))
     core_file.write("\n")
-    doc = header_doc(name)
-    doc += core_doc(name, args, types, intents, dims)
     for use_nlp in [False, True]:
         # Some functions return values that should be obtained while creating nlp
         if use_nlp and name in nlp_ignore:
             continue
+
+        spec_file.write('"""\n')
+        spec_file.write(spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
+                inplace=False))
+        spec_file.write('"""\n')
         spec_file.write(specialized_function(name, args, types,
             intents, dims, use_nlp=use_nlp, inplace=False))
         spec_file.write("\n")
-        doc += spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
-                inplace=False)
+
         # Some functions don't need a ! version
         if need_inplace(intents, dims):
+            spec_file.write('"""\n')
+            spec_file.write(spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
+                    inplace=True))
+            spec_file.write('"""\n')
             spec_file.write(specialized_function(name, args, types, intents,
                     dims, use_nlp=use_nlp, inplace=True))
             spec_file.write("\n")
-            doc += spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
-                    inplace=True)
             # Integer arrays passed as inplace can be Int64 or Int32
             if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
                 spec_file.write(specialized_function(name, args, types,
                     intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
                 spec_file.write("\n")
-    docs_file.write(doc + footer_doc(name))
-    if need_inplace(intents, dims):
-        docs_file.write(doc + footer_doc(name+"!"))
 
 core_file.close()
 spec_file.close()
-docs_file.close()
+#docs_file.close()
