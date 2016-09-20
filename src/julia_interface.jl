@@ -17,7 +17,8 @@ import NLPModels.jprod!
 import NLPModels.jtprod
 import NLPModels.jtprod!
 
-"""    objcons(nlp, x)
+"""
+    objcons(nlp, x)
 
 Computes the objective function and constraint vector values at x.
 Usage:
@@ -52,7 +53,8 @@ function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   return ncon > 0 ? (f[1], c) : f[1];
 end
 
-"""    objgrad(nlp, x, grad)
+"""
+    objgrad(nlp, x, grad)
 
 Computes the objective function value and, if grad is `true`, gradient at x.
 Usage:
@@ -94,46 +96,16 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
   return grad ? (f[1], g) : f[1];
 end
 
-"""    obj(nlp, x)
-
-Computes the objective function value at x.
-Usage:
-
-    f = obj(nlp, x)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - f:    [OUT] Float64
-"""
+@doc (@doc NLPModels.obj)
 obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
 
-"""    grad(nlp, x)
-
-Computes the objective gradient at x.
-Usage:
-
-    g = grad(nlp, x)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - g:    [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.grad)
 function grad(nlp :: CUTEstModel, x :: Array{Float64,1})
   g = Array(Float64, nlp.meta.nvar)
   return grad!(nlp, x, g)
 end
 
-"""    grad!(nlp, x, g)
-
-Computes the objective function gradient at x in place.
-Usage:
-
-    grad!(nlp, x, g)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - g:    [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.grad!)
 function grad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
@@ -154,9 +126,10 @@ function grad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
   return g
 end
 
-"""    cons_coord(nlp, x, jac)
+"""
+    cons_coord(nlp, x, jac)
 
-Computes the constraint vector and, if jac is `true`, the Jacobian in
+Computes the constraint vector and, if `jac` is `true`, the Jacobian in
 coordinate format.
 Usage:
 
@@ -192,9 +165,10 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
   return jac ? (c, jrow, jcol, jval) : c;
 end
 
-"""    cons(nlp, x, jac)
+"""
+    cons(nlp, x, jac)
 
-Computes the constraint vector and, if jac is `true`, the Jacobian using the
+Computes the constraint vector and, if `jac` is `true`, the Jacobian in
 internal sparse format.
 Usage:
 
@@ -216,30 +190,10 @@ function cons(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
   end
 end
 
-"""    cons(nlp, x)
-
-Computes the constraint vector value.
-Usage:
-
-    c = cons(nlp, x)
-
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - c:   [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.cons)
 cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
 
-"""    cons!(nlp, x, c)
-
-Computes the constraint vector value in place.
-Usage:
-
-    c = cons!(nlp, x, c)
-
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - c:   [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.cons!)
 function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
@@ -260,71 +214,27 @@ function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
   return c;
 end
 
-"""    jac_coord(nlp, x)
-
-Computes the constraint Jacobian in coordinate format.
-Usage:
-
-    jrow, jcol, jval = cons_coord(nlp, x)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - jrow: [OUT] Array{Int32, 1}
-  - jcol: [OUT] Array{Int32, 1}
-  - jval: [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.jac_coord!)
 function jac_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
   c, jrow, jcol, jval = cons_coord(nlp, x, true)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return (jrow, jcol, jval)
 end
 
-"""    jac(nlp, x)
-
-Computes the constraint Jacobian using the internal sparse format.
-Usage:
-
-    J = jac (nlp, x)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}
-"""
+@doc (@doc NLPModels.jac)
 function jac(nlp :: CUTEstModel, x :: Array{Float64,1})
   c, J = cons(nlp, x, true)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return J
 end
 
-"""    jprod(nlp, x, v)
-
-Computes the product of the constraint Jacobian with a vector.
-Usage:
-
-    jv = jprod(nlp, x, v)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - v:    [IN] Array{Float64, 1}
-  - jv:   [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.jprod)
 function jprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1})
   jv = zeros(nlp.meta.ncon)
   jprod!(nlp, x, v, jv)
 end
 
-"""    jprod!(nlp, x, v, jv)
-
-Computes the product of the constraint Jacobian with a vector.
-Usage:
-
-    jprod!(nlp, x, v, jv)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - v:    [IN] Array{Float64, 1}
-  - jv:   [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.jprod!)
 function jprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, jv :: Array{Float64,1})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
@@ -339,35 +249,13 @@ function jprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}
   return jv
 end
 
-"""    jtprod(nlp, x, v)
-
-Computes the product of the transposed constraint Jacobian with a vector.
-Usage:
-
-    jtv = jtprod(nlp, x, v)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - v:    [IN] Array{Float64, 1}
-  - jtv:  [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.jtprod)
 function jtprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1})
   jtv = zeros(nlp.meta.nvar)
   jtprod!(nlp, x, v, jtv)
 end
 
-"""    jtprod!(nlp, x, v, jv)
-
-Computes the product of the transposed constraint Jacobian with a vector.
-Usage:
-
-    jtprod!(nlp, x, v, jv)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - v:    [IN] Array{Float64, 1}
-  - jtv:  [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.jtprod!)
 function jtprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, jtv :: Array{Float64,1})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
@@ -382,24 +270,7 @@ function jtprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1
   return jtv
 end
 
-"""    hess_coord(nlp, x, y=zeros, obj_weight=1)
-
-Computes the Hessian matrix in coordinate format of the Lagrangian function at
-x with Lagrange multipliers y for a constrained problem, or the
-objective function at x for an unconstrained problem.
-Only the lower triangle is returned.
-Usage:
-
-    hrow, hcol, hval = hess_coord(nlp, x, y=zeros, obj_weight=1)
-
-  - nlp:        [IN] CUTEstModel
-  - x:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1} (optional, =zeros)
-  - obj_weight: [IN] Float64 (optional, =1)
-  - hrow:       [OUT] Array{Int32, 1}
-  - hcol:       [OUT] Array{Int32, 1}
-  - hval:       [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.hess_coord)
 function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float64,1}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
@@ -438,67 +309,19 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float6
   return (hcol, hrow, hval);  # swap rows and column
 end
 
-"""    hess(nlp, x, y=zeros, obj_weight=1)
-
-Computes the Hessian of the Lagrangian function at x with Lagrange
-multipliers y for a constrained problem or the Hessian of the objective
-function at x for an unconstrained problem.
-Only the lower triangle is returned.
-Usage:
-
-    H = hess(nlp, x, y=zeros, obj_weight=1)
-
-  - nlp:        [IN] CUTEstModel
-  - x:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1} (optional, =zeros)
-  - obj_weight: [IN] Float64 (optional, =1)
-  - H:          [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64, Int64}
-"""
+@doc (@doc NLPModels.hess)
 function hess(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float64,1} = zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   (hrow, hcol, hval) = hess_coord(nlp, x, y=y, obj_weight=obj_weight)
   return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar)
 end
 
-"""    hprod(nlp, x, v, y=zeros, obj_weight=1)
-
-Computes the matrix-vector product between the Hessian matrix and the vector v.
-If the problem is constrained, the Hessian is of the Lagrangian function at
-x with Lagrange multipliers y, otherwise the Hessian is of the objective
-function at x.
-Usage:
-
-    Hv = hprod(nlp, x, v, y=zeros, obj_weight=1)
-
-  - nlp:        [IN] CUTEstModel
-  - x:          [IN] Array{Float64, 1}
-  - v:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1} (optional, =zeros)
-  - obj_weight: [IN] Float64 (optional, =1)
-  - Hv:         [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.hprod)
 function hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}; y :: Array{Float64,1} = zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   hv = Array(Float64, nlp.meta.nvar);
   return hprod!(nlp, x, v, hv, y=y, obj_weight=obj_weight)
 end
 
-"""    hprod!(nlp, x, v, Hv, y=zeros, obj_weight=1)
-
-Computes the matrix-vector product between the Hessian matrix and the vector
-v and write the result to vector Hv.
-If the problem is constrained, the Hessian is of the Lagrangian function at
-x with Lagrange multipliers y, otherwise the Hessian is of the objective
-function at x.
-Usage:
-
-    hprod!(nlp, x, v, Hv, y=zeros, obj_weight=1)
-
-  - nlp:        [IN] CUTEstModel
-  - x:          [IN] Array{Float64, 1}
-  - v:          [IN] Array{Float64, 1}
-  - y:          [IN] Array{Float64, 1} (optional, =zeros)
-  - obj_weight: [IN] Float64 (optional, =1)
-  - Hv:         [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.hprod!)
 function hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1}; y :: Array{Float64,1}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
