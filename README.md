@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=develop)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
 [![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=develop)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=develop)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/latest)
 
 
 This is a work in progress to create an interface to CUTEst, a repository of
