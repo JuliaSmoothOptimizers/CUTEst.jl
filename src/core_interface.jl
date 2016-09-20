@@ -1,9 +1,10 @@
 export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
-    ureport, cdimen, cdimsj, cdimsh, cdimse, cstats, cvartype, cnames,
-    creport, connames, pname, probname, varnames, ufn, ugr, uofg, ubandh,
-    udh, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, cfn, cofg, cofsg, ccfg,
-    clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh, cdh, csh, cshc, ceh,
-    cidh, cish, csgrsh, csgreh, chprod, chcprod, cjprod, uterminate,
+    ureport, cdimen, cdimsj, cdimsh, cdimchp, cdimse, cstats, cvartype,
+    cnames, creport, connames, pname, probname, varnames, ufn, ugr, uofg,
+    udh, ushp, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, ushprod, ubandh,
+    cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
+    cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
+    cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, uterminate,
     cterminate
 
 """# usetup
@@ -14,8 +15,7 @@ to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_usetup
 
@@ -51,8 +51,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_csetup
 
@@ -100,8 +99,7 @@ under consideration is to minimize or maximize an objective function
 f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The
 objective function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_udimen
 
@@ -128,8 +126,7 @@ problem under consideration is to minimize or maximize an objective
 function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu.
 The objective function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_udimsh
 
@@ -157,8 +154,7 @@ consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
 function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_udimse
 
@@ -186,8 +182,7 @@ or maximize an objective function f(x) over all x ∈ Rn subject to the
 simple bounds xl≤x≤xu. The objective function is group-partially
 separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_uvartype
 
@@ -211,8 +206,7 @@ variables. The problem under consideration is to minimize or maximize
 an objective function f(x) over all x ∈ Rn subject to the simple
 bounds xl≤x≤xu. The objective function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_unames
 
@@ -240,8 +234,7 @@ is to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ureport
 
@@ -270,8 +263,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cdimen
 
@@ -303,8 +295,7 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cdimsj
 
@@ -332,8 +323,7 @@ f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cdimsh
 
@@ -350,6 +340,34 @@ function cdimsh(io_err::Array{Cint, 1}, nnzh::Array{Cint, 1})
     io_err, nnzh)
 end
 
+"""# cdimchp
+The cdimchp subroutine determines the number of nonzero elements
+required to store the products of the Hessian matrices of the
+constraint functions with a specified vector for the problem decoded
+into OUTSDIF.d in the constrained minimization case. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
+general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
+bounds xl≤x≤xu. The objective function is group-partially separable
+and all constraint functions are partially separable.
+
+For more information, run the shell command
+
+    man cutest_cdimchp
+
+Usage:
+
+    cdimchp(io_err, nnzchp)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - nnzchp:  [OUT] Array{Cint, 1}
+"""
+function cdimchp(io_err::Array{Cint, 1}, nnzchp::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cdimchp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}),
+    io_err, nnzchp)
+end
+
 """# cdimse
 The cdimse subroutine determines the number of nonzero elements
 required to store the Hessian matrix of the Lagrangian function for
@@ -363,8 +381,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cdimse
 
@@ -416,8 +433,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cvartype
 
@@ -444,8 +460,7 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cnames
 
@@ -477,8 +492,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_creport
 
@@ -506,8 +520,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_connames
 
@@ -535,8 +548,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_pname
 
@@ -562,8 +574,7 @@ f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_probname
 
@@ -589,8 +600,7 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_varnames
 
@@ -615,8 +625,7 @@ point X. The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ufn
 
@@ -643,8 +652,7 @@ point X. The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ugr
 
@@ -672,8 +680,7 @@ to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_uofg
 
@@ -696,41 +703,6 @@ function uofg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
     io_err, n, x, f, g, grad)
 end
 
-"""# ubandh
-The ubandh subroutine extracts the elements which lie within a band of
-given semi-bandwidth out of the Hessian matrix of the objective
-function of the problem decoded from a SIF file by the script
-sifdecoder at the point X. The problem under consideration is to
-minimize or maximize an objective function f(x) over all x ∈ Rn
-subject to the simple bounds xl≤x≤xu. The objective function is group-
-partially separable.
-
-This help was generated automatically and may contain
-errors. For more information, run the shell command
-
-    man cutest_ubandh
-
-Usage:
-
-    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
-
-  - io_err:            [OUT] Array{Cint, 1}
-  - n:                 [IN] Array{Cint, 1}
-  - x:                 [IN] Array{Cdouble, 1}
-  - semibandwidth:     [IN] Array{Cint, 1}
-  - h_band:            [OUT] Array{Cdouble, 2}
-  - lbandh:            [IN] Array{Cint, 1}
-  - max_semibandwidth: [OUT] Array{Cint, 1}
-"""
-function ubandh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    semibandwidth::Array{Cint, 1}, h_band::Array{Cdouble, 2},
-    lbandh::Array{Cint, 1}, max_semibandwidth::Array{Cint, 1})
-  ccall(dlsym(cutest_lib, "cutest_ubandh_"), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble},
-    Ptr{Cint}, Ptr{Cint}),
-    io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
-end
-
 """# udh
 The udh subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
@@ -739,8 +711,7 @@ matrix. The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_udh
 
@@ -761,6 +732,36 @@ function udh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
     io_err, n, x, lh1, h)
 end
 
+"""# ushp
+The ushp subroutine evaluates the sparsity pattern of the Hessian
+matrix of the objective function of the problem, decoded from a SIF
+file by the script sifdecoder, in coordinate format. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
+function is group-partially separable.
+
+For more information, run the shell command
+
+    man cutest_ushp
+
+Usage:
+
+    ushp(io_err, n, nnzh, lh, h_row, h_col)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - nnzh:    [OUT] Array{Cint, 1}
+  - lh:      [IN] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+"""
+function ushp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzh::Array{Cint, 1},
+    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_ushp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    io_err, n, nnzh, lh, h_row, h_col)
+end
+
 """# ush
 The ush subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
@@ -770,8 +771,7 @@ minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ush
 
@@ -807,8 +807,7 @@ The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ueh
 
@@ -851,8 +850,7 @@ maximize an objective function f(x) over all x ∈ Rn subject to the
 simple bounds xl≤x≤xu. The objective function is group-partially
 separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ugrdh
 
@@ -884,8 +882,7 @@ to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ugrsh
 
@@ -923,8 +920,7 @@ maximize an objective function f(x) over all x ∈ Rn subject to the
 simple bounds xl≤x≤xu. The objective function is group-partially
 separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ugreh
 
@@ -968,8 +964,7 @@ consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
 function is group-partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_uhprod
 
@@ -993,6 +988,80 @@ function uhprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
     io_err, n, goth, x, vector, result)
 end
 
+"""# ushprod
+The ushprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the objective function of the problem decoded from a
+SIF file by the script sifdecoder at the point X. The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
+function is group-partially separable.
+
+For more information, run the shell command
+
+    man cutest_ushprod
+
+Usage:
+
+    ushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
+index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+"""
+function ushprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
+    x::Array{Cdouble, 1}, nnz_vector::Array{Cint, 1},
+    index_nz_vector::Array{Cint, 1}, vector::Array{Cdouble, 1},
+    nnz_result::Array{Cint, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Cdouble, 1})
+  ccall(dlsym(cutest_lib, "cutest_ushprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+end
+
+"""# ubandh
+The ubandh subroutine extracts the elements which lie within a band of
+given semi-bandwidth out of the Hessian matrix of the objective
+function of the problem decoded from a SIF file by the script
+sifdecoder at the point X. The problem under consideration is to
+minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to the simple bounds xl≤x≤xu. The objective function is group-
+partially separable.
+
+For more information, run the shell command
+
+    man cutest_ubandh
+
+Usage:
+
+    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+
+  - io_err:            [OUT] Array{Cint, 1}
+  - n:                 [IN] Array{Cint, 1}
+  - x:                 [IN] Array{Cdouble, 1}
+  - semibandwidth:     [IN] Array{Cint, 1}
+  - h_band:            [OUT] Array{Cdouble, 2}
+  - lbandh:            [IN] Array{Cint, 1}
+  - max_semibandwidth: [OUT] Array{Cint, 1}
+"""
+function ubandh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
+    semibandwidth::Array{Cint, 1}, h_band::Array{Cdouble, 2},
+    lbandh::Array{Cint, 1}, max_semibandwidth::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_ubandh_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}),
+    io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+end
+
 """# cfn
 The cfn subroutine evaluates the value of the objective function and
 general constraint functions of the problem decoded from a SIF file by
@@ -1003,8 +1072,7 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cfn
 
@@ -1037,8 +1105,7 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cofg
 
@@ -1071,8 +1138,7 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cofsg
 
@@ -1109,8 +1175,7 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ccfg
 
@@ -1149,8 +1214,7 @@ function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_clfg
 
@@ -1187,8 +1251,7 @@ f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cgr
 
@@ -1231,8 +1294,7 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_csgr
 
@@ -1273,8 +1335,7 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ccfsg
 
@@ -1315,8 +1376,7 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ccifg
 
@@ -1353,8 +1413,7 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ccifsg
 
@@ -1396,8 +1455,7 @@ function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cgrdh
 
@@ -1442,8 +1500,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cdh
 
@@ -1468,6 +1525,74 @@ function cdh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     io_err, n, m, x, y, lh1, h_val)
 end
 
+"""# cdhc
+The cdhc subroutine evaluates the Hessian matrix of the constraint
+part of the Lagrangian function yTc(x) for the problem decoded from a
+SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
+matrix is stored as a dense matrix. The problem under consideration is
+to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
+inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
+xl≤x≤xu. The objective function is group-partially separable and all
+constraint functions are partially separable.
+
+For more information, run the shell command
+
+    man cutest_cdhc
+
+Usage:
+
+    cdhc(io_err, n, m, x, y, lh1, h_val)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - m:       [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - y:       [IN] Array{Cdouble, 1}
+  - lh1:     [IN] Array{Cint, 1}
+  - h_val:   [OUT] Array{Cdouble, 2}
+"""
+function cdhc(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, lh1::Array{Cint, 1},
+    h_val::Array{Cdouble, 2})
+  ccall(dlsym(cutest_lib, "cutest_cdhc_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, m, x, y, lh1, h_val)
+end
+
+"""# cshp
+The cshp subroutine evaluates the sparsity pattern of the Hessian of
+the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem, decoded
+from a SIF file by the script sifdecoder, in coordinate format. The
+problem under consideration is to minimize or maximize an objective
+function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
+∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
+and simple bounds xl≤x≤xu. The objective function is group-partially
+separable and all constraint functions are partially separable.
+
+For more information, run the shell command
+
+    man cutest_cshp
+
+Usage:
+
+    cshp(io_err, n, nnzh, lh, h_row, h_col)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - nnzh:    [OUT] Array{Cint, 1}
+  - lh:      [IN] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+"""
+function cshp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzh::Array{Cint, 1},
+    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cshp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    io_err, n, nnzh, lh, h_row, h_col)
+end
+
 """# csh
 The csh subroutine evaluates the Hessian of the Lagrangian function
 l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the
@@ -1479,8 +1604,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_csh
 
@@ -1520,8 +1644,7 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cshc
 
@@ -1563,8 +1686,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_ceh
 
@@ -1613,8 +1735,7 @@ f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cidh
 
@@ -1647,8 +1768,7 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cish
 
@@ -1688,8 +1808,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_csgrsh
 
@@ -1745,8 +1864,7 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_csgreh
 
@@ -1806,8 +1924,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_chprod
 
@@ -1833,6 +1950,52 @@ function chprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     io_err, n, m, goth, x, y, vector, result)
 end
 
+"""# cshprod
+The cshprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x)
+corresponding to the problem decoded from a SIF file by the script
+sifdecoder at the point (x,y)= (X,Y). The problem under consideration
+is to minimize or maximize an objective function f(x) over all x ∈ Rn
+subject to general equations ci(x)=0, (i ∈ 1,...,mE), general
+inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
+xl≤x≤xu. The objective function is group-partially separable and all
+constraint functions are partially separable.
+
+For more information, run the shell command
+
+    man cutest_cshprod
+
+Usage:
+
+    cshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+nnz_result, index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - y:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+"""
+function cshprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
+    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
+    vector::Array{Cdouble, 1}, nnz_result::Array{Cint, 1},
+    index_nz_result::Array{Cint, 1}, result::Array{Cdouble, 1})
+  ccall(dlsym(cutest_lib, "cutest_cshprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+    nnz_result, index_nz_result, result)
+end
+
 """# chcprod
 The chcprod subroutine forms the product of a vector with the Hessian
 matrix of the constraint part of the Lagrangian function yTc(x) of the
@@ -1844,8 +2007,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_chcprod
 
@@ -1871,6 +2033,52 @@ function chcprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     io_err, n, m, goth, x, y, vector, result)
 end
 
+"""# cshcprod
+The cshcprod subroutine forms the product of a sparse vector with the
+Hessian matrix of the constraint part of the Lagrangian function
+yTc(x) corresponding to the problem decoded from a SIF file by the
+script sifdecoder at the point (x,y)= (X,Y). The problem under
+consideration is to minimize or maximize an objective function f(x)
+over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE),
+general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
+bounds xl≤x≤xu. The objective function is group-partially separable
+and all constraint functions are partially separable.
+
+For more information, run the shell command
+
+    man cutest_cshcprod
+
+Usage:
+
+    cshcprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+nnz_result, index_nz_result, result)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - goth:            [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - y:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+"""
+function cshcprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
+    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
+    vector::Array{Cdouble, 1}, nnz_result::Array{Cint, 1},
+    index_nz_result::Array{Cint, 1}, result::Array{Cdouble, 1})
+  ccall(dlsym(cutest_lib, "cutest_cshcprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
+    Ptr{Cint}, Ptr{Cdouble}),
+    io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+    nnz_result, index_nz_result, result)
+end
+
 """# cjprod
 The cjprod subroutine forms the product of a vector with the Jacobian
 matrix, or with its transpose, of the constraint functions of the
@@ -1882,8 +2090,7 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cjprod
 
@@ -1912,12 +2119,100 @@ function cjprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
 end
 
+"""# csjprod
+The csjprod subroutine forms the product of a sparse vector with the
+Jacobian matrix, or with its transpose, of the constraint functions of
+the problem decoded from a SIF file by the script sifdecoder evaluated
+at the point X. The problem under consideration is to minimize or
+maximize an objective function f(x) over all x ∈ Rn subject to general
+equations ci(x)=0, (i ∈ 1,...,mE), general inequalities
+ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
+objective function is group-partially separable and all constraint
+functions are partially separable.
+
+For more information, run the shell command
+
+    man cutest_csjprod
+
+Usage:
+
+    csjprod(io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
+lvector, nnz_result, index_nz_result, result, lresult)
+
+  - io_err:          [OUT] Array{Cint, 1}
+  - n:               [IN] Array{Cint, 1}
+  - m:               [IN] Array{Cint, 1}
+  - gotj:            [IN] Array{Cint, 1}
+  - jtrans:          [IN] Array{Cint, 1}
+  - x:               [IN] Array{Cdouble, 1}
+  - nnz_vector:      [IN] Array{Cint, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
+  - vector:          [IN] Array{Cdouble, 1}
+  - lvector:         [IN] Array{Cint, 1}
+  - nnz_result:      [OUT] Array{Cint, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
+  - result:          [OUT] Array{Cdouble, 1}
+  - lresult:         [IN] Array{Cint, 1}
+"""
+function csjprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    gotj::Array{Cint, 1}, jtrans::Array{Cint, 1}, x::Array{Cdouble, 1},
+    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
+    vector::Array{Cdouble, 1}, lvector::Array{Cint, 1},
+    nnz_result::Array{Cint, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Cdouble, 1}, lresult::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_csjprod_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+    Ptr{Cdouble}, Ptr{Cint}),
+    io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
+    lvector, nnz_result, index_nz_result, result, lresult)
+end
+
+"""# cchprods
+The cchprods subroutine forms the product of a vector with each of the
+Hessian matrix of the constraint functions c(x) corresponding to the
+problem decoded from a SIF file by the script sifdecoder at the point
+x= X. The problem under consideration is to minimize or maximize an
+objective function f(x) over all x ∈ Rn subject to general equations
+ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈
+mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
+group-partially separable and all constraint functions are partially
+separable.
+
+For more information, run the shell command
+
+    man cutest_cchprods
+
+Usage:
+
+    cchprods(io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - m:       [IN] Array{Cint, 1}
+  - goth:    [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - vector:  [IN] Array{Cdouble, 1}
+  - lchp:    [IN] Array{Cint, 1}
+  - chp_val: [OUT] Array{Cdouble, 1}
+  - chp_ind: [IN] Array{Cint, 1}
+  - chp_ptr: [IN] Array{Cint, 1}
+"""
+function cchprods(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
+    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, vector::Array{Cdouble, 1},
+    lchp::Array{Cint, 1}, chp_val::Array{Cdouble, 1}, chp_ind::Array{Cint,
+    1}, chp_ptr::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cchprods_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
+    Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
+    io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+end
+
 """# uterminate
 The uterminate subroutine deallocates all workspace arrays created
 since the last call to usetup.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_uterminate
 
@@ -1937,8 +2232,7 @@ end
 The uterminate subroutine deallocates all workspace arrays created
 since the last call to csetup.
 
-This help was generated automatically and may contain
-errors. For more information, run the shell command
+For more information, run the shell command
 
     man cutest_cterminate
 

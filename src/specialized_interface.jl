@@ -1,17 +1,20 @@
 export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
-    ureport, cdimen, cdimsj, cdimsh, cdimse, cstats, cvartype, cnames,
-    creport, connames, pname, probname, varnames, ufn, ugr, uofg, ubandh,
-    udh, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, cfn, cofg, cofsg, ccfg,
-    clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh, cdh, csh, cshc, ceh,
-    cidh, cish, csgrsh, csgreh, chprod, chcprod, cjprod, uterminate,
+    ureport, cdimen, cdimsj, cdimsh, cdimchp, cdimse, cstats, cvartype,
+    cnames, creport, connames, pname, probname, varnames, ufn, ugr, uofg,
+    udh, ushp, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, ushprod, ubandh,
+    cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
+    cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
+    cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, uterminate,
     cterminate
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
-    unames!, ureport!, cdimen!, cdimsj!, cdimsh!, cdimse!, cstats!,
-    cvartype!, cnames!, creport!, connames!, pname!, probname!, varnames!,
-    ufn!, ugr!, uofg!, ubandh!, udh!, ush!, ueh!, ugrdh!, ugrsh!, ugreh!,
-    uhprod!, cfn!, cofg!, cofsg!, ccfg!, clfg!, cgr!, csgr!, ccfsg!,
-    ccifg!, ccifsg!, cgrdh!, cdh!, csh!, cshc!, ceh!, cidh!, cish!,
-    csgrsh!, csgreh!, chprod!, chcprod!, cjprod!, uterminate!, cterminate!
+    unames!, ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
+    cstats!, cvartype!, cnames!, creport!, connames!, pname!, probname!,
+    varnames!, ufn!, ugr!, uofg!, udh!, ushp!, ush!, ueh!, ugrdh!, ugrsh!,
+    ugreh!, uhprod!, ushprod!, ubandh!, cfn!, cofg!, cofsg!, ccfg!, clfg!,
+    cgr!, csgr!, ccfsg!, ccifg!, ccifsg!, cgrdh!, cdh!, cdhc!, cshp!,
+    csh!, cshc!, ceh!, cidh!, cish!, csgrsh!, csgreh!, chprod!, cshprod!,
+    chcprod!, cshcprod!, cjprod!, csjprod!, cchprods!, uterminate!,
+    cterminate!
 
 """
     x, x_l, x_u = usetup(input, out, io_buffer, n)
@@ -337,6 +340,33 @@ function cdimsh()
   cdimsh(io_err, nnzh)
   @cutest_error
   return nnzh[1]
+end
+
+"""
+    nnzchp = cdimchp()
+
+  - nnzchp:  [OUT] Int
+"""
+function cdimchp()
+  io_err = Cint[0]
+  nnzchp = Cint[0]
+  cdimchp(io_err, nnzchp)
+  @cutest_error
+  return nnzchp[1]
+end
+
+"""
+    nnzchp = cdimchp(nlp)
+
+  - nlp:     [IN] CUTEstModel
+  - nnzchp:  [OUT] Int
+"""
+function cdimchp(nlp::CUTEstModel)
+  io_err = Cint[0]
+  nnzchp = Cint[0]
+  cdimchp(io_err, nnzchp)
+  @cutest_error
+  return nnzchp[1]
 end
 
 """
@@ -860,89 +890,6 @@ function uofg!(nlp::CUTEstModel, x::Array{Float64, 1}, g::Array{Float64, 1},
 end
 
 """
-    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
-
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-"""
-function ubandh(n::Int, x::Array{Float64, 1}, semibandwidth::Int, lbandh::Int)
-  io_err = Cint[0]
-  h_band = Array(Cdouble, lbandh - 0 + 1, n)
-  max_semibandwidth = Cint[0]
-  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
-    Cint[lbandh], max_semibandwidth)
-  @cutest_error
-  return h_band, max_semibandwidth[1]
-end
-
-"""
-    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
-
-  - n:                 [IN] Int
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-"""
-function ubandh!(n::Int, x::Array{Float64, 1}, semibandwidth::Int,
-    h_band::Array{Float64, 2}, lbandh::Int)
-  io_err = Cint[0]
-  max_semibandwidth = Cint[0]
-  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
-    Cint[lbandh], max_semibandwidth)
-  @cutest_error
-  return max_semibandwidth[1]
-end
-
-"""
-    h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
-
-  - nlp:               [IN] CUTEstModel
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-"""
-function ubandh(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
-    lbandh::Int)
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  h_band = Array(Cdouble, lbandh - 0 + 1, n)
-  max_semibandwidth = Cint[0]
-  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
-    Cint[lbandh], max_semibandwidth)
-  @cutest_error
-  return h_band, max_semibandwidth[1]
-end
-
-"""
-    max_semibandwidth = ubandh!(nlp, x, semibandwidth, h_band, lbandh)
-
-  - nlp:               [IN] CUTEstModel
-  - x:                 [IN] Array{Float64, 1}
-  - semibandwidth:     [IN] Int
-  - h_band:            [OUT] Array{Float64, 2}
-  - lbandh:            [IN] Int
-  - max_semibandwidth: [OUT] Int
-"""
-function ubandh!(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
-    h_band::Array{Float64, 2}, lbandh::Int)
-  io_err = Cint[0]
-  n = nlp.meta.nvar
-  max_semibandwidth = Cint[0]
-  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
-    Cint[lbandh], max_semibandwidth)
-  @cutest_error
-  return max_semibandwidth[1]
-end
-
-"""
     h = udh(n, x, lh1)
 
   - n:       [IN] Int
@@ -1005,6 +952,114 @@ function udh!(nlp::CUTEstModel, x::Array{Float64, 1}, lh1::Int, h::Array{Float64
   udh(io_err, Cint[n], x, Cint[lh1], h)
   @cutest_error
   return
+end
+
+"""
+    nnzh, h_row, h_col = ushp(n, lh)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function ushp(n::Int, lh::Int)
+  io_err = Cint[0]
+  nnzh = Cint[0]
+  h_row = Array(Cint, lh)
+  h_col = Array(Cint, lh)
+  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1], h_row, h_col
+end
+
+"""
+    nnzh = ushp!(n, lh, h_row, h_col)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function ushp!(n::Int, lh::Int, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+  io_err = Cint[0]
+  nnzh = Cint[0]
+  h_row_cp = Array(Cint, lh)
+  h_col_cp = Array(Cint, lh)
+  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row_cp, h_col_cp)
+  @cutest_error
+  for i = 1:lh
+    h_row[i] = h_row_cp[i]
+  end
+  for i = 1:lh
+    h_col[i] = h_col_cp[i]
+  end
+  return nnzh[1]
+end
+
+function ushp!(n::Int, lh::Int, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  io_err = Cint[0]
+  nnzh = Cint[0]
+  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1]
+end
+
+"""
+    nnzh, h_row, h_col = ushp(nlp)
+
+  - nlp:     [IN] CUTEstModel
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function ushp(nlp::CUTEstModel)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnzh = Cint[0]
+  lh = nlp.meta.nnzh
+  h_row = Array(Cint, lh)
+  h_col = Array(Cint, lh)
+  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1], h_row, h_col
+end
+
+"""
+    nnzh = ushp!(nlp, h_row, h_col)
+
+  - nlp:     [IN] CUTEstModel
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function ushp!(nlp::CUTEstModel, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnzh = Cint[0]
+  lh = nlp.meta.nnzh
+  h_row_cp = Array(Cint, lh)
+  h_col_cp = Array(Cint, lh)
+  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row_cp, h_col_cp)
+  @cutest_error
+  for i = 1:lh
+    h_row[i] = h_row_cp[i]
+  end
+  for i = 1:lh
+    h_col[i] = h_col_cp[i]
+  end
+  return nnzh[1]
+end
+
+function ushp!(nlp::CUTEstModel, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnzh = Cint[0]
+  lh = nlp.meta.nnzh
+  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1]
 end
 
 """
@@ -1740,6 +1795,220 @@ function uhprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
   uhprod(io_err, Cint[n], Cint[goth], x, vector, result)
   @cutest_error
   return
+end
+
+"""
+    nnz_result, index_nz_result, result = ushprod(n, goth, x, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function ushprod(n::Int, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
+    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, n)
+  ushprod(io_err, Cint[n], Cint[goth], x, Cint[nnz_vector],
+    index_nz_vector, vector, nnz_result, index_nz_result, result)
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = ushprod!(n, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function ushprod!(n::Int, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
+    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1},
+    index_nz_result::Array{Int, 1}, result::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  ushprod(io_err, Cint[n], Cint[goth], x, Cint[nnz_vector],
+    index_nz_vector, vector, nnz_result, index_nz_result_cp, result)
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function ushprod!(n::Int, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
+    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1},
+    index_nz_result::Array{Cint, 1}, result::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  ushprod(io_err, Cint[n], Cint[goth], x, Cint[nnz_vector],
+    index_nz_vector, vector, nnz_result, index_nz_result, result)
+  @cutest_error
+  return nnz_result[1]
+end
+
+"""
+    nnz_result, index_nz_result, result = ushprod(nlp, goth, x, nnz_vector, index_nz_vector, vector)
+
+  - nlp:             [IN] CUTEstModel
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function ushprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
+    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, n)
+  ushprod(io_err, Cint[n], Cint[goth], x, Cint[nnz_vector],
+    index_nz_vector, vector, nnz_result, index_nz_result, result)
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = ushprod!(nlp, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - nlp:             [IN] CUTEstModel
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function ushprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
+    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1},
+    index_nz_result::Array{Int, 1}, result::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  ushprod(io_err, Cint[n], Cint[goth], x, Cint[nnz_vector],
+    index_nz_vector, vector, nnz_result, index_nz_result_cp, result)
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function ushprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
+    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1},
+    index_nz_result::Array{Cint, 1}, result::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnz_result = Cint[0]
+  ushprod(io_err, Cint[n], Cint[goth], x, Cint[nnz_vector],
+    index_nz_vector, vector, nnz_result, index_nz_result, result)
+  @cutest_error
+  return nnz_result[1]
+end
+
+"""
+    h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+"""
+function ubandh(n::Int, x::Array{Float64, 1}, semibandwidth::Int, lbandh::Int)
+  io_err = Cint[0]
+  h_band = Array(Cdouble, lbandh - 0 + 1, n)
+  max_semibandwidth = Cint[0]
+  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
+    Cint[lbandh], max_semibandwidth)
+  @cutest_error
+  return h_band, max_semibandwidth[1]
+end
+
+"""
+    max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
+
+  - n:                 [IN] Int
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+"""
+function ubandh!(n::Int, x::Array{Float64, 1}, semibandwidth::Int,
+    h_band::Array{Float64, 2}, lbandh::Int)
+  io_err = Cint[0]
+  max_semibandwidth = Cint[0]
+  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
+    Cint[lbandh], max_semibandwidth)
+  @cutest_error
+  return max_semibandwidth[1]
+end
+
+"""
+    h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
+
+  - nlp:               [IN] CUTEstModel
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+"""
+function ubandh(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
+    lbandh::Int)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  h_band = Array(Cdouble, lbandh - 0 + 1, n)
+  max_semibandwidth = Cint[0]
+  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
+    Cint[lbandh], max_semibandwidth)
+  @cutest_error
+  return h_band, max_semibandwidth[1]
+end
+
+"""
+    max_semibandwidth = ubandh!(nlp, x, semibandwidth, h_band, lbandh)
+
+  - nlp:               [IN] CUTEstModel
+  - x:                 [IN] Array{Float64, 1}
+  - semibandwidth:     [IN] Int
+  - h_band:            [OUT] Array{Float64, 2}
+  - lbandh:            [IN] Int
+  - max_semibandwidth: [OUT] Int
+"""
+function ubandh!(nlp::CUTEstModel, x::Array{Float64, 1}, semibandwidth::Int,
+    h_band::Array{Float64, 2}, lbandh::Int)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  max_semibandwidth = Cint[0]
+  ubandh(io_err, Cint[n], x, Cint[semibandwidth], h_band,
+    Cint[lbandh], max_semibandwidth)
+  @cutest_error
+  return max_semibandwidth[1]
 end
 
 """
@@ -2984,6 +3253,189 @@ function cdh!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
 end
 
 """
+    h_val = cdhc(n, m, x, y, lh1)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+"""
+function cdhc(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::Int)
+  io_err = Cint[0]
+  h_val = Array(Cdouble, lh1, n)
+  cdhc(io_err, Cint[n], Cint[m], x, y, Cint[lh1], h_val)
+  @cutest_error
+  return h_val
+end
+
+"""
+    cdhc!(n, m, x, y, lh1, h_val)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+"""
+function cdhc!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh1::Int,
+    h_val::Array{Float64, 2})
+  io_err = Cint[0]
+  cdhc(io_err, Cint[n], Cint[m], x, y, Cint[lh1], h_val)
+  @cutest_error
+  return
+end
+
+"""
+    h_val = cdhc(nlp, x, y, lh1)
+
+  - nlp:     [IN] CUTEstModel
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+"""
+function cdhc(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+    lh1::Int)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  h_val = Array(Cdouble, lh1, n)
+  cdhc(io_err, Cint[n], Cint[m], x, y, Cint[lh1], h_val)
+  @cutest_error
+  return h_val
+end
+
+"""
+    cdhc!(nlp, x, y, lh1, h_val)
+
+  - nlp:     [IN] CUTEstModel
+  - x:       [IN] Array{Float64, 1}
+  - y:       [IN] Array{Float64, 1}
+  - lh1:     [IN] Int
+  - h_val:   [OUT] Array{Float64, 2}
+"""
+function cdhc!(nlp::CUTEstModel, x::Array{Float64, 1}, y::Array{Float64, 1},
+    lh1::Int, h_val::Array{Float64, 2})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  cdhc(io_err, Cint[n], Cint[m], x, y, Cint[lh1], h_val)
+  @cutest_error
+  return
+end
+
+"""
+    nnzh, h_row, h_col = cshp(n, lh)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function cshp(n::Int, lh::Int)
+  io_err = Cint[0]
+  nnzh = Cint[0]
+  h_row = Array(Cint, lh)
+  h_col = Array(Cint, lh)
+  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1], h_row, h_col
+end
+
+"""
+    nnzh = cshp!(n, lh, h_row, h_col)
+
+  - n:       [IN] Int
+  - nnzh:    [OUT] Int
+  - lh:      [IN] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function cshp!(n::Int, lh::Int, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+  io_err = Cint[0]
+  nnzh = Cint[0]
+  h_row_cp = Array(Cint, lh)
+  h_col_cp = Array(Cint, lh)
+  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row_cp, h_col_cp)
+  @cutest_error
+  for i = 1:lh
+    h_row[i] = h_row_cp[i]
+  end
+  for i = 1:lh
+    h_col[i] = h_col_cp[i]
+  end
+  return nnzh[1]
+end
+
+function cshp!(n::Int, lh::Int, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  io_err = Cint[0]
+  nnzh = Cint[0]
+  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1]
+end
+
+"""
+    nnzh, h_row, h_col = cshp(nlp)
+
+  - nlp:     [IN] CUTEstModel
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function cshp(nlp::CUTEstModel)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnzh = Cint[0]
+  lh = nlp.meta.nnzh
+  h_row = Array(Cint, lh)
+  h_col = Array(Cint, lh)
+  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1], h_row, h_col
+end
+
+"""
+    nnzh = cshp!(nlp, h_row, h_col)
+
+  - nlp:     [IN] CUTEstModel
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Int, 1}
+  - h_col:   [OUT] Array{Int, 1}
+"""
+function cshp!(nlp::CUTEstModel, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnzh = Cint[0]
+  lh = nlp.meta.nnzh
+  h_row_cp = Array(Cint, lh)
+  h_col_cp = Array(Cint, lh)
+  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row_cp, h_col_cp)
+  @cutest_error
+  for i = 1:lh
+    h_row[i] = h_row_cp[i]
+  end
+  for i = 1:lh
+    h_col[i] = h_col_cp[i]
+  end
+  return nnzh[1]
+end
+
+function cshp!(nlp::CUTEstModel, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  nnzh = Cint[0]
+  lh = nlp.meta.nnzh
+  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzh[1]
+end
+
+"""
     nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh)
 
   - n:       [IN] Int
@@ -4162,6 +4614,158 @@ function chprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Fl
 end
 
 """
+    nnz_result, index_nz_result, result = cshprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, n)
+  cshprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = cshprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Int, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  cshprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result_cp, result)
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function cshprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  cshprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1]
+end
+
+"""
+    nnz_result, index_nz_result, result = cshprod(nlp, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - nlp:             [IN] CUTEstModel
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, n)
+  cshprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = cshprod!(nlp, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - nlp:             [IN] CUTEstModel
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Int, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  cshprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result_cp, result)
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function cshprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  cshprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1]
+end
+
+"""
     result = chcprod(n, m, goth, x, y, vector)
 
   - n:       [IN] Int
@@ -4239,6 +4843,158 @@ function chcprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{F
   chcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y, vector, result)
   @cutest_error
   return
+end
+
+"""
+    nnz_result, index_nz_result, result = cshcprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshcprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, n)
+  cshcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = cshcprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshcprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Int, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  cshcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result_cp, result)
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function cshcprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  cshcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1]
+end
+
+"""
+    nnz_result, index_nz_result, result = cshcprod(nlp, goth, x, y, nnz_vector, index_nz_vector, vector)
+
+  - nlp:             [IN] CUTEstModel
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshcprod(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, n)
+  cshcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = cshcprod!(nlp, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+
+  - nlp:             [IN] CUTEstModel
+  - goth:            [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - y:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+"""
+function cshcprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Int, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  cshcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result_cp, result)
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function cshcprod!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
+    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Cint, 1},
+    result::Array{Float64, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  cshcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
+    Cint[nnz_vector], index_nz_vector, vector, nnz_result,
+    index_nz_result, result)
+  @cutest_error
+  return nnz_result[1]
 end
 
 """
@@ -4331,6 +5087,284 @@ function cjprod!(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1
   m = nlp.meta.ncon
   cjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
     vector, Cint[lvector], result, Cint[lresult])
+  @cutest_error
+  return
+end
+
+"""
+    nnz_result, index_nz_result, result = csjprod(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+"""
+function csjprod(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+    nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, lvector::Int, lresult::Int)
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, lresult)
+  csjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
+    Cint[nnz_vector], index_nz_vector, vector, Cint[lvector], nnz_result,
+    index_nz_result, result, Cint[lresult])
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = csjprod!(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+
+  - n:               [IN] Int
+  - m:               [IN] Int
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+"""
+function csjprod!(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+    nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, lvector::Int, index_nz_result::Array{Int,
+    1}, result::Array{Float64, 1}, lresult::Int)
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  csjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
+    Cint[nnz_vector], index_nz_vector, vector, Cint[lvector], nnz_result,
+    index_nz_result_cp, result, Cint[lresult])
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function csjprod!(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+    nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, lvector::Int, index_nz_result::Array{Cint,
+    1}, result::Array{Float64, 1}, lresult::Int)
+  io_err = Cint[0]
+  nnz_result = Cint[0]
+  csjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
+    Cint[nnz_vector], index_nz_vector, vector, Cint[lvector], nnz_result,
+    index_nz_result, result, Cint[lresult])
+  @cutest_error
+  return nnz_result[1]
+end
+
+"""
+    nnz_result, index_nz_result, result = csjprod(nlp, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+
+  - nlp:             [IN] CUTEstModel
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+"""
+function csjprod(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+    nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, lvector::Int, lresult::Int)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  index_nz_result = Array(Cint, n)
+  result = Array(Cdouble, lresult)
+  csjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
+    Cint[nnz_vector], index_nz_vector, vector, Cint[lvector], nnz_result,
+    index_nz_result, result, Cint[lresult])
+  @cutest_error
+  return nnz_result[1], index_nz_result, result
+end
+
+"""
+    nnz_result = csjprod!(nlp, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+
+  - nlp:             [IN] CUTEstModel
+  - gotj:            [IN] Bool
+  - jtrans:          [IN] Bool
+  - x:               [IN] Array{Float64, 1}
+  - nnz_vector:      [IN] Int
+  - index_nz_vector: [IN] Array{Int, 1}
+  - vector:          [IN] Array{Float64, 1}
+  - lvector:         [IN] Int
+  - nnz_result:      [OUT] Int
+  - index_nz_result: [OUT] Array{Int, 1}
+  - result:          [OUT] Array{Float64, 1}
+  - lresult:         [IN] Int
+"""
+function csjprod!(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+    nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, lvector::Int, index_nz_result::Array{Int,
+    1}, result::Array{Float64, 1}, lresult::Int)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  index_nz_result_cp = Array(Cint, n)
+  csjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
+    Cint[nnz_vector], index_nz_vector, vector, Cint[lvector], nnz_result,
+    index_nz_result_cp, result, Cint[lresult])
+  @cutest_error
+  for i = 1:n
+    index_nz_result[i] = index_nz_result_cp[i]
+  end
+  return nnz_result[1]
+end
+
+function csjprod!(nlp::CUTEstModel, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
+    nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    vector::Array{Float64, 1}, lvector::Int, index_nz_result::Array{Cint,
+    1}, result::Array{Float64, 1}, lresult::Int)
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  nnz_result = Cint[0]
+  csjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
+    Cint[nnz_vector], index_nz_vector, vector, Cint[lvector], nnz_result,
+    index_nz_result, result, Cint[lresult])
+  @cutest_error
+  return nnz_result[1]
+end
+
+"""
+    chp_val = cchprods(n, m, goth, x, vector, lchp, chp_ind, chp_ptr)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+"""
+function cchprods(n::Int, m::Int, goth::Bool, x::Array{Float64, 1},
+    vector::Array{Float64, 1}, lchp::Int, chp_ind::Array{Int, 1},
+    chp_ptr::Array{Int, 1})
+  io_err = Cint[0]
+  chp_val = Array(Cdouble, lchp)
+  cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
+    Cint[lchp], chp_val, chp_ind, chp_ptr)
+  @cutest_error
+  return chp_val
+end
+
+"""
+    cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - n:       [IN] Int
+  - m:       [IN] Int
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+"""
+function cchprods!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1},
+    vector::Array{Float64, 1}, lchp::Int, chp_val::Array{Float64, 1},
+    chp_ind::Array{Int, 1}, chp_ptr::Array{Int, 1})
+  io_err = Cint[0]
+  cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
+    Cint[lchp], chp_val, chp_ind, chp_ptr)
+  @cutest_error
+  return
+end
+
+function cchprods!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1},
+    vector::Array{Float64, 1}, lchp::Int, chp_val::Array{Float64, 1},
+    chp_ind::Array{Int, 1}, chp_ptr::Array{Int, 1})
+  io_err = Cint[0]
+  cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
+    Cint[lchp], chp_val, chp_ind, chp_ptr)
+  @cutest_error
+  return
+end
+
+"""
+    chp_val = cchprods(nlp, goth, x, vector, lchp, chp_ind, chp_ptr)
+
+  - nlp:     [IN] CUTEstModel
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+"""
+function cchprods(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
+    vector::Array{Float64, 1}, lchp::Int, chp_ind::Array{Int, 1},
+    chp_ptr::Array{Int, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  chp_val = Array(Cdouble, lchp)
+  cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
+    Cint[lchp], chp_val, chp_ind, chp_ptr)
+  @cutest_error
+  return chp_val
+end
+
+"""
+    cchprods!(nlp, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
+  - nlp:     [IN] CUTEstModel
+  - goth:    [IN] Bool
+  - x:       [IN] Array{Float64, 1}
+  - vector:  [IN] Array{Float64, 1}
+  - lchp:    [IN] Int
+  - chp_val: [OUT] Array{Float64, 1}
+  - chp_ind: [IN] Array{Int, 1}
+  - chp_ptr: [IN] Array{Int, 1}
+"""
+function cchprods!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
+    vector::Array{Float64, 1}, lchp::Int, chp_val::Array{Float64, 1},
+    chp_ind::Array{Int, 1}, chp_ptr::Array{Int, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
+    Cint[lchp], chp_val, chp_ind, chp_ptr)
+  @cutest_error
+  return
+end
+
+function cchprods!(nlp::CUTEstModel, goth::Bool, x::Array{Float64, 1},
+    vector::Array{Float64, 1}, lchp::Int, chp_val::Array{Float64, 1},
+    chp_ind::Array{Int, 1}, chp_ptr::Array{Int, 1})
+  io_err = Cint[0]
+  n = nlp.meta.nvar
+  m = nlp.meta.ncon
+  cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
+    Cint[lchp], chp_val, chp_ind, chp_ptr)
   @cutest_error
   return
 end
