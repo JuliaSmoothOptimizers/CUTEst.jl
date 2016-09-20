@@ -1,7 +1,7 @@
 using Documenter, CUTEst, NLPModels
 
 makedocs(
-  modules = [CUTEst]
+  modules = [CUTEst, NLPModels]
 )
 
 deploydocs(deps = Deps.pip("pygments", "mkdocs", "mkdocs-material", "python-markdown-math"),
