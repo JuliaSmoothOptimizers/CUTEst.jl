@@ -327,7 +327,6 @@ def need_inplace(intents, dims):
 
 core_file = open("src/core_interface.jl", "w")
 spec_file = open("src/specialized_interface.jl", "w")
-#docs_file = open("src/documentation.jl", "w")
 
 names = function_names()
 
@@ -373,4 +372,3 @@ for name in names:
 
 core_file.close()
 spec_file.close()
-#docs_file.close()
