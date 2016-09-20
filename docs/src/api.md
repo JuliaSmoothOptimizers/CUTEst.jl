@@ -19,3 +19,11 @@ end
 
 s
 ```
+
+## Core and specialized API
+
+```@autodocs
+Modules = [CUTEst]
+Pages   = ["core_interface.jl", "specialized_interface.jl"]
+Order   = [:function]
+```

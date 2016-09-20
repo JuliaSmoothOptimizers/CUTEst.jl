@@ -212,7 +212,16 @@ def generate_test_for_function (foo):
     return head+str+"\n", stress
 
 filename = "src/specialized_interface.jl"
-content = ''.join(open(filename, "r").readlines()).split("function")[1:]
+lines = open(filename, "r").readlines()
+content = []
+on_doc = False
+for line in lines:
+    if '"""' in line:
+        on_doc = not on_doc
+        continue
+    if not on_doc:
+        content.append(line)
+content = ''.join(content).split("function")[1:]
 
 cselection = []
 uselection = []
@@ -240,7 +249,7 @@ with open("test/test_specialized.jl","w") as f:
     f.write('end\n\n')
     stress += "  end\n"
     f.write('print("Specialized interface stress test... ")\n')
-    f.write('for i = 1:100000\n')
+    f.write('for i = 1:10000\n')
     f.write(stress)
     f.write('end\n')
     f.write('println("passed")\n\n')
