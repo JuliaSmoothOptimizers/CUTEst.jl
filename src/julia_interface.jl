@@ -416,7 +416,7 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float6
                  io_err,     &nvar,      &ncon,      x,            y,            this_nnzh,  &nnzh,      hval,         hrow,       hcol);
     @cutest_error
     nlp.counters.neval_hess += 1
-    return (hrow, hcol, hval)
+    return (hcol, hrow, hval)
   end
 
   if ncon > 0
