@@ -20,13 +20,13 @@ end
 const outsdif = "OUTSDIF.d";
 const automat = "AUTOMAT.d";
 const funit   = convert(Int32, 42);
-@osx? (const linker = "gfortran") : (const linker = "ld")
-@osx? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
-@osx? (const soname = "dylib") : (const soname = "so");
+@static is_apple() ? (const linker = "gfortran") : (const linker = "ld")
+@static is_apple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
+@static is_apple() ? (const soname = "dylib") : (const soname = "so");
 
 type CUTEstException <: Exception
   info :: Int32
-  msg  :: ASCIIString
+  msg  :: String
 
   function CUTEstException(info :: Int32)
     if info == 1
@@ -72,7 +72,7 @@ Optional arguments are passed directly to the SIF decoder.
 Example:
     `sifdecoder("DIXMAANJ", "-param", "M=30")`.
 """
-function sifdecoder(name :: ASCIIString, args...; verbose :: Bool=false)
+function sifdecoder(name :: String, args...; verbose :: Bool=false)
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(name);
   libname = "lib$pname";
@@ -82,8 +82,8 @@ function sifdecoder(name :: ASCIIString, args...; verbose :: Bool=false)
   outlog = tempname()
   errlog = tempname()
   run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
-  print(readall(errlog))
-  verbose && println(readall(outlog))
+  print(readstring(errlog))
+  verbose && println(readstring(outlog))
 
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
@@ -93,7 +93,7 @@ function sifdecoder(name :: ASCIIString, args...; verbose :: Bool=false)
 end
 
 # Initialize problem.
-function CUTEstModel(name :: ASCIIString, args...; decode :: Bool=true, verbose ::Bool=false)
+function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
   global cutest_lib
