@@ -1,6 +1,3 @@
-using CUTEst
-using Base.Test
-
 # Work in a temporary directory.
 curdir = pwd();
 tmpdir = mktempdir();
