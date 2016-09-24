@@ -112,10 +112,7 @@ function loadcutestproblem!(m::MathProgBase.AbstractMathProgModel, nlp::CUTEstMo
   end
 end
 
-"""Return a `MathProgBase` model corresponding to a `CUTEstModel`.
-The second argument should be a solver instance, e.g., `IpoptSolver()`.
-Currently, all models are treated as nonlinear models.
-"""
+@doc (@doc NLPModels.NLPtoMPB)
 function NLPtoMPB(nlp :: CUTEstModel, solver :: MathProgBase.AbstractMathProgSolver)
   model = MathProgBase.NonlinearModel(solver)
   loadcutestproblem!(model, nlp)

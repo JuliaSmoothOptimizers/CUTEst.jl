@@ -2,20 +2,46 @@
 
 ## NLPModels API
 
-```@eval
-using NLPModels
-using Base.Markdown
+```@docs
+obj
+grad
+grad!
+cons
+cons!
+jac_coord
+jac
+jprod
+jprod!
+jtprod
+jtprod!
+hess_coord
+hess
+hprod
+hprod!
+NLPtoMPB
+reset!
+```
 
-s = []
-mtds = [obj, grad, grad!, cons, cons!, jac_coord, jac, jprod, jprod!,
-  jtprod, jtprod!, hess_coord, hess, hprod, hprod!, NLPtoMPB, reset!]
+## Extra julian API
 
-for i = 1:length(mtds)
-  name = split(string(mtds[i]), ".")[2]
-  push!(s, md"### $name")
-  push!(s, @doc mtds[i])
-  sout = []
-end
+```@docs
+objgrad
+objcons
+cons_coord
+```
 
-s
+## Core and specialized API
+
+```@autodocs
+Modules = [CUTEst]
+Pages   = ["core_interface.jl", "specialized_interface.jl"]
+Order   = [:function]
+```
+
+## Internal
+
+```@autodocs
+Modules = [CUTEst]
+Pages   = ["CUTEst.jl"]
+Order   = [:function]
 ```
