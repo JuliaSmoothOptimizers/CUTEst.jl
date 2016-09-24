@@ -1,3 +1,5 @@
+using Base.Test, CUTEst, Ipopt, JuMP, MathProgBase, NLPModels
+
 for problem in ["HS32", "HS4"]
   global problem
   include("$(lowercase(problem)).jl")
@@ -8,6 +10,7 @@ for problem in ["HS32", "HS4"]
   include("finalize_test.jl")
 end
 
+include("consistency.jl")
 include("test_mpb.jl")
 
 problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.01)

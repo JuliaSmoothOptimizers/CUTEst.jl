@@ -68,8 +68,10 @@ Work in progress.
 
 - [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) provides an
   AbstractModel from which CUTEst.jl derives, and other models deriving from it,
-  such as JuMPModel, which uses [JuMP.jl](https://github.com/JuliaOpt/JuMP.jl),
-  SimpleNLPModel, for user created functions, and SlackModel, which creates an
+  such as MathProgNLPModel, which uses
+  [MathProgBase.jl](https://github.com/JuliaOpt/MathProgBase.jl),
+  SimpleNLPModel, for user created functions, ADNLPModel with automatic
+  differentiation, and SlackModel, which creates an
   equality constrained model with bounds on the variables from a given
   AbstractModel.
 - [AmplNLReader.jl](https://github.com/JuliaSmoothOptimizers/AmplNLReader.jl)
