@@ -8,9 +8,9 @@ for problem in problems
   include(joinpath(path, "$problem_s.jl"))
 
   problem_f = eval(problem)
-  nlp_jump = JuMPNLPModel(problem_f())
+  nlp_mpb = MathProgNLPModel(problem_f())
   nlp_cutest = CUTEstModel(uppercase(problem_s))
-  nlps = [nlp_cutest, nlp_jump]
+  nlps = [nlp_cutest, nlp_mpb]
 
   @printf("Checking problem %-15s%12s\t", problem_s, "")
   consistent_nlps(nlps)
