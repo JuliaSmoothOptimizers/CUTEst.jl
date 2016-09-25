@@ -15,6 +15,8 @@ trip_resp = { "Jx": "j_var", "Wx": "h_row" }
 
 ignore = trip_comp + [ "nnzj", "nnzh", "nnzg", "nnzgci", "gci_var", "g_var" ]
 
+test_string = "@fact {} --> roughly({}, rtol=rtol)\n"
+
 translate = {
     "n": "nlp.meta.nvar",
     "m": "nlp.meta.ncon",
@@ -54,9 +56,13 @@ hs = {
     "gx": "g(x0)",
     "Jx": "J(x0)",
     "gci": "J(x0)[j,:]",
-    "g_val": "g(x0)[g_var]",
+    "g_val": "g(x0)[g_var[1:nnzg]]",
     "gci_val": "J(x0)[j,gci_var]",
     "Wx": "W(x0,y0)" }
+
+self = {
+    "g_val": "g_val[1:nnzg]"
+        }
 
 special = {
     "cshc": { "W": "W(x0,y0)-H(x0)"},
@@ -81,6 +87,7 @@ sizeof = {
     "j_fun": "Cint, nlp.meta.nnzj+nlp.meta.nvar",
     "h_row": "Cint, nlp.meta.nnzh",
     "h_col": "Cint, nlp.meta.nnzh",
+    "gci": "nlp.meta.nvar",
     "gci_val": "nlp.meta.nvar",
     "gci_var": "Cint, nlp.meta.nvar",
     "g_val": "nlp.meta.nvar",
@@ -119,11 +126,9 @@ def addTriplet(trip, spc, fname, use_test = True):
     str += spc+"end\n"
     if use_test:
         if fname in special and trip in special[fname]:
-            str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
-                    special[fname][trip])
+            str += spc + test_string.format(trip+"x", special[fname][trip])
         else:
-            str += spc+"@test_approx_eq_eps {}x {} 1e-8\n".format(trip, \
-                    hs[trip+"x"])
+            str += spc + test_string.format(trip+"x", hs[trip+"x"])
     return str
 
 def generate_test_for_function (foo):
@@ -178,12 +183,15 @@ def generate_test_for_function (foo):
             str += addTriplet(triplet[x], spc, fname)
         elif x not in ignore:
             if x == "result":
-                str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, results[fname])
+                str += spc + test_string.format(x, results[fname])
             elif fname in special and x in special[fname]:
-                str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, \
+                str += spc + test_string.format(x, \
                         special[fname][x])
             else:
-                str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
+                if x in self:
+                    str += spc + test_string.format(self[x], hs[x])
+                else:
+                    str += spc + test_string.format(x, hs[x])
     if inplace:
         for x in inputs:
             if x == "result":
@@ -194,14 +202,17 @@ def generate_test_for_function (foo):
                     str = spc+"{} = zeros({})\n".format(x,sizeofsp[x]) + str
                     str += addTriplet(triplet[x], spc, fname)
                 elif fname in special and x in special[fname]:
-                    str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, \
+                    str += spc + test_string.format(x, \
                             special[fname][x])
                 else:
                     arg = sizeof[x]
                     str = spc+"{} = zeros({})\n".format(x,arg) + str
                     stress = spc+"{} = zeros({})\n".format(x,arg) + stress
                     if x not in ignore:
-                        str += spc+"@test_approx_eq_eps {} {} 1e-8\n".format(x, hs[x])
+                        if x in self:
+                            str += spc + test_string.format(self[x], hs[x])
+                        else:
+                            str += spc + test_string.format(x, hs[x])
     if match != "":
         str += "  end\n"
         stress += "  end\n"
@@ -229,9 +240,23 @@ for x in content:
         uselection.append(x)
 
 with open("test/test_specialized.jl","w") as f:
-    f.write('println("\\nTesting the Specialized interface\\n")\n\n')
-    f.write('v = ones(nlp.meta.nvar)\n')
-    f.write('if nlp.meta.ncon > 0\n')
+    f.writelines([
+    "function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)\n",
+    "  x0 = nlp.meta.x0\n",
+    "  y0 = [(-1.0)^i for i = 1:nlp.meta.ncon]\n",
+    "  f(x) = obj(comp_nlp, x)\n",
+    "  g(x) = grad(comp_nlp, x)\n",
+    "  H(x; obj_weight=1.0) = tril(hess(comp_nlp, x, obj_weight=obj_weight),-1) + hess(comp_nlp, x, obj_weight=obj_weight)'\n",
+    "\n",
+    "  c(x) = cons(comp_nlp, x)\n",
+    "  J(x) = jac(comp_nlp, x)\n",
+    "  W(x, y; obj_weight=1.0) = tril(hess(comp_nlp, x, y=y, obj_weight=obj_weight),-1) + hess(comp_nlp, x, y=y, obj_weight=obj_weight)'\n",
+    "  rtol = 1e-8\n",
+    "\n",
+    "  v = ones(nlp.meta.nvar)\n",
+    '  facts("Specialized interface") do\n',
+    '    if nlp.meta.ncon > 0\n'
+    ])
     stress = "  if nlp.meta.ncon > 0\n"
     for x in cselection:
         str, ss = generate_test_for_function(x)
@@ -243,10 +268,12 @@ with open("test/test_specialized.jl","w") as f:
         str, ss = generate_test_for_function(x)
         f.write(str)
         stress += ss
-    f.write('end\n\n')
+    f.write('  end\n\n') # end if
+    f.write('end\n\n') # facts end
     stress += "  end\n"
     f.write('print("Specialized interface stress test... ")\n')
     f.write('for i = 1:10000\n')
     f.write(stress)
     f.write('end\n')
     f.write('println("passed")\n\n')
+    f.write('end\n\n')
