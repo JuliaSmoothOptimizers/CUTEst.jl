@@ -4,7 +4,15 @@
     
     <url>
      <loc>None/</loc>
-     <lastmod>2016-09-21</lastmod>
+     <lastmod>2016-09-25</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/tutorial/</loc>
+     <lastmod>2016-09-25</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +20,15 @@
     
     <url>
      <loc>None/api/</loc>
-     <lastmod>2016-09-21</lastmod>
+     <lastmod>2016-09-25</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/remissive-index/</loc>
+     <lastmod>2016-09-25</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

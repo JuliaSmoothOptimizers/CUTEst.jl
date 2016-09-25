@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>Tutorial - CUTEst.jl</title>
+      
+      
+      
+      
+        <meta name="author" content="JuliaSmoothOptimizers">
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="CUTEst.jl">
+    <meta property="og:image" content="None/../">
+    <meta name="apple-mobile-web-app-title" content="CUTEst.jl">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../assets/fonts/icon.eot?52m981');
+      	src: url('../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
+    
+      <link rel="stylesheet" href="../assets/stylesheets/palettes-05ab2406df.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+      <link rel="stylesheet" href="../assets/Documenter.css">
+    
+      <link rel="stylesheet" href="../assets/style.css">
+    
+    <script src="../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class="palette-primary-deep-orange palette-accent-indigo">
+    
+      
+      
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+          </span>
+        
+        Tutorial
+      </div>
+    </div>
+    
+    
+      
+      <div class="button button-github" role="button" aria-label="GitHub">
+        <a href="https://github.com/JuliaSmoothOptimizers" title="@JuliaSmoothOptimizers on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+      </div>
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>
+          CUTEst.jl
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+          <br>
+          JuliaSmoothOptimizers/CUTEst.jl
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            
+            <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl/archive/master.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Home" href="..">
+      Home
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="current" title="Tutorial" href="./">
+      Tutorial
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="NLPModels interface" href="#nlpmodels-interface">
+                NLPModels interface
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Beware the core Interface" href="#beware-the-core-interface">
+                Beware the core Interface
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Specialized Interface" href="#specialized-interface">
+                Specialized Interface
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="API" href="../api/">
+      API
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Remissive Index" href="../remissive-index/">
+      Remissive Index
+    </a>
+    
+  </li>
+
+          
+        </ul>
+        
+          <hr>
+          <span class="section">The author</span>
+          <ul>
+            
+            
+              
+              <li>
+                <a href="https://github.com/JuliaSmoothOptimizers" target="_blank" title="@JuliaSmoothOptimizers on GitHub">
+                  @JuliaSmoothOptimizers on GitHub
+                </a>
+              </li>
+            
+          </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+          <p><a id='Tutorial-1'></a></p>
+<h1 id="tutorial">Tutorial</h1>
+<p>CUTEst can be accessed in three ways. - The first, easiest, and recommended for most users, is using the   <a href="https://github.com/JuliaSmoothOptimizers/NLPModels.jl">NLPModels.jl</a>.   This is recommended because if you develop something for this an <code>NLPModel</code>,   then it can work with CUTEst, but also with other models. - The second is the core interface, which is just a wrapper of the Fortran   functions, and is not recommended unless you really need and know what you're   doing. - The third is something in the middle, which we called specialized interface.   It follows the same naming as the core functions, but it is more accessible,   from the Julia point of view.</p>
+<p><a id='NLPModels-interface-1'></a></p>
+<h2 id="nlpmodels-interface">NLPModels interface</h2>
+<p>NLPModels defines an abstract interface to access the objective, constraints, derivatives, etc. of the problem. A <a href="https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api#reference-guide">reference guide</a> is available to check what you need.</p>
+<p>After installing CUTEst, to open problem, write</p>
+<div class="code"><pre><span></span><span class="k">using</span> <span class="n">CUTEst</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">CUTEstModel</span><span class="p">(</span><span class="s">&quot;ROSENBR&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>Minimization problem ROSENBR
+nvar = 2, ncon = 0 (0 linear)
+</pre></div>
+
+
+<p>That's it. You can use <code>nlp</code> like any other NLPModel, with one <strong>important exception</strong>. You have to finalize the model after using it. To be exact, you have to finalize it before opening a new one. There is no problem in closing Julia before finalizing it, for instance.</p>
+<div class="code"><pre><span></span><span class="n">cutest_finalize</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Being a NLPModel means that everything created for an AbstractNLPModel will work for CUTEstModel. For instance, <a href="https://github.com/JuliaSmoothOptimizers/Optimize.jl">Optimize.jl</a> has implementations of optimization methods for AbstractNLPModels.</p>
+<p>Let's make some demonstration of the CUTEstModel.</p>
+<div class="code"><pre><span></span><span class="k">using</span> <span class="n">CUTEst</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">CUTEstModel</span><span class="p">(</span><span class="s">&quot;ROSENBR&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;x0 = </span><span class="si">$( nlp.meta.x0 )</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;fx = </span><span class="si">$( obj(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;gx = </span><span class="si">$( grad(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Hx = </span><span class="si">$( hess(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>x0 = [-1.2,1.0]
+fx = 24.199999999999996
+gx = [-215.59999999999997,-87.99999999999999]
+Hx =
+    [1, 1]  =  1330.0
+    [2, 1]  =  480.0
+    [2, 2]  =  200.0
+</pre></div>
+
+
+<p>Remember to check the <a href="https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api">API</a> in case of doubts about these functions.</p>
+<p>Notice how <code>hess</code> returns a lower triangle matrix. For decompositions that should be enough. For iterative solvers, you may want $\nabla^2 f(x) v$ instead, so only the lower triangle won't do. But you do have</p>
+<div class="code"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">nvar</span><span class="p">)</span>
+<span class="n">hprod</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>2-element Array{Float64,1}:
+ 1810.0
+  680.0
+</pre></div>
+
+
+<p>You can also use a <a href="https://github.com/JuliaSmoothOptimizers/LinearOperators.jl">LinearOperators</a>,</p>
+<div class="code"><pre><span></span><span class="k">using</span> <span class="n">LinearOperators</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">nvar</span>
+
+<span class="n">H</span> <span class="o">=</span> <span class="n">hess_op</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">*</span> <span class="n">v</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>2-element Array{Float64,1}:
+ 1810.0
+  680.0
+</pre></div>
+
+
+<p>This way, you can use <a href="https://github.com/JuliaSmoothOptimizers/Krylov.jl">Krylov</a> to solve the linear system with the Hessian as matrix. For instance, to show an example of Newton Method with a fixed trust region during a classroom.</p>
+<p>```@example ex1
+using Krylov</p>
+<p>Delta = 10.0
+x = nlp.meta.x0
+println("0: x = $x")
+for i = 1:5
+  print("$i: ")
+  H = hess_op(nlp, x)
+  d, stats = Krylov.cg(H, -grad(nlp, x), radius=Delta)
+  x = x + d
+  println("x = $x")
+end</p>
+<div class="code"><pre><span></span>```julia
+cutest_finalize(nlp)
+</pre></div>
+
+
+<p>There is no difference in calling a constrained problem, only that some additional functions are available.</p>
+<div class="code"><pre><span></span><span class="k">using</span> <span class="n">CUTEst</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">CUTEstModel</span><span class="p">(</span><span class="s">&quot;HS35&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>Minimization problem HS35
+nvar = 3, ncon = 1 (1 linear)
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span>
+
+<span class="n">cons</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>1-element Array{Float64,1}:
+ 1.0
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">jac</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>1x3 sparse matrix with 3 Float64 entries:
+    [1, 1]  =  -1.0
+    [1, 2]  =  -1.0
+    [1, 3]  =  -2.0
+</pre></div>
+
+
+<p>To find out whether these constraints are equalities or inequalities we can check <code>nlp.meta</code></p>
+<div class="code"><pre><span></span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Equ  c(x) = 0:         </span><span class="si">$(nlp.meta.jfix)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Ineq c(x) &gt;= cL:       </span><span class="si">$(nlp.meta.jlow)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Ineq c(x) &lt;= cU:       </span><span class="si">$(nlp.meta.jupp)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Ineq cL &lt;= c(x) &lt;= cU: </span><span class="si">$(nlp.meta.jrng)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;lcon = </span><span class="si">$(nlp.meta.lcon)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;ucon = </span><span class="si">$(nlp.meta.ucon)</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>Equ  c(x) = 0:         Int64[]
+Ineq c(x) &gt;= cL:       [1]
+Ineq c(x) &lt;= cU:       Int64[]
+Ineq cL &lt;= c(x) &lt;= cU: Int64[]
+lcon = [0.0]
+ucon = [Inf]
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">cutest_finalize</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+</pre></div>
+
+
+<p><a id='Beware-the-core-Interface-1'></a></p>
+<h2 id="beware-the-core-interface">Beware the core Interface</h2>
+<p><strong>Disclaimer:</strong> This is here only to prepare for the next interface.</p>
+<p>When working with CUTEst, we created a <strong>core</strong> interface, which is essentially a wrapper for the CUTEst functions. You probably don't want to use that.</p>
+<p>CUTEst in Fortran defines functions called with <code>cutest_u*</code> or <code>cutest_c*</code>, for the unconstrained and constrained cases, respectively. For each of those, we dropped the <code>cutest_</code>, so the functions <code>cutest_ufn</code> and <code>cutest_cfn</code> are available as <code>ufn</code> and <code>cfn</code>. To use then you have to convert the types using <code>Cint</code> and <code>Cdouble</code>, and pass arrays because of the underlying pointers in Fortran. In practice, there isn't much improvement in calling these or <code>ccall</code>s.</p>
+<p>Only use these functions if you really know what you're doing.</p>
+<p><a id='Specialized-Interface-1'></a></p>
+<h2 id="specialized-interface">Specialized Interface</h2>
+<p>The specialized interface takes the original CUTEst's functions and make them more Julian. To explain, let's look at two simple CUTEst functions: <code>cutest_ufn</code> and <code>cutest_cfn</code>.</p>
+<p>The original <code>cutest_ufn</code> function is defined as</p>
+<div class="code"><pre><span></span><span class="k">CALL </span><span class="n">CUTEST_ufn</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+
+<p>where</p>
+<ul>
+<li><code>status</code> (output) is an integer signalling whether there was some problem with   the CUTEst call;</li>
+<li><code>n</code> (input) is number of variables in the problem, i.e., the dimension of <code>X</code>;</li>
+<li><code>X</code> (input) is an array with the current estimate of the solution of the problem;</li>
+<li><code>f</code> (output) is the value of the objective function evaluated at <code>X</code>.</li>
+</ul>
+<p>In Julia, we have</p>
+<div class="code"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">ufn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">ufn</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+
+<p>In other words, a simplification of the original function, returning what is simple to return, and reducing the parameters to only what is needed. In addition, there is the option of using <code>nlp</code> instead of <code>n</code>, because <code>nlp</code> includes all this information.</p>
+<p>In both cases, the problem would have to be decoded first. Decoding the problem manually is not advised, as you would have to keep track of the variables, bounds, sizes, library, and closing the problem yourself. It can be done through thorough thought, though.</p>
+<p>Using <code>nlp</code> is better, because we can keep everything inside it.</p>
+<p>For <code>cutest_cfn</code>, we would have</p>
+<div class="code"><pre><span></span><span class="k">CALL </span><span class="n">CUTEST_cfn</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+</pre></div>
+
+
+<p>where</p>
+<ul>
+<li><code>status</code> (output) is an integer signalling whether there was some problem with   the CUTEst call;</li>
+<li><code>n</code> (input) is number of variables in the problem, i.e., the dimension of <code>X</code>;</li>
+<li><code>m</code> (input) is number of constraints in the problem, i.e., the dimension of <code>C</code>;</li>
+<li><code>X</code> (input) is an array with the current estimate of the solution of the problem;</li>
+<li><code>f</code> (output) is the value of the objective function evaluated at <code>X</code>;</li>
+<li><code>C</code> (output) is the value of the constraints function evaluated at <code>X</code>.</li>
+</ul>
+<p>In Julia, we have</p>
+<div class="code"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cfn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cfn</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">cfn!</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">cfn!</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+
+
+<p>As before, we have a simplification of the original call. Also, again, we have the use of <code>nlp</code> instead of some fixed problem values. Notice how <code>nlp</code> substitutes more than one thing, making it easier to use because we don't have to remeber what is needed by the function, nor where it goes. When present, <code>nlp</code> is always the first argument.</p>
+<p>In addition, there are two new functions here, obtained by addind a <code>!</code> in front of the function name. These functions modify the vector <code>c</code> storing the result in it. This can be done to save memory, since <code>c</code> will not be recreated. As a convention in Julia, every function that has a <code>!</code> in the end modifies some input.</p>
+<p><a id='Reference-Guide-1'></a></p>
+<h3 id="reference-guide">Reference Guide</h3>
+<p>There are a lot of functions in CUTEst. To see them all, you can check the <a href="https://epubs.stfc.ac.uk/work/65540">Technical Report</a> decribing them.</p>
+<p>Below is a little guide to search the functions documentation. <strong>Only some functions are shown.</strong> Remember that we are looking into problems in the form <script type="math/tex; mode=display">\begin{align*} \min \quad & f(x) \\
+& c_L \leq c(x) \leq c_U \\
+& \ell \leq x \leq u, \end{align*}</script> with Lagrangian <script type="math/tex; mode=display">\begin{align*} L(x,y) = f(x) + y^Tc(x). \end{align*}</script>
+</p>
+<p><strong>Note:</strong> <code>x</code> in the beginning of the function name means that both <code>u</code> and <code>c</code> versions exist.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Function</th>
+<th align="right">Specialized Interface Functions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">$f(x)$</td>
+<td align="right">ufn, uofg, cfn, cofg</td>
+</tr>
+<tr>
+<td align="right">$\nabla f(x)$</td>
+<td align="right">ugr, uofg, cfn, cofg</td>
+</tr>
+<tr>
+<td align="right">$\nabla^2 f(x)$</td>
+<td align="right">udh, ugrdh, ush, ugrsh, uhprod</td>
+</tr>
+<tr>
+<td align="right">$c(x)$</td>
+<td align="right">cfn, ccfg, ccfsg, ccifg</td>
+</tr>
+<tr>
+<td align="right">$J(x)$</td>
+<td align="right">ccfg, ccfsg, ccifg</td>
+</tr>
+<tr>
+<td align="right">$\nabla^2 L(x,y)$</td>
+<td align="right">cdh, cgrdh, csh, cgrsh, chprod</td>
+</tr>
+<tr>
+<td align="right">$\nabla^2 (y^Tc(x))$</td>
+<td align="right">chcprod</td>
+</tr>
+</tbody>
+</table>
+<p>Examples</p>
+<div class="code"><pre><span></span><span class="k">using</span> <span class="n">CUTEst</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">CUTEstModel</span><span class="p">(</span><span class="s">&quot;ROSENBR&quot;</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span>
+<span class="n">fx</span> <span class="o">=</span> <span class="n">ufn</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>24.199999999999996
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">nnzj</span><span class="p">,</span> <span class="n">hval</span><span class="p">,</span> <span class="n">hrow</span><span class="p">,</span> <span class="n">hcol</span> <span class="o">=</span> <span class="n">ush</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>(3,[1330.0,480.0,200.0],Int32[1,1,2],Int32[1,2,2])
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">cutest_finalize</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">CUTEstModel</span><span class="p">(</span><span class="s">&quot;HS51&quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span>
+
+<span class="c"># Checking documentation, in REPL use ?ccfsg</span>
+<span class="p">@</span><span class="n">doc</span> <span class="n">ccfsg</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>```
+c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
+```
+
+  * nlp:     [IN] CUTEstModel
+  * x:       [IN] Array{Float64, 1}
+  * c:       [OUT] Array{Float64, 1}
+  * nnzj:    [OUT] Int
+  * j_val:   [OUT] Array{Float64, 1}
+  * j_var:   [OUT] Array{Int, 1}
+  * j_fun:   [OUT] Array{Int, 1}
+  * grad:    [IN] Bool
+
+```
+c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)
+```
+
+  * n:       [IN] Int
+  * m:       [IN] Int
+  * x:       [IN] Array{Float64, 1}
+  * c:       [OUT] Array{Float64, 1}
+  * nnzj:    [OUT] Int
+  * lj:      [IN] Int
+  * j_val:   [OUT] Array{Float64, 1}
+  * j_var:   [OUT] Array{Int, 1}
+  * j_fun:   [OUT] Array{Int, 1}
+  * grad:    [IN] Bool
+
+# ccfsg
+
+The ccfsg subroutine evaluates the values of the constraint functions of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly their gradients in the constrained minimization case. The gradients are stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.
+
+For more information, run the shell command
+
+```
+man cutest_ccfsg
+```
+
+Usage:
+
+```
+ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
+```
+
+  * io_err:  [OUT] Array{Cint, 1}
+  * n:       [IN] Array{Cint, 1}
+  * m:       [IN] Array{Cint, 1}
+  * x:       [IN] Array{Cdouble, 1}
+  * c:       [OUT] Array{Cdouble, 1}
+  * nnzj:    [OUT] Array{Cint, 1}
+  * lj:      [IN] Array{Cint, 1}
+  * j_val:   [OUT] Array{Cdouble, 1}
+  * j_var:   [OUT] Array{Cint, 1}
+  * j_fun:   [OUT] Array{Cint, 1}
+  * grad:    [IN] Array{Cint, 1}
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">c</span><span class="p">,</span> <span class="n">nnzj</span><span class="p">,</span> <span class="n">jval</span><span class="p">,</span> <span class="n">jvar</span><span class="p">,</span> <span class="n">jfun</span> <span class="o">=</span> <span class="n">ccfsg</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;c = </span><span class="si">$c</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;J = </span><span class="si">$(sparse(jvar, jfun, jval))</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>c = [0.0,0.0,0.0]
+J =
+    [1, 1]  =  1.0
+    [2, 1]  =  3.0
+    [3, 2]  =  1.0
+    [4, 2]  =  1.0
+    [5, 2]  =  -2.0
+    [2, 3]  =  1.0
+    [5, 3]  =  -1.0
+</pre></div>
+
+
+<p>Compare with the NLPModels interface</p>
+<div class="code"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">cons</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">jac</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;c = </span><span class="si">$c</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;J = </span><span class="si">$J</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>c = [0.0,0.0,0.0]
+J =
+    [1, 1]  =  1.0
+    [1, 2]  =  3.0
+    [3, 2]  =  1.0
+    [2, 3]  =  1.0
+    [2, 4]  =  1.0
+    [2, 5]  =  -2.0
+    [3, 5]  =  -1.0
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">cutest_finalize</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+</pre></div>
+          <aside class="copyright" role="note">
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href=".." title="Home">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                Home
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../api/" title="API">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                API
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '..';
+      var repo_id  = 'JuliaSmoothOptimizers/CUTEst.jl';
+    </script>
+    <script src="../assets/javascripts/application-997097ee0c.js"></script>
+    
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    
+      <script src="../assets/mathjaxhelper.js"></script>
+    
+    
+  </body>
+</html>
