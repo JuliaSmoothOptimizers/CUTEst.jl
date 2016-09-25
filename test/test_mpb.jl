@@ -1,3 +1,8 @@
+using Ipopt
+using MathProgBase
+using NLPModels
+using CUTEst
+
 # pass a CUTEstModel to IPOPT
 nlp = CUTEstModel("HS6")
 show(nlp.meta)
