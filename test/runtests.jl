@@ -1,13 +1,25 @@
-using Base.Test, CUTEst, Ipopt, JuMP, MathProgBase, NLPModels
+using Base.Test, CUTEst, FactCheck, Ipopt, JuMP, MathProgBase, NLPModels
 
-for problem in ["HS32", "HS4"]
-  global problem
-  include("$(lowercase(problem)).jl")
-  include("build_test.jl")
-  include("test_core.jl")
-  include("test_specialized.jl")
-  include("test_julia.jl")
-  include("finalize_test.jl")
+problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
+path = joinpath(Pkg.dir("NLPModels"), "test")
+
+include("test_core.jl")
+include("test_specialized.jl")
+include("test_julia.jl")
+
+for problem in problems
+  println("Testing interfaces on problem $problem")
+  problem_s = string(problem)
+  include(joinpath(path, "$problem_s.jl"))
+  nlp = CUTEstModel(uppercase(problem_s))
+  adnlp = eval(parse("$(problem)_autodiff"))()
+
+  test_nlpinterface(nlp, adnlp)
+  test_specinterface(nlp, adnlp)
+  test_coreinterface(nlp, adnlp)
+
+  println("Finalizing")
+  cutest_finalize(nlp)
 end
 
 include("consistency.jl")
