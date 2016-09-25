@@ -7,7 +7,7 @@ theme: material
 
 extra:
   palette:
-    primary: 'orange'
+    primary: 'deep orange'
     accent: 'indigo'
   author:
     github: JuliaSmoothOptimizers
@@ -25,10 +25,12 @@ markdown_extensions:
   - tables
   - fenced_code
   - mdx_math
+  - codehilite(css_class=code, guess_lang=False)
 
 docs_dir: 'build'
 
 pages:
-  - Home: home.md
+  - Home: index.md
+  - Tutorial: tutorial.md
   - API: api.md
-  - Index: index.md
+  - Remissive Index: remissive-index.md
