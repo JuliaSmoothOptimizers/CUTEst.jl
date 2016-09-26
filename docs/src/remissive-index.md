@@ -1,4 +1,0 @@
-# Remissive Index
-
-```@index
-```

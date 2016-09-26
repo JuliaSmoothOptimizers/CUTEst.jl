@@ -1,20 +1,20 @@
 # CUTEst.jl documentation
 
-This package provides access interfaces to
+This package provides an interface to
 [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki),
 the *Constrained and Unconstrained Test Environment with safe threads*
 for nonlinear optimization.
 
 This package uses
 [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl), but it
-also gives a different interface for accessing the problems.
+also gives direct access to the CUTEst functions.
 
 ## CUTEst brief history
 
 CUTEst has been around for a while. It started as CUTE, then CUTEr,
 then CUTEr2, and finally CUTEst.
-The [original project](https://ccpforge.cse.rl.ac.uk/gf/project/cutest/) is
-still active, and can be used independently of Julia.
+The [original project](https://ccpforge.cse.rl.ac.uk/gf/project/cutest/) can be
+used independently of Julia.
 
 CUTEst works by decoding a `.SIF` file into other files and objects so that a
 user compiles links that to his code. It also gives the option of doing that
@@ -25,9 +25,6 @@ CUTEst gives you about 100 methods to access the objective and constraints
 functions, as well as their derivatives in many different formats. It also gives
 access to the problem's information, like number of variables, constraints, the
 initial point, the bounds, an so on.
-
-CUTEst is widely used and known for general nonlinear smooth optimization
-methods. It should probably continue well used for a few more years at least.
 
 ## Installing
 
@@ -66,9 +63,13 @@ cutest_finalize(nlp)
 
 Check the [NLPModels API](api/#nlpmodels-api) for details.
 
-There is also a specialized API which provides a more CUTEst-like interface, and
-a core API which is only a wrapper for CUTEst.
-The documentation of these can be found [here](api/#core-and-specialized-api).
+## Working with CUTEst directly
+
+We also have implemented function to allow access to the CUTEst functions
+directly. There is a specialized API which provides a Julian way to access them,
+and a core API which is only a wrapper for CUTEst.
+For more information see the section [core](core), or
+the documentation [here](api/#core-and-specialized-api).
 
 ## Contents
 

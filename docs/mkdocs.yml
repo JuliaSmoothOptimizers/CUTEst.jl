@@ -33,4 +33,5 @@ pages:
   - Home: index.md
   - Tutorial: tutorial.md
   - API: api.md
-  - Remissive Index: remissive-index.md
+  - Core: core.md
+  - Reference: reference.md
