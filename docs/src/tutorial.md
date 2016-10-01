@@ -126,12 +126,7 @@ To find out whether these constraints are equalities or inequalities we can
 check `nlp.meta`
 
 ```@example ex2
-println("Equ  c(x) = 0:         $(nlp.meta.jfix)")
-println("Ineq c(x) >= cL:       $(nlp.meta.jlow)")
-println("Ineq c(x) <= cU:       $(nlp.meta.jupp)")
-println("Ineq cL <= c(x) <= cU: $(nlp.meta.jrng)")
-println("lcon = $(nlp.meta.lcon)")
-println("ucon = $(nlp.meta.ucon)")
+print(nlp.meta)
 ```
 
 ```@example ex2
