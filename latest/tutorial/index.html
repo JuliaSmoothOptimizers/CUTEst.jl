@@ -381,21 +381,21 @@ nvar = 3, ncon = 1 (1 linear)
 
 
 <p>To find out whether these constraints are equalities or inequalities we can check <code>nlp.meta</code></p>
-<div class="code"><pre><span></span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Equ  c(x) = 0:         </span><span class="si">$(nlp.meta.jfix)</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;Ineq c(x) &gt;= cL:       </span><span class="si">$(nlp.meta.jlow)</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;Ineq c(x) &lt;= cU:       </span><span class="si">$(nlp.meta.jupp)</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;Ineq cL &lt;= c(x) &lt;= cU: </span><span class="si">$(nlp.meta.jrng)</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;lcon = </span><span class="si">$(nlp.meta.lcon)</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;ucon = </span><span class="si">$(nlp.meta.ucon)</span><span class="s">&quot;</span><span class="p">)</span>
+<div class="code"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="code"><pre><span></span>Equ  c(x) = 0:         Int64[]
-Ineq c(x) &gt;= cL:       [1]
-Ineq c(x) &lt;= cU:       Int64[]
-Ineq cL &lt;= c(x) &lt;= cU: Int64[]
-lcon = [0.0]
-ucon = [Inf]
+<div class="code"><pre><span></span>Minimization problem HS35
+nvar = 3, ncon = 1 (1 linear)
+lvar = 0.0  0.0  0.0
+uvar = Inf  Inf  Inf
+lcon = 0.0
+ucon = Inf
+x0 = 0.5  0.5  0.5
+y0 = 0.0
+nnzh = 5
+nnzj = 3
+linear constraints:    1
 </pre></div>
 
 

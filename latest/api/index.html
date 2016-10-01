@@ -291,6 +291,8 @@
 <p>Evaluate $\nabla f(x)$, the gradient of the objective function at <code>x</code> in place.</p>
 <p><a id='NLPModels.cons' href='#NLPModels.cons'>#</a>
 <strong><code>NLPModels.cons</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>cons(nlp, x)</code></p>
+<p>Evaluate $c(x)$, the constraints at <code>x</code>.</p>
 <div class="code"><pre><span></span>cons(nlp, x, jac)
 </pre></div>
 
@@ -308,8 +310,6 @@ c = cons(nlp, x, false)
 <li>c:    [OUT] Array{Float64, 1}</li>
 <li>J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}</li>
 </ul>
-<p><code>cons(nlp, x)</code></p>
-<p>Evaluate $c(x)$, the constraints at <code>x</code>.</p>
 <p><a id='NLPModels.cons!' href='#NLPModels.cons!'>#</a>
 <strong><code>NLPModels.cons!</code></strong> &mdash; <em>Function</em>.</p>
 <p><code>cons!(nlp, x, c)</code></p>
