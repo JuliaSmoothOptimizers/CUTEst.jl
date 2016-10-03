@@ -2,13 +2,13 @@ import JSON
 
 # Some enumerations and correspondance dicts
 const objtypes = ["none", "constant", "linear", "quadratic", "sum_of_squares", "other"]
-const classdb_objtype = [x=>objtypes[i] for (i,x) in enumerate("NCLQSO")]
+const classdb_objtype = Dict(x=>objtypes[i] for (i,x) in enumerate("NCLQSO"))
 
 const contypes = ["unc", "fixed_vars", "bounds", "network", "linear", "quadratic", "general"]
-const classdb_contype = [x=>contypes[i] for (i,x) in enumerate("UXBNLQO")]
+const classdb_contype = Dict(x=>contypes[i] for (i,x) in enumerate("UXBNLQO"))
 
 const origins = ["academic", "modelling", "real"]
-const classdb_origin = [x=>origins[i] for (i,x) in enumerate("AMR")]
+const classdb_origin = Dict(x=>origins[i] for (i,x) in enumerate("AMR"))
 
 """`create_class()`
 
