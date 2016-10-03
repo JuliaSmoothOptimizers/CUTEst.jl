@@ -1,3 +1,5 @@
+using Combinatorics
+
 small_problem = "HS4"
 large_problem = "AUG3D"
 unc_problem = "BARD"
