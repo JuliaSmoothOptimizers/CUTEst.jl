@@ -1,14 +1,29 @@
 import JSON
 
 # Some enumerations and correspondance dicts
+# Dict comprehension isn't defined in 0.4 and isn't handled by Compat
+# See https://github.com/JuliaLang/Compat.jl/issues/231
 const objtypes = ["none", "constant", "linear", "quadratic", "sum_of_squares", "other"]
-const classdb_objtype = Dict(x=>objtypes[i] for (i,x) in enumerate("NCLQSO"))
+const classdb_objtype = Dict("N"=>objtypes[1],
+                             "C"=>objtypes[2],
+                             "L"=>objtypes[3],
+                             "Q"=>objtypes[4],
+                             "S"=>objtypes[5],
+                             "O"=>objtypes[6])
 
 const contypes = ["unc", "fixed_vars", "bounds", "network", "linear", "quadratic", "general"]
-const classdb_contype = Dict(x=>contypes[i] for (i,x) in enumerate("UXBNLQO"))
+const classdb_contype = Dict("U"=>contypes[1],
+                             "X"=>contypes[2],
+                             "B"=>contypes[3],
+                             "N"=>contypes[4],
+                             "L"=>contypes[5],
+                             "Q"=>contypes[6],
+                             "O"=>contypes[7])
 
 const origins = ["academic", "modelling", "real"]
-const classdb_origin = Dict(x=>origins[i] for (i,x) in enumerate("AMR"))
+const classdb_origin = Dict("A"=>origins[1],
+                            "M"=>origins[2],
+                            "R"=>origins[3])
 
 """`create_class()`
 
