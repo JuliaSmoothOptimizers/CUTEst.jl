@@ -23,7 +23,6 @@ const automat = "AUTOMAT.d";
 const funit   = convert(Int32, 42);
 @static is_apple() ? (const linker = "gfortran") : (const linker = "ld")
 @static is_apple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
-@static is_apple() ? (const soname = "dylib") : (const soname = "so");
 
 type CUTEstException <: Exception
   info :: Int32
@@ -51,7 +50,7 @@ function __init__()
   global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
 
   global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
-      "double/libcutest_double.$soname")
+      "double/libcutest_double.$(Libdl.dlext)")
 
   push!(Libdl.DL_LOAD_PATH, ".")
 end
@@ -87,7 +86,7 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false)
   verbose && println(readstring(outlog))
 
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-  run(`$linker $sh_flags -o $libname.$soname ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
+  run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
   global cutest_lib = Libdl.dlopen(libname,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
@@ -101,7 +100,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   if !decode
     (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
     libname = "lib$name"
-    isfile("$libname.$soname") || error("CUTEst: lib not found; decode problem first")
+    isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
     cutest_lib = Libdl.dlopen(libname,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
   else
@@ -212,4 +211,3 @@ function print(io :: IO, nlp :: CUTEstModel)
 end
 
 end  # module CUTEst.
-
