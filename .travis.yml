@@ -32,7 +32,9 @@ branches:
 sudo: required
 
 before_install:
-  - if [ `uname` == "Linux" ]; then unset DYLD_LIBRARY_PATH; bash travisCI/setup_travis_linux.sh; fi
+  - if [ `uname` == "Linux" ]; then
+    unset DYLD_LIBRARY_PATH;
+    sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.)/libgfortran.so /usr/local/lib; fi
   - if [ `uname` == "Darwin" ]; then brew install gcc; fi
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -E 'Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl");
