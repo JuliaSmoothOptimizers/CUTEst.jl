@@ -12,9 +12,12 @@ comparing optimization algorithms, derived from the abstract model on
 
 ## Installing
 
-Currently, this package builds its own version of CUTEst. If you have a working
-version of CUTEst, and is interested in using it, you can help us by
-contributing to this package.
+This package should detect your existing CUTEst installation, and will install its private version of CUTEst otherwise.
+The gfortran compiler is required.
+We currently do not support other Fortran compilers.
+On OSX, Homebrew.jl will install gfortran if gfortran is not detected on your system.
+You may either use standard Homebrew to install gfortran yourself from precompiled bottled using `brew install gcc` or let Homebrew.jl install its private version.
+In the latter scenario, gcc and gfortran need to be compiled from source.
 
 The following commands download NLPModels and CUTEst, change to the specific
 branch, and build CUTEst.
