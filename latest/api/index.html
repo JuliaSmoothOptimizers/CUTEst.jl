@@ -72,7 +72,7 @@
   
   
   
-  <body class="palette-primary-deep-orange palette-accent-indigo">
+  <body class="palette-primary-orange palette-accent-indigo">
     
       
       
@@ -173,17 +173,8 @@
           
             
   <li>
-    <a class="" title="Home" href="..">
+    <a class="" title="Home" href="../home/">
       Home
-    </a>
-    
-  </li>
-
-          
-            
-  <li>
-    <a class="" title="Tutorial" href="../tutorial/">
-      Tutorial
     </a>
     
   </li>
@@ -208,8 +199,8 @@
             </li>
           
             <li class="anchor">
-              <a title="Extra Julian API" href="#extra-julian-api">
-                Extra Julian API
+              <a title="Extra julian API" href="#extra-julian-api">
+                Extra julian API
               </a>
             </li>
           
@@ -233,17 +224,8 @@
           
             
   <li>
-    <a class="" title="Core" href="../core/">
-      Core
-    </a>
-    
-  </li>
-
-          
-            
-  <li>
-    <a class="" title="Reference" href="../reference/">
-      Reference
+    <a class="" title="Index" href="..">
+      Index
     </a>
     
   </li>
@@ -291,17 +273,13 @@
 <p>Evaluate $\nabla f(x)$, the gradient of the objective function at <code>x</code> in place.</p>
 <p><a id='NLPModels.cons' href='#NLPModels.cons'>#</a>
 <strong><code>NLPModels.cons</code></strong> &mdash; <em>Function</em>.</p>
-<p><code>cons(nlp, x)</code></p>
-<p>Evaluate $c(x)$, the constraints at <code>x</code>.</p>
-<div class="code"><pre><span></span>cons(nlp, x, jac)
-</pre></div>
-
+<pre><code>cons(nlp, x, jac)
+</code></pre>
 
 <p>Computes the constraint vector and, if <code>jac</code> is <code>true</code>, the Jacobian in internal sparse format. Usage:</p>
-<div class="code"><pre><span></span>c, J = cons(nlp, x, true)
+<pre><code>c, J = cons(nlp, x, true)
 c = cons(nlp, x, false)
-</pre></div>
-
+</code></pre>
 
 <ul>
 <li>nlp:  [IN] CUTEstModel</li>
@@ -310,6 +288,8 @@ c = cons(nlp, x, false)
 <li>c:    [OUT] Array{Float64, 1}</li>
 <li>J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}</li>
 </ul>
+<p><code>cons(nlp, x)</code></p>
+<p>Evaluate $c(x)$, the constraints at <code>x</code>.</p>
 <p><a id='NLPModels.cons!' href='#NLPModels.cons!'>#</a>
 <strong><code>NLPModels.cons!</code></strong> &mdash; <em>Function</em>.</p>
 <p><code>cons!(nlp, x, c)</code></p>
@@ -372,9 +352,8 @@ c = cons(nlp, x, false)
 <p>with σ = obj_weight.</p>
 <p><a id='NLPModels.NLPtoMPB' href='#NLPModels.NLPtoMPB'>#</a>
 <strong><code>NLPModels.NLPtoMPB</code></strong> &mdash; <em>Function</em>.</p>
-<div class="code"><pre><span></span>mp = NLPtoMPB(nlp, solver)
-</pre></div>
-
+<pre><code>mp = NLPtoMPB(nlp, solver)
+</code></pre>
 
 <p>Return a <code>MathProgBase</code> model corresponding to an <code>AbstractNLPModel</code>.</p>
 <p><strong>Arguments</strong></p>
@@ -385,29 +364,26 @@ c = cons(nlp, x, false)
 <p>Currently, all models are treated as nonlinear models.</p>
 <p><strong>Return values</strong></p>
 <p>The function returns a <code>MathProgBase</code> model <code>mpbmodel</code> such that it should be possible to call</p>
-<div class="code"><pre><span></span>MathProgBase.optimize!(mpbmodel)
-</pre></div>
+<pre><code>MathProgBase.optimize!(mpbmodel)
+</code></pre>
 
-
-<p><a id='NLPModels.reset!' href='#NLPModels.reset!'>#</a>
-<strong><code>NLPModels.reset!</code></strong> &mdash; <em>Function</em>.</p>
+<p><a id='LinearOperators.reset!' href='#LinearOperators.reset!'>#</a>
+<strong><code>LinearOperators.reset!</code></strong> &mdash; <em>Function</em>.</p>
 <p><code>reset!(counters)</code></p>
 <p>Reset evaluation counters</p>
 <p>`reset!(nlp)</p>
 <p>Reset evaluation count in <code>nlp</code></p>
-<p><a id='Extra-Julian-API-1'></a></p>
-<h2 id="extra-julian-api">Extra Julian API</h2>
+<p><a id='Extra-julian-API-1'></a></p>
+<h2 id="extra-julian-api">Extra julian API</h2>
 <p><a id='CUTEst.objgrad' href='#CUTEst.objgrad'>#</a>
 <strong><code>CUTEst.objgrad</code></strong> &mdash; <em>Function</em>.</p>
-<div class="code"><pre><span></span>objgrad(nlp, x, grad)
-</pre></div>
-
+<pre><code>objgrad(nlp, x, grad)
+</code></pre>
 
 <p>Computes the objective function value and, if grad is <code>true</code>, gradient at x. Usage:</p>
-<div class="code"><pre><span></span>f, g = objgrad(nlp, x, true)
+<pre><code>f, g = objgrad(nlp, x, true)
 f = objgrad(nlp, x)
-</pre></div>
-
+</code></pre>
 
 <ul>
 <li>nlp:  [IN] CUTEstModel</li>
@@ -418,15 +394,13 @@ f = objgrad(nlp, x)
 </ul>
 <p><a id='CUTEst.objcons' href='#CUTEst.objcons'>#</a>
 <strong><code>CUTEst.objcons</code></strong> &mdash; <em>Function</em>.</p>
-<div class="code"><pre><span></span>objcons(nlp, x)
-</pre></div>
-
+<pre><code>objcons(nlp, x)
+</code></pre>
 
 <p>Computes the objective function and constraint vector values at x. Usage:</p>
-<div class="code"><pre><span></span>f, c = objcons(nlp, x) # If the problem is constrained
+<pre><code>f, c = objcons(nlp, x) # If the problem is constrained
 f = objcons(nlp, x)    # If the problem is unconstrained
-</pre></div>
-
+</code></pre>
 
 <ul>
 <li>nlp: [IN] CUTEstModel</li>
@@ -436,15 +410,13 @@ f = objcons(nlp, x)    # If the problem is unconstrained
 </ul>
 <p><a id='CUTEst.cons_coord' href='#CUTEst.cons_coord'>#</a>
 <strong><code>CUTEst.cons_coord</code></strong> &mdash; <em>Function</em>.</p>
-<div class="code"><pre><span></span>cons_coord(nlp, x, jac)
-</pre></div>
-
+<pre><code>cons_coord(nlp, x, jac)
+</code></pre>
 
 <p>Computes the constraint vector and, if <code>jac</code> is <code>true</code>, the Jacobian in coordinate format. Usage:</p>
-<div class="code"><pre><span></span>c, jrow, jcol, jval = cons_coord(nlp, x, true)
+<pre><code>c, jrow, jcol, jval = cons_coord(nlp, x, true)
 c = cons_coord(nlp, x, false)
-</pre></div>
-
+</code></pre>
 
 <ul>
 <li>nlp:  [IN] CUTEstModel</li>
@@ -462,14 +434,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ccfg</strong></p>
 <p>The ccfg subroutine evaluates the values of the constraint functions of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly their gradients. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ccfg
-</pre></div>
-
+<pre><code>man cutest_ccfg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
-</pre></div>
-
+<pre><code>ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -488,14 +458,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ccfsg</strong></p>
 <p>The ccfsg subroutine evaluates the values of the constraint functions of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly their gradients in the constrained minimization case. The gradients are stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ccfsg
-</pre></div>
-
+<pre><code>man cutest_ccfsg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
-</pre></div>
-
+<pre><code>ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -515,14 +483,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cchprods</strong></p>
 <p>The cchprods subroutine forms the product of a vector with each of the Hessian matrix of the constraint functions c(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point x= X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cchprods
-</pre></div>
-
+<pre><code>man cutest_cchprods
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cchprods(io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
-</pre></div>
-
+<pre><code>cchprods(io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -541,14 +507,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ccifg</strong></p>
 <p>The ccifg subroutine evaluates the value of a particular constraint function of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly its gradient in the constrained minimization case. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ccifg
-</pre></div>
-
+<pre><code>man cutest_ccifg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ccifg(io_err, n, icon, x, ci, gci, grad)
-</pre></div>
-
+<pre><code>ccifg(io_err, n, icon, x, ci, gci, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -564,14 +528,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ccifsg</strong></p>
 <p>The ccifsg subroutine evaluates the value of a particular constraint function of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly its gradient in the constrained minimization case. The gradient is stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ccifsg
-</pre></div>
-
+<pre><code>man cutest_ccifsg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
-</pre></div>
-
+<pre><code>ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -590,14 +552,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cdh</strong></p>
 <p>The cdh subroutine evaluates the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The matrix is stored as a dense matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cdh
-</pre></div>
-
+<pre><code>man cutest_cdh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cdh(io_err, n, m, x, y, lh1, h_val)
-</pre></div>
-
+<pre><code>cdh(io_err, n, m, x, y, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -613,14 +573,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cdhc</strong></p>
 <p>The cdhc subroutine evaluates the Hessian matrix of the constraint part of the Lagrangian function yTc(x) for the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The matrix is stored as a dense matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cdhc
-</pre></div>
-
+<pre><code>man cutest_cdhc
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cdhc(io_err, n, m, x, y, lh1, h_val)
-</pre></div>
-
+<pre><code>cdhc(io_err, n, m, x, y, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -636,14 +594,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cdimchp</strong></p>
 <p>The cdimchp subroutine determines the number of nonzero elements required to store the products of the Hessian matrices of the constraint functions with a specified vector for the problem decoded into OUTSDIF.d in the constrained minimization case. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cdimchp
-</pre></div>
-
+<pre><code>man cutest_cdimchp
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cdimchp(io_err, nnzchp)
-</pre></div>
-
+<pre><code>cdimchp(io_err, nnzchp)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -654,14 +610,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cdimen</strong></p>
 <p>The cdimen subroutine discovers how many variables and constraints are involved in the problem decoded from a SIF file by the script sifdecoder. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cdimen
-</pre></div>
-
+<pre><code>man cutest_cdimen
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cdimen(io_err, input, n, m)
-</pre></div>
-
+<pre><code>cdimen(io_err, input, n, m)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -674,14 +628,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cdimse</strong></p>
 <p>The cdimse subroutine determines the number of nonzero elements required to store the Hessian matrix of the Lagrangian function for the problem decoded from a SIF file by the script sifdecoder. The matrix is stored in sparse "finite element" format H=eΣ1He, where each square symmetric element He involves a small subset of the rows of the Hessian matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cdimse
-</pre></div>
-
+<pre><code>man cutest_cdimse
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cdimse(io_err, ne, he_val_ne, he_row_ne)
-</pre></div>
-
+<pre><code>cdimse(io_err, ne, he_val_ne, he_row_ne)
+</code></pre>
 
 <ul>
 <li>io_err:    [OUT] Array{Cint, 1}</li>
@@ -694,14 +646,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cdimsh</strong></p>
 <p>The cdimsh subroutine determines the number of nonzero elements required to store the Hessian matrix of the Lagrangian function for the problem decoded into OUTSDIF.d in the constrained minimization case. The matrix is stored in sparse "coordinate" format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cdimsh
-</pre></div>
-
+<pre><code>man cutest_cdimsh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cdimsh(io_err, nnzh)
-</pre></div>
-
+<pre><code>cdimsh(io_err, nnzh)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -712,14 +662,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cdimsj</strong></p>
 <p>The cdimsj subroutine determines the number of nonzero elements required to store the matrix of gradients of the objective function and constraint functions for the problem decoded into OUTSDIF.d in the constrained minimization case. The matrix is stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cdimsj
-</pre></div>
-
+<pre><code>man cutest_cdimsj
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cdimsj(io_err, nnzj)
-</pre></div>
-
+<pre><code>cdimsj(io_err, nnzj)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -730,14 +678,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ceh</strong></p>
 <p>The ceh subroutine evaluates the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem decoded into OUTSDIF.d at the point (x,y)= (X,Y). This Hessian matrix is stored as a sparse matrix in finite element format H=eΣ1He, where each square symmetric element He involves a small subset of the rows of the Hessian matrix. The problem under consideration consists in minimizing (or maximizing) an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ceh
-</pre></div>
-
+<pre><code>man cutest_ceh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ceh(io_err, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
-</pre></div>
-
+<pre><code>ceh(io_err, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
+</code></pre>
 
 <p>he_row, lhe_val, he_val, byrows)</p>
 <ul>
@@ -761,14 +707,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cfn</strong></p>
 <p>The cfn subroutine evaluates the value of the objective function and general constraint functions of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cfn
-</pre></div>
-
+<pre><code>man cutest_cfn
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cfn(io_err, n, m, x, f, c)
-</pre></div>
-
+<pre><code>cfn(io_err, n, m, x, f, c)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -783,14 +727,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cgr</strong></p>
 <p>The cgr subroutine evaluates the gradients of the general constraints and of either the objective function f(x) or the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cgr
-</pre></div>
-
+<pre><code>man cutest_cgr
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
-</pre></div>
-
+<pre><code>cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -810,14 +752,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cgrdh</strong></p>
 <p>The cgrdh subroutine evaluates the gradients of the general constraints and of either the objective function f(x) or the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). It also evaluates the Hessian matrix of the Lagrangian function at (x,y). The gradients and matrices are stored in a dense format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cgrdh
-</pre></div>
-
+<pre><code>man cutest_cgrdh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
-</pre></div>
-
+<pre><code>cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -839,14 +779,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>chcprod</strong></p>
 <p>The chcprod subroutine forms the product of a vector with the Hessian matrix of the constraint part of the Lagrangian function yTc(x) of the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_chcprod
-</pre></div>
-
+<pre><code>man cutest_chcprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>chcprod(io_err, n, m, goth, x, y, vector, result)
-</pre></div>
-
+<pre><code>chcprod(io_err, n, m, goth, x, y, vector, result)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -863,14 +801,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>chprod</strong></p>
 <p>The chprod subroutine forms the product of a vector with the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_chprod
-</pre></div>
-
+<pre><code>man cutest_chprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>chprod(io_err, n, m, goth, x, y, vector, result)
-</pre></div>
-
+<pre><code>chprod(io_err, n, m, goth, x, y, vector, result)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -887,14 +823,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cidh</strong></p>
 <p>The cidh subroutine evaluates the Hessian matrix of either the objective function or a constraint function for the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly its gradient. The matrix is stored as a dense matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cidh
-</pre></div>
-
+<pre><code>man cutest_cidh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cidh(io_err, n, x, iprob, lh1, h)
-</pre></div>
-
+<pre><code>cidh(io_err, n, x, iprob, lh1, h)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -909,14 +843,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cish</strong></p>
 <p>The cish subroutine evaluates the Hessian of a particular constraint function or the objective function for the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly its gradient. The matrix is stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cish
-</pre></div>
-
+<pre><code>man cutest_cish
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -934,14 +866,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cjprod</strong></p>
 <p>The cjprod subroutine forms the product of a vector with the Jacobian matrix, or with its transpose, of the constraint functions of the problem decoded from a SIF file by the script sifdecoder evaluated at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cjprod
-</pre></div>
-
+<pre><code>man cutest_cjprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
-</pre></div>
-
+<pre><code>cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -960,14 +890,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>clfg</strong></p>
 <p>The clfg subroutine evaluates the value of the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the script sifdecoder at the point (X,Y), and possibly its gradient. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_clfg
-</pre></div>
-
+<pre><code>man cutest_clfg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>clfg(io_err, n, m, x, y, f, g, grad)
-</pre></div>
-
+<pre><code>clfg(io_err, n, m, x, y, f, g, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -984,14 +912,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cnames</strong></p>
 <p>The cnames subroutine obtains the names of the problem, its variables and general constraints. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cnames
-</pre></div>
-
+<pre><code>man cutest_cnames
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cnames(io_err, n, m, pname, vname, cname)
-</pre></div>
-
+<pre><code>cnames(io_err, n, m, pname, vname, cname)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1006,14 +932,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cofg</strong></p>
 <p>The cofg subroutine evaluates the value of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly its gradient. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cofg
-</pre></div>
-
+<pre><code>man cutest_cofg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cofg(io_err, n, x, f, g, grad)
-</pre></div>
-
+<pre><code>cofg(io_err, n, x, f, g, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1028,14 +952,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cofsg</strong></p>
 <p>The cofsg subroutine evaluates the value of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly its gradient in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cofsg
-</pre></div>
-
+<pre><code>man cutest_cofsg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad)
-</pre></div>
-
+<pre><code>cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1053,14 +975,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>connames</strong></p>
 <p>The connames subroutine obtains the names of the general constraints of the problem. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_connames
-</pre></div>
-
+<pre><code>man cutest_connames
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>connames(io_err, m, cname)
-</pre></div>
-
+<pre><code>connames(io_err, m, cname)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1072,14 +992,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>creport</strong></p>
 <p>The creport subroutine obtains statistics concerning function evaluation and CPU time used for constrained optimization in a standardized format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_creport
-</pre></div>
-
+<pre><code>man cutest_creport
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>creport(io_err, calls, time)
-</pre></div>
-
+<pre><code>creport(io_err, calls, time)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1091,14 +1009,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>csetup</strong></p>
 <p>The csetup subroutine sets up the correct data structures for subsequent computations on the problem decoded from a SIF file by the script sifdecoder. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_csetup
-</pre></div>
-
+<pre><code>man cutest_csetup
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
-</pre></div>
-
+<pre><code>csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
+</code></pre>
 
 <p>linear, e_order, l_order, v_order)</p>
 <ul>
@@ -1125,14 +1041,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>csgr</strong></p>
 <p>The csgr subroutine evaluates the gradients of the general constraints and of either the objective function or the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). It also evaluates the Hessian matrix of the Lagrangian function at (x,y). The gradients are stored in a sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_csgr
-</pre></div>
-
+<pre><code>man cutest_csgr
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
-</pre></div>
-
+<pre><code>csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1152,14 +1066,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>csgreh</strong></p>
 <p>The csgreh subroutine evaluates both the gradients of the general constraint functions and the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem decoded into OUTSDIF.d at the point (x,y)= (X,Y). This Hessian matrix is stored as a sparse matrix in finite element format H=eΣ1He, where each square symmetric element He involves a small subset of the rows of the Hessian matrix. The subroutine also obtains the gradient of either the objective function or the Lagrangian function, stored in a sparse format. The problem under consideration consists in minimizing (or maximizing) an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_csgreh
-</pre></div>
-
+<pre><code>man cutest_csgreh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>csgreh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne,
-</pre></div>
-
+<pre><code>csgreh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne,
+</code></pre>
 
 <p>lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)</p>
 <ul>
@@ -1189,14 +1101,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>csgrsh</strong></p>
 <p>The csgrsh subroutine evaluates the gradients of the general constraints, the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) and the gradient of either the objective function or the Lagrangian corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The data is stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_csgrsh
-</pre></div>
-
+<pre><code>man cutest_csgrsh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
-</pre></div>
-
+<pre><code>csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
+</code></pre>
 
 <p>h_val, h_row, h_col)</p>
 <ul>
@@ -1222,14 +1132,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>csh</strong></p>
 <p>The csh subroutine evaluates the Hessian of the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The matrix is stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_csh
-</pre></div>
-
+<pre><code>man cutest_csh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1248,14 +1156,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cshc</strong></p>
 <p>The cshc subroutine evaluates the Hessian matrix of the constraint part of the Lagrangian function yTc(x) for the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The matrix is stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cshc
-</pre></div>
-
+<pre><code>man cutest_cshc
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1274,14 +1180,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cshcprod</strong></p>
 <p>The cshcprod subroutine forms the product of a sparse vector with the Hessian matrix of the constraint part of the Lagrangian function yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cshcprod
-</pre></div>
-
+<pre><code>man cutest_cshcprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cshcprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
-</pre></div>
-
+<pre><code>cshcprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+</code></pre>
 
 <p>nnz_result, index_nz_result, result)</p>
 <ul>
@@ -1303,14 +1207,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cshp</strong></p>
 <p>The cshp subroutine evaluates the sparsity pattern of the Hessian of the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem, decoded from a SIF file by the script sifdecoder, in coordinate format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cshp
-</pre></div>
-
+<pre><code>man cutest_cshp
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cshp(io_err, n, nnzh, lh, h_row, h_col)
-</pre></div>
-
+<pre><code>cshp(io_err, n, nnzh, lh, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1325,14 +1227,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cshprod</strong></p>
 <p>The cshprod subroutine forms the product of a sparse vector with the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cshprod
-</pre></div>
-
+<pre><code>man cutest_cshprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
-</pre></div>
-
+<pre><code>cshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+</code></pre>
 
 <p>nnz_result, index_nz_result, result)</p>
 <ul>
@@ -1354,14 +1254,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>csjprod</strong></p>
 <p>The csjprod subroutine forms the product of a sparse vector with the Jacobian matrix, or with its transpose, of the constraint functions of the problem decoded from a SIF file by the script sifdecoder evaluated at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_csjprod
-</pre></div>
-
+<pre><code>man cutest_csjprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>csjprod(io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
-</pre></div>
-
+<pre><code>csjprod(io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
+</code></pre>
 
 <p>lvector, nnz_result, index_nz_result, result, lresult)</p>
 <ul>
@@ -1383,9 +1281,8 @@ c = cons_coord(nlp, x, false)
 <p><a id='CUTEst.cstats-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cstats-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cstats</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cstats</strong></p>
-<div class="code"><pre><span></span>cstats(io_err, nonlinear_variables_objective,
-</pre></div>
-
+<pre><code>cstats(io_err, nonlinear_variables_objective,
+</code></pre>
 
 <p>nonlinear_variables_constraints, equality_constraints, linear_constraints)</p>
 <ul>
@@ -1400,14 +1297,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cterminate</strong></p>
 <p>The uterminate subroutine deallocates all workspace arrays created since the last call to csetup.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cterminate
-</pre></div>
-
+<pre><code>man cutest_cterminate
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cterminate(io_err)
-</pre></div>
-
+<pre><code>cterminate(io_err)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1417,14 +1312,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>cvartype</strong></p>
 <p>The cvartype subroutine determines the type (continuous, 0-1, integer) of each variable involved in the problem decoded from a SIF file by the script sifdecoder. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_cvartype
-</pre></div>
-
+<pre><code>man cutest_cvartype
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>cvartype(io_err, n, x_type)
-</pre></div>
-
+<pre><code>cvartype(io_err, n, x_type)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1436,14 +1329,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>pname</strong></p>
 <p>The pname subroutine obtains the name of the problem directly from the datafile OUTSDIF.d that was created by the script sifdecoder when decoding a SIF file. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_pname
-</pre></div>
-
+<pre><code>man cutest_pname
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>pname(io_err, input, pname)
-</pre></div>
-
+<pre><code>pname(io_err, input, pname)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1455,14 +1346,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>probname</strong></p>
 <p>The probname subroutine obtains the name of the problem. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_probname
-</pre></div>
-
+<pre><code>man cutest_probname
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>probname(io_err, pname)
-</pre></div>
-
+<pre><code>probname(io_err, pname)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1473,14 +1362,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ubandh</strong></p>
 <p>The ubandh subroutine extracts the elements which lie within a band of given semi-bandwidth out of the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group- partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ubandh
-</pre></div>
-
+<pre><code>man cutest_ubandh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
-</pre></div>
-
+<pre><code>ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+</code></pre>
 
 <ul>
 <li>io_err:            [OUT] Array{Cint, 1}</li>
@@ -1496,14 +1383,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>udh</strong></p>
 <p>The udh subroutine evaluates the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a dense matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_udh
-</pre></div>
-
+<pre><code>man cutest_udh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>udh(io_err, n, x, lh1, h)
-</pre></div>
-
+<pre><code>udh(io_err, n, x, lh1, h)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1517,14 +1402,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>udimen</strong></p>
 <p>The udimen subroutine discovers how many variables are involved in the problem decoded from a SIF file by the script sifdecoder. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_udimen
-</pre></div>
-
+<pre><code>man cutest_udimen
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>udimen(io_err, input, n)
-</pre></div>
-
+<pre><code>udimen(io_err, input, n)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1536,14 +1419,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>udimse</strong></p>
 <p>The udimse subroutine determine the number of nonzeros required to store the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a sparse matrix in finite element format H=eΣ1He, where each square symmetric element H_i involves a small subset of the rows of the Hessian matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_udimse
-</pre></div>
-
+<pre><code>man cutest_udimse
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>udimse(io_err, ne, he_val_ne, he_row_ne)
-</pre></div>
-
+<pre><code>udimse(io_err, ne, he_val_ne, he_row_ne)
+</code></pre>
 
 <ul>
 <li>io_err:    [OUT] Array{Cint, 1}</li>
@@ -1556,14 +1437,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>udimsh</strong></p>
 <p>The udimsh subroutine determine the number of nonzeros required to store the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a sparse matrix in coordinate format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_udimsh
-</pre></div>
-
+<pre><code>man cutest_udimsh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>udimsh(io_err, nnzh)
-</pre></div>
-
+<pre><code>udimsh(io_err, nnzh)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1574,14 +1453,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ueh</strong></p>
 <p>The ueh subroutine evaluates the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a sparse matrix in finite element format H=eΣ1He, where each square symmetric element He involves a small subset of the rows of the Hessian matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ueh
-</pre></div>
-
+<pre><code>man cutest_ueh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ueh(io_err, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-</pre></div>
-
+<pre><code>ueh(io_err, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
+</code></pre>
 
 <p>lhe_val, he_val, byrows)</p>
 <ul>
@@ -1603,14 +1480,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ufn</strong></p>
 <p>The ufn subroutine evaluates the value of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ufn
-</pre></div>
-
+<pre><code>man cutest_ufn
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ufn(io_err, n, x, f)
-</pre></div>
-
+<pre><code>ufn(io_err, n, x, f)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1623,14 +1498,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ugr</strong></p>
 <p>The ugr subroutine evaluates the gradient of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ugr
-</pre></div>
-
+<pre><code>man cutest_ugr
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ugr(io_err, n, x, g)
-</pre></div>
-
+<pre><code>ugr(io_err, n, x, g)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1643,14 +1516,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ugrdh</strong></p>
 <p>The ugrdh subroutine evaluates the gradient and Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a dense matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ugrdh
-</pre></div>
-
+<pre><code>man cutest_ugrdh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ugrdh(io_err, n, x, g, lh1, h)
-</pre></div>
-
+<pre><code>ugrdh(io_err, n, x, g, lh1, h)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1665,14 +1536,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ugreh</strong></p>
 <p>The ugreh subroutine evaluates the gradient and Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a sparse matrix in finite element format H=eΣ1He, where each square symmetric element H sub e involves a small subset of the rows of the Hessian matrix. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ugreh
-</pre></div>
-
+<pre><code>man cutest_ugreh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ugreh(io_err, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-</pre></div>
-
+<pre><code>ugreh(io_err, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
+</code></pre>
 
 <p>lhe_val, he_val, byrows)</p>
 <ul>
@@ -1695,14 +1564,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ugrsh</strong></p>
 <p>The ugrsh subroutine evaluates the gradient and Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a sparse matrix in coordinate format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group- partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ugrsh
-</pre></div>
-
+<pre><code>man cutest_ugrsh
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1720,14 +1587,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>uhprod</strong></p>
 <p>The uhprod subroutine forms the product of a vector with the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_uhprod
-</pre></div>
-
+<pre><code>man cutest_uhprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>uhprod(io_err, n, goth, x, vector, result)
-</pre></div>
-
+<pre><code>uhprod(io_err, n, goth, x, vector, result)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1742,14 +1607,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>unames</strong></p>
 <p>The unames subroutine obtains the names of the problem and its variables. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_unames
-</pre></div>
-
+<pre><code>man cutest_unames
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>unames(io_err, n, pname, vname)
-</pre></div>
-
+<pre><code>unames(io_err, n, pname, vname)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1762,14 +1625,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>uofg</strong></p>
 <p>The uofg subroutine evaluates the value of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X, and possibly its gradient. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group- partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_uofg
-</pre></div>
-
+<pre><code>man cutest_uofg
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>uofg(io_err, n, x, f, g, grad)
-</pre></div>
-
+<pre><code>uofg(io_err, n, x, f, g, grad)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1784,14 +1645,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ureport</strong></p>
 <p>The ureport subroutine obtains statistics concerning function evaluation and CPU time used for unconstrained or bound-constrained optimization in a standardized format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group- partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ureport
-</pre></div>
-
+<pre><code>man cutest_ureport
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ureport(io_err, calls, time)
-</pre></div>
-
+<pre><code>ureport(io_err, calls, time)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1803,14 +1662,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>usetup</strong></p>
 <p>The usetup subroutine sets up the correct data structures for subsequent computations in the case where the only possible constraints are bound constraints. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group- partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_usetup
-</pre></div>
-
+<pre><code>man cutest_usetup
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>usetup(io_err, input, out, io_buffer, n, x, x_l, x_u)
-</pre></div>
-
+<pre><code>usetup(io_err, input, out, io_buffer, n, x, x_l, x_u)
+</code></pre>
 
 <ul>
 <li>io_err:    [OUT] Array{Cint, 1}</li>
@@ -1827,14 +1684,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ush</strong></p>
 <p>The ush subroutine evaluates the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. This Hessian matrix is stored as a sparse matrix in coordinate format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group- partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ush
-</pre></div>
-
+<pre><code>man cutest_ush
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1851,14 +1706,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ushp</strong></p>
 <p>The ushp subroutine evaluates the sparsity pattern of the Hessian matrix of the objective function of the problem, decoded from a SIF file by the script sifdecoder, in coordinate format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ushp
-</pre></div>
-
+<pre><code>man cutest_ushp
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ushp(io_err, n, nnzh, lh, h_row, h_col)
-</pre></div>
-
+<pre><code>ushp(io_err, n, nnzh, lh, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1873,14 +1726,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>ushprod</strong></p>
 <p>The ushprod subroutine forms the product of a sparse vector with the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_ushprod
-</pre></div>
-
+<pre><code>man cutest_ushprod
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>ushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
-</pre></div>
-
+<pre><code>ushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
+</code></pre>
 
 <p>index_nz_result, result)</p>
 <ul>
@@ -1900,14 +1751,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>uterminate</strong></p>
 <p>The uterminate subroutine deallocates all workspace arrays created since the last call to usetup.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_uterminate
-</pre></div>
-
+<pre><code>man cutest_uterminate
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>uterminate(io_err)
-</pre></div>
-
+<pre><code>uterminate(io_err)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1917,14 +1766,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>uvartype</strong></p>
 <p>The uvartype subroutine determines the type (continuous, 0-1, integer) of each variable involved in the problem decoded from a SIF file by the script sifdecoder. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_uvartype
-</pre></div>
-
+<pre><code>man cutest_uvartype
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>uvartype(io_err, n, x_type)
-</pre></div>
-
+<pre><code>uvartype(io_err, n, x_type)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1936,14 +1783,12 @@ c = cons_coord(nlp, x, false)
 <p><strong>varnames</strong></p>
 <p>The varnames subroutine obtains the names of the problem variables. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.</p>
 <p>For more information, run the shell command</p>
-<div class="code"><pre><span></span>man cutest_varnames
-</pre></div>
-
+<pre><code>man cutest_varnames
+</code></pre>
 
 <p>Usage:</p>
-<div class="code"><pre><span></span>varnames(io_err, n, vname)
-</pre></div>
-
+<pre><code>varnames(io_err, n, vname)
+</code></pre>
 
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
@@ -1952,9 +1797,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Bool}' href='#CUTEst.ccfg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Bool}'>#</a>
 <strong><code>CUTEst.ccfg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ccfg!(nlp, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
-</pre></div>
-
+<pre><code>ccfg!(nlp, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -1968,9 +1812,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Bool}' href='#CUTEst.ccfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Bool}'>#</a>
 <strong><code>CUTEst.ccfg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
-</pre></div>
-
+<pre><code>ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -1985,9 +1828,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool,Int64,Int64,Bool}' href='#CUTEst.ccfg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccfg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
-</pre></div>
-
+<pre><code>c, cjac = ccfg(nlp, x, jtrans, lcjac1, lcjac2, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2001,9 +1843,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfg-Tuple{Int64,Int64,Array{Float64,1},Bool,Int64,Int64,Bool}' href='#CUTEst.ccfg-Tuple{Int64,Int64,Array{Float64,1},Bool,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccfg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad)
-</pre></div>
-
+<pre><code>c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2018,9 +1859,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfsg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1},Bool}' href='#CUTEst.ccfsg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccfsg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj = ccfsg!(nlp, x, c, j_val, j_var, j_fun, grad)
-</pre></div>
-
+<pre><code>nnzj = ccfsg!(nlp, x, c, j_val, j_var, j_fun, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2034,9 +1874,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfsg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1},Bool}' href='#CUTEst.ccfsg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccfsg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad)
-</pre></div>
-
+<pre><code>nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2052,9 +1891,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfsg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool}' href='#CUTEst.ccfsg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccfsg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
-</pre></div>
-
+<pre><code>c, nnzj, j_val, j_var, j_fun = ccfsg(nlp, x, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2068,9 +1906,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccfsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}' href='#CUTEst.ccfsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccfsg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)
-</pre></div>
-
+<pre><code>c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2086,9 +1923,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cchprods!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cchprods!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cchprods!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cchprods!(nlp, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
-</pre></div>
-
+<pre><code>cchprods!(nlp, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2102,9 +1938,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cchprods!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cchprods!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cchprods!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
-</pre></div>
-
+<pre><code>cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2119,9 +1954,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cchprods-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cchprods-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cchprods</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>chp_val = cchprods(nlp, goth, x, vector, lchp, chp_ind, chp_ptr)
-</pre></div>
-
+<pre><code>chp_val = cchprods(nlp, goth, x, vector, lchp, chp_ind, chp_ptr)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2135,9 +1969,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cchprods-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cchprods-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cchprods</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>chp_val = cchprods(n, m, goth, x, vector, lchp, chp_ind, chp_ptr)
-</pre></div>
-
+<pre><code>chp_val = cchprods(n, m, goth, x, vector, lchp, chp_ind, chp_ptr)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2152,9 +1985,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifg!-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.ccifg!-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci = ccifg!(nlp, icon, x, gci, grad)
-</pre></div>
-
+<pre><code>ci = ccifg!(nlp, icon, x, gci, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2166,9 +1998,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.ccifg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci = ccifg!(n, icon, x, gci, grad)
-</pre></div>
-
+<pre><code>ci = ccifg!(n, icon, x, gci, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2180,9 +2011,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifg-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Bool}' href='#CUTEst.ccifg-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci, gci = ccifg(nlp, icon, x, grad)
-</pre></div>
-
+<pre><code>ci, gci = ccifg(nlp, icon, x, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2194,9 +2024,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifg-Tuple{Int64,Int64,Array{Float64,1},Bool}' href='#CUTEst.ccifg-Tuple{Int64,Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci, gci = ccifg(n, icon, x, grad)
-</pre></div>
-
+<pre><code>ci, gci = ccifg(n, icon, x, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2208,9 +2037,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifsg!-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}' href='#CUTEst.ccifsg!-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifsg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci, nnzgci = ccifsg!(nlp, icon, x, lgci, gci_val, gci_var, grad)
-</pre></div>
-
+<pre><code>ci, nnzgci = ccifsg!(nlp, icon, x, lgci, gci_val, gci_var, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2225,9 +2053,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifsg!-Tuple{Int64,Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}' href='#CUTEst.ccifsg!-Tuple{Int64,Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifsg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad)
-</pre></div>
-
+<pre><code>ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2242,9 +2069,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifsg-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Int64,Bool}' href='#CUTEst.ccifsg-Tuple{CUTEst.CUTEstModel,Int64,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccifsg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
-</pre></div>
-
+<pre><code>ci, nnzgci, gci_val, gci_var = ccifsg(nlp, icon, x, lgci, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2259,9 +2085,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ccifsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}' href='#CUTEst.ccifsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccifsg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad)
-</pre></div>
-
+<pre><code>ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2276,9 +2101,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.cdh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cdh!(nlp, x, y, lh1, h_val)
-</pre></div>
-
+<pre><code>cdh!(nlp, x, y, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2289,9 +2113,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.cdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cdh!(n, m, x, y, lh1, h_val)
-</pre></div>
-
+<pre><code>cdh!(n, m, x, y, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2303,9 +2126,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cdh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cdh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h_val = cdh(nlp, x, y, lh1)
-</pre></div>
-
+<pre><code>h_val = cdh(nlp, x, y, lh1)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2316,9 +2138,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cdh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h_val = cdh(n, m, x, y, lh1)
-</pre></div>
-
+<pre><code>h_val = cdh(n, m, x, y, lh1)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2330,9 +2151,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdhc!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.cdhc!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdhc!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cdhc!(nlp, x, y, lh1, h_val)
-</pre></div>
-
+<pre><code>cdhc!(nlp, x, y, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2343,9 +2163,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdhc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.cdhc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdhc!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cdhc!(n, m, x, y, lh1, h_val)
-</pre></div>
-
+<pre><code>cdhc!(n, m, x, y, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2357,9 +2176,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdhc-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cdhc-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cdhc</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h_val = cdhc(nlp, x, y, lh1)
-</pre></div>
-
+<pre><code>h_val = cdhc(nlp, x, y, lh1)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2370,9 +2188,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdhc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cdhc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cdhc</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h_val = cdhc(n, m, x, y, lh1)
-</pre></div>
-
+<pre><code>h_val = cdhc(n, m, x, y, lh1)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2384,9 +2201,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdimchp-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.cdimchp-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.cdimchp</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzchp = cdimchp(nlp)
-</pre></div>
-
+<pre><code>nnzchp = cdimchp(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2394,18 +2210,16 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdimchp-Tuple{}' href='#CUTEst.cdimchp-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimchp</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzchp = cdimchp()
-</pre></div>
-
+<pre><code>nnzchp = cdimchp()
+</code></pre>
 
 <ul>
 <li>nnzchp:  [OUT] Int</li>
 </ul>
 <p><a id='CUTEst.cdimen-Tuple{Int64}' href='#CUTEst.cdimen-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.cdimen</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>n, m = cdimen(input)
-</pre></div>
-
+<pre><code>n, m = cdimen(input)
+</code></pre>
 
 <ul>
 <li>input:   [IN] Int</li>
@@ -2414,9 +2228,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdimse-Tuple{}' href='#CUTEst.cdimse-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimse</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne, he_val_ne, he_row_ne = cdimse()
-</pre></div>
-
+<pre><code>ne, he_val_ne, he_row_ne = cdimse()
+</code></pre>
 
 <ul>
 <li>ne:        [OUT] Int</li>
@@ -2425,27 +2238,24 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cdimsh-Tuple{}' href='#CUTEst.cdimsh-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimsh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = cdimsh()
-</pre></div>
-
+<pre><code>nnzh = cdimsh()
+</code></pre>
 
 <ul>
 <li>nnzh:    [OUT] Int</li>
 </ul>
 <p><a id='CUTEst.cdimsj-Tuple{}' href='#CUTEst.cdimsj-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimsj</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj = cdimsj()
-</pre></div>
-
+<pre><code>nnzj = cdimsj()
+</code></pre>
 
 <ul>
 <li>nnzj:    [OUT] Int</li>
 </ul>
 <p><a id='CUTEst.ceh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ceh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ceh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne = ceh!(nlp, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>ne = ceh!(nlp, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -2463,9 +2273,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ceh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ceh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ceh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -2484,9 +2293,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ceh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ceh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ceh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(nlp, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -2504,9 +2312,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ceh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ceh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ceh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -2525,9 +2332,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cfn!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.cfn!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cfn!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = cfn!(nlp, x, c)
-</pre></div>
-
+<pre><code>f = cfn!(nlp, x, c)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2537,9 +2343,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cfn!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.cfn!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cfn!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = cfn!(n, m, x, c)
-</pre></div>
-
+<pre><code>f = cfn!(n, m, x, c)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2550,9 +2355,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cfn-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}' href='#CUTEst.cfn-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cfn</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, c = cfn(nlp, x)
-</pre></div>
-
+<pre><code>f, c = cfn(nlp, x)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2562,9 +2366,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cfn-Tuple{Int64,Int64,Array{Float64,1}}' href='#CUTEst.cfn-Tuple{Int64,Int64,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cfn</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, c = cfn(n, m, x)
-</pre></div>
-
+<pre><code>f, c = cfn(n, m, x)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2575,9 +2378,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgr!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2}}' href='#CUTEst.cgr!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgr!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cgr!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
-</pre></div>
-
+<pre><code>cgr!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2592,9 +2394,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2}}' href='#CUTEst.cgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgr!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
-</pre></div>
-
+<pre><code>cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2610,9 +2411,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgr-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64}' href='#CUTEst.cgr-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64}'>#</a>
 <strong><code>CUTEst.cgr</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
-</pre></div>
-
+<pre><code>g, j_val = cgr(nlp, x, y, grlagf, jtrans, lj1, lj2)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2627,9 +2427,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64}' href='#CUTEst.cgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64}'>#</a>
 <strong><code>CUTEst.cgr</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2)
-</pre></div>
-
+<pre><code>g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2645,9 +2444,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgrdh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Int64,Array{Float64,2}}' href='#CUTEst.cgrdh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgrdh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cgrdh!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
-</pre></div>
-
+<pre><code>cgrdh!(nlp, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2664,9 +2462,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgrdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Int64,Array{Float64,2}}' href='#CUTEst.cgrdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgrdh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
-</pre></div>
-
+<pre><code>cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2684,9 +2481,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgrdh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64,Int64}' href='#CUTEst.cgrdh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.cgrdh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
-</pre></div>
-
+<pre><code>g, j_val, h_val = cgrdh(nlp, x, y, grlagf, jtrans, lj1, lj2, lh1)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2703,9 +2499,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cgrdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64,Int64}' href='#CUTEst.cgrdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.cgrdh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1)
-</pre></div>
-
+<pre><code>g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2723,9 +2518,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chcprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chcprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chcprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>chcprod!(nlp, goth, x, y, vector, result)
-</pre></div>
-
+<pre><code>chcprod!(nlp, goth, x, y, vector, result)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2737,9 +2531,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chcprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>chcprod!(n, m, goth, x, y, vector, result)
-</pre></div>
-
+<pre><code>chcprod!(n, m, goth, x, y, vector, result)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2752,9 +2545,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chcprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chcprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chcprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = chcprod(nlp, goth, x, y, vector)
-</pre></div>
-
+<pre><code>result = chcprod(nlp, goth, x, y, vector)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2766,9 +2558,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chcprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = chcprod(n, m, goth, x, y, vector)
-</pre></div>
-
+<pre><code>result = chcprod(n, m, goth, x, y, vector)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2781,9 +2572,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>chprod!(nlp, goth, x, y, vector, result)
-</pre></div>
-
+<pre><code>chprod!(nlp, goth, x, y, vector, result)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2795,9 +2585,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>chprod!(n, m, goth, x, y, vector, result)
-</pre></div>
-
+<pre><code>chprod!(n, m, goth, x, y, vector, result)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2810,9 +2599,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = chprod(nlp, goth, x, y, vector)
-</pre></div>
-
+<pre><code>result = chprod(nlp, goth, x, y, vector)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2824,9 +2612,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.chprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = chprod(n, m, goth, x, y, vector)
-</pre></div>
-
+<pre><code>result = chprod(n, m, goth, x, y, vector)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2839,9 +2626,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cidh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64,Array{Float64,2}}' href='#CUTEst.cidh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cidh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cidh!(nlp, x, iprob, lh1, h)
-</pre></div>
-
+<pre><code>cidh!(nlp, x, iprob, lh1, h)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2852,9 +2638,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cidh!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,2}}' href='#CUTEst.cidh!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cidh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cidh!(n, x, iprob, lh1, h)
-</pre></div>
-
+<pre><code>cidh!(n, x, iprob, lh1, h)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2865,9 +2650,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cidh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64}' href='#CUTEst.cidh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cidh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h = cidh(nlp, x, iprob, lh1)
-</pre></div>
-
+<pre><code>h = cidh(nlp, x, iprob, lh1)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2878,9 +2662,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cidh-Tuple{Int64,Array{Float64,1},Int64,Int64}' href='#CUTEst.cidh-Tuple{Int64,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cidh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h = cidh(n, x, iprob, lh1)
-</pre></div>
-
+<pre><code>h = cidh(n, x, iprob, lh1)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2891,9 +2674,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cish!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cish!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cish!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = cish!(nlp, x, iprob, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = cish!(nlp, x, iprob, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2906,9 +2688,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cish!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cish!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cish!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2922,9 +2703,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cish-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64}' href='#CUTEst.cish-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cish</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = cish(nlp, x, iprob)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2937,9 +2717,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cish-Tuple{Int64,Array{Float64,1},Int64,Int64}' href='#CUTEst.cish-Tuple{Int64,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cish</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2953,9 +2732,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cjprod!-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Int64}' href='#CUTEst.cjprod!-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cjprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cjprod!(nlp, gotj, jtrans, x, vector, lvector, result, lresult)
-</pre></div>
-
+<pre><code>cjprod!(nlp, gotj, jtrans, x, vector, lvector, result, lresult)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -2969,9 +2747,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Int64}' href='#CUTEst.cjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cjprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult)
-</pre></div>
-
+<pre><code>cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -2986,9 +2763,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cjprod-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Int64}' href='#CUTEst.cjprod-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cjprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
-</pre></div>
-
+<pre><code>result = cjprod(nlp, gotj, jtrans, x, vector, lvector, lresult)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3002,9 +2778,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Int64}' href='#CUTEst.cjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cjprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult)
-</pre></div>
-
+<pre><code>result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3019,9 +2794,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.clfg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.clfg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.clfg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = clfg!(nlp, x, y, g, grad)
-</pre></div>
-
+<pre><code>f = clfg!(nlp, x, y, g, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3033,9 +2807,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.clfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.clfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.clfg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = clfg!(n, m, x, y, g, grad)
-</pre></div>
-
+<pre><code>f = clfg!(n, m, x, y, g, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3048,9 +2821,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.clfg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.clfg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.clfg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, g = clfg(nlp, x, y, grad)
-</pre></div>
-
+<pre><code>f, g = clfg(nlp, x, y, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3062,9 +2834,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.clfg-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.clfg-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.clfg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, g = clfg(n, m, x, y, grad)
-</pre></div>
-
+<pre><code>f, g = clfg(n, m, x, y, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3077,9 +2848,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cnames!-Tuple{CUTEst.CUTEstModel,Array{UInt8,1},Array{UInt8,1}}' href='#CUTEst.cnames!-Tuple{CUTEst.CUTEstModel,Array{UInt8,1},Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.cnames!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname = cnames!(nlp, vname, cname)
-</pre></div>
-
+<pre><code>pname = cnames!(nlp, vname, cname)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3089,9 +2859,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cnames!-Tuple{Int64,Int64,Array{UInt8,1},Array{UInt8,1}}' href='#CUTEst.cnames!-Tuple{Int64,Int64,Array{UInt8,1},Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.cnames!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname = cnames!(n, m, vname, cname)
-</pre></div>
-
+<pre><code>pname = cnames!(n, m, vname, cname)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3102,9 +2871,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cnames-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.cnames-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.cnames</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname, vname, cname = cnames(nlp)
-</pre></div>
-
+<pre><code>pname, vname, cname = cnames(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3114,9 +2882,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cnames-Tuple{Int64,Int64}' href='#CUTEst.cnames-Tuple{Int64,Int64}'>#</a>
 <strong><code>CUTEst.cnames</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname, vname, cname = cnames(n, m)
-</pre></div>
-
+<pre><code>pname, vname, cname = cnames(n, m)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3127,9 +2894,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.cofg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = cofg!(nlp, x, g, grad)
-</pre></div>
-
+<pre><code>f = cofg!(nlp, x, g, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3140,9 +2906,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.cofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = cofg!(n, x, g, grad)
-</pre></div>
-
+<pre><code>f = cofg!(n, x, g, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3153,9 +2918,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool}' href='#CUTEst.cofg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, g = cofg(nlp, x, grad)
-</pre></div>
-
+<pre><code>f, g = cofg(nlp, x, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3166,9 +2930,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofg-Tuple{Int64,Array{Float64,1},Bool}' href='#CUTEst.cofg-Tuple{Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, g = cofg(n, x, grad)
-</pre></div>
-
+<pre><code>f, g = cofg(n, x, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3179,9 +2942,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofsg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}' href='#CUTEst.cofsg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofsg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, nnzg = cofsg!(nlp, x, lg, g_val, g_var, grad)
-</pre></div>
-
+<pre><code>f, nnzg = cofsg!(nlp, x, lg, g_val, g_var, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3195,9 +2957,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofsg!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}' href='#CUTEst.cofsg!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofsg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad)
-</pre></div>
-
+<pre><code>f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3211,9 +2972,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofsg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Bool}' href='#CUTEst.cofsg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.cofsg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
-</pre></div>
-
+<pre><code>f, nnzg, g_val, g_var = cofsg(nlp, x, lg, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3227,9 +2987,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cofsg-Tuple{Int64,Array{Float64,1},Int64,Bool}' href='#CUTEst.cofsg-Tuple{Int64,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.cofsg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, nnzg, g_val, g_var = cofsg(n, x, lg, grad)
-</pre></div>
-
+<pre><code>f, nnzg, g_val, g_var = cofsg(n, x, lg, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3243,9 +3002,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.connames!-Tuple{CUTEst.CUTEstModel,Array{UInt8,1}}' href='#CUTEst.connames!-Tuple{CUTEst.CUTEstModel,Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.connames!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>connames!(nlp, cname)
-</pre></div>
-
+<pre><code>connames!(nlp, cname)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3253,9 +3011,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.connames!-Tuple{Int64,Array{UInt8,1}}' href='#CUTEst.connames!-Tuple{Int64,Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.connames!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>connames!(m, cname)
-</pre></div>
-
+<pre><code>connames!(m, cname)
+</code></pre>
 
 <ul>
 <li>m:       [IN] Int</li>
@@ -3263,9 +3020,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.connames-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.connames-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.connames</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cname = connames(nlp)
-</pre></div>
-
+<pre><code>cname = connames(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3273,9 +3029,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.connames-Tuple{Int64}' href='#CUTEst.connames-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.connames</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cname = connames(m)
-</pre></div>
-
+<pre><code>cname = connames(m)
+</code></pre>
 
 <ul>
 <li>m:       [IN] Int</li>
@@ -3283,9 +3038,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.creport!-Tuple{Array{Float64,1},Array{Float64,1}}' href='#CUTEst.creport!-Tuple{Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.creport!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>creport!(calls, time)
-</pre></div>
-
+<pre><code>creport!(calls, time)
+</code></pre>
 
 <ul>
 <li>calls:   [OUT] Array{Float64, 1}</li>
@@ -3293,9 +3047,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.creport!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.creport!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.creport!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>creport!(nlp, calls, time)
-</pre></div>
-
+<pre><code>creport!(nlp, calls, time)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3304,9 +3057,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.creport-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.creport-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.creport</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>calls, time = creport(nlp)
-</pre></div>
-
+<pre><code>calls, time = creport(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3315,9 +3067,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.creport-Tuple{}' href='#CUTEst.creport-Tuple{}'>#</a>
 <strong><code>CUTEst.creport</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>calls, time = creport()
-</pre></div>
-
+<pre><code>calls, time = creport()
+</code></pre>
 
 <ul>
 <li>calls:   [OUT] Array{Float64, 1}</li>
@@ -3325,9 +3076,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csetup!-Tuple{Int64,Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Bool,1},Array{Bool,1},Int64,Int64,Int64}' href='#CUTEst.csetup!-Tuple{Int64,Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Bool,1},Array{Bool,1},Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.csetup!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
-</pre></div>
-
+<pre><code>csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
+</code></pre>
 
 <ul>
 <li>input:     [IN] Int</li>
@@ -3349,9 +3099,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csetup-Tuple{Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64}' href='#CUTEst.csetup-Tuple{Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.csetup</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order)
-</pre></div>
-
+<pre><code>x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order)
+</code></pre>
 
 <ul>
 <li>input:     [IN] Int</li>
@@ -3373,9 +3122,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgr!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.csgr!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.csgr!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj = csgr!(nlp, x, y, grlagf, j_val, j_var, j_fun)
-</pre></div>
-
+<pre><code>nnzj = csgr!(nlp, x, y, grlagf, j_val, j_var, j_fun)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3389,9 +3137,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.csgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.csgr!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun)
-</pre></div>
-
+<pre><code>nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3407,9 +3154,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgr-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.csgr-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.csgr</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
-</pre></div>
-
+<pre><code>nnzj, j_val, j_var, j_fun = csgr(nlp, x, y, grlagf)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3423,9 +3169,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64}' href='#CUTEst.csgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64}'>#</a>
 <strong><code>CUTEst.csgr</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj)
-</pre></div>
-
+<pre><code>nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3441,9 +3186,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgreh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.csgreh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.csgreh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, ne = csgreh!(nlp, x, y, grlagf, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>nnzj, ne = csgreh!(nlp, x, y, grlagf, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -3466,9 +3210,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgreh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.csgreh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.csgreh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -3493,9 +3236,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgreh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Int64,Bool}' href='#CUTEst.csgreh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.csgreh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(nlp, x, y, grlagf, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -3518,9 +3260,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgreh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Int64,Int64,Bool}' href='#CUTEst.csgreh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.csgreh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -3545,9 +3286,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgrsh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Array{Int64,1},Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.csgrsh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Array{Int64,1},Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.csgrsh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, nnzh = csgrsh!(nlp, x, y, grlagf, j_val, j_var, j_fun, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzj, nnzh = csgrsh!(nlp, x, y, grlagf, j_val, j_var, j_fun, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3565,9 +3305,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgrsh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.csgrsh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.csgrsh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3588,9 +3327,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgrsh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.csgrsh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.csgrsh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
-</pre></div>
-
+<pre><code>nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(nlp, x, y, grlagf)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3608,9 +3346,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csgrsh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64}' href='#CUTEst.csgrsh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64}'>#</a>
 <strong><code>CUTEst.csgrsh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh)
-</pre></div>
-
+<pre><code>nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3631,9 +3368,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.csh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.csh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = csh!(nlp, x, y, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = csh!(nlp, x, y, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3646,9 +3382,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.csh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.csh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3663,9 +3398,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.csh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.csh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = csh(nlp, x, y)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = csh(nlp, x, y)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3678,9 +3412,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.csh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.csh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3695,9 +3428,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshc!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cshc!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cshc!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = cshc!(nlp, x, y, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = cshc!(nlp, x, y, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3710,9 +3442,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cshc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cshc!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3727,9 +3458,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshc-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.cshc-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshc</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = cshc(nlp, x, y)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3742,9 +3472,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cshc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cshc</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3759,9 +3488,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshcprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshcprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshcprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = cshcprod!(nlp, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
-</pre></div>
-
+<pre><code>nnz_result = cshcprod!(nlp, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -3777,9 +3505,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshcprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = cshcprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
-</pre></div>
-
+<pre><code>nnz_result = cshcprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -3796,9 +3523,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshcprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshcprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshcprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = cshcprod(nlp, goth, x, y, nnz_vector, index_nz_vector, vector)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = cshcprod(nlp, goth, x, y, nnz_vector, index_nz_vector, vector)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -3814,9 +3540,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshcprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = cshcprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = cshcprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -3833,9 +3558,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshp!-Tuple{CUTEst.CUTEstModel,Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cshp!-Tuple{CUTEst.CUTEstModel,Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cshp!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = cshp!(nlp, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = cshp!(nlp, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3845,9 +3569,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshp!-Tuple{Int64,Int64,Array{Int64,1},Array{Int64,1}}' href='#CUTEst.cshp!-Tuple{Int64,Int64,Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cshp!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = cshp!(n, lh, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = cshp!(n, lh, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3858,9 +3581,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshp-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.cshp-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.cshp</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_row, h_col = cshp(nlp)
-</pre></div>
-
+<pre><code>nnzh, h_row, h_col = cshp(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -3870,9 +3592,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshp-Tuple{Int64,Int64}' href='#CUTEst.cshp-Tuple{Int64,Int64}'>#</a>
 <strong><code>CUTEst.cshp</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_row, h_col = cshp(n, lh)
-</pre></div>
-
+<pre><code>nnzh, h_row, h_col = cshp(n, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -3883,9 +3604,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = cshprod!(nlp, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
-</pre></div>
-
+<pre><code>nnz_result = cshprod!(nlp, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -3901,9 +3621,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = cshprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
-</pre></div>
-
+<pre><code>nnz_result = cshprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -3920,9 +3639,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = cshprod(nlp, goth, x, y, nnz_vector, index_nz_vector, vector)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = cshprod(nlp, goth, x, y, nnz_vector, index_nz_vector, vector)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -3938,9 +3656,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cshprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}' href='#CUTEst.cshprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = cshprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = cshprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -3957,9 +3674,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csjprod!-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64}' href='#CUTEst.csjprod!-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.csjprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = csjprod!(nlp, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
-</pre></div>
-
+<pre><code>nnz_result = csjprod!(nlp, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -3977,9 +3693,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64}' href='#CUTEst.csjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.csjprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = csjprod!(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
-</pre></div>
-
+<pre><code>nnz_result = csjprod!(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -3998,9 +3713,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csjprod-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Int64}' href='#CUTEst.csjprod-Tuple{CUTEst.CUTEstModel,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.csjprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = csjprod(nlp, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = csjprod(nlp, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -4018,9 +3732,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.csjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Int64}' href='#CUTEst.csjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.csjprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = csjprod(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = csjprod(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -4043,15 +3756,13 @@ c = cons_coord(nlp, x, false)
 <strong><code>CUTEst.cstats</code></strong> &mdash; <em>Method</em>.</p>
 <p><a id='CUTEst.cterminate-Tuple{}' href='#CUTEst.cterminate-Tuple{}'>#</a>
 <strong><code>CUTEst.cterminate</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cterminate()
-</pre></div>
-
+<pre><code>cterminate()
+</code></pre>
 
 <p><a id='CUTEst.cvartype!-Tuple{Int64,Array{Int64,1}}' href='#CUTEst.cvartype!-Tuple{Int64,Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.cvartype!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>cvartype!(n, x_type)
-</pre></div>
-
+<pre><code>cvartype!(n, x_type)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4059,9 +3770,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.cvartype-Tuple{Int64}' href='#CUTEst.cvartype-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.cvartype</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>x_type = cvartype(n)
-</pre></div>
-
+<pre><code>x_type = cvartype(n)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4069,9 +3779,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.pname-Tuple{CUTEst.CUTEstModel,Int64}' href='#CUTEst.pname-Tuple{CUTEst.CUTEstModel,Int64}'>#</a>
 <strong><code>CUTEst.pname</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname = pname(nlp, input)
-</pre></div>
-
+<pre><code>pname = pname(nlp, input)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4080,9 +3789,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.pname-Tuple{Int64}' href='#CUTEst.pname-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.pname</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname = pname(input)
-</pre></div>
-
+<pre><code>pname = pname(input)
+</code></pre>
 
 <ul>
 <li>input:   [IN] Int</li>
@@ -4090,9 +3798,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.probname-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.probname-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.probname</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname = probname(nlp)
-</pre></div>
-
+<pre><code>pname = probname(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4100,18 +3807,16 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.probname-Tuple{}' href='#CUTEst.probname-Tuple{}'>#</a>
 <strong><code>CUTEst.probname</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname = probname()
-</pre></div>
-
+<pre><code>pname = probname()
+</code></pre>
 
 <ul>
 <li>pname:   [OUT] UInt8</li>
 </ul>
 <p><a id='CUTEst.ubandh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,2},Int64}' href='#CUTEst.ubandh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,2},Int64}'>#</a>
 <strong><code>CUTEst.ubandh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>max_semibandwidth = ubandh!(nlp, x, semibandwidth, h_band, lbandh)
-</pre></div>
-
+<pre><code>max_semibandwidth = ubandh!(nlp, x, semibandwidth, h_band, lbandh)
+</code></pre>
 
 <ul>
 <li>nlp:               [IN] CUTEstModel</li>
@@ -4123,9 +3828,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ubandh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2},Int64}' href='#CUTEst.ubandh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2},Int64}'>#</a>
 <strong><code>CUTEst.ubandh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
-</pre></div>
-
+<pre><code>max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
+</code></pre>
 
 <ul>
 <li>n:                 [IN] Int</li>
@@ -4137,9 +3841,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ubandh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64}' href='#CUTEst.ubandh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.ubandh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
-</pre></div>
-
+<pre><code>h_band, max_semibandwidth = ubandh(nlp, x, semibandwidth, lbandh)
+</code></pre>
 
 <ul>
 <li>nlp:               [IN] CUTEstModel</li>
@@ -4151,9 +3854,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ubandh-Tuple{Int64,Array{Float64,1},Int64,Int64}' href='#CUTEst.ubandh-Tuple{Int64,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.ubandh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
-</pre></div>
-
+<pre><code>h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
+</code></pre>
 
 <ul>
 <li>n:                 [IN] Int</li>
@@ -4165,9 +3867,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.udh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.udh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.udh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>udh!(nlp, x, lh1, h)
-</pre></div>
-
+<pre><code>udh!(nlp, x, lh1, h)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4177,9 +3878,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.udh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.udh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.udh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>udh!(n, x, lh1, h)
-</pre></div>
-
+<pre><code>udh!(n, x, lh1, h)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4189,9 +3889,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.udh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64}' href='#CUTEst.udh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.udh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h = udh(nlp, x, lh1)
-</pre></div>
-
+<pre><code>h = udh(nlp, x, lh1)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4201,9 +3900,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.udh-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.udh-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.udh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>h = udh(n, x, lh1)
-</pre></div>
-
+<pre><code>h = udh(n, x, lh1)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4213,9 +3911,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.udimen-Tuple{Int64}' href='#CUTEst.udimen-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.udimen</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>n = udimen(input)
-</pre></div>
-
+<pre><code>n = udimen(input)
+</code></pre>
 
 <ul>
 <li>input:   [IN] Int</li>
@@ -4223,9 +3920,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.udimse-Tuple{}' href='#CUTEst.udimse-Tuple{}'>#</a>
 <strong><code>CUTEst.udimse</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne, he_val_ne, he_row_ne = udimse()
-</pre></div>
-
+<pre><code>ne, he_val_ne, he_row_ne = udimse()
+</code></pre>
 
 <ul>
 <li>ne:        [OUT] Int</li>
@@ -4234,18 +3930,16 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.udimsh-Tuple{}' href='#CUTEst.udimsh-Tuple{}'>#</a>
 <strong><code>CUTEst.udimsh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = udimsh()
-</pre></div>
-
+<pre><code>nnzh = udimsh()
+</code></pre>
 
 <ul>
 <li>nnzh:    [OUT] Int</li>
 </ul>
 <p><a id='CUTEst.ueh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ueh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ueh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne = ueh!(nlp, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>ne = ueh!(nlp, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -4262,9 +3956,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ueh!-Tuple{Int64,Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ueh!-Tuple{Int64,Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ueh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -4281,9 +3974,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ueh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ueh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ueh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -4300,9 +3992,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ueh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ueh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ueh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -4319,9 +4010,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ufn-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}' href='#CUTEst.ufn-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ufn</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = ufn(nlp, x)
-</pre></div>
-
+<pre><code>f = ufn(nlp, x)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4330,9 +4020,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ufn-Tuple{Int64,Array{Float64,1}}' href='#CUTEst.ufn-Tuple{Int64,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ufn</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = ufn(n, x)
-</pre></div>
-
+<pre><code>f = ufn(n, x)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4341,9 +4030,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugr!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ugr!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugr!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ugr!(nlp, x, g)
-</pre></div>
-
+<pre><code>ugr!(nlp, x, g)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4352,9 +4040,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugr!-Tuple{Int64,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ugr!-Tuple{Int64,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugr!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ugr!(n, x, g)
-</pre></div>
-
+<pre><code>ugr!(n, x, g)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4363,9 +4050,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugr-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}' href='#CUTEst.ugr-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugr</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g = ugr(nlp, x)
-</pre></div>
-
+<pre><code>g = ugr(nlp, x)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4374,9 +4060,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugr-Tuple{Int64,Array{Float64,1}}' href='#CUTEst.ugr-Tuple{Int64,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugr</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g = ugr(n, x)
-</pre></div>
-
+<pre><code>g = ugr(n, x)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4385,9 +4070,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrdh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.ugrdh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.ugrdh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ugrdh!(nlp, x, g, lh1, h)
-</pre></div>
-
+<pre><code>ugrdh!(nlp, x, g, lh1, h)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4398,9 +4082,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrdh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.ugrdh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.ugrdh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ugrdh!(n, x, g, lh1, h)
-</pre></div>
-
+<pre><code>ugrdh!(n, x, g, lh1, h)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4411,9 +4094,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrdh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64}' href='#CUTEst.ugrdh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.ugrdh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, h = ugrdh(nlp, x, lh1)
-</pre></div>
-
+<pre><code>g, h = ugrdh(nlp, x, lh1)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4424,9 +4106,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrdh-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.ugrdh-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.ugrdh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, h = ugrdh(n, x, lh1)
-</pre></div>
-
+<pre><code>g, h = ugrdh(n, x, lh1)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4437,9 +4118,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugreh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ugreh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ugreh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne = ugreh!(nlp, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>ne = ugreh!(nlp, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -4457,9 +4137,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugreh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ugreh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int64,1},Array{Int64,1},Int64,Array{Int64,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ugreh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
-</pre></div>
-
+<pre><code>ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -4477,9 +4156,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugreh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ugreh-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ugreh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(nlp, x, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>nlp:        [IN] CUTEstModel</li>
@@ -4497,9 +4175,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugreh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ugreh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ugreh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
-</pre></div>
-
+<pre><code>g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
+</code></pre>
 
 <ul>
 <li>n:          [IN] Int</li>
@@ -4517,9 +4194,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrsh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.ugrsh!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.ugrsh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = ugrsh!(nlp, x, g, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = ugrsh!(nlp, x, g, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4532,9 +4208,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrsh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.ugrsh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.ugrsh!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4548,9 +4223,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrsh-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}' href='#CUTEst.ugrsh-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugrsh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
-</pre></div>
-
+<pre><code>g, nnzh, h_val, h_row, h_col = ugrsh(nlp, x)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4563,9 +4237,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ugrsh-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.ugrsh-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.ugrsh</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh)
-</pre></div>
-
+<pre><code>g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4579,9 +4252,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uhprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.uhprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.uhprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>uhprod!(nlp, goth, x, vector, result)
-</pre></div>
-
+<pre><code>uhprod!(nlp, goth, x, vector, result)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4592,9 +4264,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uhprod!-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.uhprod!-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.uhprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>uhprod!(n, goth, x, vector, result)
-</pre></div>
-
+<pre><code>uhprod!(n, goth, x, vector, result)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4605,9 +4276,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uhprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.uhprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.uhprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = uhprod(nlp, goth, x, vector)
-</pre></div>
-
+<pre><code>result = uhprod(nlp, goth, x, vector)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4618,9 +4288,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uhprod-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.uhprod-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.uhprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>result = uhprod(n, goth, x, vector)
-</pre></div>
-
+<pre><code>result = uhprod(n, goth, x, vector)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4631,9 +4300,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.unames!-Tuple{Int64,Array{UInt8,1}}' href='#CUTEst.unames!-Tuple{Int64,Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.unames!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname = unames!(n, vname)
-</pre></div>
-
+<pre><code>pname = unames!(n, vname)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4642,9 +4310,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.unames-Tuple{Int64}' href='#CUTEst.unames-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.unames</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>pname, vname = unames(n)
-</pre></div>
-
+<pre><code>pname, vname = unames(n)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4653,9 +4320,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uofg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.uofg!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.uofg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = uofg!(nlp, x, g, grad)
-</pre></div>
-
+<pre><code>f = uofg!(nlp, x, g, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4666,9 +4332,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.uofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.uofg!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f = uofg!(n, x, g, grad)
-</pre></div>
-
+<pre><code>f = uofg!(n, x, g, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4679,9 +4344,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uofg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool}' href='#CUTEst.uofg-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.uofg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, g = uofg(nlp, x, grad)
-</pre></div>
-
+<pre><code>f, g = uofg(nlp, x, grad)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4692,9 +4356,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uofg-Tuple{Int64,Array{Float64,1},Bool}' href='#CUTEst.uofg-Tuple{Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.uofg</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>f, g = uofg(n, x, grad)
-</pre></div>
-
+<pre><code>f, g = uofg(n, x, grad)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4705,9 +4368,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ureport!-Tuple{Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ureport!-Tuple{Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ureport!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ureport!(calls, time)
-</pre></div>
-
+<pre><code>ureport!(calls, time)
+</code></pre>
 
 <ul>
 <li>calls:   [OUT] Array{Float64, 1}</li>
@@ -4715,9 +4377,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ureport!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ureport!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ureport!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>ureport!(nlp, calls, time)
-</pre></div>
-
+<pre><code>ureport!(nlp, calls, time)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4726,9 +4387,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ureport-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.ureport-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.ureport</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>calls, time = ureport(nlp)
-</pre></div>
-
+<pre><code>calls, time = ureport(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4737,9 +4397,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ureport-Tuple{}' href='#CUTEst.ureport-Tuple{}'>#</a>
 <strong><code>CUTEst.ureport</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>calls, time = ureport()
-</pre></div>
-
+<pre><code>calls, time = ureport()
+</code></pre>
 
 <ul>
 <li>calls:   [OUT] Array{Float64, 1}</li>
@@ -4747,9 +4406,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.usetup!-Tuple{Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.usetup!-Tuple{Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.usetup!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>usetup!(input, out, io_buffer, n, x, x_l, x_u)
-</pre></div>
-
+<pre><code>usetup!(input, out, io_buffer, n, x, x_l, x_u)
+</code></pre>
 
 <ul>
 <li>input:     [IN] Int</li>
@@ -4762,9 +4420,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.usetup-Tuple{Int64,Int64,Int64,Int64}' href='#CUTEst.usetup-Tuple{Int64,Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.usetup</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>x, x_l, x_u = usetup(input, out, io_buffer, n)
-</pre></div>
-
+<pre><code>x, x_l, x_u = usetup(input, out, io_buffer, n)
+</code></pre>
 
 <ul>
 <li>input:     [IN] Int</li>
@@ -4777,9 +4434,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ush!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.ush!-Tuple{CUTEst.CUTEstModel,Array{Float64,1},Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.ush!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = ush!(nlp, x, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = ush!(nlp, x, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4791,9 +4447,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ush!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}' href='#CUTEst.ush!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.ush!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = ush!(n, x, lh, h_val, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = ush!(n, x, lh, h_val, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4806,9 +4461,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ush-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}' href='#CUTEst.ush-Tuple{CUTEst.CUTEstModel,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ush</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = ush(nlp, x)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = ush(nlp, x)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4820,9 +4474,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ush-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.ush-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.ush</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = ush(n, x, lh)
-</pre></div>
-
+<pre><code>nnzh, h_val, h_row, h_col = ush(n, x, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4835,9 +4488,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushp!-Tuple{CUTEst.CUTEstModel,Array{Int64,1},Array{Int64,1}}' href='#CUTEst.ushp!-Tuple{CUTEst.CUTEstModel,Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.ushp!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = ushp!(nlp, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = ushp!(nlp, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4847,9 +4499,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushp!-Tuple{Int64,Int64,Array{Int64,1},Array{Int64,1}}' href='#CUTEst.ushp!-Tuple{Int64,Int64,Array{Int64,1},Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.ushp!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh = ushp!(n, lh, h_row, h_col)
-</pre></div>
-
+<pre><code>nnzh = ushp!(n, lh, h_row, h_col)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4860,9 +4511,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushp-Tuple{CUTEst.CUTEstModel}' href='#CUTEst.ushp-Tuple{CUTEst.CUTEstModel}'>#</a>
 <strong><code>CUTEst.ushp</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_row, h_col = ushp(nlp)
-</pre></div>
-
+<pre><code>nnzh, h_row, h_col = ushp(nlp)
+</code></pre>
 
 <ul>
 <li>nlp:     [IN] CUTEstModel</li>
@@ -4872,9 +4522,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushp-Tuple{Int64,Int64}' href='#CUTEst.ushp-Tuple{Int64,Int64}'>#</a>
 <strong><code>CUTEst.ushp</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnzh, h_row, h_col = ushp(n, lh)
-</pre></div>
-
+<pre><code>nnzh, h_row, h_col = ushp(n, lh)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4885,9 +4534,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}' href='#CUTEst.ushprod!-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ushprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = ushprod!(nlp, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
-</pre></div>
-
+<pre><code>nnz_result = ushprod!(nlp, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -4902,9 +4550,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushprod!-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}' href='#CUTEst.ushprod!-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1},Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ushprod!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result = ushprod!(n, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
-</pre></div>
-
+<pre><code>nnz_result = ushprod!(n, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -4919,9 +4566,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}' href='#CUTEst.ushprod-Tuple{CUTEst.CUTEstModel,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ushprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = ushprod(nlp, goth, x, nnz_vector, index_nz_vector, vector)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = ushprod(nlp, goth, x, nnz_vector, index_nz_vector, vector)
+</code></pre>
 
 <ul>
 <li>nlp:             [IN] CUTEstModel</li>
@@ -4936,9 +4582,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.ushprod-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}' href='#CUTEst.ushprod-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ushprod</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>nnz_result, index_nz_result, result = ushprod(n, goth, x, nnz_vector, index_nz_vector, vector)
-</pre></div>
-
+<pre><code>nnz_result, index_nz_result, result = ushprod(n, goth, x, nnz_vector, index_nz_vector, vector)
+</code></pre>
 
 <ul>
 <li>n:               [IN] Int</li>
@@ -4953,15 +4598,13 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uterminate-Tuple{}' href='#CUTEst.uterminate-Tuple{}'>#</a>
 <strong><code>CUTEst.uterminate</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>uterminate()
-</pre></div>
-
+<pre><code>uterminate()
+</code></pre>
 
 <p><a id='CUTEst.uvartype!-Tuple{Int64,Array{Int64,1}}' href='#CUTEst.uvartype!-Tuple{Int64,Array{Int64,1}}'>#</a>
 <strong><code>CUTEst.uvartype!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>uvartype!(n, x_type)
-</pre></div>
-
+<pre><code>uvartype!(n, x_type)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4969,9 +4612,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.uvartype-Tuple{Int64}' href='#CUTEst.uvartype-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.uvartype</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>x_type = uvartype(n)
-</pre></div>
-
+<pre><code>x_type = uvartype(n)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4979,9 +4621,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.varnames!-Tuple{Int64,Array{UInt8,1}}' href='#CUTEst.varnames!-Tuple{Int64,Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.varnames!</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>varnames!(n, vname)
-</pre></div>
-
+<pre><code>varnames!(n, vname)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -4989,9 +4630,8 @@ c = cons_coord(nlp, x, false)
 </ul>
 <p><a id='CUTEst.varnames-Tuple{Int64}' href='#CUTEst.varnames-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.varnames</code></strong> &mdash; <em>Method</em>.</p>
-<div class="code"><pre><span></span>vname = varnames(n)
-</pre></div>
-
+<pre><code>vname = varnames(n)
+</code></pre>
 
 <ul>
 <li>n:       [IN] Int</li>
@@ -5019,7 +4659,7 @@ c = cons_coord(nlp, x, false)
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../tutorial/" title="Tutorial">
+        <a href="../home/" title="Home">
           <span class="direction">
             Previous
           </span>
@@ -5029,7 +4669,7 @@ c = cons_coord(nlp, x, false)
             </div>
             <div class="stretch">
               <div class="title">
-                Tutorial
+                Home
               </div>
             </div>
           </div>
@@ -5038,14 +4678,14 @@ c = cons_coord(nlp, x, false)
     </div>
     <div class="next">
       
-        <a href="../core/" title="Core">
+        <a href=".." title="Index">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Core
+                Index
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">
