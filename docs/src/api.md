@@ -19,10 +19,10 @@ hess
 hprod
 hprod!
 NLPtoMPB
-reset!
+NLPModels.reset!
 ```
 
-## Extra julian API
+## Extra Julian API
 
 ```@docs
 objgrad

@@ -1,12 +1,13 @@
 export objcons, objgrad, obj, grad, grad!,
        cons_coord, cons, cons!,
        jac_coord, jac, jprod, jprod!, jtprod, jtprod!,
-       hess_coord, hess, hprod, hprod!
+       hess_coord, hess, hess_op, hprod, hprod!
 
 import NLPModels.obj
 import NLPModels.grad
 import NLPModels.grad!
 import NLPModels.hess
+import NLPModels.hess_op
 import NLPModels.hprod
 import NLPModels.hprod!
 import NLPModels.cons
