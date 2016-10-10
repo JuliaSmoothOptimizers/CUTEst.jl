@@ -23,7 +23,6 @@ The following commands download NLPModels and CUTEst, change to the specific
 branch, and build CUTEst.
 ````JULIA
 julia> Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git")
-julia> Pkg.checkout("NLPModels", "develop")
 julia> Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
 julia> Pkg.checkout("CUTEst", "develop")
 julia> Pkg.build("CUTEst")
