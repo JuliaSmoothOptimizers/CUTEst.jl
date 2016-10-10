@@ -37,8 +37,7 @@ before_install:
     sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.)/libgfortran.so /usr/local/lib; fi
   - if [ `uname` == "Darwin" ]; then brew install gcc; fi
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -E 'Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl");
-    Pkg.checkout("NLPModels", "develop")'
+  - julia -E 'Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl")'
 
 install:
   - julia -e 'versioninfo()'
