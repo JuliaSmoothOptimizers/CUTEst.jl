@@ -3,7 +3,15 @@
 
     
     <url>
-     <loc>None/home/</loc>
+     <loc>None/</loc>
+     <lastmod>2016-10-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/tutorial/</loc>
      <lastmod>2016-10-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -19,7 +27,15 @@
 
     
     <url>
-     <loc>None/</loc>
+     <loc>None/core/</loc>
+     <lastmod>2016-10-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/reference/</loc>
      <lastmod>2016-10-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
