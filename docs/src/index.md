@@ -36,7 +36,6 @@ The following commands should automatically download NLPModels.jl and CUTEst,
 and install them.
 ````julia
 Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git")
-Pkg.checkout("NLPModels", "develop")
 Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
 Pkg.checkout("CUTEst", "develop")
 Pkg.build("CUTEst")
