@@ -1,2 +1,3 @@
-Compat
-@osx Homebrew
+julia 0.4
+Compat 0.7.15
+@osx Homebrew 0.4.0
