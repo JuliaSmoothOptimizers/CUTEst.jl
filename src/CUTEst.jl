@@ -1,3 +1,5 @@
+__precompile__(false)  # due to optional dependencies
+
 # Using CUTEst from Julia.
 
 module CUTEst
@@ -64,7 +66,9 @@ end
 include("core_interface.jl")
 include("specialized_interface.jl")
 include("julia_interface.jl")
-include("mpb_interface.jl")
+if Pkg.installed("MathProgBase") != nothing
+  include("mpb_interface.jl")
+end
 
 """Decode problem and build shared library.
 
