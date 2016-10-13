@@ -19,10 +19,9 @@ On OSX, Homebrew.jl will install gfortran if gfortran is not detected on your sy
 You may either use standard Homebrew to install gfortran yourself from precompiled bottled using `brew install gcc` or let Homebrew.jl install its private version.
 In the latter scenario, gcc and gfortran need to be compiled from source.
 
-The following commands download NLPModels and CUTEst, change to the specific
+The following commands download CUTEst, change to the specific
 branch, and build CUTEst.
 ````JULIA
-julia> Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git")
 julia> Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
 julia> Pkg.checkout("CUTEst", "develop")
 julia> Pkg.build("CUTEst")
@@ -30,9 +29,9 @@ julia> Pkg.build("CUTEst")
 
 ## Usage
 
-After installing, you can use it as a
-[NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) model, with
-the name `CUTEstModel`.
+After installing, you can create instances of
+[NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) models, with
+the name `CUTEstModel`:
 
 ````JULIA
 using CUTEst
