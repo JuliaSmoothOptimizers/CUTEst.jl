@@ -40,15 +40,12 @@ In Julia, we have
 
 ```julia
 f = ufn(n, x)
-f = ufn(nlp, x)
 ```
 
 In other words, a simplification of the original function, returning what is
 simple to return, and reducing the parameters to only what is needed.
-In addition, there is the option of using `nlp` instead of `n`, because `nlp`
-includes all this information.
 
-In both cases, the problem would have to be decoded first. Decoding the problem
+Notice that the problem has to be decoded first. Decoding the problem
 manually is not advised, as you would have to keep track of the variables,
 bounds, sizes, library, and closing the problem yourself.
 It can be done through thorough thought, though.
@@ -75,18 +72,10 @@ In Julia, we have
 
 ```julia
 f, c = cfn(n, m, x)
-f, c = cfn(nlp, x)
 f = cfn!(n, m, x, c)
-f = cfn!(nlp, x, c)
 ```
 
 As before, we have a simplification of the original call.
-Also, again, we have the use of `nlp` instead of some fixed problem values.
-Notice how `nlp` substitutes more than one thing, making it easier to use
-because we don't have to remeber what is needed by the function, nor where it
-goes.
-When present, `nlp` is always the first argument.
-
 In addition, there are two new functions here, obtained by addind a `!` in front
 of the function name. These functions modify the vector `c` storing the result
 in it. This can be done to save memory, since `c` will not be recreated.
@@ -131,13 +120,15 @@ Examples
 using CUTEst
 
 nlp = CUTEstModel("ROSENBR")
+nvar = nlp.meta.nvar
 
 x = nlp.meta.x0
-fx = ufn(nlp, x)
+fx = ufn(nvar, x)
 ```
 
 ```@example spec
-nnzj, hval, hrow, hcol = ush(nlp, x)
+ld = nvar # leading dimension
+nnzj, hval, hrow, hcol = ush(nvar, x, ld)
 ```
 
 ```@example spec
@@ -150,9 +141,12 @@ x = nlp.meta.x0
 ```
 
 ```@example spec
-c, nnzj, jval, jvar, jfun = ccfsg(nlp, x, true)
+nvar = nlp.meta.nvar
+ncon = nlp.meta.ncon
+lj = nlp.meta.nnzj
+c, nnzj, jval, jvar, jfun = ccfsg(nvar, ncon, x, lj, true)
 println("c = $c")
-println("J = $(sparse(jvar, jfun, jval))")
+println("J = $(sparse(jfun, jvar, jval))")
 ```
 
 Compare with the NLPModels interface
