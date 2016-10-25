@@ -163,6 +163,8 @@ def arguments(args, types, intents, dims, use_types = True, intent = "all",
             t = typeset[types[i]]
             if len(dims[i]) > 0 or all_ptrs:
                 dim = max(1, len(dims[i]))
+                if t == "Int":
+                    t = "Cint"
                 t = "Array{{{}, {}}}".format(t, dim)
             str.append("{}::{}".format(arg, t))
         else:
@@ -217,6 +219,8 @@ def spec_doc(name, args, types, intents, dims, inplace):
         k = n - len(arg)
         t = jltypes[types[i]]
         if len(dims[i]) > 0:
+            if t == "Int":
+                t = "Cint"
             t = "Array{{{}, {}}}".format(t, len(dims[i]))
         str += "  - {}: {}[{}] {}\n".format(arg, " "*k,
                 intents[i].upper(), t)
@@ -254,35 +258,24 @@ def specialized_function(name, args, types, intents, dims, inplace = False):
     for i, arg in enumerate(args):
         if intents[i] == "in":
             continue
-        if len(dims[i]) > 0 and inplace and types[i] != "integer":
+        if len(dims[i]) > 0 and inplace:
             continue
         t = cutypes[types[i]]
         if len(dims[i]) > 0:
             str += s+"{}".format(arg)
-            if intents[i] == "out" and types[i] == "integer" and inplace:
-                str += "_cp"
             str += " = Array({}, {})\n".format(t, ', '.join(dims[i]))
         else:
             str += s+"{} = {}[0]\n".format(arg, t)
     out = []
     for i, arg in enumerate(args):
         if len(dims[i]) > 0:
-            if intents[i] == "out" and types[i] == "integer" and inplace:
-                out.append("{}_cp".format(arg))
-            else:
-                out.append("{}".format(arg))
+            out.append("{}".format(arg))
         elif intents[i] == "out":
             out.append("{}".format(arg))
         else:
             out.append("{}[{}]".format(cutypes[types[i]], arg))
     str += wrap(s+"{}({})".format(name, ', '.join(out))) + "\n"
     str += s+"@cutest_error\n"
-    for i, arg in enumerate(args):
-        if len(dims[i]) > 0 and intents[i] == "out" and types[i] == "integer" \
-                and inplace:
-            str += s+"for i = 1:{}\n".format(dims[i][0])
-            str += s+s+"{}[i] = {}_cp[i]\n".format(arg, arg)
-            str += s+"end\n"
     returns = arguments(args, 0, intents, dims, intent="out", use_types=False,
             all_ptrs=True, inplace=inplace)
     if returns != "":

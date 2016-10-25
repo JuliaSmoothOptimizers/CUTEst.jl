@@ -77,14 +77,14 @@ sizeof = {
     "cx": "nlp.meta.ncon",
     "Jx": "nlp.meta.ncon, nlp.meta.nvar",
     "Wx": "nlp.meta.nvar, nlp.meta.nvar",
-    "j_var": "Int, nlp.meta.nnzj+nlp.meta.nvar",
-    "j_fun": "Int, nlp.meta.nnzj+nlp.meta.nvar",
-    "h_row": "Int, nlp.meta.nnzh",
-    "h_col": "Int, nlp.meta.nnzh",
+    "j_var": "Cint, nlp.meta.nnzj+nlp.meta.nvar",
+    "j_fun": "Cint, nlp.meta.nnzj+nlp.meta.nvar",
+    "h_row": "Cint, nlp.meta.nnzh",
+    "h_col": "Cint, nlp.meta.nnzh",
     "gci_val": "nlp.meta.nvar",
-    "gci_var": "Int, nlp.meta.nvar",
+    "gci_var": "Cint, nlp.meta.nvar",
     "g_val": "nlp.meta.nvar",
-    "g_var": "Int, nlp.meta.nvar",
+    "g_var": "Cint, nlp.meta.nvar",
     "h": "nlp.meta.nvar, nlp.meta.nvar" }
 
 
