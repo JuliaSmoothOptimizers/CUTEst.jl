@@ -142,7 +142,6 @@ def generate_test_for_function (foo):
     stress = head
     fname = foo.split("(")[0].strip()
     inplace = fname[-1] == "!"
-    cint = "Cint" in foo.split(")")[0]
     inputs = []
     for x in foo[foo.find("(")+1:foo.find(")")].split(","):
 
@@ -199,8 +198,6 @@ def generate_test_for_function (foo):
                             special[fname][x])
                 else:
                     arg = sizeof[x]
-                    if cint and "Int" in sizeof[x]:
-                        arg = arg.replace("Int", "Cint")
                     str = spc+"{} = zeros({})\n".format(x,arg) + str
                     stress = spc+"{} = zeros({})\n".format(x,arg) + stress
                     if x not in ignore:

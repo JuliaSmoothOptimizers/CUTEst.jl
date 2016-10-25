@@ -41,11 +41,8 @@ for p in problems
     cx = zeros(ncon)
     println("$p: specialized interface: f(x₀) = $(cfn(nvar, ncon, x0)[1])")
     println("$p: specialized interface: f(x₀) = $(cfn!(nvar, ncon, x0, cx)[1])")
-    println("$p: specialized interface: f(x₀) = $(cfn(nlp, x0)[1])")
-    println("$p: specialized interface: f(x₀) = $(cfn!(nlp, x0, cx)[1])")
   else
     println("$p: specialized interface: f(x₀) = $(ufn(nvar, x0))")
-    println("$p: specialized interface: f(x₀) = $(ufn(nlp, x0))")
   end
   cutest_finalize(nlp)
 end
