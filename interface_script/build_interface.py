@@ -143,17 +143,10 @@ def get_function_data(name):
                 break
     return args, types, intents, dims
 
-def arguments (args, types, intents, dims, use_types = True, use_nlp = False,
-        intent = "all", all_ptrs = True, typeset = jltypes, inplace = False,
-        cint_array = False):
+def arguments(args, types, intents, dims, use_types = True, intent = "all",
+        all_ptrs = True, typeset = jltypes, inplace = False):
     str = []
     for i, arg in enumerate(args):
-        if use_nlp and arg == "io_err" and intent != "out":
-            str.append("nlp::CUTEstModel")
-            continue
-        # When using nlp, every `in` argument that is integer is inside nlp
-        if use_nlp and intents[i] == "in" and arg in nlp_equivalent.keys():
-            continue
         # Check for intent, but when inplace is True, output array variables are
         # passed as input
         if inplace and intents[i] == "out":
@@ -169,8 +162,6 @@ def arguments (args, types, intents, dims, use_types = True, use_nlp = False,
         if use_types:
             t = typeset[types[i]]
             if len(dims[i]) > 0 or all_ptrs:
-                if t == "Int" and intents[i] == "out" and inplace and cint_array:
-                    t = "Cint"
                 dim = max(1, len(dims[i]))
                 t = "Array{{{}, {}}}".format(t, dim)
             str.append("{}::{}".format(arg, t))
@@ -193,7 +184,7 @@ def header_doc(name):
 
 def core_doc(name, args, types, intents, dims):
     help_args = arguments(args, types, [], dims, intent="all",
-            use_nlp=False, use_types=False, all_ptrs=True, typeset=cutypes)
+            use_types=False, all_ptrs=True, typeset=cutypes)
     str = "    " + name + "(" + wrap(help_args, "\n") + ")\n\n"
     n = max([7] + [len(arg) for arg in args])
     for i, arg in enumerate(args):
@@ -203,15 +194,13 @@ def core_doc(name, args, types, intents, dims):
                 intents[i].upper(), cutypes[types[i]], d)
     return str
 
-def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
+def spec_doc(name, args, types, intents, dims, inplace):
     if name == "cstats":
         return ""
     in_args = arguments(args, types, intents, dims, intent="in",
-            use_nlp=use_nlp, use_types=False, all_ptrs=False, inplace=inplace)
+            use_types=False, all_ptrs=False, inplace=inplace)
     out_args = arguments(args, types, intents, dims, intent="out",
-            use_nlp=use_nlp, use_types=False, all_ptrs=False, inplace=inplace)
-    if use_nlp:
-        in_args = in_args.replace("::CUTEstModel","")
+            use_types=False, all_ptrs=False, inplace=inplace)
 
     str = ""
     if inplace:
@@ -222,12 +211,8 @@ def spec_doc(name, args, types, intents, dims, use_nlp, inplace):
     str += "{}({})\n\n".format(name, in_args)
 
     n = max([7] + [len(arg) for arg in args])
-    if use_nlp:
-        str += "  - nlp: {}[IN] CUTEstModel\n".format(" "*(n-3))
     for i, arg in enumerate(args):
         if arg == "io_err":
-            continue
-        if use_nlp and arg not in in_args.split(', ')+out_args.split(', '):
             continue
         k = n - len(arg)
         t = jltypes[types[i]]
@@ -243,7 +228,7 @@ def footer_doc(name):
 def core_function(name, args, types, dims):
     str = ""
     arg_call = arguments(args, types, [], dims, intent="all",
-            use_nlp=False, use_types=True, all_ptrs=True, typeset=cutypes)
+            use_types=True, all_ptrs=True, typeset=cutypes)
     str += "function "+name+"("+wrap(arg_call)+")\n"
     str += s+'ccall(dlsym(cutest_lib, "cutest_{}_"), Void,\n'.format(name)
     ptrs = ["Ptr{{{}}}".format(cutypes[t]) for t in types]
@@ -254,36 +239,22 @@ def core_function(name, args, types, dims):
     str += "end\n"
     return str
 
-def specialized_function(name, args, types, intents, dims, use_nlp = False,
-        inplace = False, cint_array = False):
+def specialized_function(name, args, types, intents, dims, inplace = False):
     str = ""
     arg_call = arguments(args, types, intents, dims, intent="in",
-            use_nlp=use_nlp, use_types=True, all_ptrs=False, inplace=inplace,
-            cint_array=cint_array)
+            use_types=True, all_ptrs=False, inplace=inplace)
 
     str += "function " + name
     if inplace:
         str += "!"
-    if use_nlp:
-        str += wrap("({})".format(arg_call) )+"\n"
-    elif arg_call != "":
+    if arg_call != "":
         str += wrap("({})".format(arg_call) )+"\n"
     else:
         str += "()\n"
     for i, arg in enumerate(args):
         if intents[i] == "in":
-            if use_nlp and arg in nlp_equivalent.keys():
-                if name in nlp_exception.keys() and arg in nlp_exception[name]:
-                    eqs = nlp_exception[name][arg]
-                else:
-                    eqs = nlp_equivalent[arg]
-                if type(eqs) == type("str"):
-                    str += s+"{} = nlp.meta.{}\n".format(arg, nlp_equivalent[arg])
-                else:
-                    str += s+arg+" = " + " + ".join(["nlp.meta."+v for v in \
-                            eqs])+"\n"
             continue
-        if len(dims[i]) > 0 and inplace and (types[i] != "integer" or cint_array):
+        if len(dims[i]) > 0 and inplace and types[i] != "integer":
             continue
         t = cutypes[types[i]]
         if len(dims[i]) > 0:
@@ -296,7 +267,7 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     out = []
     for i, arg in enumerate(args):
         if len(dims[i]) > 0:
-            if intents[i] == "out" and types[i] == "integer" and inplace and not cint_array:
+            if intents[i] == "out" and types[i] == "integer" and inplace:
                 out.append("{}_cp".format(arg))
             else:
                 out.append("{}".format(arg))
@@ -308,12 +279,12 @@ def specialized_function(name, args, types, intents, dims, use_nlp = False,
     str += s+"@cutest_error\n"
     for i, arg in enumerate(args):
         if len(dims[i]) > 0 and intents[i] == "out" and types[i] == "integer" \
-                and inplace and not cint_array:
+                and inplace:
             str += s+"for i = 1:{}\n".format(dims[i][0])
             str += s+s+"{}[i] = {}_cp[i]\n".format(arg, arg)
             str += s+"end\n"
-    returns = arguments(args, 0, intents, dims, intent="out", use_nlp=use_nlp,
-        use_types=False, all_ptrs=True, inplace=inplace, cint_array=cint_array)
+    returns = arguments(args, 0, intents, dims, intent="out", use_types=False,
+            all_ptrs=True, inplace=inplace)
     if returns != "":
         returns = " " + returns
     str += s+"return"+returns
@@ -341,33 +312,23 @@ for name in names:
     core_file.write('"""\n')
     core_file.write(core_function(name, args, types, dims))
     core_file.write("\n")
-    for use_nlp in [False, True]:
-        # Some functions return values that should be obtained while creating nlp
-        if use_nlp and name in nlp_ignore:
-            continue
 
+    # Some functions return values that should be obtained while creating nlp
+    spec_file.write('"""\n')
+    spec_file.write(spec_doc(name, args, types, intents, dims, inplace=False))
+    spec_file.write('"""\n')
+    spec_file.write(specialized_function(name, args, types, intents, dims,
+        inplace=False))
+    spec_file.write("\n")
+
+    # Some functions don't need a ! version
+    if need_inplace(intents, dims):
         spec_file.write('"""\n')
-        spec_file.write(spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
-                inplace=False))
+        spec_file.write(spec_doc(name, args, types, intents, dims, inplace=True))
         spec_file.write('"""\n')
-        spec_file.write(specialized_function(name, args, types,
-            intents, dims, use_nlp=use_nlp, inplace=False))
+        spec_file.write(specialized_function(name, args, types, intents, dims,
+            inplace=True))
         spec_file.write("\n")
-
-        # Some functions don't need a ! version
-        if need_inplace(intents, dims):
-            spec_file.write('"""\n')
-            spec_file.write(spec_doc(name, args, types, intents, dims, use_nlp=use_nlp,
-                    inplace=True))
-            spec_file.write('"""\n')
-            spec_file.write(specialized_function(name, args, types, intents,
-                    dims, use_nlp=use_nlp, inplace=True))
-            spec_file.write("\n")
-            # Integer arrays passed as inplace can be Int64 or Int32
-            if any([types[i] == "integer" and len(dims[i]) > 0 for i in range(len(dims))]):
-                spec_file.write(specialized_function(name, args, types,
-                    intents, dims, use_nlp=use_nlp, inplace=True, cint_array=True))
-                spec_file.write("\n")
 
 core_file.close()
 spec_file.close()
