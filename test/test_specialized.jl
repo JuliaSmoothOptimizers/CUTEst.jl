@@ -24,7 +24,7 @@ if nlp.meta.ncon > 0
   @test_approx_eq_eps fx f(x0) 1e-8
   @test_approx_eq_eps g_val g(x0)[g_var] 1e-8
 
-  g_var = zeros(Int, nlp.meta.nvar)
+  g_var = zeros(Cint, nlp.meta.nvar)
   g_val = zeros(nlp.meta.nvar)
   fx, nnzg = cofsg!(nlp.meta.nvar, x0, nlp.meta.nvar, g_val, g_var, true)
   @test_approx_eq_eps fx f(x0) 1e-8
@@ -67,8 +67,8 @@ if nlp.meta.ncon > 0
   end
   @test_approx_eq_eps Jx J(x0) 1e-8
 
-  j_fun = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
-  j_var = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
+  j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+  j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   Jx = zeros(nlp.meta.nnzj+nlp.meta.nvar)
   nnzj = csgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun)
   j_val = copy(Jx)
@@ -88,8 +88,8 @@ if nlp.meta.ncon > 0
   end
   @test_approx_eq_eps Jx J(x0) 1e-8
 
-  j_fun = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
-  j_var = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
+  j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+  j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   Jx = zeros(nlp.meta.nnzj+nlp.meta.nvar)
   cx = zeros(nlp.meta.ncon)
   nnzj = ccfsg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, true)
@@ -119,7 +119,7 @@ if nlp.meta.ncon > 0
   end
 
   for j = 1:nlp.meta.ncon
-    gci_var = zeros(Int, nlp.meta.nvar)
+    gci_var = zeros(Cint, nlp.meta.nvar)
     gci_val = zeros(nlp.meta.nvar)
     ci, nnzgci = ccifsg!(nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
     @test_approx_eq_eps ci c(x0)[j] 1e-8
@@ -155,8 +155,8 @@ if nlp.meta.ncon > 0
   end
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
 
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
   Wx = zeros(nlp.meta.nnzh)
   nnzh = csh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
   w_val = copy(Wx)
@@ -176,8 +176,8 @@ if nlp.meta.ncon > 0
   end
   @test_approx_eq_eps Wx W(x0,y0)-H(x0) 1e-8
 
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
   Wx = zeros(nlp.meta.nnzh)
   nnzh = cshc!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
   w_val = copy(Wx)
@@ -211,8 +211,8 @@ if nlp.meta.ncon > 0
   end
 
   for j = 1:nlp.meta.ncon
-    h_col = zeros(Int, nlp.meta.nnzh)
-    h_row = zeros(Int, nlp.meta.nnzh)
+    h_col = zeros(Cint, nlp.meta.nnzh)
+    h_row = zeros(Cint, nlp.meta.nnzh)
     Wx = zeros(nlp.meta.nnzh)
     nnzh = cish!(nlp.meta.nvar, x0, j, nlp.meta.nnzh, Wx, h_row, h_col)
     w_val = copy(Wx)
@@ -241,11 +241,11 @@ if nlp.meta.ncon > 0
   end
   @test_approx_eq_eps Wx W(x0,y0) 1e-8
 
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
   Wx = zeros(nlp.meta.nnzh)
-  j_fun = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
-  j_var = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
+  j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+  j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   Jx = zeros(nlp.meta.nnzj+nlp.meta.nvar)
   nnzj, nnzh = csgrsh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, nlp.meta.nnzh, Wx, h_row, h_col)
   j_val = copy(Jx)
@@ -317,8 +317,8 @@ else
   end
   @test_approx_eq_eps Wx H(x0) 1e-8
 
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
   Wx = zeros(nlp.meta.nnzh)
   nnzh = ush!(nlp.meta.nvar, x0, nlp.meta.nnzh, Wx, h_row, h_col)
   w_val = copy(Wx)
@@ -347,7 +347,7 @@ for i = 1:10000
   gx = zeros(nlp.meta.nvar)
   fx = cofg!(nlp.meta.nvar, x0, gx, true)
   fx, nnzg, g_val, g_var = cofsg(nlp.meta.nvar, x0, nlp.meta.nvar, true)
-  g_var = zeros(Int, nlp.meta.nvar)
+  g_var = zeros(Cint, nlp.meta.nvar)
   g_val = zeros(nlp.meta.nvar)
   fx, nnzg = cofsg!(nlp.meta.nvar, x0, nlp.meta.nvar, g_val, g_var, true)
   cx, Jx = ccfg(nlp.meta.nvar, nlp.meta.ncon, x0, false, nlp.meta.ncon, nlp.meta.nvar, true)
@@ -361,12 +361,12 @@ for i = 1:10000
   gx = zeros(nlp.meta.nvar)
   cgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx)
   nnzj, Jx, j_var, j_fun = csgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
-  j_fun = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
-  j_var = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
+  j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+  j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   nnzj = csgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun)
   cx, nnzj, Jx, j_var, j_fun = ccfsg(nlp.meta.nvar, nlp.meta.ncon, x0, nlp.meta.nnzj+nlp.meta.nvar, true)
-  j_fun = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
-  j_var = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
+  j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+  j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   cx = zeros(nlp.meta.ncon)
   nnzj = ccfsg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, true)
   for j = 1:nlp.meta.ncon
@@ -378,7 +378,7 @@ for i = 1:10000
   for j = 1:nlp.meta.ncon
     ci, nnzgci, gci_val, gci_var = ccifsg(nlp.meta.nvar, j, x0, nlp.meta.nvar, true)
   end
-    gci_var = zeros(Int, nlp.meta.nvar)
+    gci_var = zeros(Cint, nlp.meta.nvar)
     gci_val = zeros(nlp.meta.nvar)
   for j = 1:nlp.meta.ncon
     ci, nnzgci = ccifsg!(nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
@@ -392,12 +392,12 @@ for i = 1:10000
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   cdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Wx)
   nnzh, Wx, h_row, h_col = csh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
   nnzh = csh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
   nnzh, Wx, h_row, h_col = cshc(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
   nnzh = cshc!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
   for j = 1:nlp.meta.ncon
     h = cidh(nlp.meta.nvar, x0, j, nlp.meta.nvar)
@@ -409,16 +409,16 @@ for i = 1:10000
   for j = 1:nlp.meta.ncon
     nnzh, Wx, h_row, h_col = cish(nlp.meta.nvar, x0, j, nlp.meta.nnzh)
   end
-    h_col = zeros(Int, nlp.meta.nnzh)
-    h_row = zeros(Int, nlp.meta.nnzh)
+    h_col = zeros(Cint, nlp.meta.nnzh)
+    h_row = zeros(Cint, nlp.meta.nnzh)
   for j = 1:nlp.meta.ncon
     nnzh = cish!(nlp.meta.nvar, x0, j, nlp.meta.nnzh, Wx, h_row, h_col)
   end
   nnzj, Jx, j_var, j_fun, nnzh, Wx, h_row, h_col = csgrsh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, nlp.meta.nnzh)
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
-  j_fun = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
-  j_var = zeros(Int, nlp.meta.nnzj+nlp.meta.nvar)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
+  j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
+  j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   nnzj, nnzh = csgrsh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, nlp.meta.nnzh, Wx, h_row, h_col)
   result = chprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
   result = zeros(W(x0,y0)*v)
@@ -440,8 +440,8 @@ for i = 1:10000
   h = udh(nlp.meta.nvar, x0, nlp.meta.nvar)
   udh!(nlp.meta.nvar, x0, nlp.meta.nvar, h)
   nnzh, Wx, h_row, h_col = ush(nlp.meta.nvar, x0, nlp.meta.nnzh)
-  h_col = zeros(Int, nlp.meta.nnzh)
-  h_row = zeros(Int, nlp.meta.nnzh)
+  h_col = zeros(Cint, nlp.meta.nnzh)
+  h_row = zeros(Cint, nlp.meta.nnzh)
   nnzh = ush!(nlp.meta.nvar, x0, nlp.meta.nnzh, Wx, h_row, h_col)
   result = uhprod(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar))
   result = zeros(H(x0)*v)
