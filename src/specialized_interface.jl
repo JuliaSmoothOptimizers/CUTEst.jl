@@ -177,7 +177,7 @@ end
     x_type = uvartype(n)
 
   - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
+  - x_type:  [OUT] Array{Cint, 1}
 """
 function uvartype(n::Int)
   io_err = Cint[0]
@@ -191,16 +191,12 @@ end
     uvartype!(n, x_type)
 
   - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
+  - x_type:  [OUT] Array{Cint, 1}
 """
-function uvartype!(n::Int, x_type::Array{Int, 1})
+function uvartype!(n::Int, x_type::Array{Cint, 1})
   io_err = Cint[0]
-  x_type_cp = Array(Cint, n)
-  uvartype(io_err, Cint[n], x_type_cp)
+  uvartype(io_err, Cint[n], x_type)
   @cutest_error
-  for i = 1:n
-    x_type[i] = x_type_cp[i]
-  end
   return
 end
 
@@ -354,7 +350,7 @@ end
     x_type = cvartype(n)
 
   - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
+  - x_type:  [OUT] Array{Cint, 1}
 """
 function cvartype(n::Int)
   io_err = Cint[0]
@@ -368,16 +364,12 @@ end
     cvartype!(n, x_type)
 
   - n:       [IN] Int
-  - x_type:  [OUT] Array{Int, 1}
+  - x_type:  [OUT] Array{Cint, 1}
 """
-function cvartype!(n::Int, x_type::Array{Int, 1})
+function cvartype!(n::Int, x_type::Array{Cint, 1})
   io_err = Cint[0]
-  x_type_cp = Array(Cint, n)
-  cvartype(io_err, Cint[n], x_type_cp)
+  cvartype(io_err, Cint[n], x_type)
   @cutest_error
-  for i = 1:n
-    x_type[i] = x_type_cp[i]
-  end
   return
 end
 
@@ -642,8 +634,8 @@ end
   - n:       [IN] Int
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function ushp(n::Int, lh::Int)
   io_err = Cint[0]
@@ -661,22 +653,14 @@ end
   - n:       [IN] Int
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
-function ushp!(n::Int, lh::Int, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+function ushp!(n::Int, lh::Int, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
   io_err = Cint[0]
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
-  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row_cp, h_col_cp)
+  ushp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
   @cutest_error
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzh[1]
 end
 
@@ -688,8 +672,8 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function ush(n::Int, x::Array{Float64, 1}, lh::Int)
   io_err = Cint[0]
@@ -710,23 +694,15 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function ush!(n::Int, x::Array{Float64, 1}, lh::Int, h_val::Array{Float64, 1},
-    h_row::Array{Int, 1}, h_col::Array{Int, 1})
+    h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
   io_err = Cint[0]
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
-  ush(io_err, Cint[n], x, nnzh, Cint[lh], h_val, h_row_cp, h_col_cp)
+  ush(io_err, Cint[n], x, nnzh, Cint[lh], h_val, h_row, h_col)
   @cutest_error
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzh[1]
 end
 
@@ -737,10 +713,10 @@ end
   - x:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
@@ -766,35 +742,22 @@ end
   - x:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 """
-function ueh!(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, he_row_ptr::Array{Int,
-    1}, he_val_ptr::Array{Int, 1}, lhe_row::Int, he_row::Array{Int, 1},
+function ueh!(n::Int, x::Array{Float64, 1}, lhe_ptr::Int, he_row_ptr::Array{Cint,
+    1}, he_val_ptr::Array{Cint, 1}, lhe_row::Int, he_row::Array{Cint, 1},
     lhe_val::Int, he_val::Array{Float64, 1}, byrows::Bool)
   io_err = Cint[0]
   ne = Cint[0]
-  he_row_ptr_cp = Array(Cint, lhe_ptr)
-  he_val_ptr_cp = Array(Cint, lhe_ptr)
-  he_row_cp = Array(Cint, lhe_row)
-  ueh(io_err, Cint[n], x, ne, Cint[lhe_ptr], he_row_ptr_cp,
-    he_val_ptr_cp, Cint[lhe_row], he_row_cp, Cint[lhe_val], he_val,
-    Cint[byrows])
+  ueh(io_err, Cint[n], x, ne, Cint[lhe_ptr], he_row_ptr, he_val_ptr,
+    Cint[lhe_row], he_row, Cint[lhe_val], he_val, Cint[byrows])
   @cutest_error
-  for i = 1:lhe_ptr
-    he_row_ptr[i] = he_row_ptr_cp[i]
-  end
-  for i = 1:lhe_ptr
-    he_val_ptr[i] = he_val_ptr_cp[i]
-  end
-  for i = 1:lhe_row
-    he_row[i] = he_row_cp[i]
-  end
   return ne[1]
 end
 
@@ -842,8 +805,8 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function ugrsh(n::Int, x::Array{Float64, 1}, lh::Int)
   io_err = Cint[0]
@@ -866,24 +829,16 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function ugrsh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lh::Int,
-    h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+    h_val::Array{Float64, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint,
+    1})
   io_err = Cint[0]
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
-  ugrsh(io_err, Cint[n], x, g, nnzh, Cint[lh], h_val, h_row_cp,
-    h_col_cp)
+  ugrsh(io_err, Cint[n], x, g, nnzh, Cint[lh], h_val, h_row, h_col)
   @cutest_error
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzh[1]
 end
 
@@ -895,10 +850,10 @@ end
   - g:          [OUT] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
@@ -927,36 +882,24 @@ end
   - g:          [OUT] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 """
 function ugreh!(n::Int, x::Array{Float64, 1}, g::Array{Float64, 1}, lhe_ptr::Int,
-    he_row_ptr::Array{Int, 1}, he_val_ptr::Array{Int, 1}, lhe_row::Int,
-    he_row::Array{Int, 1}, lhe_val::Int, he_val::Array{Float64, 1},
+    he_row_ptr::Array{Cint, 1}, he_val_ptr::Array{Cint, 1}, lhe_row::Int,
+    he_row::Array{Cint, 1}, lhe_val::Int, he_val::Array{Float64, 1},
     byrows::Bool)
   io_err = Cint[0]
   ne = Cint[0]
-  he_row_ptr_cp = Array(Cint, lhe_ptr)
-  he_val_ptr_cp = Array(Cint, lhe_ptr)
-  he_row_cp = Array(Cint, lhe_row)
-  ugreh(io_err, Cint[n], x, g, ne, Cint[lhe_ptr], he_row_ptr_cp,
-    he_val_ptr_cp, Cint[lhe_row], he_row_cp, Cint[lhe_val], he_val,
+  ugreh(io_err, Cint[n], x, g, ne, Cint[lhe_ptr], he_row_ptr,
+    he_val_ptr, Cint[lhe_row], he_row, Cint[lhe_val], he_val,
     Cint[byrows])
   @cutest_error
-  for i = 1:lhe_ptr
-    he_row_ptr[i] = he_row_ptr_cp[i]
-  end
-  for i = 1:lhe_ptr
-    he_val_ptr[i] = he_val_ptr_cp[i]
-  end
-  for i = 1:lhe_row
-    he_row[i] = he_row_cp[i]
-  end
   return ne[1]
 end
 
@@ -1001,14 +944,14 @@ end
   - goth:            [IN] Bool
   - x:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
 """
 function ushprod(n::Int, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
-    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1})
+    index_nz_vector::Array{Cint, 1}, vector::Array{Float64, 1})
   io_err = Cint[0]
   nnz_result = Cint[0]
   index_nz_result = Array(Cint, n)
@@ -1026,24 +969,20 @@ end
   - goth:            [IN] Bool
   - x:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
 """
 function ushprod!(n::Int, goth::Bool, x::Array{Float64, 1}, nnz_vector::Int,
-    index_nz_vector::Array{Int, 1}, vector::Array{Float64, 1},
-    index_nz_result::Array{Int, 1}, result::Array{Float64, 1})
+    index_nz_vector::Array{Cint, 1}, vector::Array{Float64, 1},
+    index_nz_result::Array{Cint, 1}, result::Array{Float64, 1})
   io_err = Cint[0]
   nnz_result = Cint[0]
-  index_nz_result_cp = Array(Cint, n)
   ushprod(io_err, Cint[n], Cint[goth], x, Cint[nnz_vector],
-    index_nz_vector, vector, nnz_result, index_nz_result_cp, result)
+    index_nz_vector, vector, nnz_result, index_nz_result, result)
   @cutest_error
-  for i = 1:n
-    index_nz_result[i] = index_nz_result_cp[i]
-  end
   return nnz_result[1]
 end
 
@@ -1166,7 +1105,7 @@ end
   - nnzg:    [OUT] Int
   - lg:      [IN] Int
   - g_val:   [OUT] Array{Float64, 1}
-  - g_var:   [OUT] Array{Int, 1}
+  - g_var:   [OUT] Array{Cint, 1}
   - grad:    [IN] Bool
 """
 function cofsg(n::Int, x::Array{Float64, 1}, lg::Int, grad::Bool)
@@ -1190,21 +1129,17 @@ end
   - nnzg:    [OUT] Int
   - lg:      [IN] Int
   - g_val:   [OUT] Array{Float64, 1}
-  - g_var:   [OUT] Array{Int, 1}
+  - g_var:   [OUT] Array{Cint, 1}
   - grad:    [IN] Bool
 """
 function cofsg!(n::Int, x::Array{Float64, 1}, lg::Int, g_val::Array{Float64, 1},
-    g_var::Array{Int, 1}, grad::Bool)
+    g_var::Array{Cint, 1}, grad::Bool)
   io_err = Cint[0]
   f = Cdouble[0]
   nnzg = Cint[0]
-  g_var_cp = Array(Cint, lg)
-  cofsg(io_err, Cint[n], x, f, nnzg, Cint[lg], g_val, g_var_cp,
+  cofsg(io_err, Cint[n], x, f, nnzg, Cint[lg], g_val, g_var,
     Cint[grad])
   @cutest_error
-  for i = 1:lg
-    g_var[i] = g_var_cp[i]
-  end
   return f[1], nnzg[1]
 end
 
@@ -1356,8 +1291,8 @@ end
   - nnzj:    [OUT] Int
   - lj:      [IN] Int
   - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
 """
 function csgr(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int)
@@ -1383,25 +1318,17 @@ end
   - nnzj:    [OUT] Int
   - lj:      [IN] Int
   - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
 """
 function csgr!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
-    grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
-    j_fun::Array{Int, 1})
+    grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Cint,
+    1}, j_fun::Array{Cint, 1})
   io_err = Cint[0]
   nnzj = Cint[0]
-  j_var_cp = Array(Cint, lj)
-  j_fun_cp = Array(Cint, lj)
   csgr(io_err, Cint[n], Cint[m], x, y, Cint[grlagf], nnzj, Cint[lj],
-    j_val, j_var_cp, j_fun_cp)
+    j_val, j_var, j_fun)
   @cutest_error
-  for i = 1:lj
-    j_var[i] = j_var_cp[i]
-  end
-  for i = 1:lj
-    j_fun[i] = j_fun_cp[i]
-  end
   return nnzj[1]
 end
 
@@ -1415,8 +1342,8 @@ end
   - nnzj:    [OUT] Int
   - lj:      [IN] Int
   - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
   - grad:    [IN] Bool
 """
 function ccfsg(n::Int, m::Int, x::Array{Float64, 1}, lj::Int, grad::Bool)
@@ -1442,26 +1369,18 @@ end
   - nnzj:    [OUT] Int
   - lj:      [IN] Int
   - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
   - grad:    [IN] Bool
 """
 function ccfsg!(n::Int, m::Int, x::Array{Float64, 1}, c::Array{Float64, 1}, lj::Int,
-    j_val::Array{Float64, 1}, j_var::Array{Int, 1}, j_fun::Array{Int, 1},
-    grad::Bool)
+    j_val::Array{Float64, 1}, j_var::Array{Cint, 1}, j_fun::Array{Cint,
+    1}, grad::Bool)
   io_err = Cint[0]
   nnzj = Cint[0]
-  j_var_cp = Array(Cint, lj)
-  j_fun_cp = Array(Cint, lj)
-  ccfsg(io_err, Cint[n], Cint[m], x, c, nnzj, Cint[lj], j_val,
-    j_var_cp, j_fun_cp, Cint[grad])
+  ccfsg(io_err, Cint[n], Cint[m], x, c, nnzj, Cint[lj], j_val, j_var,
+    j_fun, Cint[grad])
   @cutest_error
-  for i = 1:lj
-    j_var[i] = j_var_cp[i]
-  end
-  for i = 1:lj
-    j_fun[i] = j_fun_cp[i]
-  end
   return nnzj[1]
 end
 
@@ -1513,7 +1432,7 @@ end
   - nnzgci:  [OUT] Int
   - lgci:    [IN] Int
   - gci_val: [OUT] Array{Float64, 1}
-  - gci_var: [OUT] Array{Int, 1}
+  - gci_var: [OUT] Array{Cint, 1}
   - grad:    [IN] Bool
 """
 function ccifsg(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int, grad::Bool)
@@ -1538,21 +1457,17 @@ end
   - nnzgci:  [OUT] Int
   - lgci:    [IN] Int
   - gci_val: [OUT] Array{Float64, 1}
-  - gci_var: [OUT] Array{Int, 1}
+  - gci_var: [OUT] Array{Cint, 1}
   - grad:    [IN] Bool
 """
 function ccifsg!(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int,
-    gci_val::Array{Float64, 1}, gci_var::Array{Int, 1}, grad::Bool)
+    gci_val::Array{Float64, 1}, gci_var::Array{Cint, 1}, grad::Bool)
   io_err = Cint[0]
   ci = Cdouble[0]
   nnzgci = Cint[0]
-  gci_var_cp = Array(Cint, lgci)
   ccifsg(io_err, Cint[n], Cint[icon], x, ci, nnzgci, Cint[lgci],
-    gci_val, gci_var_cp, Cint[grad])
+    gci_val, gci_var, Cint[grad])
   @cutest_error
-  for i = 1:lgci
-    gci_var[i] = gci_var_cp[i]
-  end
   return ci[1], nnzgci[1]
 end
 
@@ -1688,8 +1603,8 @@ end
   - n:       [IN] Int
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function cshp(n::Int, lh::Int)
   io_err = Cint[0]
@@ -1707,22 +1622,14 @@ end
   - n:       [IN] Int
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
-function cshp!(n::Int, lh::Int, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+function cshp!(n::Int, lh::Int, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
   io_err = Cint[0]
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
-  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row_cp, h_col_cp)
+  cshp(io_err, Cint[n], nnzh, Cint[lh], h_row, h_col)
   @cutest_error
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzh[1]
 end
 
@@ -1736,8 +1643,8 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function csh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int)
   io_err = Cint[0]
@@ -1761,24 +1668,17 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function csh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
-    h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+    h_val::Array{Float64, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint,
+    1})
   io_err = Cint[0]
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
-  csh(io_err, Cint[n], Cint[m], x, y, nnzh, Cint[lh], h_val, h_row_cp,
-    h_col_cp)
+  csh(io_err, Cint[n], Cint[m], x, y, nnzh, Cint[lh], h_val, h_row,
+    h_col)
   @cutest_error
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzh[1]
 end
 
@@ -1792,8 +1692,8 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function cshc(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int)
   io_err = Cint[0]
@@ -1817,24 +1717,17 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function cshc!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1}, lh::Int,
-    h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+    h_val::Array{Float64, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint,
+    1})
   io_err = Cint[0]
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
-  cshc(io_err, Cint[n], Cint[m], x, y, nnzh, Cint[lh], h_val,
-    h_row_cp, h_col_cp)
+  cshc(io_err, Cint[n], Cint[m], x, y, nnzh, Cint[lh], h_val, h_row,
+    h_col)
   @cutest_error
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzh[1]
 end
 
@@ -1847,10 +1740,10 @@ end
   - y:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
@@ -1879,36 +1772,24 @@ end
   - y:          [IN] Array{Float64, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 """
 function ceh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
-    lhe_ptr::Int, he_row_ptr::Array{Int, 1}, he_val_ptr::Array{Int, 1},
-    lhe_row::Int, he_row::Array{Int, 1}, lhe_val::Int,
+    lhe_ptr::Int, he_row_ptr::Array{Cint, 1}, he_val_ptr::Array{Cint, 1},
+    lhe_row::Int, he_row::Array{Cint, 1}, lhe_val::Int,
     he_val::Array{Float64, 1}, byrows::Bool)
   io_err = Cint[0]
   ne = Cint[0]
-  he_row_ptr_cp = Array(Cint, lhe_ptr)
-  he_val_ptr_cp = Array(Cint, lhe_ptr)
-  he_row_cp = Array(Cint, lhe_row)
-  ceh(io_err, Cint[n], Cint[m], x, y, ne, Cint[lhe_ptr],
-    he_row_ptr_cp, he_val_ptr_cp, Cint[lhe_row], he_row_cp, Cint[lhe_val],
-    he_val, Cint[byrows])
+  ceh(io_err, Cint[n], Cint[m], x, y, ne, Cint[lhe_ptr], he_row_ptr,
+    he_val_ptr, Cint[lhe_row], he_row, Cint[lhe_val], he_val,
+    Cint[byrows])
   @cutest_error
-  for i = 1:lhe_ptr
-    he_row_ptr[i] = he_row_ptr_cp[i]
-  end
-  for i = 1:lhe_ptr
-    he_val_ptr[i] = he_val_ptr_cp[i]
-  end
-  for i = 1:lhe_row
-    he_row[i] = he_row_cp[i]
-  end
   return ne[1]
 end
 
@@ -1955,8 +1836,8 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function cish(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int)
   io_err = Cint[0]
@@ -1979,24 +1860,17 @@ end
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function cish!(n::Int, x::Array{Float64, 1}, iprob::Int, lh::Int,
-    h_val::Array{Float64, 1}, h_row::Array{Int, 1}, h_col::Array{Int, 1})
+    h_val::Array{Float64, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint,
+    1})
   io_err = Cint[0]
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
-  cish(io_err, Cint[n], x, Cint[iprob], nnzh, Cint[lh], h_val,
-    h_row_cp, h_col_cp)
+  cish(io_err, Cint[n], x, Cint[iprob], nnzh, Cint[lh], h_val, h_row,
+    h_col)
   @cutest_error
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzh[1]
 end
 
@@ -2011,13 +1885,13 @@ end
   - nnzj:    [OUT] Int
   - lj:      [IN] Int
   - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function csgrsh(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grlagf::Bool, lj::Int, lh::Int)
@@ -2047,40 +1921,24 @@ end
   - nnzj:    [OUT] Int
   - lj:      [IN] Int
   - j_val:   [OUT] Array{Float64, 1}
-  - j_var:   [OUT] Array{Int, 1}
-  - j_fun:   [OUT] Array{Int, 1}
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
   - nnzh:    [OUT] Int
   - lh:      [IN] Int
   - h_val:   [OUT] Array{Float64, 1}
-  - h_row:   [OUT] Array{Int, 1}
-  - h_col:   [OUT] Array{Int, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
 """
 function csgrsh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
-    grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
-    j_fun::Array{Int, 1}, lh::Int, h_val::Array{Float64, 1},
-    h_row::Array{Int, 1}, h_col::Array{Int, 1})
+    grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Cint,
+    1}, j_fun::Array{Cint, 1}, lh::Int, h_val::Array{Float64, 1},
+    h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
   io_err = Cint[0]
   nnzj = Cint[0]
-  j_var_cp = Array(Cint, lj)
-  j_fun_cp = Array(Cint, lj)
   nnzh = Cint[0]
-  h_row_cp = Array(Cint, lh)
-  h_col_cp = Array(Cint, lh)
   csgrsh(io_err, Cint[n], Cint[m], x, y, Cint[grlagf], nnzj, Cint[lj],
-    j_val, j_var_cp, j_fun_cp, nnzh, Cint[lh], h_val, h_row_cp, h_col_cp)
+    j_val, j_var, j_fun, nnzh, Cint[lh], h_val, h_row, h_col)
   @cutest_error
-  for i = 1:lj
-    j_var[i] = j_var_cp[i]
-  end
-  for i = 1:lj
-    j_fun[i] = j_fun_cp[i]
-  end
-  for i = 1:lh
-    h_row[i] = h_row_cp[i]
-  end
-  for i = 1:lh
-    h_col[i] = h_col_cp[i]
-  end
   return nnzj[1], nnzh[1]
 end
 
@@ -2095,14 +1953,14 @@ end
   - nnzj:       [OUT] Int
   - lj:         [IN] Int
   - j_val:      [OUT] Array{Float64, 1}
-  - j_var:      [OUT] Array{Int, 1}
-  - j_fun:      [OUT] Array{Int, 1}
+  - j_var:      [OUT] Array{Cint, 1}
+  - j_fun:      [OUT] Array{Cint, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
@@ -2138,51 +1996,30 @@ end
   - nnzj:       [OUT] Int
   - lj:         [IN] Int
   - j_val:      [OUT] Array{Float64, 1}
-  - j_var:      [OUT] Array{Int, 1}
-  - j_fun:      [OUT] Array{Int, 1}
+  - j_var:      [OUT] Array{Cint, 1}
+  - j_fun:      [OUT] Array{Cint, 1}
   - ne:         [OUT] Int
   - lhe_ptr:    [IN] Int
-  - he_row_ptr: [OUT] Array{Int, 1}
-  - he_val_ptr: [OUT] Array{Int, 1}
+  - he_row_ptr: [OUT] Array{Cint, 1}
+  - he_val_ptr: [OUT] Array{Cint, 1}
   - lhe_row:    [IN] Int
-  - he_row:     [OUT] Array{Int, 1}
+  - he_row:     [OUT] Array{Cint, 1}
   - lhe_val:    [IN] Int
   - he_val:     [OUT] Array{Float64, 1}
   - byrows:     [IN] Bool
 """
 function csgreh!(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
-    grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Int, 1},
-    j_fun::Array{Int, 1}, lhe_ptr::Int, he_row_ptr::Array{Int, 1},
-    he_val_ptr::Array{Int, 1}, lhe_row::Int, he_row::Array{Int, 1},
+    grlagf::Bool, lj::Int, j_val::Array{Float64, 1}, j_var::Array{Cint,
+    1}, j_fun::Array{Cint, 1}, lhe_ptr::Int, he_row_ptr::Array{Cint, 1},
+    he_val_ptr::Array{Cint, 1}, lhe_row::Int, he_row::Array{Cint, 1},
     lhe_val::Int, he_val::Array{Float64, 1}, byrows::Bool)
   io_err = Cint[0]
   nnzj = Cint[0]
-  j_var_cp = Array(Cint, lj)
-  j_fun_cp = Array(Cint, lj)
   ne = Cint[0]
-  he_row_ptr_cp = Array(Cint, lhe_ptr)
-  he_val_ptr_cp = Array(Cint, lhe_ptr)
-  he_row_cp = Array(Cint, lhe_row)
   csgreh(io_err, Cint[n], Cint[m], x, y, Cint[grlagf], nnzj, Cint[lj],
-    j_val, j_var_cp, j_fun_cp, ne, Cint[lhe_ptr], he_row_ptr_cp,
-    he_val_ptr_cp, Cint[lhe_row], he_row_cp, Cint[lhe_val], he_val,
-    Cint[byrows])
+    j_val, j_var, j_fun, ne, Cint[lhe_ptr], he_row_ptr, he_val_ptr,
+    Cint[lhe_row], he_row, Cint[lhe_val], he_val, Cint[byrows])
   @cutest_error
-  for i = 1:lj
-    j_var[i] = j_var_cp[i]
-  end
-  for i = 1:lj
-    j_fun[i] = j_fun_cp[i]
-  end
-  for i = 1:lhe_ptr
-    he_row_ptr[i] = he_row_ptr_cp[i]
-  end
-  for i = 1:lhe_ptr
-    he_val_ptr[i] = he_val_ptr_cp[i]
-  end
-  for i = 1:lhe_row
-    he_row[i] = he_row_cp[i]
-  end
   return nnzj[1], ne[1]
 end
 
@@ -2234,14 +2071,14 @@ end
   - x:               [IN] Array{Float64, 1}
   - y:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
 """
 function cshprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
-    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    1}, nnz_vector::Int, index_nz_vector::Array{Cint, 1},
     vector::Array{Float64, 1})
   io_err = Cint[0]
   nnz_result = Cint[0]
@@ -2263,26 +2100,22 @@ end
   - x:               [IN] Array{Float64, 1}
   - y:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
 """
 function cshprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
-    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
-    vector::Array{Float64, 1}, index_nz_result::Array{Int, 1},
+    1}, nnz_vector::Int, index_nz_vector::Array{Cint, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Cint, 1},
     result::Array{Float64, 1})
   io_err = Cint[0]
   nnz_result = Cint[0]
-  index_nz_result_cp = Array(Cint, n)
   cshprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
     Cint[nnz_vector], index_nz_vector, vector, nnz_result,
-    index_nz_result_cp, result)
+    index_nz_result, result)
   @cutest_error
-  for i = 1:n
-    index_nz_result[i] = index_nz_result_cp[i]
-  end
   return nnz_result[1]
 end
 
@@ -2334,14 +2167,14 @@ end
   - x:               [IN] Array{Float64, 1}
   - y:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
 """
 function cshcprod(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
-    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    1}, nnz_vector::Int, index_nz_vector::Array{Cint, 1},
     vector::Array{Float64, 1})
   io_err = Cint[0]
   nnz_result = Cint[0]
@@ -2363,26 +2196,22 @@ end
   - x:               [IN] Array{Float64, 1}
   - y:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
 """
 function cshcprod!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1}, y::Array{Float64,
-    1}, nnz_vector::Int, index_nz_vector::Array{Int, 1},
-    vector::Array{Float64, 1}, index_nz_result::Array{Int, 1},
+    1}, nnz_vector::Int, index_nz_vector::Array{Cint, 1},
+    vector::Array{Float64, 1}, index_nz_result::Array{Cint, 1},
     result::Array{Float64, 1})
   io_err = Cint[0]
   nnz_result = Cint[0]
-  index_nz_result_cp = Array(Cint, n)
   cshcprod(io_err, Cint[n], Cint[m], Cint[goth], x, y,
     Cint[nnz_vector], index_nz_vector, vector, nnz_result,
-    index_nz_result_cp, result)
+    index_nz_result, result)
   @cutest_error
-  for i = 1:n
-    index_nz_result[i] = index_nz_result_cp[i]
-  end
   return nnz_result[1]
 end
 
@@ -2441,16 +2270,16 @@ end
   - jtrans:          [IN] Bool
   - x:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - lvector:         [IN] Int
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
   - lresult:         [IN] Int
 """
 function csjprod(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
-    nnz_vector::Int, index_nz_vector::Array{Int, 1},
+    nnz_vector::Int, index_nz_vector::Array{Cint, 1},
     vector::Array{Float64, 1}, lvector::Int, lresult::Int)
   io_err = Cint[0]
   nnz_result = Cint[0]
@@ -2472,28 +2301,24 @@ end
   - jtrans:          [IN] Bool
   - x:               [IN] Array{Float64, 1}
   - nnz_vector:      [IN] Int
-  - index_nz_vector: [IN] Array{Int, 1}
+  - index_nz_vector: [IN] Array{Cint, 1}
   - vector:          [IN] Array{Float64, 1}
   - lvector:         [IN] Int
   - nnz_result:      [OUT] Int
-  - index_nz_result: [OUT] Array{Int, 1}
+  - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Float64, 1}
   - lresult:         [IN] Int
 """
 function csjprod!(n::Int, m::Int, gotj::Bool, jtrans::Bool, x::Array{Float64, 1},
-    nnz_vector::Int, index_nz_vector::Array{Int, 1},
-    vector::Array{Float64, 1}, lvector::Int, index_nz_result::Array{Int,
+    nnz_vector::Int, index_nz_vector::Array{Cint, 1},
+    vector::Array{Float64, 1}, lvector::Int, index_nz_result::Array{Cint,
     1}, result::Array{Float64, 1}, lresult::Int)
   io_err = Cint[0]
   nnz_result = Cint[0]
-  index_nz_result_cp = Array(Cint, n)
   csjprod(io_err, Cint[n], Cint[m], Cint[gotj], Cint[jtrans], x,
     Cint[nnz_vector], index_nz_vector, vector, Cint[lvector], nnz_result,
-    index_nz_result_cp, result, Cint[lresult])
+    index_nz_result, result, Cint[lresult])
   @cutest_error
-  for i = 1:n
-    index_nz_result[i] = index_nz_result_cp[i]
-  end
   return nnz_result[1]
 end
 
@@ -2507,12 +2332,12 @@ end
   - vector:  [IN] Array{Float64, 1}
   - lchp:    [IN] Int
   - chp_val: [OUT] Array{Float64, 1}
-  - chp_ind: [IN] Array{Int, 1}
-  - chp_ptr: [IN] Array{Int, 1}
+  - chp_ind: [IN] Array{Cint, 1}
+  - chp_ptr: [IN] Array{Cint, 1}
 """
 function cchprods(n::Int, m::Int, goth::Bool, x::Array{Float64, 1},
-    vector::Array{Float64, 1}, lchp::Int, chp_ind::Array{Int, 1},
-    chp_ptr::Array{Int, 1})
+    vector::Array{Float64, 1}, lchp::Int, chp_ind::Array{Cint, 1},
+    chp_ptr::Array{Cint, 1})
   io_err = Cint[0]
   chp_val = Array(Cdouble, lchp)
   cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
@@ -2531,12 +2356,12 @@ end
   - vector:  [IN] Array{Float64, 1}
   - lchp:    [IN] Int
   - chp_val: [OUT] Array{Float64, 1}
-  - chp_ind: [IN] Array{Int, 1}
-  - chp_ptr: [IN] Array{Int, 1}
+  - chp_ind: [IN] Array{Cint, 1}
+  - chp_ptr: [IN] Array{Cint, 1}
 """
 function cchprods!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1},
     vector::Array{Float64, 1}, lchp::Int, chp_val::Array{Float64, 1},
-    chp_ind::Array{Int, 1}, chp_ptr::Array{Int, 1})
+    chp_ind::Array{Cint, 1}, chp_ptr::Array{Cint, 1})
   io_err = Cint[0]
   cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
     Cint[lchp], chp_val, chp_ind, chp_ptr)
