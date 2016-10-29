@@ -19,7 +19,7 @@ for problem in problems
   test_coreinterface(nlp, adnlp)
 
   println("Finalizing")
-  cutest_finalize(nlp)
+  finalize(nlp)
 end
 
 include("consistency.jl")
