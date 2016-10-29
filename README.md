@@ -15,9 +15,14 @@ comparing optimization algorithms, derived from the abstract model on
 This package should detect your existing CUTEst installation, and will install its private version of CUTEst otherwise.
 The gfortran compiler is required.
 We currently do not support other Fortran compilers.
+
 On OSX, Homebrew.jl will install gfortran if gfortran is not detected on your system.
 You may either use standard Homebrew to install gfortran yourself from precompiled bottled using `brew install gcc` or let Homebrew.jl install its private version.
 In the latter scenario, gcc and gfortran need to be compiled from source.
+
+On Linux, you'll need to install `wget`, `gfortran` and `gsl-1.16`. See [this
+page](https://github.com/abelsiqueira/linux-cutest#requirements) for how to
+install the requirements on some linux distributions.
 
 The following commands download CUTEst, change to the specific
 branch, and build CUTEst.
