@@ -12,5 +12,5 @@ for problem in problems
   @printf("Checking problem %-15s%12s\t", problem_s, "")
   consistent_nlps(nlps)
 
-  cutest_finalize(nlp_cutest)
+  finalize(nlp_cutest)
 end

@@ -56,17 +56,17 @@ for p in problems
   else
     println("$p: specialized interface: f(x₀) = $(ufn(nvar, x0))")
   end
-  cutest_finalize(nlp)
+  finalize(nlp)
 end
 
 # test arguments passed to decoder
 nlp = CUTEstModel("DIXMAANJ", "-param", "M=5")
 @assert nlp.meta.nvar == 15
-cutest_finalize(nlp)
+finalize(nlp)
 
 nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
 @assert nlp.meta.nvar == 90
-cutest_finalize(nlp)
+finalize(nlp)
 
 # clean up the test directory
 here = dirname(@__FILE__)
