@@ -28,9 +28,9 @@ initial point, the bounds, an so on.
 
 ## Installing
 
-Currently, this package builds its own version of CUTEst, if you have your own
-version of CUTEst, this will conflict with it. Check the issues for a fix, or
-open one for help.
+On Linux, you'll need to install `wget`, `gfortran` and `gsl-1.16`. See [this
+page](https://github.com/abelsiqueira/linux-cutest#requirements) for how to
+install the requirements on some linux distributions.
 
 The following commands should automatically download NLPModels.jl and CUTEst,
 and install them.
