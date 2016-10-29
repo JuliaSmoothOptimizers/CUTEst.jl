@@ -12,7 +12,7 @@ import Base.Libdl.dlsym
 # Only one problem can be interfaced at any given time.
 global cutest_instances = 0
 
-export CUTEstModel, sifdecoder, cutest_finalize
+export CUTEstModel, sifdecoder
 
 type CUTEstModel <: AbstractNLPModel
   meta    :: NLPModelMeta;
