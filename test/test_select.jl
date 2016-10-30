@@ -76,7 +76,7 @@ facts("CUTEst selection tool") do
       end
       selection_alt = CUTEst.select(objtype=CUTEst.objtypes[i])
       @fact sort(selection_alt) --> sort(selection)
-      selection_alt = CUTEst.select(objtype=symbol(CUTEst.objtypes[i]))
+      selection_alt = CUTEst.select(objtype=Symbol(CUTEst.objtypes[i]))
       @fact sort(selection_alt) --> sort(selection)
     end
     @fact npi --> np
@@ -105,7 +105,7 @@ facts("CUTEst selection tool") do
       end
       selection_alt = CUTEst.select(contype=CUTEst.contypes[i])
       @fact sort(selection_alt) --> sort(selection)
-      selection_alt = CUTEst.select(contype=symbol(CUTEst.contypes[i]))
+      selection_alt = CUTEst.select(contype=Symbol(CUTEst.contypes[i]))
       @fact sort(selection_alt) --> sort(selection)
     end
     @fact npi --> np
