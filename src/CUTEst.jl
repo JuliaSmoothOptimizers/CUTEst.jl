@@ -182,7 +182,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
 
   cutest_instances += 1;
   finalizer(nlp, cutest_finalize)
-  
+
   return nlp
 end
 
