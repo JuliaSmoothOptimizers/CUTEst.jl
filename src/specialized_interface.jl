@@ -119,7 +119,7 @@ end
 function csetup!(input::Int, out::Int, io_buffer::Int, n::Int, m::Int,
     x::Array{Float64, 1}, x_l::Array{Float64, 1}, x_u::Array{Float64, 1},
     y::Array{Float64, 1}, c_l::Array{Float64, 1}, c_u::Array{Float64, 1},
-    equatn::Array{Bool, 1}, linear::Array{Bool, 1}, e_order::Int,
+    equatn::Array{Cint, 1}, linear::Array{Cint, 1}, e_order::Int,
     l_order::Int, v_order::Int)
   io_err = Cint[0]
   csetup(io_err, Cint[input], Cint[out], Cint[io_buffer], Cint[n],
