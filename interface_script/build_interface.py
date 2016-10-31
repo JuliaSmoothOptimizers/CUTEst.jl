@@ -11,15 +11,8 @@ cutypes = {"integer":"Cint", "doublereal":"Cdouble", "logical":"Cint",
 jltypes = {"integer":"Int", "doublereal":"Float64", "logical":"Bool",
         "char":"UInt8", "real":"Float64"}
 
-# NLP related
-nlp_equivalent = {"n":"nvar", "m":"ncon", "lj":"nnzj", "lh":"nnzh"}
-nlp_exception  = {
-    "csgr": { "lj":["nnzj","nvar"] },
-    "csgrsh": { "lj":["nnzj","nvar"] }
-    }
-nlp_ignore = [ "usetup", "csetup", "udimen", "cdimen", "udimsh", "cdimsh",
-    "udimse", "cdimse", "cdimsj", "unames", "cnames" "connames", "varnames",
-    "uvartype", "cvartype", "cterminate", "uterminate" ]
+# csetup special case
+logical_are_ints = ["csetup"]
 
 s="  "
 el='\n'+2*s
@@ -143,7 +136,7 @@ def get_function_data(name):
                 break
     return args, types, intents, dims
 
-def arguments(args, types, intents, dims, use_types = True, intent = "all",
+def arguments(name, args, types, intents, dims, use_types = True, intent = "all",
         all_ptrs = True, typeset = jltypes, inplace = False):
     str = []
     for i, arg in enumerate(args):
@@ -161,6 +154,8 @@ def arguments(args, types, intents, dims, use_types = True, intent = "all",
             continue
         if use_types:
             t = typeset[types[i]]
+            if name in logical_are_ints and t == "Bool":
+                t = "Int"
             if len(dims[i]) > 0 or all_ptrs:
                 dim = max(1, len(dims[i]))
                 if t == "Int":
@@ -185,7 +180,7 @@ def header_doc(name):
     return str
 
 def core_doc(name, args, types, intents, dims):
-    help_args = arguments(args, types, [], dims, intent="all",
+    help_args = arguments(name, args, types, [], dims, intent="all",
             use_types=False, all_ptrs=True, typeset=cutypes)
     str = "    " + name + "(" + wrap(help_args, "\n") + ")\n\n"
     n = max([7] + [len(arg) for arg in args])
@@ -199,9 +194,9 @@ def core_doc(name, args, types, intents, dims):
 def spec_doc(name, args, types, intents, dims, inplace):
     if name == "cstats":
         return ""
-    in_args = arguments(args, types, intents, dims, intent="in",
+    in_args = arguments(name, args, types, intents, dims, intent="in",
             use_types=False, all_ptrs=False, inplace=inplace)
-    out_args = arguments(args, types, intents, dims, intent="out",
+    out_args = arguments(name, args, types, intents, dims, intent="out",
             use_types=False, all_ptrs=False, inplace=inplace)
 
     str = ""
@@ -231,7 +226,7 @@ def footer_doc(name):
 
 def core_function(name, args, types, dims):
     str = ""
-    arg_call = arguments(args, types, [], dims, intent="all",
+    arg_call = arguments(name, args, types, [], dims, intent="all",
             use_types=True, all_ptrs=True, typeset=cutypes)
     str += "function "+name+"("+wrap(arg_call)+")\n"
     str += s+'ccall(dlsym(cutest_lib, "cutest_{}_"), Void,\n'.format(name)
@@ -245,7 +240,7 @@ def core_function(name, args, types, dims):
 
 def specialized_function(name, args, types, intents, dims, inplace = False):
     str = ""
-    arg_call = arguments(args, types, intents, dims, intent="in",
+    arg_call = arguments(name, args, types, intents, dims, intent="in",
             use_types=True, all_ptrs=False, inplace=inplace)
 
     str += "function " + name
@@ -276,7 +271,7 @@ def specialized_function(name, args, types, intents, dims, inplace = False):
             out.append("{}[{}]".format(cutypes[types[i]], arg))
     str += wrap(s+"{}({})".format(name, ', '.join(out))) + "\n"
     str += s+"@cutest_error\n"
-    returns = arguments(args, 0, intents, dims, intent="out", use_types=False,
+    returns = arguments(name, args, 0, intents, dims, intent="out", use_types=False,
             all_ptrs=True, inplace=inplace)
     if returns != "":
         returns = " " + returns
@@ -306,7 +301,6 @@ for name in names:
     core_file.write(core_function(name, args, types, dims))
     core_file.write("\n")
 
-    # Some functions return values that should be obtained while creating nlp
     spec_file.write('"""\n')
     spec_file.write(spec_doc(name, args, types, intents, dims, inplace=False))
     spec_file.write('"""\n')

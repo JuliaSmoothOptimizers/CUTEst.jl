@@ -1,5 +1,7 @@
 using Base.Test, CUTEst, FactCheck, Ipopt, JuMP, MathProgBase, NLPModels
 
+include("test_specialized_manual.jl")
+
 problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
 path = joinpath(Pkg.dir("NLPModels"), "test")
 
