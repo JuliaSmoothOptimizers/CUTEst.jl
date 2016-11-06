@@ -57,7 +57,7 @@ println("x0 = $(nlp.meta.x0)")
 println("fx = $( obj(nlp, nlp.meta.x0) )")
 println("gx = $( grad(nlp, nlp.meta.x0) )")
 println("Hx = $( hess(nlp, nlp.meta.x0) )")
-cutest_finalize(nlp)
+finalize(nlp)
 ```
 
 Check the [NLPModels API](api/#nlpmodels-api) for details.

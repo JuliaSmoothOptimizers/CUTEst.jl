@@ -132,7 +132,7 @@ nnzj, hval, hrow, hcol = ush(nvar, x, ld)
 ```
 
 ```@example spec
-cutest_finalize(nlp)
+finalize(nlp)
 nlp = CUTEstModel("HS51")
 x = nlp.meta.x0
 
@@ -158,5 +158,5 @@ println("J = $J")
 ```
 
 ```@example spec
-cutest_finalize(nlp)
+finalize(nlp)
 ```
