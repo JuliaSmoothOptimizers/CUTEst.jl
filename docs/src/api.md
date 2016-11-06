@@ -18,7 +18,7 @@ hess_coord
 hess
 hprod
 hprod!
-NLPtoMPB
+NLPModels.NLPtoMPB
 NLPModels.reset!
 ```
 

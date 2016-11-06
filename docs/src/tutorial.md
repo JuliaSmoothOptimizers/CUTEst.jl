@@ -33,7 +33,7 @@ have to finalize it before opening a new one. There is no problem in closing
 Julia before finalizing it, for instance.
 
 ```@example ex1
-cutest_finalize(nlp)
+finalize(nlp)
 ```
 
 Being a NLPModel means that everything created for an AbstractNLPModel will work
@@ -100,7 +100,7 @@ end
 ```
 
 ```@example ex1
-cutest_finalize(nlp)
+finalize(nlp)
 ```
 
 There is no difference in calling a constrained problem, only that some
@@ -130,5 +130,5 @@ print(nlp.meta)
 ```
 
 ```@example ex2
-cutest_finalize(nlp)
+finalize(nlp)
 ```
