@@ -292,7 +292,7 @@
 <p>CUTEst gives you about 100 methods to access the objective and constraints functions, as well as their derivatives in many different formats. It also gives access to the problem's information, like number of variables, constraints, the initial point, the bounds, an so on.</p>
 <p><a id='Installing-1'></a></p>
 <h2 id="installing">Installing</h2>
-<p>Currently, this package builds its own version of CUTEst, if you have your own version of CUTEst, this will conflict with it. Check the issues for a fix, or open one for help.</p>
+<p>On Linux, you'll need to install <code>wget</code>, <code>gfortran</code> and <code>gsl-1.16</code>. See <a href="https://github.com/abelsiqueira/linux-cutest#requirements">this page</a> for how to install the requirements on some linux distributions.</p>
 <p>The following commands should automatically download NLPModels.jl and CUTEst, and install them.</p>
 <div class="code"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git&quot;</span><span class="p">)</span>
 <span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git&quot;</span><span class="p">)</span>
@@ -312,13 +312,13 @@
 <span class="n">println</span><span class="p">(</span><span class="s">&quot;fx = </span><span class="si">$( obj(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
 <span class="n">println</span><span class="p">(</span><span class="s">&quot;gx = </span><span class="si">$( grad(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
 <span class="n">println</span><span class="p">(</span><span class="s">&quot;Hx = </span><span class="si">$( hess(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">cutest_finalize</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+<span class="n">finalize</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
 </pre></div>
 
 
 <div class="code"><pre><span></span>x0 = [-1.2,1.0]
 fx = 24.199999999999996
-gx = [-215.59999999999997,-87.99999999999999]
+gx = [-215.6,-88.0]
 Hx =
     [1, 1]  =  1330.0
     [2, 1]  =  480.0
