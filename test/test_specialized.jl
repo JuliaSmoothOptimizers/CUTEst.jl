@@ -115,20 +115,20 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   for j = 1:nlp.meta.ncon
     ci, gci = ccifg(nlp.meta.nvar, j, x0, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
-    @fact gci --> roughly(J(x0)[j,:], rtol=rtol)
+    @fact gci --> roughly(J(x0)[j,:][:], rtol=rtol)
   end
 
   for j = 1:nlp.meta.ncon
     gci = zeros(nlp.meta.nvar)
     ci = ccifg!(nlp.meta.nvar, j, x0, gci, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
-    @fact gci --> roughly(J(x0)[j,:], rtol=rtol)
+    @fact gci --> roughly(J(x0)[j,:][:], rtol=rtol)
   end
 
   for j = 1:nlp.meta.ncon
     ci, nnzgci, gci_val, gci_var = ccifsg(nlp.meta.nvar, j, x0, nlp.meta.nvar, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
-    @fact gci_val --> roughly(J(x0)[j,gci_var], rtol=rtol)
+    @fact gci_val --> roughly(J(x0)[j,gci_var][:], rtol=rtol)
   end
 
   for j = 1:nlp.meta.ncon
@@ -136,7 +136,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     gci_val = zeros(nlp.meta.nvar)
     ci, nnzgci = ccifsg!(nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
-    @fact gci_val --> roughly(J(x0)[j,gci_var], rtol=rtol)
+    @fact gci_val --> roughly(J(x0)[j,gci_var][:], rtol=rtol)
   end
 
   gx, Jx, Wx = cgrdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar, nlp.meta.nvar)
