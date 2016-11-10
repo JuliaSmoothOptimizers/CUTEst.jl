@@ -100,7 +100,7 @@ end
 # Initialize problem.
 function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
   global cutest_instances
-  cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
+  cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   global cutest_lib
   if !decode
     (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")

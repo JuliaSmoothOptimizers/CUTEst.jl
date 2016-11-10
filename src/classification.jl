@@ -70,7 +70,7 @@ function create_class()
         )
     )
 
-    cutest_finalize(nlp)
+    finalize(nlp)
     println("done")
   end
   open(joinpath(dirname(@__FILE__), "classf.json"), "w") do jsonfile
