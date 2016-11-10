@@ -55,9 +55,9 @@ hs = {
     "h": "(W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0))",
     "gx": "g(x0)",
     "Jx": "J(x0)",
-    "gci": "J(x0)[j,:]",
+    "gci": "J(x0)[j,:][:]",
     "g_val": "g(x0)[g_var[1:nnzg]]",
-    "gci_val": "J(x0)[j,gci_var]",
+    "gci_val": "J(x0)[j,gci_var][:]",
     "Wx": "W(x0,y0)" }
 
 self = {
