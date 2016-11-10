@@ -46,18 +46,18 @@ for p in problems
   fval = [0.0]
   if ncon > 0
     cx = zeros(ncon)
-    cfn(io_err, Cint[nvar], Cint[ncon], x0, fval, cx)
+    cfn(nlp.lib, io_err, Cint[nvar], Cint[ncon], x0, fval, cx)
   else
-    ufn(io_err, Cint[nvar], x0, fval)
+    ufn(nlp.lib, io_err, Cint[nvar], x0, fval)
   end
   println("$p: core interface: f(x₀) = $(fval[1])")
 
   if ncon > 0
     cx = zeros(ncon)
-    println("$p: specialized interface: f(x₀) = $(cfn(nvar, ncon, x0)[1])")
-    println("$p: specialized interface: f(x₀) = $(cfn!(nvar, ncon, x0, cx)[1])")
+    println("$p: specialized interface: f(x₀) = $(cfn(nlp.lib, nvar, ncon, x0)[1])")
+    println("$p: specialized interface: f(x₀) = $(cfn!(nlp.lib, nvar, ncon, x0, cx)[1])")
   else
-    println("$p: specialized interface: f(x₀) = $(ufn(nvar, x0))")
+    println("$p: specialized interface: f(x₀) = $(ufn(nlp.lib, nvar, x0))")
   end
   finalize(nlp)
 end
@@ -81,4 +81,3 @@ end
 
 rm(joinpath(here, "AUTOMAT.d"))
 rm(joinpath(here, "OUTSDIF.d"))
-

@@ -9,12 +9,10 @@ using Compat
 import Compat.String
 import Base.Libdl.dlsym
 
-# Only one problem can be interfaced at any given time.
-global cutest_instances = 0
-
 export CUTEstModel, sifdecoder
 
 type CUTEstModel <: AbstractNLPModel
+  lib     :: Ptr{Void}
   meta    :: NLPModelMeta;
 
   counters :: Counters
@@ -45,7 +43,6 @@ type CUTEstException <: Exception
 end
 
 function __init__()
-  global cutest_lib = C_NULL
   deps = joinpath(dirname(@__FILE__), "../deps")
   cutestenv = joinpath(deps, "cutestenv.jl")
   ispath(cutestenv) && include(cutestenv)
@@ -93,15 +90,12 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false)
   run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
   run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
   run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
-  global cutest_lib = Libdl.dlopen(libname,
+  cutest_lib = Libdl.dlopen(libname,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
 end
 
 # Initialize problem.
 function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
-  global cutest_instances
-  cutest_instances > 0 && error("CUTEst: call cutest_finalize on current model first")
-  global cutest_lib
   if !decode
     (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
     libname = "lib$name"
@@ -109,7 +103,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
     cutest_lib = Libdl.dlopen(libname,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
   else
-    sifdecoder(name, args..., verbose=verbose)
+    cutest_lib = sifdecoder(name, args..., verbose=verbose)
   end
   io_err = Cint[0];
   ccall(dlsym(cutest_lib, :fortran_open_), Void,
@@ -120,7 +114,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   nvar = Cint[0];
   ncon = Cint[0];
 
-  cdimen(io_err, [funit], nvar, ncon)
+  cdimen(cutest_lib, io_err, [funit], nvar, ncon)
   @cutest_error
   nvar = nvar[1];
   ncon = ncon[1];
@@ -136,10 +130,10 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
 
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
-    csetup(io_err, [funit], Cint[0], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
+    csetup(cutest_lib, io_err, [funit], Cint[0], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
       equatn, linear, Cint[1], Cint[1], Cint[1])
   else
-    usetup(io_err, [funit], Cint[0], Cint[6], [nvar], x, bl, bu)
+    usetup(cutest_lib, io_err, [funit], Cint[0], Cint[6], [nvar], x, bl, bu)
   end
   @cutest_error
 
@@ -157,11 +151,11 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   nnzj = Cint[0];
 
   if ncon > 0
-    cdimsh(io_err, nnzh)
-    cdimsj(io_err, nnzj)
+    cdimsh(cutest_lib, io_err, nnzh)
+    cdimsj(cutest_lib, io_err, nnzj)
     nnzj[1] -= nvar;  # nnzj also counts the nonzeros in the objective gradient.
   else
-    udimsh(io_err, nnzh)
+    udimsh(cutest_lib, io_err, nnzh)
   end
   @cutest_error
 
@@ -179,9 +173,8 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1]);
 
-  nlp = CUTEstModel(meta, Counters())
+  nlp = CUTEstModel(cutest_lib, meta, Counters())
 
-  cutest_instances += 1;
   finalizer(nlp, cutest_finalize)
 
   return nlp
@@ -189,19 +182,16 @@ end
 
 
 function cutest_finalize(nlp :: CUTEstModel)
-  global cutest_instances
-  cutest_instances == 0 && return;
-  global cutest_lib
+  nlp.lib == C_NULL && return  # prevent double-finalization
   io_err = Cint[0];
   if nlp.meta.ncon > 0
-    cterminate(io_err)
+    cterminate(nlp.lib, io_err)
   else
-    uterminate(io_err)
+    uterminate(nlp.lib, io_err)
   end
   @cutest_error
-  Libdl.dlclose(cutest_lib)
-  cutest_instances -= 1;
-  cutest_lib = C_NULL
+  Libdl.dlclose(nlp.lib)
+  nlp.lib = C_NULL
   return;
 end
 

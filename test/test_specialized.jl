@@ -13,63 +13,63 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   v = ones(nlp.meta.nvar)
   facts("Specialized interface") do
     if nlp.meta.ncon > 0
-  fx, cx = cfn(nlp.meta.nvar, nlp.meta.ncon, x0)
+  fx, cx = cfn(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact cx --> roughly(c(x0), rtol=rtol)
 
   cx = zeros(nlp.meta.ncon)
-  fx = cfn!(nlp.meta.nvar, nlp.meta.ncon, x0, cx)
+  fx = cfn!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, cx)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact cx --> roughly(c(x0), rtol=rtol)
 
-  fx, gx = cofg(nlp.meta.nvar, x0, true)
+  fx, gx = cofg(nlp.lib, nlp.meta.nvar, x0, true)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact gx --> roughly(g(x0), rtol=rtol)
 
   gx = zeros(nlp.meta.nvar)
-  fx = cofg!(nlp.meta.nvar, x0, gx, true)
+  fx = cofg!(nlp.lib, nlp.meta.nvar, x0, gx, true)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact gx --> roughly(g(x0), rtol=rtol)
 
-  fx, nnzg, g_val, g_var = cofsg(nlp.meta.nvar, x0, nlp.meta.nvar, true)
+  fx, nnzg, g_val, g_var = cofsg(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar, true)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact g_val[1:nnzg] --> roughly(g(x0)[g_var[1:nnzg]], rtol=rtol)
 
   g_var = zeros(Cint, nlp.meta.nvar)
   g_val = zeros(nlp.meta.nvar)
-  fx, nnzg = cofsg!(nlp.meta.nvar, x0, nlp.meta.nvar, g_val, g_var, true)
+  fx, nnzg = cofsg!(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar, g_val, g_var, true)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact g_val[1:nnzg] --> roughly(g(x0)[g_var[1:nnzg]], rtol=rtol)
 
-  cx, Jx = ccfg(nlp.meta.nvar, nlp.meta.ncon, x0, false, nlp.meta.ncon, nlp.meta.nvar, true)
+  cx, Jx = ccfg(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, false, nlp.meta.ncon, nlp.meta.nvar, true)
   @fact cx --> roughly(c(x0), rtol=rtol)
   @fact Jx --> roughly(J(x0), rtol=rtol)
 
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   cx = zeros(nlp.meta.ncon)
-  ccfg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, true)
+  ccfg!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, cx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, true)
   @fact cx --> roughly(c(x0), rtol=rtol)
   @fact Jx --> roughly(J(x0), rtol=rtol)
 
-  fx, gx = clfg(nlp.meta.nvar, nlp.meta.ncon, x0, y0, true)
+  fx, gx = clfg(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, true)
   @fact fx --> roughly(f(x0)+dot(y0,c(x0)), rtol=rtol)
   @fact gx --> roughly(g(x0)+J(x0)'*y0, rtol=rtol)
 
-  fx = clfg!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, gx, true)
+  fx = clfg!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, gx, true)
   @fact fx --> roughly(f(x0)+dot(y0,c(x0)), rtol=rtol)
   @fact gx --> roughly(g(x0)+J(x0)'*y0, rtol=rtol)
 
-  gx, Jx = cgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar)
+  gx, Jx = cgr(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar)
   @fact gx --> roughly(g(x0), rtol=rtol)
   @fact Jx --> roughly(J(x0), rtol=rtol)
 
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   gx = zeros(nlp.meta.nvar)
-  cgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx)
+  cgr!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx)
   @fact gx --> roughly(g(x0), rtol=rtol)
   @fact Jx --> roughly(J(x0), rtol=rtol)
 
-  nnzj, Jx, j_var, j_fun = csgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
+  nnzj, Jx, j_var, j_fun = csgr(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
   j_val = copy(Jx)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   for k = 1:nnzj
@@ -81,7 +81,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   Jx = zeros(nlp.meta.nnzj+nlp.meta.nvar)
-  nnzj = csgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun)
+  nnzj = csgr!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun)
   j_val = copy(Jx)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   for k = 1:nnzj
@@ -90,7 +90,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   end
   @fact Jx --> roughly(J(x0), rtol=rtol)
 
-  cx, nnzj, Jx, j_var, j_fun = ccfsg(nlp.meta.nvar, nlp.meta.ncon, x0, nlp.meta.nnzj+nlp.meta.nvar, true)
+  cx, nnzj, Jx, j_var, j_fun = ccfsg(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, nlp.meta.nnzj+nlp.meta.nvar, true)
   @fact cx --> roughly(c(x0), rtol=rtol)
   j_val = copy(Jx)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
@@ -103,7 +103,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   Jx = zeros(nlp.meta.nnzj+nlp.meta.nvar)
   cx = zeros(nlp.meta.ncon)
-  nnzj = ccfsg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, true)
+  nnzj = ccfsg!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, cx, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, true)
   @fact cx --> roughly(c(x0), rtol=rtol)
   j_val = copy(Jx)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
@@ -113,20 +113,20 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   @fact Jx --> roughly(J(x0), rtol=rtol)
 
   for j = 1:nlp.meta.ncon
-    ci, gci = ccifg(nlp.meta.nvar, j, x0, true)
+    ci, gci = ccifg(nlp.lib, nlp.meta.nvar, j, x0, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
     @fact gci --> roughly(J(x0)[j,:], rtol=rtol)
   end
 
   for j = 1:nlp.meta.ncon
     gci = zeros(nlp.meta.nvar)
-    ci = ccifg!(nlp.meta.nvar, j, x0, gci, true)
+    ci = ccifg!(nlp.lib, nlp.meta.nvar, j, x0, gci, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
     @fact gci --> roughly(J(x0)[j,:], rtol=rtol)
   end
 
   for j = 1:nlp.meta.ncon
-    ci, nnzgci, gci_val, gci_var = ccifsg(nlp.meta.nvar, j, x0, nlp.meta.nvar, true)
+    ci, nnzgci, gci_val, gci_var = ccifsg(nlp.lib, nlp.meta.nvar, j, x0, nlp.meta.nvar, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
     @fact gci_val --> roughly(J(x0)[j,gci_var], rtol=rtol)
   end
@@ -134,12 +134,12 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   for j = 1:nlp.meta.ncon
     gci_var = zeros(Cint, nlp.meta.nvar)
     gci_val = zeros(nlp.meta.nvar)
-    ci, nnzgci = ccifsg!(nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
+    ci, nnzgci = ccifsg!(nlp.lib, nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
     @fact ci --> roughly(c(x0)[j], rtol=rtol)
     @fact gci_val --> roughly(J(x0)[j,gci_var], rtol=rtol)
   end
 
-  gx, Jx, Wx = cgrdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar, nlp.meta.nvar)
+  gx, Jx, Wx = cgrdh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar, nlp.meta.nvar)
   @fact gx --> roughly(g(x0), rtol=rtol)
   @fact Jx --> roughly(J(x0), rtol=rtol)
   @fact Wx --> roughly(W(x0,y0), rtol=rtol)
@@ -147,19 +147,19 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   gx = zeros(nlp.meta.nvar)
-  cgrdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, nlp.meta.nvar, Wx)
+  cgrdh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, nlp.meta.nvar, Wx)
   @fact gx --> roughly(g(x0), rtol=rtol)
   @fact Jx --> roughly(J(x0), rtol=rtol)
   @fact Wx --> roughly(W(x0,y0), rtol=rtol)
 
-  Wx = cdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar)
+  Wx = cdh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar)
   @fact Wx --> roughly(W(x0,y0), rtol=rtol)
 
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
-  cdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Wx)
+  cdh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Wx)
   @fact Wx --> roughly(W(x0,y0), rtol=rtol)
 
-  nnzh, Wx, h_row, h_col = csh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
+  nnzh, Wx, h_row, h_col = csh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
   w_val = copy(Wx)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   for k = 1:nnzh
@@ -171,7 +171,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   h_col = zeros(Cint, nlp.meta.nnzh)
   h_row = zeros(Cint, nlp.meta.nnzh)
   Wx = zeros(nlp.meta.nnzh)
-  nnzh = csh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
+  nnzh = csh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
   w_val = copy(Wx)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   for k = 1:nnzh
@@ -180,7 +180,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   end
   @fact Wx --> roughly(W(x0,y0), rtol=rtol)
 
-  nnzh, Wx, h_row, h_col = cshc(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
+  nnzh, Wx, h_row, h_col = cshc(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
   w_val = copy(Wx)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   for k = 1:nnzh
@@ -192,7 +192,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   h_col = zeros(Cint, nlp.meta.nnzh)
   h_row = zeros(Cint, nlp.meta.nnzh)
   Wx = zeros(nlp.meta.nnzh)
-  nnzh = cshc!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
+  nnzh = cshc!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
   w_val = copy(Wx)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   for k = 1:nnzh
@@ -202,18 +202,18 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   @fact Wx --> roughly(W(x0,y0)-H(x0), rtol=rtol)
 
   for j = 1:nlp.meta.ncon
-    h = cidh(nlp.meta.nvar, x0, j, nlp.meta.nvar)
+    h = cidh(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nvar)
     @fact h --> roughly((W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)), rtol=rtol)
   end
 
   for j = 1:nlp.meta.ncon
     h = zeros(nlp.meta.nvar, nlp.meta.nvar)
-    cidh!(nlp.meta.nvar, x0, j, nlp.meta.nvar, h)
+    cidh!(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nvar, h)
     @fact h --> roughly((W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)), rtol=rtol)
   end
 
   for j = 1:nlp.meta.ncon
-    nnzh, Wx, h_row, h_col = cish(nlp.meta.nvar, x0, j, nlp.meta.nnzh)
+    nnzh, Wx, h_row, h_col = cish(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nnzh)
     w_val = copy(Wx)
     Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
     for k = 1:nnzh
@@ -227,7 +227,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     h_col = zeros(Cint, nlp.meta.nnzh)
     h_row = zeros(Cint, nlp.meta.nnzh)
     Wx = zeros(nlp.meta.nnzh)
-    nnzh = cish!(nlp.meta.nvar, x0, j, nlp.meta.nnzh, Wx, h_row, h_col)
+    nnzh = cish!(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nnzh, Wx, h_row, h_col)
     w_val = copy(Wx)
     Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
     for k = 1:nnzh
@@ -237,7 +237,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     @fact Wx --> roughly(W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0), rtol=rtol)
   end
 
-  nnzj, Jx, j_var, j_fun, nnzh, Wx, h_row, h_col = csgrsh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, nlp.meta.nnzh)
+  nnzj, Jx, j_var, j_fun, nnzh, Wx, h_row, h_col = csgrsh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, nlp.meta.nnzh)
   j_val = copy(Jx)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   for k = 1:nnzj
@@ -260,7 +260,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   Jx = zeros(nlp.meta.nnzj+nlp.meta.nvar)
-  nnzj, nnzh = csgrsh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, nlp.meta.nnzh, Wx, h_row, h_col)
+  nnzj, nnzh = csgrsh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, nlp.meta.nnzh, Wx, h_row, h_col)
   j_val = copy(Jx)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   for k = 1:nnzj
@@ -277,51 +277,51 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   end
   @fact Wx --> roughly(W(x0,y0), rtol=rtol)
 
-  result = chprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
+  result = chprod(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
   @fact result --> roughly(W(x0,y0)*v, rtol=rtol)
 
   result = zeros(W(x0,y0)*v)
-  chprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
+  chprod!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
 
-  result = chcprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
+  result = chcprod(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
   @fact result --> roughly((W(x0,y0)-H(x0))*v, rtol=rtol)
 
   result = zeros((W(x0,y0)-H(x0))*v)
-  chcprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
+  chcprod!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
 
-  result = cjprod(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, nlp.meta.ncon)
+  result = cjprod(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, nlp.meta.ncon)
   @fact result --> roughly(J(x0)*v, rtol=rtol)
 
   result = zeros(J(x0)*v)
-  cjprod!(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon)
+  cjprod!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon)
 
 else
-  fx = ufn(nlp.meta.nvar, x0)
+  fx = ufn(nlp.lib, nlp.meta.nvar, x0)
   @fact fx --> roughly(f(x0), rtol=rtol)
 
-  gx = ugr(nlp.meta.nvar, x0)
+  gx = ugr(nlp.lib, nlp.meta.nvar, x0)
   @fact gx --> roughly(g(x0), rtol=rtol)
 
   gx = zeros(nlp.meta.nvar)
-  ugr!(nlp.meta.nvar, x0, gx)
+  ugr!(nlp.lib, nlp.meta.nvar, x0, gx)
   @fact gx --> roughly(g(x0), rtol=rtol)
 
-  fx, gx = uofg(nlp.meta.nvar, x0, true)
+  fx, gx = uofg(nlp.lib, nlp.meta.nvar, x0, true)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact gx --> roughly(g(x0), rtol=rtol)
 
   gx = zeros(nlp.meta.nvar)
-  fx = uofg!(nlp.meta.nvar, x0, gx, true)
+  fx = uofg!(nlp.lib, nlp.meta.nvar, x0, gx, true)
   @fact fx --> roughly(f(x0), rtol=rtol)
   @fact gx --> roughly(g(x0), rtol=rtol)
 
-  h = udh(nlp.meta.nvar, x0, nlp.meta.nvar)
+  h = udh(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar)
   @fact h --> roughly(H(x0), rtol=rtol)
 
-  udh!(nlp.meta.nvar, x0, nlp.meta.nvar, h)
+  udh!(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar, h)
   @fact h --> roughly(H(x0), rtol=rtol)
 
-  nnzh, Wx, h_row, h_col = ush(nlp.meta.nvar, x0, nlp.meta.nnzh)
+  nnzh, Wx, h_row, h_col = ush(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nnzh)
   w_val = copy(Wx)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   for k = 1:nnzh
@@ -333,7 +333,7 @@ else
   h_col = zeros(Cint, nlp.meta.nnzh)
   h_row = zeros(Cint, nlp.meta.nnzh)
   Wx = zeros(nlp.meta.nnzh)
-  nnzh = ush!(nlp.meta.nvar, x0, nlp.meta.nnzh, Wx, h_row, h_col)
+  nnzh = ush!(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nnzh, Wx, h_row, h_col)
   w_val = copy(Wx)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   for k = 1:nnzh
@@ -342,11 +342,11 @@ else
   end
   @fact Wx --> roughly(H(x0), rtol=rtol)
 
-  result = uhprod(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar))
+  result = uhprod(nlp.lib, nlp.meta.nvar, false, x0, ones(nlp.meta.nvar))
   @fact result --> roughly(H(x0)*v, rtol=rtol)
 
   result = zeros(H(x0)*v)
-  uhprod!(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar), result)
+  uhprod!(nlp.lib, nlp.meta.nvar, false, x0, ones(nlp.meta.nvar), result)
 
   end
 
@@ -355,116 +355,115 @@ end
 print("Specialized interface stress test... ")
 for i = 1:10000
   if nlp.meta.ncon > 0
-  fx, cx = cfn(nlp.meta.nvar, nlp.meta.ncon, x0)
+  fx, cx = cfn(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0)
   cx = zeros(nlp.meta.ncon)
-  fx = cfn!(nlp.meta.nvar, nlp.meta.ncon, x0, cx)
-  fx, gx = cofg(nlp.meta.nvar, x0, true)
+  fx = cfn!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, cx)
+  fx, gx = cofg(nlp.lib, nlp.meta.nvar, x0, true)
   gx = zeros(nlp.meta.nvar)
-  fx = cofg!(nlp.meta.nvar, x0, gx, true)
-  fx, nnzg, g_val, g_var = cofsg(nlp.meta.nvar, x0, nlp.meta.nvar, true)
+  fx = cofg!(nlp.lib, nlp.meta.nvar, x0, gx, true)
+  fx, nnzg, g_val, g_var = cofsg(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar, true)
   g_var = zeros(Cint, nlp.meta.nvar)
   g_val = zeros(nlp.meta.nvar)
-  fx, nnzg = cofsg!(nlp.meta.nvar, x0, nlp.meta.nvar, g_val, g_var, true)
-  cx, Jx = ccfg(nlp.meta.nvar, nlp.meta.ncon, x0, false, nlp.meta.ncon, nlp.meta.nvar, true)
+  fx, nnzg = cofsg!(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar, g_val, g_var, true)
+  cx, Jx = ccfg(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, false, nlp.meta.ncon, nlp.meta.nvar, true)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   cx = zeros(nlp.meta.ncon)
-  ccfg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, true)
-  fx, gx = clfg(nlp.meta.nvar, nlp.meta.ncon, x0, y0, true)
-  fx = clfg!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, gx, true)
-  gx, Jx = cgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar)
+  ccfg!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, cx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, true)
+  fx, gx = clfg(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, true)
+  fx = clfg!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, gx, true)
+  gx, Jx = cgr(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   gx = zeros(nlp.meta.nvar)
-  cgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx)
-  nnzj, Jx, j_var, j_fun = csgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
+  cgr!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx)
+  nnzj, Jx, j_var, j_fun = csgr(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
   j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
-  nnzj = csgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun)
-  cx, nnzj, Jx, j_var, j_fun = ccfsg(nlp.meta.nvar, nlp.meta.ncon, x0, nlp.meta.nnzj+nlp.meta.nvar, true)
+  nnzj = csgr!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun)
+  cx, nnzj, Jx, j_var, j_fun = ccfsg(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, nlp.meta.nnzj+nlp.meta.nvar, true)
   j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   cx = zeros(nlp.meta.ncon)
-  nnzj = ccfsg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, true)
+  nnzj = ccfsg!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, cx, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, true)
   for j = 1:nlp.meta.ncon
-    ci, gci = ccifg(nlp.meta.nvar, j, x0, true)
+    ci, gci = ccifg(nlp.lib, nlp.meta.nvar, j, x0, true)
   end
     gci = zeros(nlp.meta.nvar)
   for j = 1:nlp.meta.ncon
-    ci = ccifg!(nlp.meta.nvar, j, x0, gci, true)
+    ci = ccifg!(nlp.lib, nlp.meta.nvar, j, x0, gci, true)
   end
   for j = 1:nlp.meta.ncon
-    ci, nnzgci, gci_val, gci_var = ccifsg(nlp.meta.nvar, j, x0, nlp.meta.nvar, true)
+    ci, nnzgci, gci_val, gci_var = ccifsg(nlp.lib, nlp.meta.nvar, j, x0, nlp.meta.nvar, true)
   end
     gci_var = zeros(Cint, nlp.meta.nvar)
     gci_val = zeros(nlp.meta.nvar)
   for j = 1:nlp.meta.ncon
-    ci, nnzgci = ccifsg!(nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
+    ci, nnzgci = ccifsg!(nlp.lib, nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
   end
-  gx, Jx, Wx = cgrdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar, nlp.meta.nvar)
+  gx, Jx, Wx = cgrdh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar, nlp.meta.nvar)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
   Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
   gx = zeros(nlp.meta.nvar)
-  cgrdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, nlp.meta.nvar, Wx)
-  Wx = cdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar)
+  cgrdh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, nlp.meta.nvar, Wx)
+  Wx = cdh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar)
   Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
-  cdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Wx)
-  nnzh, Wx, h_row, h_col = csh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
+  cdh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Wx)
+  nnzh, Wx, h_row, h_col = csh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
   h_col = zeros(Cint, nlp.meta.nnzh)
   h_row = zeros(Cint, nlp.meta.nnzh)
-  nnzh = csh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
-  nnzh, Wx, h_row, h_col = cshc(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
+  nnzh = csh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
+  nnzh, Wx, h_row, h_col = cshc(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
   h_col = zeros(Cint, nlp.meta.nnzh)
   h_row = zeros(Cint, nlp.meta.nnzh)
-  nnzh = cshc!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
+  nnzh = cshc!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh, Wx, h_row, h_col)
   for j = 1:nlp.meta.ncon
-    h = cidh(nlp.meta.nvar, x0, j, nlp.meta.nvar)
+    h = cidh(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nvar)
   end
     h = zeros(nlp.meta.nvar, nlp.meta.nvar)
   for j = 1:nlp.meta.ncon
-    cidh!(nlp.meta.nvar, x0, j, nlp.meta.nvar, h)
+    cidh!(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nvar, h)
   end
   for j = 1:nlp.meta.ncon
-    nnzh, Wx, h_row, h_col = cish(nlp.meta.nvar, x0, j, nlp.meta.nnzh)
+    nnzh, Wx, h_row, h_col = cish(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nnzh)
   end
     h_col = zeros(Cint, nlp.meta.nnzh)
     h_row = zeros(Cint, nlp.meta.nnzh)
   for j = 1:nlp.meta.ncon
-    nnzh = cish!(nlp.meta.nvar, x0, j, nlp.meta.nnzh, Wx, h_row, h_col)
+    nnzh = cish!(nlp.lib, nlp.meta.nvar, x0, j, nlp.meta.nnzh, Wx, h_row, h_col)
   end
-  nnzj, Jx, j_var, j_fun, nnzh, Wx, h_row, h_col = csgrsh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, nlp.meta.nnzh)
+  nnzj, Jx, j_var, j_fun, nnzh, Wx, h_row, h_col = csgrsh(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, nlp.meta.nnzh)
   h_col = zeros(Cint, nlp.meta.nnzh)
   h_row = zeros(Cint, nlp.meta.nnzh)
   j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
   j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
-  nnzj, nnzh = csgrsh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, nlp.meta.nnzh, Wx, h_row, h_col)
-  result = chprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
+  nnzj, nnzh = csgrsh!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, nlp.meta.nnzh, Wx, h_row, h_col)
+  result = chprod(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
   result = zeros(W(x0,y0)*v)
-  chprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
-  result = chcprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
+  chprod!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
+  result = chcprod(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
   result = zeros((W(x0,y0)-H(x0))*v)
-  chcprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
-  result = cjprod(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, nlp.meta.ncon)
+  chcprod!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
+  result = cjprod(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, nlp.meta.ncon)
   result = zeros(J(x0)*v)
-  cjprod!(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon)
+  cjprod!(nlp.lib, nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon)
   else
-  fx = ufn(nlp.meta.nvar, x0)
-  gx = ugr(nlp.meta.nvar, x0)
+  fx = ufn(nlp.lib, nlp.meta.nvar, x0)
+  gx = ugr(nlp.lib, nlp.meta.nvar, x0)
   gx = zeros(nlp.meta.nvar)
-  ugr!(nlp.meta.nvar, x0, gx)
-  fx, gx = uofg(nlp.meta.nvar, x0, true)
+  ugr!(nlp.lib, nlp.meta.nvar, x0, gx)
+  fx, gx = uofg(nlp.lib, nlp.meta.nvar, x0, true)
   gx = zeros(nlp.meta.nvar)
-  fx = uofg!(nlp.meta.nvar, x0, gx, true)
-  h = udh(nlp.meta.nvar, x0, nlp.meta.nvar)
-  udh!(nlp.meta.nvar, x0, nlp.meta.nvar, h)
-  nnzh, Wx, h_row, h_col = ush(nlp.meta.nvar, x0, nlp.meta.nnzh)
+  fx = uofg!(nlp.lib, nlp.meta.nvar, x0, gx, true)
+  h = udh(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar)
+  udh!(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nvar, h)
+  nnzh, Wx, h_row, h_col = ush(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nnzh)
   h_col = zeros(Cint, nlp.meta.nnzh)
   h_row = zeros(Cint, nlp.meta.nnzh)
-  nnzh = ush!(nlp.meta.nvar, x0, nlp.meta.nnzh, Wx, h_row, h_col)
-  result = uhprod(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar))
+  nnzh = ush!(nlp.lib, nlp.meta.nvar, x0, nlp.meta.nnzh, Wx, h_row, h_col)
+  result = uhprod(nlp.lib, nlp.meta.nvar, false, x0, ones(nlp.meta.nvar))
   result = zeros(H(x0)*v)
-  uhprod!(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar), result)
+  uhprod!(nlp.lib, nlp.meta.nvar, false, x0, ones(nlp.meta.nvar), result)
   end
 end
 println("passed")
 
 end
-
