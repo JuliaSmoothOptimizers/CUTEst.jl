@@ -159,31 +159,15 @@ function select(;min_var=0, max_var=Inf, min_con=0, max_con=Inf,
   @assert !only_linear_con || !only_nonlinear_con
   @assert !only_equ_con || !only_ineq_con
 
-  if typeof(objtype) == Int
-    objtype = [objtypes[objtype]]
-  elseif typeof(objtype) == Symbol
-    objtype = [string(objtype)]
-  elseif typeof(objtype) <: AbstractString
-    objtype = [objtype]
-  elseif typeof(objtype) == Vector{Int}
-    objtype = objtypes[objtype]
-  elseif typeof(objtype) == Vector{Symbol}
-    objtype = map(string, objtype)
-  end
-  if typeof(contype) == Int
-    contype = [contypes[contype]]
-  elseif typeof(contype) == Symbol
-    contype = [string(contype)]
-  elseif typeof(contype) <: AbstractString
-    contype = [contype]
-  elseif typeof(contype) == Vector{Int}
-    contype = contypes[contype]
-  elseif typeof(contype) == Vector{Symbol}
-    contype = map(string, contype)
-  end
+  objtype = canonicalize_ftype(objtype, objtypes)
+  contype = canonicalize_ftype(contype, contypes)
 
-  @assert objtype ⊆ objtypes
-  @assert contype ⊆ contypes
+  if !(objtype ⊆ objtypes)
+    error("objtypes $objtype not supported")
+  end
+  if !(contype ⊆ contypes)
+    error("contypes $contype not supported")
+  end
 
   data = JSON.parsefile(joinpath(dirname(@__FILE__), "classf.json"))
   problems = keys(data)
@@ -209,3 +193,11 @@ function select(;min_var=0, max_var=Inf, min_con=0, max_con=Inf,
   end
   return selection
 end
+
+canonicalize_ftype(reqtype::Integer, allowedtypes) = [allowedtypes[reqtype]]
+canonicalize_ftype(reqtype::Symbol, allowedtypes) = [string(reqtype)]
+canonicalize_ftype(reqtype::AbstractString, allowedtypes) = [reqtype]
+canonicalize_ftype{T<:Integer}(reqtype::AbstractVector{T}, allowedtypes) =
+    allowedtypes[reqtype]
+canonicalize_ftype(reqtype::AbstractVector{Symbol}, allowedtypes) = map(string, reqtype)
+canonicalize_ftype(reqtype, allowedtypes) = reqtype

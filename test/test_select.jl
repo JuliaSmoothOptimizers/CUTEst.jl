@@ -157,6 +157,12 @@ facts("CUTEst selection tool") do
     println(setdiff(set2, set1))
     #@fact sort(set1) --> sort(set2)
   end
+
+  context("Canonicalization") do
+    set1 = CUTEst.select(objtype=1:4)
+    @fact isempty(set1) --> false
+  end
+
 end
 
 FactCheck.exitstatus()
