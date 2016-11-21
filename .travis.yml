@@ -19,11 +19,6 @@ matrix:
       julia: nightly
       osx_image: xcode7.3
 
-addons:
-  apt_packages:
-    - gfortran
-    - libgsl0-dev
-
 branches:
   only:
     - master
@@ -32,9 +27,6 @@ branches:
 sudo: required
 
 before_install:
-  - if [ `uname` == "Linux" ]; then
-    unset DYLD_LIBRARY_PATH;
-    sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.)/libgfortran.so /usr/local/lib; fi
   - if [ `uname` == "Darwin" ]; then brew install gcc; fi
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 
