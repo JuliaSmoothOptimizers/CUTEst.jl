@@ -137,8 +137,6 @@ finalize(nlp)
 
 CUTEst comes with a simple selection tool. It uses a static file generated from
 the original `CLASSF.DB` and an execution of each problem.
-Don't try to regenerate the classification file. If you think there is a
-mistake, open an issue.
 
 The selection tool works like a filter on the complete set of problems. Using
 the tool without arguments will return the complete set of problems.
@@ -152,14 +150,14 @@ length(problems)
 The list of keyword arguments to filter the problems is given below, with their
 default value.
 
-| arguments | default | Description |
+| argument  | default | description |
 |-----------|---------|-------------|
 | `min_var` | `0`     | Minimum number of variables |
 | `max_var` | `Inf`   | Maximum number of variables |
 | `min_con` | `0`     | Minimum number of constraints (not bounds) |
 | `max_con` | `Inf`   | Maximum number of constraints |
-| `obj_type` | *all types* | Type of the objective function. Can be one or an array of the following: "none", "constant", "linear", "quadratic", "sum_of_squares", "other", or the corresponding characters: "N", "C", "L", "Q", "S", "O". |
-| `con_type` | *all types* | Type of the constraints. Can be one or an array of the following: "unc", "fixed_vars", "bounds", "newtork", "linear", "quadratic", "general", or the corresponding characters: "U", "X", "B", "N", "L", "Q", "O". |
+| `objtype` | *all types* | Type of the objective function. See below. |
+| `contype` | *all types* | Type of the constraints. See below. |
 | `only_free_var` | `false` | Whether to exclude problems with bounded variables. |
 | `only_bnd_var` | `false` | Whether to exclude problem with any free variables. |
 | `only_linear_con` | `false` | Whether to exclude problems with nonlinear constraints. |
@@ -167,6 +165,27 @@ default value.
 | `only_equ_con` | `false` | Whether to exclude problems with inequality constraints |
 | `only_ineq_con` | `false` | Whether to exclude problems with equality constraints |
 | `custom_filter` | nothing | A custom filter to be applied to the entries. This requires knowledge of the inner structure, and is present only because we haven't implemented every useful combination yet. *We welcome pull-requests with implementations of additional queries.* |
+
+
+| `objtype` | description |
+|-----------|-------------|
+| "none" or "N" | There is no objective function. |
+| "constants" or "C" | The objective function is constant. |
+| "linear" or "L" | The objective function is linear. |
+| "quadratic" or "Q" | The objective function is quadratic. |
+| "sum_of_squares" or "S" | The objective function is a sum of squares. |
+| "other" or "O" | The objective function is none of the above. |
+
+
+| `contype` | description |
+|-----------|-------------|
+| "unc" or "U" | There are no constraints nor bounds on the variables. |
+| "fixed_vars" or "X" | The only constraints are fixed variables. |
+| "bounds" or "B" | The only constraints are bounds on the variables. |
+| "network" or "N" | The constraints represent the adjacency matrix of a linear network. |
+| "linear" or "L" | The constraints are linear. |
+| "quadratic" or "Q" | The constraints are quadratic. |
+| "other" or "O" | The constraints are more general than any of the above. |
 
 The selection tool is not as complete as we would like. Some combinations are
 still hard to create. Below we create some of the simpler ones.
