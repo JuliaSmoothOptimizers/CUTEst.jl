@@ -1,5 +1,4 @@
-# We can't use BinDeps because libcutest cannot be dlopen'd prior
-# to decoding a problem and linking it in.
+# We don't use BinDeps because we couldn't make it work
 
 using Compat
 
@@ -57,7 +56,7 @@ else
   @static if is_linux()
     lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/master/install.sh"
     run(`wget $lnxurl -O install.sh`)
-    run(`bash install.sh`)
+    run(`bash install.sh --install-deps`)
 
     open(cutestenv, "w") do cenv
       open("cutest_env.bashrc") do f
