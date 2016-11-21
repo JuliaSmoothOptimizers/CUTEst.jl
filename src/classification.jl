@@ -78,7 +78,7 @@ function create_class()
   end
 end
 
-"""select(;min_var=0, max_var=Inf, min_con=0, max_con=Inf,
+"""select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
     objtype=*, contype=*,
     only_free_var=false, only_bnd_var=false,
     only_linear_con=false, only_nonlinear_con=false,
@@ -148,7 +148,7 @@ For instance, if you'd like to choose only problems with fixed number of
 
     custom_filter=x->x["variables"]["can_choose"]==false
 """
-function select(;min_var=0, max_var=Inf, min_con=0, max_con=Inf,
+function select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
     objtype=objtypes, contype=contypes,
     only_free_var=false, only_bnd_var=false,
     only_linear_con=false, only_nonlinear_con=false,
