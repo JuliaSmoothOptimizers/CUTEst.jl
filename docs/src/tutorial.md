@@ -132,3 +132,88 @@ print(nlp.meta)
 ```@example ex2
 finalize(nlp)
 ```
+
+## Selection tool
+
+CUTEst comes with a simple selection tool. It uses a static file generated from
+the original `CLASSF.DB` and an execution of each problem.
+Don't try to regenerate the classification file. If you think there is a
+mistake, open an issue.
+
+The selection tool works like a filter on the complete set of problems. Using
+the tool without arguments will return the complete set of problems.
+
+```@example exs
+using CUTEst # hide
+problems = CUTEst.select()
+length(problems)
+```
+
+The list of keyword arguments to filter the problems is given below, with their
+default value.
+
+| arguments | default | Description |
+|-----------|---------|-------------|
+| `min_var` | `0`     | Minimum number of variables |
+| `max_var` | `Inf`   | Maximum number of variables |
+| `min_con` | `0`     | Minimum number of constraints (not bounds) |
+| `max_con` | `Inf`   | Maximum number of constraints |
+| `obj_type` | *all types* | Type of the objective function. Can be one or an array of the following: "none", "constant", "linear", "quadratic", "sum_of_squares", "other", or the corresponding characters: "N", "C", "L", "Q", "S", "O". |
+| `con_type` | *all types* | Type of the constraints. Can be one or an array of the following: "unc", "fixed_vars", "bounds", "newtork", "linear", "quadratic", "general", or the corresponding characters: "U", "X", "B", "N", "L", "Q", "O". |
+| `only_free_var` | `false` | Whether to exclude problems with bounded variables. |
+| `only_bnd_var` | `false` | Whether to exclude problem with any free variables. |
+| `only_linear_con` | `false` | Whether to exclude problems with nonlinear constraints. |
+| `only_nonlinear_con` | `false` | Whether to exclude problems with any linear constraints. |
+| `only_equ_con` | `false` | Whether to exclude problems with inequality constraints |
+| `only_ineq_con` | `false` | Whether to exclude problems with equality constraints |
+| `custom_filter` | nothing | A custom filter to be applied to the entries. This requires knowledge of the inner structure, and is present only because we haven't implemented every useful combination yet. *We welcome pull-requests with implementations of additional queries.* |
+
+The selection tool is not as complete as we would like. Some combinations are
+still hard to create. Below we create some of the simpler ones.
+
+### Unconstrained problems
+
+No constraints and no bounds. There are two options:
+
+```@example exs
+problems = CUTEst.select(max_con=0, only_free_var=true)
+length(problems)
+```
+
+```@example exs
+problems = CUTEst.select(contype="unc")
+length(problems)
+```
+
+### Equality/Inequality constrainted problems with unbounded variables
+
+```@example exs
+problems = CUTEst.select(min_con=1, only_equ_con=true, only_free_var=true)
+length(problems)
+```
+
+```@example exs
+problems = CUTEst.select(min_con=1, only_ineq_con=true, only_free_var=true)
+length(problems)
+```
+
+### Size range
+
+```@example exs
+problems = CUTEst.select(min_var=1000, max_var=2000, min_con=100, max_con=500)
+length(problems)
+```
+
+### Sum-of-squares problems with bounds
+
+```@example exs
+problems = CUTEst.select(objtype="sum_of_squares", contype="bounds")
+length(problems)
+```
+
+### Quadratic programming with linear constraints.
+
+```@example exs
+problems = CUTEst.select(objtype="quadratic", contype="linear")
+length(problems)
+```

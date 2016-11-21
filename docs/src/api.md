@@ -10,12 +10,16 @@ cons
 cons!
 jac_coord
 jac
+jac_op
+jac_op!
 jprod
 jprod!
 jtprod
 jtprod!
 hess_coord
 hess
+hess_op
+hess_op!
 hprod
 hprod!
 NLPModels.NLPtoMPB
@@ -28,6 +32,14 @@ NLPModels.reset!
 objgrad
 objcons
 cons_coord
+```
+
+## Select tools
+
+```@autodocs
+Modules = [CUTEst]
+Pages   = ["classification.jl"]
+Order   = [:function]
 ```
 
 ## Core and specialized API
