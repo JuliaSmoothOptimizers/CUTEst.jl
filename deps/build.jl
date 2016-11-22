@@ -61,6 +61,7 @@ else
             end
           end
         end
+        println(cenv, "ENV[\"CUTEst problems\"] = \"$(pwd())/problems\"")
       end
     end
 
@@ -83,6 +84,7 @@ else
                 path = chomp(split(line, "=")[2])
                 write(cenv, "ENV[\"$var\"] = \"$path\"\n")
               end
+              println(cenv, "ENV[\"CUTEst problems\"] = \"$(pwd())/problems\"")
             end
           end
         end
