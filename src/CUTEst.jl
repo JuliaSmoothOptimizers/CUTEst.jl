@@ -48,13 +48,18 @@ function __init__()
   global cutest_lib = C_NULL
   deps = joinpath(dirname(@__FILE__), "../deps")
   cutestenv = joinpath(deps, "cutestenv.jl")
-  ispath(cutestenv) && include(cutestenv)
+  if ispath(cutestenv)
+    include(cutestenv)
+  else
+    ENV["CUTEst problems"] = joinpath(deps, "files")
+  end
+  isdir(ENV["CUTEst problems"]) || mkdir(ENV["CUTEst problems"])
   global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
 
   global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
       "double/libcutest_double.$(Libdl.dlext)")
 
-  push!(Libdl.DL_LOAD_PATH, ".")
+  push!(Libdl.DL_LOAD_PATH, ENV["CUTEst problems"])
 end
 
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
@@ -86,35 +91,39 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false)
   # should be more elegant after https://github.com/JuliaLang/julia/pull/12807
   outlog = tempname()
   errlog = tempname()
-  run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
-  print(readstring(errlog))
-  verbose && println(readstring(outlog))
+  cd(ENV["CUTEst problems"]) do
+    run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
+    print(readstring(errlog))
+    verbose && println(readstring(outlog))
 
-  run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-  run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
-  run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
-  global cutest_lib = Libdl.dlopen(libname,
+    run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
+    run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
+    run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
+    global cutest_lib = Libdl.dlopen(libname,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+  end
 end
 
 # Initialize problem.
 function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
-  global cutest_lib
-  if !decode
-    (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
-    libname = "lib$name"
-    isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
-    cutest_lib = Libdl.dlopen(libname,
-        Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
-  else
-    sifdecoder(name, args..., verbose=verbose)
-  end
   io_err = Cint[0];
-  ccall(dlsym(cutest_lib, :fortran_open_), Void,
-      (Ptr{Int32}, Ptr{UInt8}, Ptr{Int32}), &funit, outsdif, io_err);
-  @cutest_error
+  global cutest_lib
+  cd(ENV["CUTEst problems"]) do
+    if !decode
+      (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
+      libname = "lib$name"
+      isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
+      cutest_lib = Libdl.dlopen(libname,
+        Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+    else
+      sifdecoder(name, args..., verbose=verbose)
+    end
+    ccall(dlsym(cutest_lib, :fortran_open_), Void,
+          (Ptr{Int32}, Ptr{UInt8}, Ptr{Int32}), &funit, outsdif, io_err);
+    @cutest_error
+  end
 
   # Obtain problem size.
   nvar = Cint[0];
