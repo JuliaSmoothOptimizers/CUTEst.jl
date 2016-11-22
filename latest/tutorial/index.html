@@ -198,6 +198,12 @@
               </a>
             </li>
           
+            <li class="anchor">
+              <a title="Selection tool" href="#selection-tool">
+                Selection tool
+              </a>
+            </li>
+          
         </ul>
       
     
@@ -416,6 +422,243 @@ linear constraints:    1
 
 
 <div class="code"><pre><span></span><span class="n">finalize</span><span class="p">(</span><span class="n">nlp</span><span class="p">)</span>
+</pre></div>
+
+
+<p><a id='Selection-tool-1'></a></p>
+<h2 id="selection-tool">Selection tool</h2>
+<p>CUTEst comes with a simple selection tool. It uses a static file generated from the original <code>CLASSF.DB</code> and an execution of each problem.</p>
+<p>The selection tool works like a filter on the complete set of problems. Using the tool without arguments will return the complete set of problems.</p>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>1156
+</pre></div>
+
+
+<p>The list of keyword arguments to filter the problems is given below, with their default value.</p>
+<table>
+<thead>
+<tr>
+<th align="right">argument</th>
+<th align="right">default</th>
+<th align="right">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right"><code>min_var</code></td>
+<td align="right"><code>0</code></td>
+<td align="right">Minimum number of variables</td>
+</tr>
+<tr>
+<td align="right"><code>max_var</code></td>
+<td align="right"><code>Inf</code></td>
+<td align="right">Maximum number of variables</td>
+</tr>
+<tr>
+<td align="right"><code>min_con</code></td>
+<td align="right"><code>0</code></td>
+<td align="right">Minimum number of constraints (not bounds)</td>
+</tr>
+<tr>
+<td align="right"><code>max_con</code></td>
+<td align="right"><code>Inf</code></td>
+<td align="right">Maximum number of constraints</td>
+</tr>
+<tr>
+<td align="right"><code>objtype</code></td>
+<td align="right"><em>all types</em></td>
+<td align="right">Type of the objective function. See below.</td>
+</tr>
+<tr>
+<td align="right"><code>contype</code></td>
+<td align="right"><em>all types</em></td>
+<td align="right">Type of the constraints. See below.</td>
+</tr>
+<tr>
+<td align="right"><code>only_free_var</code></td>
+<td align="right"><code>false</code></td>
+<td align="right">Whether to exclude problems with bounded variables.</td>
+</tr>
+<tr>
+<td align="right"><code>only_bnd_var</code></td>
+<td align="right"><code>false</code></td>
+<td align="right">Whether to exclude problem with any free variables.</td>
+</tr>
+<tr>
+<td align="right"><code>only_linear_con</code></td>
+<td align="right"><code>false</code></td>
+<td align="right">Whether to exclude problems with nonlinear constraints.</td>
+</tr>
+<tr>
+<td align="right"><code>only_nonlinear_con</code></td>
+<td align="right"><code>false</code></td>
+<td align="right">Whether to exclude problems with any linear constraints.</td>
+</tr>
+<tr>
+<td align="right"><code>only_equ_con</code></td>
+<td align="right"><code>false</code></td>
+<td align="right">Whether to exclude problems with inequality constraints</td>
+</tr>
+<tr>
+<td align="right"><code>only_ineq_con</code></td>
+<td align="right"><code>false</code></td>
+<td align="right">Whether to exclude problems with equality constraints</td>
+</tr>
+<tr>
+<td align="right"><code>custom_filter</code></td>
+<td align="right">nothing</td>
+<td align="right">A custom filter to be applied to the entries. This requires knowledge of the inner structure, and is present only because we haven't implemented every useful combination yet. <em>We welcome pull-requests with implementations of additional queries.</em></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="right"><code>objtype</code></th>
+<th align="right">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">"none" or "N"</td>
+<td align="right">There is no objective function.</td>
+</tr>
+<tr>
+<td align="right">"constants" or "C"</td>
+<td align="right">The objective function is constant.</td>
+</tr>
+<tr>
+<td align="right">"linear" or "L"</td>
+<td align="right">The objective function is linear.</td>
+</tr>
+<tr>
+<td align="right">"quadratic" or "Q"</td>
+<td align="right">The objective function is quadratic.</td>
+</tr>
+<tr>
+<td align="right">"sum_of_squares" or "S"</td>
+<td align="right">The objective function is a sum of squares.</td>
+</tr>
+<tr>
+<td align="right">"other" or "O"</td>
+<td align="right">The objective function is none of the above.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="right"><code>contype</code></th>
+<th align="right">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">"unc" or "U"</td>
+<td align="right">There are no constraints nor bounds on the variables.</td>
+</tr>
+<tr>
+<td align="right">"fixed_vars" or "X"</td>
+<td align="right">The only constraints are fixed variables.</td>
+</tr>
+<tr>
+<td align="right">"bounds" or "B"</td>
+<td align="right">The only constraints are bounds on the variables.</td>
+</tr>
+<tr>
+<td align="right">"network" or "N"</td>
+<td align="right">The constraints represent the adjacency matrix of a linear network.</td>
+</tr>
+<tr>
+<td align="right">"linear" or "L"</td>
+<td align="right">The constraints are linear.</td>
+</tr>
+<tr>
+<td align="right">"quadratic" or "Q"</td>
+<td align="right">The constraints are quadratic.</td>
+</tr>
+<tr>
+<td align="right">"other" or "O"</td>
+<td align="right">The constraints are more general than any of the above.</td>
+</tr>
+</tbody>
+</table>
+<p>The selection tool is not as complete as we would like. Some combinations are still hard to create. Below we create some of the simpler ones.</p>
+<p><a id='Unconstrained-problems-1'></a></p>
+<h3 id="unconstrained-problems">Unconstrained problems</h3>
+<p>No constraints and no bounds. There are two options:</p>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">max_con</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>173
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">contype</span><span class="o">=</span><span class="s">&quot;unc&quot;</span><span class="p">)</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>173
+</pre></div>
+
+
+<p><a id='Equality/Inequality-constrainted-problems-with-unbounded-variables-1'></a></p>
+<h3 id="equalityinequality-constrainted-problems-with-unbounded-variables">Equality/Inequality constrainted problems with unbounded variables</h3>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">min_con</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">only_equ_con</span><span class="o">=</span><span class="n">true</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>143
+</pre></div>
+
+
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">min_con</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">only_ineq_con</span><span class="o">=</span><span class="n">true</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>114
+</pre></div>
+
+
+<p><a id='Size-range-1'></a></p>
+<h3 id="size-range">Size range</h3>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">min_var</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_var</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">min_con</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_con</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>3
+</pre></div>
+
+
+<p><a id='Sum-of-squares-problems-with-bounds-1'></a></p>
+<h3 id="sum-of-squares-problems-with-bounds">Sum-of-squares problems with bounds</h3>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">objtype</span><span class="o">=</span><span class="s">&quot;sum_of_squares&quot;</span><span class="p">,</span> <span class="n">contype</span><span class="o">=</span><span class="s">&quot;bounds&quot;</span><span class="p">)</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>52
+</pre></div>
+
+
+<p><a id='Quadratic-programming-with-linear-constraints.-1'></a></p>
+<h3 id="quadratic-programming-with-linear-constraints">Quadratic programming with linear constraints.</h3>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">objtype</span><span class="o">=</span><span class="s">&quot;quadratic&quot;</span><span class="p">,</span> <span class="n">contype</span><span class="o">=</span><span class="s">&quot;linear&quot;</span><span class="p">)</span>
+<span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="code"><pre><span></span>234
 </pre></div>
           <aside class="copyright" role="note">
             
