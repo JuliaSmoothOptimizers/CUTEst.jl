@@ -10,14 +10,15 @@ function validate_libcutest()
   tmpdir = mktempdir()
   cd(tmpdir)
   try
-    outlog = tempname()
-    errlog = tempname()
-    run(pipeline(`$runcutest -p genc -D $hs3`, stdout=outlog, stderr=errlog))
-    print(readstring(errlog))
+    cd(tmpdir) do
+      outlog = tempname()
+      errlog = tempname()
+      run(pipeline(`$runcutest -p genc -D $hs3`, stdout=outlog, stderr=errlog))
+      print(readstring(errlog))
+    end
     return true
-  catch
-    return false
   end
+  false
 end
 
 function check_env()
@@ -34,39 +35,56 @@ if validate_libcutest()
   check_env()
   ispath(cutestenv) && rm(cutestenv)
 else
-  @static if is_apple()
-    using Homebrew
-    Homebrew.add("optimizers/cutest/cutest")
-    Homebrew.add("optimizers/cutest/mastsif")
+  install = true
+  if isfile(cutestenv)
+    include(cutestenv)
+    if validate_libcutest()
+      println("Valid CUTEst installation detected, no files installed.\nTo force installation, delete $cutestenv and run Pkg.build(\"CUTEst\") again.")
+      install = false
+    end
+  end
+  if install
+    # Install CUTEst
+    @static if is_apple()
+      using Homebrew
+      Homebrew.add("optimizers/cutest/cutest")
+      Homebrew.add("optimizers/cutest/mastsif")
 
-    open(cutestenv, "w") do cenv
-      for p in ["archdefs", "cutest", "sifdecode", "mastsif"]
-        prefix = Homebrew.prefix(p)
-        open("$prefix/$p.bashrc") do f
-          for line in readlines(f)
-            var = split(split(line, "=")[1])[2]
-            path = chomp(split(line, "=")[2])
-            write(cenv, "ENV[\"$var\"] = \"$path\"\n")
+      open(cutestenv, "w") do cenv
+        for p in ["archdefs", "cutest", "sifdecode", "mastsif"]
+          prefix = Homebrew.prefix(p)
+          open("$prefix/$p.bashrc") do f
+            for line in readlines(f)
+              var = split(split(line, "=")[1])[2]
+              path = chomp(split(line, "=")[2])
+              write(cenv, "ENV[\"$var\"] = \"$path\"\n")
+            end
           end
         end
       end
     end
-  end
 
-  @static if is_linux()
-    lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/master/install.sh"
-    run(`wget $lnxurl -O install.sh`)
-    run(`bash install.sh --install-deps`)
+    @static if is_linux()
+      cd(here) do
+        isdir("files") && rm("files", recursive=true)
+        mkdir("files")
+        cd("files") do
+          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/master/install.sh"
+          run(`wget $lnxurl -O install.sh`)
+          run(`bash install.sh --install-deps`)
 
-    open(cutestenv, "w") do cenv
-      open("cutest_env.bashrc") do f
-        for p in ["PATH", "MANPATH", "LD_LIBRARY_PATH"]
-          write(cenv, "$p = get(ENV, \"$p\", \"\")\n")
-        end
-        for line in readlines(f)
-          var = split(split(line, "=")[1])[2]
-          path = chomp(split(line, "=")[2])
-          write(cenv, "ENV[\"$var\"] = \"$path\"\n")
+          open(cutestenv, "w") do cenv
+            open("cutest_env.bashrc") do f
+              for p in ["PATH", "MANPATH", "LD_LIBRARY_PATH"]
+                write(cenv, "$p = get(ENV, \"$p\", \"\")\n")
+              end
+              for line in readlines(f)
+                var = split(split(line, "=")[1])[2]
+                path = chomp(split(line, "=")[2])
+                write(cenv, "ENV[\"$var\"] = \"$path\"\n")
+              end
+            end
+          end
         end
       end
     end
