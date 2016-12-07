@@ -26,6 +26,10 @@ matrix:
       osx_image: xcode7.3
 
 
+addons:
+  apt_packages:
+    - gfortran
+
 branches:
   only:
     - master
