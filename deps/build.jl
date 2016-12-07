@@ -101,6 +101,7 @@ else
         cd("files") do
           lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/master/install.sh"
           run(`wget $lnxurl -O install.sh`)
+          ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
           run(`bash install.sh`)
 
           open(cutestenv, "w") do cenv
