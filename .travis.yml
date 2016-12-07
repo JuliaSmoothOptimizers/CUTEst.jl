@@ -35,7 +35,7 @@ branches:
     - master
     - develop
 
-sudo: required
+sudo: false
 
 before_install:
   - if [ `uname` == "Darwin" ]; then brew install gcc; fi
