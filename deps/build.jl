@@ -8,7 +8,6 @@ function validate_libcutest()
   myarch = get(ENV, "MYARCH", "")
   hs3 = env_cutest == "" ? "HS3.SIF" : joinpath(env_cutest, "sif", "HS3.SIF")
   tmpdir = mktempdir()
-  cd(tmpdir)
   try
     cd(tmpdir) do
       outlog = tempname()
@@ -61,7 +60,12 @@ else
             end
           end
         end
-        println(cenv, "ENV[\"CUTEst problems\"] = \"$(pwd())/problems\"")
+        cd(here) do
+          isdir("files") && rm("files", recursive=true)
+          mkdir("files")
+        end
+        path = joinpath(here, "files", "problems")
+        println(cenv, "ENV[\"CUTEst problems\"] = \"$path\"")
       end
     end
 
