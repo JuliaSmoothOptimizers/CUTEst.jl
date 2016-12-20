@@ -28,9 +28,22 @@ initial point, the bounds, an so on.
 
 ## Installing
 
-On Linux, you'll need to install `wget`, `gfortran` and `gsl-1.16`. See [this
-page](https://github.com/abelsiqueira/linux-cutest#requirements) for how to
-install the requirements on some linux distributions.
+On Linux, you'll need to install `wget` and `gfortran`, and possibly have to fix the location of `libgfortran.so`.
+
+On Ubuntu 14.04, you can do this with
+```
+sudo apt-get install wget gfortran
+sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.)/libgfortran.so /usr/local/lib
+```
+On Ubuntu 16.04,
+```
+sudo apt-get install wget gfortran
+sudo ln -s /usr/lib/x86_64-linux-gnu/libgfortran.so /usr/local/lib
+```
+On Archlinux, do
+```
+sudo pacman -S wget gfortran
+```
 
 The following commands should automatically download NLPModels.jl and CUTEst,
 and install them.
