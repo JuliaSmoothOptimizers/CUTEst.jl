@@ -574,7 +574,7 @@ end
 function uofg(n::Int, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   f = Cdouble[0]
-  g = Array(Cdouble, n)
+  g = grad ? Array(Cdouble, n) : Cdouble[]
   uofg(io_err, Cint[n], x, f, g, Cint[grad])
   @cutest_error
   return f[1], g
@@ -1073,7 +1073,7 @@ end
 function cofg(n::Int, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   f = Cdouble[0]
-  g = Array(Cdouble, n)
+  g = grad ? Array(Cdouble, n) : Cdouble[]
   cofg(io_err, Cint[n], x, f, g, Cint[grad])
   @cutest_error
   return f[1], g
@@ -1112,8 +1112,8 @@ function cofsg(n::Int, x::Array{Float64, 1}, lg::Int, grad::Bool)
   io_err = Cint[0]
   f = Cdouble[0]
   nnzg = Cint[0]
-  g_val = Array(Cdouble, lg)
-  g_var = Array(Cint, lg)
+  g_val = grad ? Array(Cdouble, lg) : Cdouble[]
+  g_var = grad ? Array(Cint, lg) : Cint[]
   cofsg(io_err, Cint[n], x, f, nnzg, Cint[lg], g_val, g_var,
     Cint[grad])
   @cutest_error
@@ -1160,7 +1160,7 @@ function ccfg(n::Int, m::Int, x::Array{Float64, 1}, jtrans::Bool, lcjac1::Int,
     lcjac2::Int, grad::Bool)
   io_err = Cint[0]
   c = Array(Cdouble, m)
-  cjac = Array(Cdouble, lcjac1, lcjac2)
+  cjac = grad ? Array(Cdouble, lcjac1, lcjac2) : Cdouble[]
   ccfg(io_err, Cint[n], Cint[m], x, c, Cint[jtrans], Cint[lcjac1],
     Cint[lcjac2], cjac, Cint[grad])
   @cutest_error
@@ -1205,7 +1205,7 @@ function clfg(n::Int, m::Int, x::Array{Float64, 1}, y::Array{Float64, 1},
     grad::Bool)
   io_err = Cint[0]
   f = Cdouble[0]
-  g = Array(Cdouble, n)
+  g = grad ? Array(Cdouble, n) : Cdouble[]
   clfg(io_err, Cint[n], Cint[m], x, y, f, g, Cint[grad])
   @cutest_error
   return f[1], g
@@ -1350,9 +1350,9 @@ function ccfsg(n::Int, m::Int, x::Array{Float64, 1}, lj::Int, grad::Bool)
   io_err = Cint[0]
   c = Array(Cdouble, m)
   nnzj = Cint[0]
-  j_val = Array(Cdouble, lj)
-  j_var = Array(Cint, lj)
-  j_fun = Array(Cint, lj)
+  j_val = grad ? Array(Cdouble, lj) : Cdouble[]
+  j_var = grad ? Array(Cint, lj) : Cint[]
+  j_fun = grad ? Array(Cint, lj) : Cint[]
   ccfsg(io_err, Cint[n], Cint[m], x, c, nnzj, Cint[lj], j_val, j_var,
     j_fun, Cint[grad])
   @cutest_error
@@ -1397,7 +1397,7 @@ end
 function ccifg(n::Int, icon::Int, x::Array{Float64, 1}, grad::Bool)
   io_err = Cint[0]
   ci = Cdouble[0]
-  gci = Array(Cdouble, n)
+  gci = grad ? Array(Cdouble, n) : Cdouble[]
   ccifg(io_err, Cint[n], Cint[icon], x, ci, gci, Cint[grad])
   @cutest_error
   return ci[1], gci
@@ -1439,8 +1439,8 @@ function ccifsg(n::Int, icon::Int, x::Array{Float64, 1}, lgci::Int, grad::Bool)
   io_err = Cint[0]
   ci = Cdouble[0]
   nnzgci = Cint[0]
-  gci_val = Array(Cdouble, lgci)
-  gci_var = Array(Cint, lgci)
+  gci_val = grad ? Array(Cdouble, lgci) : Cdouble[]
+  gci_var = grad ? Array(Cint, lgci) : Cint[]
   ccifsg(io_err, Cint[n], Cint[icon], x, ci, nnzgci, Cint[lgci],
     gci_val, gci_var, Cint[grad])
   @cutest_error
