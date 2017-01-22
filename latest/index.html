@@ -15,7 +15,7 @@
       
         <link rel="shortcut icon" href="./assets/images/favicon.ico">
       
-      <meta name="generator" content="mkdocs+mkdocs-material#1.0.2">
+      <meta name="generator" content="mkdocs+mkdocs-material#1.0.3">
     
     
       
@@ -36,7 +36,7 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     
     
-      <link rel="stylesheet" href="./assets/stylesheets/application-1b8b9fdf68.css">
+      <link rel="stylesheet" href="./assets/stylesheets/application-f3ab63f78a.css">
       
         <link rel="stylesheet" href="./assets/stylesheets/application-02ce7adcc2.palette.css">
       
@@ -370,7 +370,24 @@
 <p>CUTEst gives you about 100 methods to access the objective and constraints functions, as well as their derivatives in many different formats. It also gives access to the problem's information, like number of variables, constraints, the initial point, the bounds, an so on.</p>
 <p><a id='Installing-1'></a></p>
 <h2 id="installing">Installing</h2>
-<p>On Linux, you'll need to install <code>wget</code>, <code>gfortran</code> and <code>gsl-1.16</code>. See <a href="https://github.com/abelsiqueira/linux-cutest#requirements">this page</a> for how to install the requirements on some linux distributions.</p>
+<p>On Linux, you'll need to install <code>wget</code> and <code>gfortran</code>, and possibly have to fix the location of <code>libgfortran.so</code>.</p>
+<p>On Ubuntu 14.04, you can do this with</p>
+<div class="code"><pre><span></span>sudo apt-get install wget gfortran
+sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.)/libgfortran.so /usr/local/lib
+</pre></div>
+
+
+<p>On Ubuntu 16.04,</p>
+<div class="code"><pre><span></span>sudo apt-get install wget gfortran
+sudo ln -s /usr/lib/x86_64-linux-gnu/libgfortran.so /usr/local/lib
+</pre></div>
+
+
+<p>On Archlinux, do</p>
+<div class="code"><pre><span></span>sudo pacman -S wget gfortran
+</pre></div>
+
+
 <p>The following commands should automatically download NLPModels.jl and CUTEst, and install them.</p>
 <div class="code"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git&quot;</span><span class="p">)</span>
 <span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git&quot;</span><span class="p">)</span>
@@ -487,7 +504,7 @@ Hx =
       
     </div>
     
-      <script src="./assets/javascripts/application-16f434a21a.js"></script>
+      <script src="./assets/javascripts/application-2afe21e0b2.js"></script>
       <script>var config={url:{base:"."}},app=new Application(config);app.initialize()</script>
       
         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
