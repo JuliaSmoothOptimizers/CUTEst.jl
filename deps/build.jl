@@ -1,6 +1,31 @@
-# We don't use BinDeps because we couldn't make it work
-
 using Compat
+using BinDeps
+
+@BinDeps.setup
+
+libgsl = library_dependency("libgsl", aliases=["libgsl-0"])
+
+# package managers - currently with error on sudo
+#   https://discourse.julialang.org/t/installing-dependencies-error-sudo-no-tty-present-and-no-askpass-program-specified/778
+#provides(AptGet, Dict("libgsl0ldbl"=>libgsl, "libgsl0-dev" =>libgsl, "gsl-bin"=>libgsl))
+#provides(Yum, "gsl-devel", libgsl)
+#provides(Pacman, "gsl", libgsl)
+
+if is_apple()
+    if Pkg.installed("Homebrew") === nothing
+        error("Homebrew package not installed, please run Pkg.add(\"Homebrew\")")
+    end
+    using Homebrew
+    provides(Homebrew.HB, "homebrew/versions/gsl1", libgsl, os = :Darwin)
+end
+
+# build from source
+provides(Sources, URI("http://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz"), libgsl)
+provides(BuildProcess, Autotools(libtarget = "libgsl.la"), libgsl)
+
+@BinDeps.install Dict(:libgsl => :libgsl)
+
+## BinDeps end
 
 function validate_libcutest()
   env_cutest = get(ENV, "CUTEST", "")
@@ -76,7 +101,8 @@ else
         cd("files") do
           lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/master/install.sh"
           run(`wget $lnxurl -O install.sh`)
-          run(`bash install.sh --install-deps`)
+          ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
+          run(`bash install.sh`)
 
           open(cutestenv, "w") do cenv
             open("cutest_env.bashrc") do f
