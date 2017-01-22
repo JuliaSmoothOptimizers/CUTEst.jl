@@ -1,285 +1,365 @@
+
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
-<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
-<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
-<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<html class="no-js">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <title>API - CUTEst.jl</title>
-      
+        <meta name="description" content="Nonlinear Programming Models">
       
       
       
         <meta name="author" content="JuliaSmoothOptimizers">
       
-    
-    <meta property="og:url" content="None">
-    <meta property="og:title" content="CUTEst.jl">
-    <meta property="og:image" content="None/../">
-    <meta name="apple-mobile-web-app-title" content="CUTEst.jl">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
-    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
-    <style>
-      @font-face {
-      	font-family: 'Icon';
-      	src: url('../assets/fonts/icon.eot?52m981');
-      	src: url('../assets/fonts/icon.eot?#iefix52m981')
-               format('embedded-opentype'),
-      		   url('../assets/fonts/icon.woff?52m981')
-               format('woff'),
-      		   url('../assets/fonts/icon.ttf?52m981')
-               format('truetype'),
-      		   url('../assets/fonts/icon.svg?52m981#icon')
-               format('svg');
-      	font-weight: normal;
-      	font-style: normal;
-      }
-    </style>
-    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
-    
-      <link rel="stylesheet" href="../assets/stylesheets/palettes-05ab2406df.css">
+      
+        <link rel="shortcut icon" href="../assets/images/favicon.ico">
+      
+      <meta name="generator" content="mkdocs+mkdocs-material#1.0.2">
     
     
       
+        <title>API - CUTEst.jl</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-facb31f4a3.js"></script>
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application-1b8b9fdf68.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-02ce7adcc2.palette.css">
       
       
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
-      <style>
-        body, input {
-          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
-        }
-        pre, code {
-          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
-        }
-      </style>
+        <link rel="stylesheet" href="../assets/Documenter.css">
+      
+        <link rel="stylesheet" href="../assets/style.css">
+      
     
-    
-      <link rel="stylesheet" href="../assets/Documenter.css">
-    
-      <link rel="stylesheet" href="../assets/style.css">
-    
-    <script src="../assets/javascripts/modernizr-4ab42b99fd.js"></script>
     
   </head>
   
   
   
-  <body class="palette-primary-deep-orange palette-accent-indigo">
-    
-      
-      
-    
-    <div class="backdrop">
-      <div class="backdrop-paper"></div>
-    </div>
-    <input class="toggle" type="checkbox" id="toggle-drawer">
-    <input class="toggle" type="checkbox" id="toggle-search">
-    <label class="toggle-button overlay" for="toggle-drawer"></label>
-    <header class="header">
-      <nav aria-label="Header">
-  <div class="bar default">
-    <div class="button button-menu" role="button" aria-label="Menu">
-      <label class="toggle-button icon icon-menu" for="toggle-drawer">
-        <span></span>
-      </label>
-    </div>
-    <div class="stretch">
-      <div class="title">
-        
-          <span class="path">
-            
-          </span>
-        
-        API
-      </div>
-    </div>
-    
-    
-      
-      <div class="button button-github" role="button" aria-label="GitHub">
-        <a href="https://github.com/JuliaSmoothOptimizers" title="@JuliaSmoothOptimizers on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
-      </div>
-    
-    <div class="button button-search" role="button" aria-label="Search">
-      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
-    </div>
-  </div>
-  <div class="bar search">
-    <div class="button button-close" role="button" aria-label="Close">
-      <label class="toggle-button icon icon-back" for="toggle-search"></label>
-    </div>
-    <div class="stretch">
-      <div class="field">
-        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
-      </div>
-    </div>
-    <div class="button button-reset" role="button" aria-label="Search">
-      <button class="toggle-button icon icon-close" id="reset-search"></button>
-    </div>
-  </div>
-</nav>
-    </header>
-    <main class="main">
-      
-      <div class="drawer">
-        <nav aria-label="Navigation">
   
-  <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl" class="project">
-    <div class="banner">
-      
-      <div class="name">
-        <strong>
-          CUTEst.jl
-          <span class="version">
-            
-          </span>
-        </strong>
+    <body data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
         
-          <br>
-          JuliaSmoothOptimizers/CUTEst.jl
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="CUTEst.jl" class=" md-icon md-icon--home  md-header-nav__button">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+            
+            API
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <div class="md-search__overlay"></div>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
+      <label class="md-icon md-search__icon" for="search"></label>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result"></div>
+      </div>
+    </div>
+  </div>
+</div>
         
       </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+              
+
+
+  
+
+
+  <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
     </div>
   </a>
-  <div class="scrollable">
-    <div class="wrapper">
-      
-        <ul class="repo">
-          <li class="repo-download">
+
             
-            <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl/archive/master.zip" target="_blank" title="Download" data-action="download">
-              <i class="icon icon-download"></i> Download
-            </a>
-          </li>
-          <li class="repo-stars">
-            <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl/stargazers" target="_blank" title="Stargazers" data-action="star">
-              <i class="icon icon-star"></i> Stars
-              <span class="count">&ndash;</span>
-            </a>
-          </li>
-        </ul>
-        <hr>
-      
-      <div class="toc">
-        <ul>
+          </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
           
             
-  <li>
-    <a class="" title="Home" href="..">
-      Home
-    </a>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <i class=" md-icon md-icon--home  md-nav__button">
+      
+    </i>
+    CUTEst.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  <li class="md-nav__item">
+    
+      <a href=".." title="Home" class="md-nav__link">
+        Home
+      </a>
     
   </li>
 
-          
-            
-  <li>
-    <a class="" title="Tutorial" href="../tutorial/">
-      Tutorial
-    </a>
+    
+      
+      
+  <li class="md-nav__item">
+    
+      <a href="../tutorial/" title="Tutorial" class="md-nav__link">
+        Tutorial
+      </a>
     
   </li>
 
-          
-            
-  <li>
-    <a class="current" title="API" href="./">
+    
+      
+      
+  <li class="md-nav__item">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        API
+      </label>
+    
+    <a href="./" title="API" class="md-nav__link md-nav__link--active">
       API
     </a>
     
       
-        
-      
-      
-        <ul>
-          
-            <li class="anchor">
-              <a title="NLPModels API" href="#nlpmodels-api">
-                NLPModels API
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Extra Julian API" href="#extra-julian-api">
-                Extra Julian API
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Select tools" href="#select-tools">
-                Select tools
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Core and specialized API" href="#core-and-specialized-api">
-                Core and specialized API
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Internal" href="#internal">
-                Internal
-              </a>
-            </li>
-          
-        </ul>
-      
+<nav class="md-nav md-nav--secondary">
+  
+  
     
-  </li>
-
-          
-            
-  <li>
-    <a class="" title="Core" href="../core/">
-      Core
-    </a>
-    
-  </li>
-
-          
-            
-  <li>
-    <a class="" title="Reference" href="../reference/">
-      Reference
-    </a>
-    
-  </li>
-
-          
-        </ul>
-        
-          <hr>
-          <span class="section">The author</span>
-          <ul>
-            
-            
-              
-              <li>
-                <a href="https://github.com/JuliaSmoothOptimizers" target="_blank" title="@JuliaSmoothOptimizers on GitHub">
-                  @JuliaSmoothOptimizers on GitHub
-                </a>
-              </li>
-            
-          </ul>
-        
-      </div>
-    </div>
-  </div>
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nlpmodels-api" title="NLPModels API" class="md-nav__link">
+    NLPModels API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extra-julian-api" title="Extra Julian API" class="md-nav__link">
+    Extra Julian API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#select-tools" title="Select tools" class="md-nav__link">
+    Select tools
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-and-specialized-api" title="Core and specialized API" class="md-nav__link">
+    Core and specialized API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal" title="Internal" class="md-nav__link">
+    Internal
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
-      </div>
-      <article class="article">
-        <div class="wrapper">
+    
+  </li>
+
+    
+      
+      
+  <li class="md-nav__item">
+    
+      <a href="../core/" title="Core" class="md-nav__link">
+        Core
+      </a>
+    
+  </li>
+
+    
+      
+      
+  <li class="md-nav__item">
+    
+      <a href="../reference/" title="Reference" class="md-nav__link">
+        Reference
+      </a>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nlpmodels-api" title="NLPModels API" class="md-nav__link">
+    NLPModels API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extra-julian-api" title="Extra Julian API" class="md-nav__link">
+    Extra Julian API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#select-tools" title="Select tools" class="md-nav__link">
+    Select tools
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-and-specialized-api" title="Core and specialized API" class="md-nav__link">
+    Core and specialized API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal" title="Internal" class="md-nav__link">
+    Internal
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
-          <p><a id='API-1'></a></p>
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+               
+                 <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl/edit/master/docs/api.md" title="Edit this page" class="md-icon md-content__edit">edit</a>
+               
+              
+                
+                <p><a id='API-1'></a></p>
 <h1 id="api">API</h1>
 <p><a id='NLPModels-API-1'></a></p>
 <h2 id="nlpmodels-api">NLPModels API</h2>
@@ -328,7 +408,7 @@ f = objgrad(nlp, x)
 <li>f:    [OUT] Float64</li>
 <li>g:    [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/julia_interface.jl#L57-L71' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/julia_interface.jl#L57-L71' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.objcons' href='#CUTEst.objcons'>#</a>
 <strong><code>CUTEst.objcons</code></strong> &mdash; <em>Function</em>.</p>
 <div class="code"><pre><span></span>objcons(nlp, x)
@@ -347,7 +427,7 @@ f = objcons(nlp, x)    # If the problem is unconstrained
 <li>f:   [OUT] Float64</li>
 <li>c:   [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/julia_interface.jl#L21-L34' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/julia_interface.jl#L21-L34' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cons_coord' href='#CUTEst.cons_coord'>#</a>
 <strong><code>CUTEst.cons_coord</code></strong> &mdash; <em>Function</em>.</p>
 <div class="code"><pre><span></span>cons_coord(nlp, x, jac)
@@ -369,14 +449,14 @@ c = cons_coord(nlp, x, false)
 <li>jcol: [OUT] Array{Int32, 1}</li>
 <li>jval: [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/julia_interface.jl#L130-L147' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/julia_interface.jl#L130-L147' class='documenter-source'>source</a><br></p>
 <p><a id='Select-tools-1'></a></p>
 <h2 id="select-tools">Select tools</h2>
 <p><a id='CUTEst.create_class-Tuple{}' href='#CUTEst.create_class-Tuple{}'>#</a>
 <strong><code>CUTEst.create_class</code></strong> &mdash; <em>Method</em>.</p>
 <p><code>create_class()</code></p>
 <p>Creates the file <code>classf.json</code>, running each problem in <code>$MASTSIF/CLASSF.DB</code> and extracting the necessary information. It should be left alone, unless you think it is not updated. If you do, please open an issue at <a href="https://github.com/JuliaSmoothOptimizers/CUTEst.jl">https://github.com/JuliaSmoothOptimizers/CUTEst.jl</a></p>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/classification.jl#L28-L35' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/classification.jl#L28-L35' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.select-Tuple{}' href='#CUTEst.select-Tuple{}'>#</a>
 <strong><code>CUTEst.select</code></strong> &mdash; <em>Method</em>.</p>
 <p>select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,     objtype=<em>, contype=</em>,     only_free_var=false, only_bnd_var=false,     only_linear_con=false, only_nonlinear_con=false,     only_equ_con=false, only_ineq_con=false,     custom_filter=*)</p>
@@ -416,7 +496,7 @@ c = cons_coord(nlp, x, false)
 </pre></div>
 
 
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/classification.jl#L81-L151' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/classification.jl#L81-L151' class='documenter-source'>source</a><br></p>
 <p><a id='Core-and-specialized-API-1'></a></p>
 <h2 id="core-and-specialized-api">Core and specialized API</h2>
 <p><a id='CUTEst.ccfg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,2},Array{Int32,1}}' href='#CUTEst.ccfg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,2},Array{Int32,1}}'>#</a>
@@ -445,7 +525,7 @@ c = cons_coord(nlp, x, false)
 <li>cjac:    [OUT] Array{Cdouble, 2}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1168-L1197' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1168-L1197' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccfsg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ccfsg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ccfsg</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ccfsg</strong></p>
@@ -473,7 +553,7 @@ c = cons_coord(nlp, x, false)
 <li>j_fun:   [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1327-L1358' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1327-L1358' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cchprods-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cchprods-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cchprods</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cchprods</strong></p>
@@ -500,7 +580,7 @@ c = cons_coord(nlp, x, false)
 <li>chp_ind: [IN] Array{Cint, 1}</li>
 <li>chp_ptr: [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L2171-L2201' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L2171-L2201' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccifg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.ccifg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ccifg</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ccifg</strong></p>
@@ -524,7 +604,7 @@ c = cons_coord(nlp, x, false)
 <li>gci:     [OUT] Array{Cdouble, 1}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1368-L1395' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1368-L1395' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccifsg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ccifsg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ccifsg</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ccifsg</strong></p>
@@ -551,7 +631,7 @@ c = cons_coord(nlp, x, false)
 <li>gci_var: [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1404-L1435' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1404-L1435' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}' href='#CUTEst.cdh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cdh</strong></p>
@@ -575,7 +655,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Array{Cint, 1}</li>
 <li>h_val:   [OUT] Array{Cdouble, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1492-L1519' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1492-L1519' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdhc-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}' href='#CUTEst.cdhc-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdhc</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cdhc</strong></p>
@@ -599,7 +679,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Array{Cint, 1}</li>
 <li>h_val:   [OUT] Array{Cdouble, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1528-L1555' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1528-L1555' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimchp-Tuple{Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cdimchp-Tuple{Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cdimchp</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cdimchp</strong></p>
@@ -618,7 +698,7 @@ c = cons_coord(nlp, x, false)
 <li>io_err:  [OUT] Array{Cint, 1}</li>
 <li>nnzchp:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L343-L365' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L343-L365' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimen-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cdimen-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cdimen</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cdimen</strong></p>
@@ -639,7 +719,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [OUT] Array{Cint, 1}</li>
 <li>m:       [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L256-L279' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L256-L279' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimse-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cdimse-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cdimse</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cdimse</strong></p>
@@ -660,7 +740,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val_ne: [OUT] Array{Cint, 1}</li>
 <li>he_row_ne: [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L371-L397' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L371-L397' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimsh-Tuple{Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cdimsh-Tuple{Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cdimsh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cdimsh</strong></p>
@@ -679,7 +759,7 @@ c = cons_coord(nlp, x, false)
 <li>io_err:  [OUT] Array{Cint, 1}</li>
 <li>nnzh:    [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L315-L337' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L315-L337' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimsj-Tuple{Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cdimsj-Tuple{Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cdimsj</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cdimsj</strong></p>
@@ -698,7 +778,7 @@ c = cons_coord(nlp, x, false)
 <li>io_err:  [OUT] Array{Cint, 1}</li>
 <li>nnzj:    [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L286-L309' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L286-L309' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ceh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.ceh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ceh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ceh</strong></p>
@@ -730,7 +810,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Cdouble, 1}</li>
 <li>byrows:     [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1676-L1713' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1676-L1713' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cfn-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.cfn-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cfn</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cfn</strong></p>
@@ -753,7 +833,7 @@ c = cons_coord(nlp, x, false)
 <li>f:       [OUT] Array{Cdouble, 1}</li>
 <li>c:       [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1065-L1090' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1065-L1090' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cgr-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,2}}' href='#CUTEst.cgr-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgr</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cgr</strong></p>
@@ -781,7 +861,7 @@ c = cons_coord(nlp, x, false)
 <li>lj2:     [IN] Array{Cint, 1}</li>
 <li>j_val:   [OUT] Array{Cdouble, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1243-L1274' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1243-L1274' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cgrdh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,2},Array{Int32,1},Array{Float64,2}}' href='#CUTEst.cgrdh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,2},Array{Int32,1},Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgrdh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cgrdh</strong></p>
@@ -811,7 +891,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Array{Cint, 1}</li>
 <li>h_val:   [OUT] Array{Cdouble, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1445-L1480' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1445-L1480' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.chcprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chcprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chcprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>chcprod</strong></p>
@@ -836,7 +916,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Cdouble, 1}</li>
 <li>result:  [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1999-L2027' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1999-L2027' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.chprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>chprod</strong></p>
@@ -861,7 +941,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Cdouble, 1}</li>
 <li>result:  [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1916-L1944' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1916-L1944' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cidh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,2}}' href='#CUTEst.cidh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cidh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cidh</strong></p>
@@ -884,7 +964,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Array{Cint, 1}</li>
 <li>h:       [OUT] Array{Cdouble, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1727-L1753' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1727-L1753' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cish-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cish-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cish</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cish</strong></p>
@@ -910,7 +990,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1760-L1789' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1760-L1789' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cjprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.cjprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cjprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cjprod</strong></p>
@@ -937,7 +1017,7 @@ c = cons_coord(nlp, x, false)
 <li>result:  [OUT] Array{Cdouble, 1}</li>
 <li>lresult: [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L2082-L2112' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L2082-L2112' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.clfg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.clfg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.clfg</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>clfg</strong></p>
@@ -962,7 +1042,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Cdouble, 1}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1207-L1234' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1207-L1234' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cnames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int8,1},Array{Int8,1},Array{Int8,1}}' href='#CUTEst.cnames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int8,1},Array{Int8,1},Array{Int8,1}}'>#</a>
 <strong><code>CUTEst.cnames</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cnames</strong></p>
@@ -985,7 +1065,7 @@ c = cons_coord(nlp, x, false)
 <li>vname:   [OUT] Array{Cchar, 1}</li>
 <li>cname:   [OUT] Array{Cchar, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L454-L478' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L454-L478' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cofg-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.cofg-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cofg</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cofg</strong></p>
@@ -1008,7 +1088,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Cdouble, 1}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1098-L1123' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1098-L1123' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cofsg-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cofsg-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cofsg</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cofsg</strong></p>
@@ -1034,7 +1114,7 @@ c = cons_coord(nlp, x, false)
 <li>g_var:   [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1131-L1159' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1131-L1159' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.connames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1}}' href='#CUTEst.connames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1}}'>#</a>
 <strong><code>CUTEst.connames</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>connames</strong></p>
@@ -1054,7 +1134,7 @@ c = cons_coord(nlp, x, false)
 <li>m:       [IN] Array{Cint, 1}</li>
 <li>cname:   [OUT] Array{Cchar, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L514-L535' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L514-L535' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.creport-Tuple{Array{Int32,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.creport-Tuple{Array{Int32,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.creport</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>creport</strong></p>
@@ -1074,7 +1154,7 @@ c = cons_coord(nlp, x, false)
 <li>calls:   [OUT] Array{Cdouble, 1}</li>
 <li>time:    [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L485-L507' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L485-L507' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csetup-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.csetup-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csetup</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>csetup</strong></p>
@@ -1109,7 +1189,7 @@ c = cons_coord(nlp, x, false)
 <li>l_order:   [IN] Array{Cint, 1}</li>
 <li>v_order:   [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L44-L81' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L44-L81' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgr-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.csgr-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csgr</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>csgr</strong></p>
@@ -1137,7 +1217,7 @@ c = cons_coord(nlp, x, false)
 <li>j_var:   [OUT] Array{Cint, 1}</li>
 <li>j_fun:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1284-L1317' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1284-L1317' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgreh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.csgreh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csgreh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>csgreh</strong></p>
@@ -1175,7 +1255,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Cdouble, 1}</li>
 <li>byrows:     [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1851-L1898' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1851-L1898' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgrsh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.csgrsh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csgrsh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>csgrsh</strong></p>
@@ -1209,7 +1289,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1798-L1837' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1798-L1837' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.csh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>csh</strong></p>
@@ -1236,7 +1316,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1596-L1626' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1596-L1626' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshc-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cshc-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cshc</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cshc</strong></p>
@@ -1263,7 +1343,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1636-L1666' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1636-L1666' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshcprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1}}' href='#CUTEst.cshcprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshcprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cshcprod</strong></p>
@@ -1293,7 +1373,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L2036-L2069' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L2036-L2069' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshp-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cshp-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cshp</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cshp</strong></p>
@@ -1316,7 +1396,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1564-L1589' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1564-L1589' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1}}' href='#CUTEst.cshprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cshprod</strong></p>
@@ -1346,7 +1426,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1953-L1986' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1953-L1986' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csjprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.csjprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csjprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>csjprod</strong></p>
@@ -1378,7 +1458,7 @@ c = cons_coord(nlp, x, false)
 <li>result:          [OUT] Array{Cdouble, 1}</li>
 <li>lresult:         [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L2122-L2157' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L2122-L2157' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cstats-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cstats-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cstats</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cstats</strong></p>
@@ -1394,7 +1474,7 @@ c = cons_coord(nlp, x, false)
 <li>equality_constraints:            [OUT] Array{Cint, 1}</li>
 <li>linear_constraints:              [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L404-L415' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L404-L415' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cterminate-Tuple{Array{Int32,1}}' href='#CUTEst.cterminate-Tuple{Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cterminate</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cterminate</strong></p>
@@ -1412,7 +1492,7 @@ c = cons_coord(nlp, x, false)
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L2231-L2245' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L2231-L2245' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cvartype-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cvartype-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cvartype</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>cvartype</strong></p>
@@ -1432,7 +1512,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Array{Cint, 1}</li>
 <li>x_type:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L426-L448' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L426-L448' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.pname-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1}}' href='#CUTEst.pname-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1}}'>#</a>
 <strong><code>CUTEst.pname</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>pname</strong></p>
@@ -1452,7 +1532,7 @@ c = cons_coord(nlp, x, false)
 <li>input:   [IN] Array{Cint, 1}</li>
 <li>pname:   [OUT] Array{Cchar, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L541-L563' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L541-L563' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.probname-Tuple{Array{Int32,1},Array{Int8,1}}' href='#CUTEst.probname-Tuple{Array{Int32,1},Array{Int8,1}}'>#</a>
 <strong><code>CUTEst.probname</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>probname</strong></p>
@@ -1471,7 +1551,7 @@ c = cons_coord(nlp, x, false)
 <li>io_err:  [OUT] Array{Cint, 1}</li>
 <li>pname:   [OUT] Array{Cchar, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L569-L588' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L569-L588' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ubandh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,2},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ubandh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,2},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ubandh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ubandh</strong></p>
@@ -1495,7 +1575,7 @@ c = cons_coord(nlp, x, false)
 <li>lbandh:            [IN] Array{Cint, 1}</li>
 <li>max_semibandwidth: [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L1031-L1056' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L1031-L1056' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}' href='#CUTEst.udh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.udh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>udh</strong></p>
@@ -1517,7 +1597,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Array{Cint, 1}</li>
 <li>h:       [OUT] Array{Cdouble, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L706-L728' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L706-L728' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udimen-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.udimen-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.udimen</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>udimen</strong></p>
@@ -1537,7 +1617,7 @@ c = cons_coord(nlp, x, false)
 <li>input:   [IN] Array{Cint, 1}</li>
 <li>n:       [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L95-L114' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L95-L114' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udimse-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.udimse-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.udimse</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>udimse</strong></p>
@@ -1558,7 +1638,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val_ne: [OUT] Array{Cint, 1}</li>
 <li>he_row_ne: [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L146-L170' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L146-L170' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udimsh-Tuple{Array{Int32,1},Array{Int32,1}}' href='#CUTEst.udimsh-Tuple{Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.udimsh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>udimsh</strong></p>
@@ -1577,7 +1657,7 @@ c = cons_coord(nlp, x, false)
 <li>io_err:  [OUT] Array{Cint, 1}</li>
 <li>nnzh:    [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L120-L140' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L120-L140' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ueh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.ueh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ueh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ueh</strong></p>
@@ -1607,7 +1687,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Cdouble, 1}</li>
 <li>byrows:     [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L800-L832' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L800-L832' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ufn-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ufn-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ufn</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ufn</strong></p>
@@ -1628,7 +1708,7 @@ c = cons_coord(nlp, x, false)
 <li>x:       [IN] Array{Cdouble, 1}</li>
 <li>f:       [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L621-L641' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L621-L641' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugr-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ugr-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugr</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ugr</strong></p>
@@ -1649,7 +1729,7 @@ c = cons_coord(nlp, x, false)
 <li>x:       [IN] Array{Cdouble, 1}</li>
 <li>g:       [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L648-L668' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L648-L668' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugrdh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}' href='#CUTEst.ugrdh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.ugrdh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ugrdh</strong></p>
@@ -1672,7 +1752,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Array{Cint, 1}</li>
 <li>h:       [OUT] Array{Cdouble, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L844-L868' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L844-L868' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugreh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.ugreh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ugreh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ugreh</strong></p>
@@ -1703,7 +1783,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Cdouble, 1}</li>
 <li>byrows:     [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L912-L946' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L912-L946' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugrsh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ugrsh-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ugrsh</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ugrsh</strong></p>
@@ -1729,7 +1809,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L876-L903' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L876-L903' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uhprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.uhprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.uhprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>uhprod</strong></p>
@@ -1752,7 +1832,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Cdouble, 1}</li>
 <li>result:  [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L959-L982' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L959-L982' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.unames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1},Array{Int8,1}}' href='#CUTEst.unames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1},Array{Int8,1}}'>#</a>
 <strong><code>CUTEst.unames</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>unames</strong></p>
@@ -1773,7 +1853,7 @@ c = cons_coord(nlp, x, false)
 <li>pname:   [OUT] Array{Cchar, 1}</li>
 <li>vname:   [OUT] Array{Cchar, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L203-L222' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L203-L222' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uofg-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}' href='#CUTEst.uofg-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.uofg</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>uofg</strong></p>
@@ -1796,7 +1876,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Cdouble, 1}</li>
 <li>grad:    [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L675-L698' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L675-L698' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ureport-Tuple{Array{Int32,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ureport-Tuple{Array{Int32,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ureport</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ureport</strong></p>
@@ -1816,7 +1896,7 @@ c = cons_coord(nlp, x, false)
 <li>calls:   [OUT] Array{Cdouble, 1}</li>
 <li>time:    [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L229-L249' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L229-L249' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.usetup-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.usetup-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.usetup</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>usetup</strong></p>
@@ -1841,7 +1921,7 @@ c = cons_coord(nlp, x, false)
 <li>x_l:       [OUT] Array{Cdouble, 1}</li>
 <li>x_u:       [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L10-L35' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L10-L35' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ush-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ush-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ush</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ush</strong></p>
@@ -1866,7 +1946,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L765-L791' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L765-L791' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ushp-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ushp-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ushp</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ushp</strong></p>
@@ -1889,7 +1969,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L735-L758' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L735-L758' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ushprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1}}' href='#CUTEst.ushprod-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ushprod</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>ushprod</strong></p>
@@ -1917,7 +1997,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Cdouble, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L991-L1019' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L991-L1019' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uterminate-Tuple{Array{Int32,1}}' href='#CUTEst.uterminate-Tuple{Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.uterminate</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>uterminate</strong></p>
@@ -1935,7 +2015,7 @@ c = cons_coord(nlp, x, false)
 <ul>
 <li>io_err:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L2211-L2225' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L2211-L2225' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uvartype-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.uvartype-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.uvartype</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>uvartype</strong></p>
@@ -1955,7 +2035,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Array{Cint, 1}</li>
 <li>x_type:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L177-L197' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L177-L197' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.varnames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1}}' href='#CUTEst.varnames-Tuple{Array{Int32,1},Array{Int32,1},Array{Int8,1}}'>#</a>
 <strong><code>CUTEst.varnames</code></strong> &mdash; <em>Method</em>.</p>
 <p><strong>varnames</strong></p>
@@ -1975,7 +2055,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Array{Cint, 1}</li>
 <li>vname:   [OUT] Array{Cchar, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/core_interface.jl#L594-L615' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/core_interface.jl#L594-L615' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Bool}' href='#CUTEst.ccfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Bool}'>#</a>
 <strong><code>CUTEst.ccfg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
@@ -1993,7 +2073,7 @@ c = cons_coord(nlp, x, false)
 <li>cjac:    [OUT] Array{Float64, 2}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1170-L1182' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1170-L1182' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccfg-Tuple{Int64,Int64,Array{Float64,1},Bool,Int64,Int64,Bool}' href='#CUTEst.ccfg-Tuple{Int64,Int64,Array{Float64,1},Bool,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccfg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad)
@@ -2011,7 +2091,7 @@ c = cons_coord(nlp, x, false)
 <li>cjac:    [OUT] Array{Float64, 2}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1146-L1158' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1146-L1158' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccfsg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Bool}' href='#CUTEst.ccfsg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Bool}'>#</a>
 <strong><code>CUTEst.ccfsg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad)
@@ -2030,7 +2110,7 @@ c = cons_coord(nlp, x, false)
 <li>j_fun:   [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1362-L1375' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1362-L1375' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccfsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}' href='#CUTEst.ccfsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccfsg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)
@@ -2049,7 +2129,7 @@ c = cons_coord(nlp, x, false)
 <li>j_fun:   [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1335-L1348' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1335-L1348' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cchprods!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cchprods!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cchprods!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
@@ -2067,7 +2147,7 @@ c = cons_coord(nlp, x, false)
 <li>chp_ind: [IN] Array{Cint, 1}</li>
 <li>chp_ptr: [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2349-L2361' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2349-L2361' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cchprods-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cchprods-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cchprods</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>chp_val = cchprods(n, m, goth, x, vector, lchp, chp_ind, chp_ptr)
@@ -2085,7 +2165,7 @@ c = cons_coord(nlp, x, false)
 <li>chp_ind: [IN] Array{Cint, 1}</li>
 <li>chp_ptr: [IN] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2325-L2337' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2325-L2337' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccifg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.ccifg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ci = ccifg!(n, icon, x, gci, grad)
@@ -2100,7 +2180,7 @@ c = cons_coord(nlp, x, false)
 <li>gci:     [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1406-L1415' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1406-L1415' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccifg-Tuple{Int64,Int64,Array{Float64,1},Bool}' href='#CUTEst.ccifg-Tuple{Int64,Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ci, gci = ccifg(n, icon, x, grad)
@@ -2115,7 +2195,7 @@ c = cons_coord(nlp, x, false)
 <li>gci:     [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1387-L1396' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1387-L1396' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccifsg!-Tuple{Int64,Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Bool}' href='#CUTEst.ccifsg!-Tuple{Int64,Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Bool}'>#</a>
 <strong><code>CUTEst.ccifsg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad)
@@ -2133,7 +2213,7 @@ c = cons_coord(nlp, x, false)
 <li>gci_var: [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1450-L1462' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1450-L1462' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ccifsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}' href='#CUTEst.ccifsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.ccifsg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad)
@@ -2151,7 +2231,7 @@ c = cons_coord(nlp, x, false)
 <li>gci_var: [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1425-L1437' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1425-L1437' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.cdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cdh!(n, m, x, y, lh1, h_val)
@@ -2166,7 +2246,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1546-L1555' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1546-L1555' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cdh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>h_val = cdh(n, m, x, y, lh1)
@@ -2181,7 +2261,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1528-L1537' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1528-L1537' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdhc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.cdhc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cdhc!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cdhc!(n, m, x, y, lh1, h_val)
@@ -2196,7 +2276,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1582-L1591' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1582-L1591' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdhc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cdhc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cdhc</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>h_val = cdhc(n, m, x, y, lh1)
@@ -2211,7 +2291,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1564-L1573' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1564-L1573' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimchp-Tuple{}' href='#CUTEst.cdimchp-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimchp</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzchp = cdimchp()
@@ -2221,7 +2301,7 @@ c = cons_coord(nlp, x, false)
 <ul>
 <li>nnzchp:  [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L304-L308' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L304-L308' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimen-Tuple{Int64}' href='#CUTEst.cdimen-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.cdimen</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>n, m = cdimen(input)
@@ -2233,7 +2313,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [OUT] Int</li>
 <li>m:       [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L262-L268' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L262-L268' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimse-Tuple{}' href='#CUTEst.cdimse-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimse</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ne, he_val_ne, he_row_ne = cdimse()
@@ -2245,7 +2325,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val_ne: [OUT] Int</li>
 <li>he_row_ne: [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L317-L323' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L317-L323' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimsh-Tuple{}' href='#CUTEst.cdimsh-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimsh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = cdimsh()
@@ -2255,7 +2335,7 @@ c = cons_coord(nlp, x, false)
 <ul>
 <li>nnzh:    [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L291-L295' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L291-L295' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cdimsj-Tuple{}' href='#CUTEst.cdimsj-Tuple{}'>#</a>
 <strong><code>CUTEst.cdimsj</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj = cdimsj()
@@ -2265,7 +2345,7 @@ c = cons_coord(nlp, x, false)
 <ul>
 <li>nnzj:    [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L278-L282' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L278-L282' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ceh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ceh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ceh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
@@ -2287,7 +2367,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1766-L1782' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1766-L1782' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ceh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ceh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ceh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows)
@@ -2309,7 +2389,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1734-L1750' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1734-L1750' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cfn!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.cfn!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cfn!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f = cfn!(n, m, x, c)
@@ -2323,7 +2403,7 @@ c = cons_coord(nlp, x, false)
 <li>f:       [OUT] Float64</li>
 <li>c:       [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1047-L1055' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1047-L1055' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cfn-Tuple{Int64,Int64,Array{Float64,1}}' href='#CUTEst.cfn-Tuple{Int64,Int64,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cfn</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f, c = cfn(n, m, x)
@@ -2337,7 +2417,7 @@ c = cons_coord(nlp, x, false)
 <li>f:       [OUT] Float64</li>
 <li>c:       [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1029-L1037' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1029-L1037' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2}}' href='#CUTEst.cgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgr!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
@@ -2356,7 +2436,7 @@ c = cons_coord(nlp, x, false)
 <li>lj2:     [IN] Int</li>
 <li>j_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1259-L1272' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1259-L1272' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64}' href='#CUTEst.cgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64}'>#</a>
 <strong><code>CUTEst.cgr</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2)
@@ -2375,7 +2455,7 @@ c = cons_coord(nlp, x, false)
 <li>lj2:     [IN] Int</li>
 <li>j_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1234-L1247' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1234-L1247' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cgrdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Int64,Array{Float64,2}}' href='#CUTEst.cgrdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cgrdh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
@@ -2396,7 +2476,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1502-L1517' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1502-L1517' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cgrdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64,Int64}' href='#CUTEst.cgrdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.cgrdh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1)
@@ -2417,7 +2497,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h_val:   [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1474-L1489' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1474-L1489' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.chcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chcprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>chcprod!(n, m, goth, x, y, vector, result)
@@ -2433,7 +2513,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Float64, 1}</li>
 <li>result:  [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2142-L2152' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2142-L2152' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.chcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chcprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>result = chcprod(n, m, goth, x, y, vector)
@@ -2449,7 +2529,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Float64, 1}</li>
 <li>result:  [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2122-L2132' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2122-L2132' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.chprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>chprod!(n, m, goth, x, y, vector, result)
@@ -2465,7 +2545,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Float64, 1}</li>
 <li>result:  [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2046-L2056' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2046-L2056' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.chprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.chprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.chprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>result = chprod(n, m, goth, x, y, vector)
@@ -2481,7 +2561,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Float64, 1}</li>
 <li>result:  [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2026-L2036' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2026-L2036' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cidh!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,2}}' href='#CUTEst.cidh!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.cidh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cidh!(n, x, iprob, lh1, h)
@@ -2495,7 +2575,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h:       [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1813-L1821' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1813-L1821' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cidh-Tuple{Int64,Array{Float64,1},Int64,Int64}' href='#CUTEst.cidh-Tuple{Int64,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cidh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>h = cidh(n, x, iprob, lh1)
@@ -2509,7 +2589,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h:       [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1796-L1804' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1796-L1804' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cish!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cish!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cish!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col)
@@ -2526,7 +2606,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1854-L1865' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1854-L1865' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cish-Tuple{Int64,Array{Float64,1},Int64,Int64}' href='#CUTEst.cish-Tuple{Int64,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cish</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh)
@@ -2543,7 +2623,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1830-L1841' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1830-L1841' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Int64}' href='#CUTEst.cjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cjprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult)
@@ -2561,7 +2641,7 @@ c = cons_coord(nlp, x, false)
 <li>result:  [OUT] Array{Float64, 1}</li>
 <li>lresult: [IN] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2241-L2253' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2241-L2253' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Int64}' href='#CUTEst.cjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.cjprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult)
@@ -2579,7 +2659,7 @@ c = cons_coord(nlp, x, false)
 <li>result:  [OUT] Array{Float64, 1}</li>
 <li>lresult: [IN] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2218-L2230' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2218-L2230' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.clfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.clfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.clfg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f = clfg!(n, m, x, y, g, grad)
@@ -2595,7 +2675,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1214-L1224' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1214-L1224' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.clfg-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.clfg-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.clfg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f, g = clfg(n, m, x, y, grad)
@@ -2611,7 +2691,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1193-L1203' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1193-L1203' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cnames!-Tuple{Int64,Int64,Array{UInt8,1},Array{UInt8,1}}' href='#CUTEst.cnames!-Tuple{Int64,Int64,Array{UInt8,1},Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.cnames!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>pname = cnames!(n, m, vname, cname)
@@ -2625,7 +2705,7 @@ c = cons_coord(nlp, x, false)
 <li>vname:   [OUT] Array{UInt8, 1}</li>
 <li>cname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L395-L403' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L395-L403' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cnames-Tuple{Int64,Int64}' href='#CUTEst.cnames-Tuple{Int64,Int64}'>#</a>
 <strong><code>CUTEst.cnames</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>pname, vname, cname = cnames(n, m)
@@ -2639,7 +2719,7 @@ c = cons_coord(nlp, x, false)
 <li>vname:   [OUT] Array{UInt8, 1}</li>
 <li>cname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L376-L384' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L376-L384' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.cofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f = cofg!(n, x, g, grad)
@@ -2653,7 +2733,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1082-L1090' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1082-L1090' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cofg-Tuple{Int64,Array{Float64,1},Bool}' href='#CUTEst.cofg-Tuple{Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.cofg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f, g = cofg(n, x, grad)
@@ -2667,7 +2747,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1064-L1072' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1064-L1072' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cofsg!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Bool}' href='#CUTEst.cofsg!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Bool}'>#</a>
 <strong><code>CUTEst.cofsg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad)
@@ -2684,7 +2764,7 @@ c = cons_coord(nlp, x, false)
 <li>g_var:   [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1123-L1134' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1123-L1134' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cofsg-Tuple{Int64,Array{Float64,1},Int64,Bool}' href='#CUTEst.cofsg-Tuple{Int64,Array{Float64,1},Int64,Bool}'>#</a>
 <strong><code>CUTEst.cofsg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f, nnzg, g_val, g_var = cofsg(n, x, lg, grad)
@@ -2701,7 +2781,7 @@ c = cons_coord(nlp, x, false)
 <li>g_var:   [OUT] Array{Cint, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1099-L1110' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1099-L1110' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.connames!-Tuple{Int64,Array{UInt8,1}}' href='#CUTEst.connames!-Tuple{Int64,Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.connames!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>connames!(m, cname)
@@ -2712,7 +2792,7 @@ c = cons_coord(nlp, x, false)
 <li>m:       [IN] Int</li>
 <li>cname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L454-L459' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L454-L459' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.connames-Tuple{Int64}' href='#CUTEst.connames-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.connames</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cname = connames(m)
@@ -2723,7 +2803,7 @@ c = cons_coord(nlp, x, false)
 <li>m:       [IN] Int</li>
 <li>cname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L440-L445' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L440-L445' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.creport!-Tuple{Array{Float64,1},Array{Float64,1}}' href='#CUTEst.creport!-Tuple{Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.creport!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>creport!(calls, time)
@@ -2734,7 +2814,7 @@ c = cons_coord(nlp, x, false)
 <li>calls:   [OUT] Array{Float64, 1}</li>
 <li>time:    [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L427-L432' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L427-L432' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.creport-Tuple{}' href='#CUTEst.creport-Tuple{}'>#</a>
 <strong><code>CUTEst.creport</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>calls, time = creport()
@@ -2745,7 +2825,7 @@ c = cons_coord(nlp, x, false)
 <li>calls:   [OUT] Array{Float64, 1}</li>
 <li>time:    [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L412-L417' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L412-L417' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csetup!-Tuple{Int64,Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Int64,Int64}' href='#CUTEst.csetup!-Tuple{Int64,Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.csetup!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
@@ -2770,7 +2850,7 @@ c = cons_coord(nlp, x, false)
 <li>l_order:   [IN] Int</li>
 <li>v_order:   [IN] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L99-L118' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L99-L118' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csetup-Tuple{Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64}' href='#CUTEst.csetup-Tuple{Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.csetup</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order)
@@ -2795,7 +2875,7 @@ c = cons_coord(nlp, x, false)
 <li>l_order:   [IN] Int</li>
 <li>v_order:   [IN] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L61-L80' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L61-L80' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.csgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csgr!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun)
@@ -2814,7 +2894,7 @@ c = cons_coord(nlp, x, false)
 <li>j_var:   [OUT] Array{Cint, 1}</li>
 <li>j_fun:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1310-L1323' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1310-L1323' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64}' href='#CUTEst.csgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64}'>#</a>
 <strong><code>CUTEst.csgr</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj)
@@ -2833,7 +2913,7 @@ c = cons_coord(nlp, x, false)
 <li>j_var:   [OUT] Array{Cint, 1}</li>
 <li>j_fun:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1283-L1296' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1283-L1296' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgreh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.csgreh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.csgreh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
@@ -2861,7 +2941,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1988-L2010' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1988-L2010' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgreh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Int64,Int64,Bool}' href='#CUTEst.csgreh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.csgreh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows)
@@ -2889,7 +2969,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1945-L1967' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1945-L1967' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgrsh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.csgrsh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csgrsh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col)
@@ -2913,7 +2993,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1913-L1931' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1913-L1931' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csgrsh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64}' href='#CUTEst.csgrsh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64}'>#</a>
 <strong><code>CUTEst.csgrsh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh)
@@ -2937,7 +3017,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1877-L1895' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1877-L1895' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.csh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.csh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col)
@@ -2955,7 +3035,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1661-L1673' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1661-L1673' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.csh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.csh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh)
@@ -2973,7 +3053,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1636-L1648' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1636-L1648' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cshc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cshc!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col)
@@ -2991,7 +3071,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1710-L1722' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1710-L1722' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}' href='#CUTEst.cshc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.cshc</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh)
@@ -3009,7 +3089,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1685-L1697' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1685-L1697' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}' href='#CUTEst.cshcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshcprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result = cshcprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
@@ -3029,7 +3109,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2190-L2204' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2190-L2204' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}' href='#CUTEst.cshcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshcprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result, index_nz_result, result = cshcprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
@@ -3049,7 +3129,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2161-L2175' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2161-L2175' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshp!-Tuple{Int64,Int64,Array{Int32,1},Array{Int32,1}}' href='#CUTEst.cshp!-Tuple{Int64,Int64,Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cshp!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = cshp!(n, lh, h_row, h_col)
@@ -3063,7 +3143,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1619-L1627' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1619-L1627' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshp-Tuple{Int64,Int64}' href='#CUTEst.cshp-Tuple{Int64,Int64}'>#</a>
 <strong><code>CUTEst.cshp</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh, h_row, h_col = cshp(n, lh)
@@ -3077,7 +3157,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1600-L1608' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1600-L1608' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}' href='#CUTEst.cshprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result = cshprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)
@@ -3097,7 +3177,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2094-L2108' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2094-L2108' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cshprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}' href='#CUTEst.cshprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.cshprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result, index_nz_result, result = cshprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)
@@ -3117,7 +3197,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2065-L2079' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2065-L2079' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64}' href='#CUTEst.csjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.csjprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result = csjprod!(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)
@@ -3139,7 +3219,7 @@ c = cons_coord(nlp, x, false)
 <li>result:          [OUT] Array{Float64, 1}</li>
 <li>lresult:         [IN] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2295-L2311' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2295-L2311' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.csjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64,Int64}' href='#CUTEst.csjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.csjprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result, index_nz_result, result = csjprod(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)
@@ -3161,17 +3241,17 @@ c = cons_coord(nlp, x, false)
 <li>result:          [OUT] Array{Float64, 1}</li>
 <li>lresult:         [IN] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2264-L2280' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2264-L2280' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cstats-Tuple{}' href='#CUTEst.cstats-Tuple{}'>#</a>
 <strong><code>CUTEst.cstats</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L334' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L334' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cterminate-Tuple{}' href='#CUTEst.cterminate-Tuple{}'>#</a>
 <strong><code>CUTEst.cterminate</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cterminate()
 </pre></div>
 
 
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2383-L2386' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2383-L2386' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cvartype!-Tuple{Int64,Array{Int32,1}}' href='#CUTEst.cvartype!-Tuple{Int64,Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.cvartype!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>cvartype!(n, x_type)
@@ -3182,7 +3262,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Int</li>
 <li>x_type:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L363-L368' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L363-L368' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.cvartype-Tuple{Int64}' href='#CUTEst.cvartype-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.cvartype</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>x_type = cvartype(n)
@@ -3193,7 +3273,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Int</li>
 <li>x_type:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L349-L354' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L349-L354' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.pname-Tuple{Int64}' href='#CUTEst.pname-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.pname</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>pname = pname(input)
@@ -3204,7 +3284,7 @@ c = cons_coord(nlp, x, false)
 <li>input:   [IN] Int</li>
 <li>pname:   [OUT] UInt8</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L467-L472' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L467-L472' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.probname-Tuple{}' href='#CUTEst.probname-Tuple{}'>#</a>
 <strong><code>CUTEst.probname</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>pname = probname()
@@ -3214,7 +3294,7 @@ c = cons_coord(nlp, x, false)
 <ul>
 <li>pname:   [OUT] UInt8</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L481-L485' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L481-L485' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ubandh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2},Int64}' href='#CUTEst.ubandh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2},Int64}'>#</a>
 <strong><code>CUTEst.ubandh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)
@@ -3229,7 +3309,7 @@ c = cons_coord(nlp, x, false)
 <li>lbandh:            [IN] Int</li>
 <li>max_semibandwidth: [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L1009-L1018' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L1009-L1018' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ubandh-Tuple{Int64,Array{Float64,1},Int64,Int64}' href='#CUTEst.ubandh-Tuple{Int64,Array{Float64,1},Int64,Int64}'>#</a>
 <strong><code>CUTEst.ubandh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)
@@ -3244,7 +3324,7 @@ c = cons_coord(nlp, x, false)
 <li>lbandh:            [IN] Int</li>
 <li>max_semibandwidth: [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L989-L998' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L989-L998' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.udh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.udh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>udh!(n, x, lh1, h)
@@ -3257,7 +3337,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h:       [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L616-L623' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L616-L623' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udh-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.udh-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.udh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>h = udh(n, x, lh1)
@@ -3270,7 +3350,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h:       [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L600-L607' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L600-L607' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udimen-Tuple{Int64}' href='#CUTEst.udimen-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.udimen</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>n = udimen(input)
@@ -3281,7 +3361,7 @@ c = cons_coord(nlp, x, false)
 <li>input:   [IN] Int</li>
 <li>n:       [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L132-L137' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L132-L137' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udimse-Tuple{}' href='#CUTEst.udimse-Tuple{}'>#</a>
 <strong><code>CUTEst.udimse</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ne, he_val_ne, he_row_ne = udimse()
@@ -3293,7 +3373,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val_ne: [OUT] Int</li>
 <li>he_row_ne: [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L159-L165' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L159-L165' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.udimsh-Tuple{}' href='#CUTEst.udimsh-Tuple{}'>#</a>
 <strong><code>CUTEst.udimsh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = udimsh()
@@ -3303,7 +3383,7 @@ c = cons_coord(nlp, x, false)
 <ul>
 <li>nnzh:    [OUT] Int</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L146-L150' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L146-L150' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ueh!-Tuple{Int64,Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ueh!-Tuple{Int64,Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ueh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
@@ -3323,7 +3403,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L738-L752' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L738-L752' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ueh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ueh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ueh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
@@ -3343,7 +3423,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L709-L723' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L709-L723' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ufn-Tuple{Int64,Array{Float64,1}}' href='#CUTEst.ufn-Tuple{Int64,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ufn</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f = ufn(n, x)
@@ -3355,7 +3435,7 @@ c = cons_coord(nlp, x, false)
 <li>x:       [IN] Array{Float64, 1}</li>
 <li>f:       [OUT] Float64</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L521-L527' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L521-L527' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugr!-Tuple{Int64,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ugr!-Tuple{Int64,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugr!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ugr!(n, x, g)
@@ -3367,7 +3447,7 @@ c = cons_coord(nlp, x, false)
 <li>x:       [IN] Array{Float64, 1}</li>
 <li>g:       [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L551-L557' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L551-L557' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugr-Tuple{Int64,Array{Float64,1}}' href='#CUTEst.ugr-Tuple{Int64,Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ugr</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>g = ugr(n, x)
@@ -3379,7 +3459,7 @@ c = cons_coord(nlp, x, false)
 <li>x:       [IN] Array{Float64, 1}</li>
 <li>g:       [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L536-L542' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L536-L542' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugrdh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}' href='#CUTEst.ugrdh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}'>#</a>
 <strong><code>CUTEst.ugrdh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ugrdh!(n, x, g, lh1, h)
@@ -3393,7 +3473,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h:       [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L782-L790' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L782-L790' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugrdh-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.ugrdh-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.ugrdh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>g, h = ugrdh(n, x, lh1)
@@ -3407,7 +3487,7 @@ c = cons_coord(nlp, x, false)
 <li>lh1:     [IN] Int</li>
 <li>h:       [OUT] Array{Float64, 2}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L764-L772' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L764-L772' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugreh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}' href='#CUTEst.ugreh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.ugreh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
@@ -3428,7 +3508,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L877-L892' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L877-L892' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugreh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}' href='#CUTEst.ugreh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}'>#</a>
 <strong><code>CUTEst.ugreh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)
@@ -3449,7 +3529,7 @@ c = cons_coord(nlp, x, false)
 <li>he_val:     [OUT] Array{Float64, 1}</li>
 <li>byrows:     [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L845-L860' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L845-L860' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugrsh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ugrsh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ugrsh!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col)
@@ -3466,7 +3546,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L823-L834' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L823-L834' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ugrsh-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.ugrsh-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.ugrsh</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh)
@@ -3483,7 +3563,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L799-L810' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L799-L810' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uhprod!-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.uhprod!-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.uhprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>uhprod!(n, goth, x, vector, result)
@@ -3497,7 +3577,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Float64, 1}</li>
 <li>result:  [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L923-L931' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L923-L931' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uhprod-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1}}' href='#CUTEst.uhprod-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.uhprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>result = uhprod(n, goth, x, vector)
@@ -3511,7 +3591,7 @@ c = cons_coord(nlp, x, false)
 <li>vector:  [IN] Array{Float64, 1}</li>
 <li>result:  [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L906-L914' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L906-L914' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.unames!-Tuple{Int64,Array{UInt8,1}}' href='#CUTEst.unames!-Tuple{Int64,Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.unames!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>pname = unames!(n, vname)
@@ -3523,7 +3603,7 @@ c = cons_coord(nlp, x, false)
 <li>pname:   [OUT] UInt8</li>
 <li>vname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L219-L225' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L219-L225' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.unames-Tuple{Int64}' href='#CUTEst.unames-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.unames</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>pname, vname = unames(n)
@@ -3535,7 +3615,7 @@ c = cons_coord(nlp, x, false)
 <li>pname:   [OUT] UInt8</li>
 <li>vname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L203-L209' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L203-L209' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}' href='#CUTEst.uofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.uofg!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f = uofg!(n, x, g, grad)
@@ -3549,7 +3629,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L583-L591' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L583-L591' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uofg-Tuple{Int64,Array{Float64,1},Bool}' href='#CUTEst.uofg-Tuple{Int64,Array{Float64,1},Bool}'>#</a>
 <strong><code>CUTEst.uofg</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>f, g = uofg(n, x, grad)
@@ -3563,7 +3643,7 @@ c = cons_coord(nlp, x, false)
 <li>g:       [OUT] Array{Float64, 1}</li>
 <li>grad:    [IN] Bool</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L565-L573' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L565-L573' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ureport!-Tuple{Array{Float64,1},Array{Float64,1}}' href='#CUTEst.ureport!-Tuple{Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ureport!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>ureport!(calls, time)
@@ -3574,7 +3654,7 @@ c = cons_coord(nlp, x, false)
 <li>calls:   [OUT] Array{Float64, 1}</li>
 <li>time:    [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L249-L254' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L249-L254' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ureport-Tuple{}' href='#CUTEst.ureport-Tuple{}'>#</a>
 <strong><code>CUTEst.ureport</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>calls, time = ureport()
@@ -3585,7 +3665,7 @@ c = cons_coord(nlp, x, false)
 <li>calls:   [OUT] Array{Float64, 1}</li>
 <li>time:    [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L234-L239' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L234-L239' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.usetup!-Tuple{Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1}}' href='#CUTEst.usetup!-Tuple{Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.usetup!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>usetup!(input, out, io_buffer, n, x, x_l, x_u)
@@ -3601,7 +3681,7 @@ c = cons_coord(nlp, x, false)
 <li>x_l:       [OUT] Array{Float64, 1}</li>
 <li>x_u:       [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L41-L51' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L41-L51' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.usetup-Tuple{Int64,Int64,Int64,Int64}' href='#CUTEst.usetup-Tuple{Int64,Int64,Int64,Int64}'>#</a>
 <strong><code>CUTEst.usetup</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>x, x_l, x_u = usetup(input, out, io_buffer, n)
@@ -3617,7 +3697,7 @@ c = cons_coord(nlp, x, false)
 <li>x_l:       [OUT] Array{Float64, 1}</li>
 <li>x_u:       [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L19-L29' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L19-L29' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ush!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ush!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ush!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = ush!(n, x, lh, h_val, h_row, h_col)
@@ -3633,7 +3713,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L689-L699' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L689-L699' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ush-Tuple{Int64,Array{Float64,1},Int64}' href='#CUTEst.ush-Tuple{Int64,Array{Float64,1},Int64}'>#</a>
 <strong><code>CUTEst.ush</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh, h_val, h_row, h_col = ush(n, x, lh)
@@ -3649,7 +3729,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L667-L677' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L667-L677' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ushp!-Tuple{Int64,Int64,Array{Int32,1},Array{Int32,1}}' href='#CUTEst.ushp!-Tuple{Int64,Int64,Array{Int32,1},Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.ushp!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh = ushp!(n, lh, h_row, h_col)
@@ -3663,7 +3743,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L650-L658' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L650-L658' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ushp-Tuple{Int64,Int64}' href='#CUTEst.ushp-Tuple{Int64,Int64}'>#</a>
 <strong><code>CUTEst.ushp</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnzh, h_row, h_col = ushp(n, lh)
@@ -3677,7 +3757,7 @@ c = cons_coord(nlp, x, false)
 <li>h_row:   [OUT] Array{Cint, 1}</li>
 <li>h_col:   [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L631-L639' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L631-L639' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ushprod!-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}' href='#CUTEst.ushprod!-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ushprod!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result = ushprod!(n, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)
@@ -3695,7 +3775,7 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L965-L977' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L965-L977' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.ushprod-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}' href='#CUTEst.ushprod-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}'>#</a>
 <strong><code>CUTEst.ushprod</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>nnz_result, index_nz_result, result = ushprod(n, goth, x, nnz_vector, index_nz_vector, vector)
@@ -3713,14 +3793,14 @@ c = cons_coord(nlp, x, false)
 <li>index_nz_result: [OUT] Array{Cint, 1}</li>
 <li>result:          [OUT] Array{Float64, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L940-L952' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L940-L952' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uterminate-Tuple{}' href='#CUTEst.uterminate-Tuple{}'>#</a>
 <strong><code>CUTEst.uterminate</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>uterminate()
 </pre></div>
 
 
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L2372-L2375' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L2372-L2375' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uvartype!-Tuple{Int64,Array{Int32,1}}' href='#CUTEst.uvartype!-Tuple{Int64,Array{Int32,1}}'>#</a>
 <strong><code>CUTEst.uvartype!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>uvartype!(n, x_type)
@@ -3731,7 +3811,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Int</li>
 <li>x_type:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L190-L195' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L190-L195' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.uvartype-Tuple{Int64}' href='#CUTEst.uvartype-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.uvartype</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>x_type = uvartype(n)
@@ -3742,7 +3822,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Int</li>
 <li>x_type:  [OUT] Array{Cint, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L176-L181' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L176-L181' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.varnames!-Tuple{Int64,Array{UInt8,1}}' href='#CUTEst.varnames!-Tuple{Int64,Array{UInt8,1}}'>#</a>
 <strong><code>CUTEst.varnames!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>varnames!(n, vname)
@@ -3753,7 +3833,7 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Int</li>
 <li>vname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L508-L513' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L508-L513' class='documenter-source'>source</a><br></p>
 <p><a id='CUTEst.varnames-Tuple{Int64}' href='#CUTEst.varnames-Tuple{Int64}'>#</a>
 <strong><code>CUTEst.varnames</code></strong> &mdash; <em>Method</em>.</p>
 <div class="code"><pre><span></span>vname = varnames(n)
@@ -3764,91 +3844,87 @@ c = cons_coord(nlp, x, false)
 <li>n:       [IN] Int</li>
 <li>vname:   [OUT] Array{UInt8, 1}</li>
 </ul>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/specialized_interface.jl#L494-L499' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/specialized_interface.jl#L494-L499' class='documenter-source'>source</a><br></p>
 <p><a id='Internal-1'></a></p>
 <h2 id="internal">Internal</h2>
 <p><a id='CUTEst.sifdecoder-Tuple{String,Vararg{Any,N}}' href='#CUTEst.sifdecoder-Tuple{String,Vararg{Any,N}}'>#</a>
 <strong><code>CUTEst.sifdecoder</code></strong> &mdash; <em>Method</em>.</p>
 <p>Decode problem and build shared library.</p>
 <p>Optional arguments are passed directly to the SIF decoder. Example:     <code>sifdecoder("DIXMAANJ", "-param", "M=30")</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/0b3415e7eb4e3889834b816d39b4446f3fe47a31/src/CUTEst.jl#L79-L85' class='documenter-source'>source</a><br></p>
-          <aside class="copyright" role="note">
-            
-            Documentation built with
-            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
-            using the
-            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
-              Material
-            </a>
-            theme.
-          </aside>
-          
-            <footer class="footer">
+<p><a target='_blank' href='https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/2230ece3c3182b53c1e9e5a8d207e4978a13b448/src/CUTEst.jl#L79-L85' class='documenter-source'>source</a><br></p>
               
-  <nav class="pagination" aria-label="Footer">
-    <div class="previous">
+            </article>
+          </div>
+        </div>
+      </main>
       
-        <a href="../tutorial/" title="Tutorial">
-          <span class="direction">
-            Previous
-          </span>
-          <div class="page">
-            <div class="button button-previous" role="button" aria-label="Previous">
-              <i class="icon icon-back"></i>
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../tutorial/" title="Tutorial" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
-            <div class="stretch">
-              <div class="title">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
                 Tutorial
-              </div>
+              </span>
             </div>
-          </div>
-        </a>
-      
-    </div>
-    <div class="next">
-      
-        <a href="../core/" title="Core">
-          <span class="direction">
-            Next
-          </span>
-          <div class="page">
-            <div class="stretch">
-              <div class="title">
+          </a>
+        
+        
+          <a href="../core/" title="Core" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
                 Core
-              </div>
+              </span>
             </div>
-            <div class="button button-next" role="button" aria-label="Next">
-              <i class="icon icon-forward"></i>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
             </div>
-          </div>
-        </a>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
       
     </div>
-  </nav>
-
-            </footer>
-          
-        </div>
-      </article>
-      <div class="results" role="status" aria-live="polite">
-        <div class="scrollable">
-          <div class="wrapper">
-            <div class="meta"></div>
-            <div class="list"></div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <script>
-      var base_url = '..';
-      var repo_id  = 'JuliaSmoothOptimizers/CUTEst.jl';
-    </script>
-    <script src="../assets/javascripts/application-997097ee0c.js"></script>
+  </div>
+</footer>
+      
+    </div>
     
-      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+      <script src="../assets/javascripts/application-16f434a21a.js"></script>
+      <script>var config={url:{base:".."}},app=new Application(config);app.initialize()</script>
+      
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+      
+        <script src="../assets/mathjaxhelper.js"></script>
+      
     
-      <script src="../assets/mathjaxhelper.js"></script>
     
+      
     
   </body>
 </html>
