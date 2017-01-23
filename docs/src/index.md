@@ -50,7 +50,6 @@ and install them.
 ````julia
 Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git")
 Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
-Pkg.checkout("CUTEst", "develop")
 Pkg.build("CUTEst")
 ````
 

@@ -1,7 +1,7 @@
 # CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki) Interface
 
-[![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=develop)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
-[![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=develop)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=develop)
+[![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=master)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
+[![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=master)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=master)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/latest)
 
 
@@ -28,7 +28,6 @@ The following commands download CUTEst, change to the specific
 branch, and build CUTEst.
 ````JULIA
 julia> Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
-julia> Pkg.checkout("CUTEst", "develop")
 julia> Pkg.build("CUTEst")
 ````
 
