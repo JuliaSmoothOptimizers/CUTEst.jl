@@ -3,35 +3,9 @@ export objcons, objgrad, obj, grad, grad!,
        jac_coord, jac, jprod, jprod!, jtprod, jtprod!,
        hess_coord, hess, hess_op, hprod, hprod!
 
-import NLPModels.obj
-import NLPModels.grad
-import NLPModels.grad!
-import NLPModels.hess
-import NLPModels.hess_op
-import NLPModels.hprod
-import NLPModels.hprod!
-import NLPModels.cons
-import NLPModels.cons!
-import NLPModels.jac
-import NLPModels.jprod
-import NLPModels.jprod!
-import NLPModels.jtprod
-import NLPModels.jtprod!
+importall NLPModels
 
-"""
-    objcons(nlp, x)
-
-Computes the objective function and constraint vector values at x.
-Usage:
-
-    f, c = objcons(nlp, x) # If the problem is constrained
-    f = objcons(nlp, x)    # If the problem is unconstrained
-
-  - nlp: [IN] CUTEstModel
-  - x:   [IN] Array{Float64, 1}
-  - f:   [OUT] Float64
-  - c:   [OUT] Array{Float64, 1}
-"""
+@doc (@doc NLPModels.objcons)
 function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
@@ -51,25 +25,33 @@ function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   nlp.counters.neval_obj += 1
   @cutest_error
 
-  return ncon > 0 ? (f[1], c) : f[1];
+  return f[1], c
 end
 
-"""
-    objgrad(nlp, x, grad)
+@doc (@doc NLPModels.objcons!)
+function objcons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
+  nvar = nlp.meta.nvar;
+  ncon = nlp.meta.ncon;
+  io_err = Cint[0];
+  f = Cdouble[0];
+  if ncon > 0
+    ccall(dlsym(cutest_lib, :cutest_cfn_), Void,
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+                 io_err,  &nvar,   &ncon,   x,         f,         c);
+    nlp.counters.neval_cons += 1
+  else
+    ccall(dlsym(cutest_lib, :cutest_ufn_), Void,
+                (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}),
+                 io_err,  &nvar,    x,         f);
+  end
+  nlp.counters.neval_obj += 1
+  @cutest_error
 
-Computes the objective function value and, if grad is `true`, gradient at x.
-Usage:
+  return f[1], c
+end
 
-    f, g = objgrad(nlp, x, true)
-    f = objgrad(nlp, x)
-
-  - nlp:  [IN] CUTEstModel
-  - x:    [IN] Array{Float64, 1}
-  - grad: [IN] Bool
-  - f:    [OUT] Float64
-  - g:    [OUT] Array{Float64, 1}
-"""
-function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
+@doc (@doc NLPModels.objgrad)
+function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool = true)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   f = Cdouble[0];
@@ -95,6 +77,29 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool)
   @cutest_error
 
   return grad ? (f[1], g) : f[1];
+end
+
+@doc (@doc NLPModels.objgrad!)
+function objgrad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
+  nvar = nlp.meta.nvar;
+  ncon = nlp.meta.ncon;
+  f = Cdouble[0];
+  io_err = Cint[0];
+  get_grad = 1;
+  if ncon > 0
+    ccall(dlsym(cutest_lib, "cutest_cofg_"), Void,
+        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
+             io_err,      &nvar,            x,            f,            g,  &get_grad);
+  else
+    ccall(dlsym(cutest_lib, "cutest_uofg_"), Void,
+        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
+             io_err,      &nvar,            x,            f,            g,  &get_grad);
+  end
+  nlp.counters.neval_obj += 1
+  nlp.counters.neval_grad += 1
+  @cutest_error
+
+  return f[1], g
 end
 
 @doc (@doc NLPModels.obj)

@@ -7,5 +7,5 @@ makedocs(
 deploydocs(deps = Deps.pip("pygments", "mkdocs", "mkdocs-material", "python-markdown-math"),
   repo = "github.com/JuliaSmoothOptimizers/CUTEst.jl.git",
   julia = "0.5",
-  latest = "develop"
+  latest = "master"
 )
