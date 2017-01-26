@@ -432,10 +432,10 @@ nvar = 2, ncon = 0 (0 linear)
 <div class="code"><pre><span></span><span class="k">using</span> <span class="n">CUTEst</span>
 
 <span class="n">nlp</span> <span class="o">=</span> <span class="n">CUTEstModel</span><span class="p">(</span><span class="s">&quot;ROSENBR&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;x0 = </span><span class="si">$( nlp.meta.x0 )</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;fx = </span><span class="si">$( obj(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;gx = </span><span class="si">$( grad(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;Hx = </span><span class="si">$( hess(nlp, nlp.meta.x0) )</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;x0 = </span><span class="si">$</span><span class="p">(</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span> <span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;fx = </span><span class="si">$</span><span class="p">(</span> <span class="n">obj</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span> <span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;gx = </span><span class="si">$</span><span class="p">(</span> <span class="n">grad</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span> <span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Hx = </span><span class="si">$</span><span class="p">(</span> <span class="n">hess</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span> <span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -483,7 +483,7 @@ Hx =
 <span class="n">Delta</span> <span class="o">=</span> <span class="mf">10.0</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span>
 <span class="n">println</span><span class="p">(</span><span class="s">&quot;0: x = </span><span class="si">$x</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">5</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">5</span>
   <span class="n">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">$i</span><span class="s">: &quot;</span><span class="p">)</span>
   <span class="n">H</span> <span class="o">=</span> <span class="n">hess_op</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
   <span class="n">d</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">Krylov</span><span class="o">.</span><span class="n">cg</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="o">-</span><span class="n">grad</span><span class="p">(</span><span class="n">nlp</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">Delta</span><span class="p">)</span>
@@ -729,7 +729,7 @@ linear constraints:    1
 <p><a id='Unconstrained-problems-1'></a></p>
 <h3 id="unconstrained-problems">Unconstrained problems</h3>
 <p>No constraints and no bounds. There are two options:</p>
-<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">max_con</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">max_con</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
 <span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
 </pre></div>
 
@@ -749,7 +749,7 @@ linear constraints:    1
 
 <p><a id='Equality/Inequality-constrainted-problems-with-unbounded-variables-1'></a></p>
 <h3 id="equalityinequality-constrainted-problems-with-unbounded-variables">Equality/Inequality constrainted problems with unbounded variables</h3>
-<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">min_con</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">only_equ_con</span><span class="o">=</span><span class="n">true</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">min_con</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">only_equ_con</span><span class="o">=</span><span class="kc">true</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
 <span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
 </pre></div>
 
@@ -758,7 +758,7 @@ linear constraints:    1
 </pre></div>
 
 
-<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">min_con</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">only_ineq_con</span><span class="o">=</span><span class="n">true</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+<div class="code"><pre><span></span><span class="n">problems</span> <span class="o">=</span> <span class="n">CUTEst</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">min_con</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">only_ineq_con</span><span class="o">=</span><span class="kc">true</span><span class="p">,</span> <span class="n">only_free_var</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
 <span class="n">length</span><span class="p">(</span><span class="n">problems</span><span class="p">)</span>
 </pre></div>
 

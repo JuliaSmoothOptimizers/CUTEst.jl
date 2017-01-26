@@ -453,7 +453,7 @@
 <span class="n">x</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">x0</span>
 
 <span class="c"># Checking documentation, in REPL use ?ccfsg</span>
-<span class="p">@</span><span class="n">doc</span> <span class="n">ccfsg</span>
+<span class="nd">@doc</span> <span class="n">ccfsg</span>
 </pre></div>
 
 
@@ -505,9 +505,9 @@ c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)
 <div class="code"><pre><span></span><span class="n">nvar</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">nvar</span>
 <span class="n">ncon</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">ncon</span>
 <span class="n">lj</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">nnzj</span>
-<span class="n">c</span><span class="p">,</span> <span class="n">nnzj</span><span class="p">,</span> <span class="n">jval</span><span class="p">,</span> <span class="n">jvar</span><span class="p">,</span> <span class="n">jfun</span> <span class="o">=</span> <span class="n">ccfsg</span><span class="p">(</span><span class="n">nvar</span><span class="p">,</span> <span class="n">ncon</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lj</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">nnzj</span><span class="p">,</span> <span class="n">jval</span><span class="p">,</span> <span class="n">jvar</span><span class="p">,</span> <span class="n">jfun</span> <span class="o">=</span> <span class="n">ccfsg</span><span class="p">(</span><span class="n">nvar</span><span class="p">,</span> <span class="n">ncon</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lj</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
 <span class="n">println</span><span class="p">(</span><span class="s">&quot;c = </span><span class="si">$c</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;J = </span><span class="si">$(sparse(jfun, jvar, jval))</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;J = </span><span class="si">$</span><span class="p">(</span><span class="n">sparse</span><span class="p">(</span><span class="n">jfun</span><span class="p">,</span> <span class="n">jvar</span><span class="p">,</span> <span class="n">jval</span><span class="p">))</span><span class="s">&quot;</span><span class="p">)</span>
 </pre></div>
 
 
