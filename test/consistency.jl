@@ -1,6 +1,6 @@
 include(joinpath(path, "consistency.jl"))
 
-problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
+problems = [:brownden, :hs5, :hs6, :hs11, :hs14]
 for problem in problems
   problem_s = string(problem)
 

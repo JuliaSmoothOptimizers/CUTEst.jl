@@ -1,6 +1,6 @@
 function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   x0 = nlp.meta.x0
-  y0 = [(-1.0)^i for i = 1:nlp.meta.ncon]
+  y0 = π*[(-1.0)^i for i = 1:nlp.meta.ncon]
   f(x) = obj(comp_nlp, x)
   g(x) = grad(comp_nlp, x)
   H(x; obj_weight=1.0) = tril(hess(comp_nlp, x, obj_weight=obj_weight),-1) + hess(comp_nlp, x, obj_weight=obj_weight)'
@@ -295,6 +295,58 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       result = zeros(J(x0)*v)
       cjprod!(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon)
 
+      nnzj = cdimsj()
+      Jx = jac(comp_nlp, x0)
+      @fact nnzj --> sum(Jx .!= 0) + nlp.meta.nvar
+
+      Wx = hess(comp_nlp, x0, y=y0)
+      nnzh = cdimsh()
+      @fact nnzh --> sum(Wx .!= 0)
+
+      _, _, eq, lin = cstats()
+      @fact eq --> length(nlp.meta.jfix)
+      @fact lin --> nlp.meta.nlin
+
+      t = cvartype(nlp.meta.nvar)
+      @fact all(t .== 0) --> true
+
+      cvartype!(nlp.meta.nvar, t)
+      @fact all(t .== 0) --> true
+
+      Cx = hess(comp_nlp, x0, y=y0, obj_weight=0.0)
+      Cx2 = cdhc(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar)
+      @fact tril(Cx2) --> roughly(Cx, rtol=rtol)
+
+      cdhc!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Cx2)
+      @fact tril(Cx2) --> roughly(Cx, rtol=rtol)
+
+      _, cols, rows = cshp(nlp.meta.nvar, Int(nnzh))
+      V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
+      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Wx), rtol=rtol)
+
+      cshp!(nlp.meta.nvar, Int(nnzh), cols, rows)
+      V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
+      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Wx), rtol=rtol)
+
+      nnzr, Ir, r = cshprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0])
+      if nnzr < length(r)
+        Ir = Ir[1:nnzr]
+        r = r[1:nnzr]
+      end
+      @fact r --> roughly(Wx[Ir,1], rtol=rtol)
+
+      nnzr = cshprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0], Ir, r)
+      @fact r --> roughly(Wx[Ir,1], rtol=rtol)
+
+      nnzr, Ir, r = cshcprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0])
+      if nnzr < length(r)
+        Ir = Ir[1:nnzr]
+        r = r[1:nnzr]
+      end
+      @fact r --> roughly(Cx[Ir,1], rtol=rtol)
+
+      nnzr = cshcprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0], Ir, r)
+      @fact r --> roughly(Cx[Ir,1], rtol=rtol)
     else
       fx = ufn(nlp.meta.nvar, x0)
       @fact fx --> roughly(f(x0), rtol=rtol)
@@ -348,6 +400,51 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       result = zeros(H(x0)*v)
       uhprod!(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar), result)
 
+      nnzh = udimsh()
+      Hx = hess(comp_nlp, x0)
+      @fact nnzh --> sum(Hx .!= 0)
+
+      t = uvartype(nlp.meta.nvar)
+      @fact all(t .== 0) --> true
+
+      uvartype!(nlp.meta.nvar, t)
+      @fact all(t .== 0) --> true
+
+      _, cols, rows = ushp(nlp.meta.nvar, Int(nnzh))
+      V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
+      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Hx), rtol=rtol)
+
+      ushp!(nlp.meta.nvar, Int(nnzh), cols, rows)
+      V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
+      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Hx), rtol=rtol)
+
+      gx, Wx = ugrdh(nlp.meta.nvar, x0, nlp.meta.nvar)
+      @fact gx --> roughly(g(x0), rtol=rtol)
+      @fact Wx --> roughly(H(x0), rtol=rtol)
+
+      ugrdh!(nlp.meta.nvar, x0, gx, nlp.meta.nvar, Wx)
+      @fact gx --> roughly(g(x0), rtol=rtol)
+      @fact Wx --> roughly(H(x0), rtol=rtol)
+
+      gx, _, V, cols, rows = ugrsh(nlp.meta.nvar, x0, Int(nnzh))
+      @fact gx --> roughly(g(x0), rtol=rtol)
+      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Hx), rtol=rtol)
+
+      ugrsh!(nlp.meta.nvar, x0, gx, Int(nnzh), V, cols, rows)
+      @fact gx --> roughly(g(x0), rtol=rtol)
+      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(Hx, rtol=rtol)
+
+      nnzr, Ir, r = ushprod(nlp.meta.nvar, false, x0, 1, Cint[1], [1.0])
+      @fact r --> roughly(Hx[Ir,1], rtol=rtol)
+
+      nnzr = ushprod!(nlp.meta.nvar, false, x0, 1, Cint[1], [1.0], Ir, r)
+      @fact r --> roughly(Hx[Ir,1], rtol=rtol)
+
+      B, _ = ubandh(nlp.meta.nvar, x0, 0, 0)
+      @fact B[:] --> roughly(diag(Hx), rtol=rtol)
+
+      _ = ubandh!(nlp.meta.nvar, x0, 0, B, 0)
+      @fact B[:] --> roughly(diag(Hx), rtol=rtol)
     end
 
   end

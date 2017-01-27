@@ -2,7 +2,9 @@ using Base.Test, CUTEst, FactCheck, Ipopt, JuMP, MathProgBase, NLPModels
 
 include("test_specialized_manual.jl")
 
-problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
+# :hs10 removed from the tests because of
+# https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
+problems = [:brownden, :hs5, :hs6, :hs11, :hs14]
 path = joinpath(Pkg.dir("NLPModels"), "test")
 
 include("test_core.jl")
@@ -22,6 +24,8 @@ for problem in problems
 
   println("Finalizing")
   finalize(nlp)
+
+  FactCheck.exitstatus()
 end
 
 include("consistency.jl")
