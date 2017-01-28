@@ -1,14 +1,23 @@
 # CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki) Interface
 
-[![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=master)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
-[![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=master)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=master)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/latest)
-
-
-This is a work in progress to create an interface to CUTEst, a repository of
+This package provides an interface to CUTEst, a repository of
 constrained and unconstrained nonlinear programming problems for testing and
 comparing optimization algorithms, derived from the abstract model on
 [NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
+
+### Stable release [![Github release](https://img.shields.io/github/release/JuliaSmoothOptimizers/CUTEst.jl.svg)](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest)
+
+- Documentation: [![Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/stable)
+- Package Evaluator: [![CUTEst.jl](https://pkg.julialang.org/badges/CUTEst_0.5.svg)](https://pkg.julialang.org/?pkg=CUTEst)
+[![CUTEst.jl](https://pkg.julialang.org/badges/CUTEst_0.6.svg)](https://pkg.julialang.org/?pkg=CUTEst)
+- Chat: [![Gitter](https://img.shields.io/gitter/room/JuliaSmoothOptimizers/JuliaSmoothOptimizers.svg)](https://gitter.im/JuliaSmoothOptimizers/JuliaSmoothOptimizers)
+
+### Development version
+
+- Documentation: [![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/latest)
+- Tests:
+[![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=master)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
+[![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=master)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=master)
 
 ## Installing
 
@@ -20,15 +29,14 @@ On OSX, Homebrew.jl will install gfortran if gfortran is not detected on your sy
 You may either use standard Homebrew to install gfortran yourself from precompiled bottled using `brew install gcc` or let Homebrew.jl install its private version.
 In the latter scenario, gcc and gfortran need to be compiled from source.
 
-On Linux, you'll need to install `wget`, `gfortran` and `gsl-1.16`. See [this
+On Linux, you'll need to install `wget` and `gfortran`. See [this
 page](https://github.com/abelsiqueira/linux-cutest#requirements) for how to
 install the requirements on some linux distributions.
 
 The following commands download CUTEst, change to the specific
 branch, and build CUTEst.
 ````JULIA
-julia> Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
-julia> Pkg.build("CUTEst")
+julia> Pkg.add("CUTEst")
 ````
 
 ## Usage

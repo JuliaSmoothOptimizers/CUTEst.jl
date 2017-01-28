@@ -38,7 +38,7 @@ sudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.
 On Ubuntu 16.04,
 ```
 sudo apt-get install wget gfortran
-sudo ln -s /usr/lib/x86_64-linux-gnu/libgfortran.so /usr/local/lib
+sudo ln -s /usr/lib/x86_64-linux-gnu/libgfortran.so.3 /usr/local/lib/libgfortran.so
 ```
 On Archlinux, do
 ```
