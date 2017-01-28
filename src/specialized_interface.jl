@@ -7,9 +7,9 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, uterminate,
     cterminate
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
-    unames!, ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
-    cstats!, cvartype!, cnames!, creport!, connames!, pname!, probname!,
-    varnames!, ufn!, ugr!, uofg!, udh!, ushp!, ush!, ueh!, ugrdh!, ugrsh!,
+    ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
+    cstats!, cvartype!, creport!,
+    ufn!, ugr!, uofg!, udh!, ushp!, ush!, ueh!, ugrdh!, ugrsh!,
     ugreh!, uhprod!, ushprod!, ubandh!, cfn!, cofg!, cofsg!, ccfg!, clfg!,
     cgr!, csgr!, ccfsg!, ccifg!, ccifsg!, cgrdh!, cdh!, cdhc!, cshp!,
     csh!, cshc!, ceh!, cidh!, cish!, csgrsh!, csgreh!, chprod!, cshprod!,
@@ -209,26 +209,11 @@ end
 """
 function unames(n::Int)
   io_err = Cint[0]
-  pname = Cchar[0]
-  vname = Array(Cchar, n)
+  pname = Array{UInt8,1}(10)
+  vname = Array{UInt8,2}(10, n)
   unames(io_err, Cint[n], pname, vname)
   @cutest_error
-  return pname[1], vname
-end
-
-"""
-    pname = unames!(n, vname)
-
-  - n:       [IN] Int
-  - pname:   [OUT] UInt8
-  - vname:   [OUT] Array{UInt8, 1}
-"""
-function unames!(n::Int, vname::Array{UInt8, 1})
-  io_err = Cint[0]
-  pname = Cchar[0]
-  unames(io_err, Cint[n], pname, vname)
-  @cutest_error
-  return pname[1]
+  return String(pname), [String(vname[:,i]) for i = 1:n]
 end
 
 """
@@ -384,29 +369,12 @@ end
 """
 function cnames(n::Int, m::Int)
   io_err = Cint[0]
-  pname = Cchar[0]
-  vname = Array(Cchar, n)
-  cname = Array(Cchar, m)
+  pname = Array{UInt8,1}(10)
+  vname = Array{UInt8,2}(10, n)
+  cname = Array{UInt8,2}(10, m)
   cnames(io_err, Cint[n], Cint[m], pname, vname, cname)
   @cutest_error
-  return pname[1], vname, cname
-end
-
-"""
-    pname = cnames!(n, m, vname, cname)
-
-  - n:       [IN] Int
-  - m:       [IN] Int
-  - pname:   [OUT] UInt8
-  - vname:   [OUT] Array{UInt8, 1}
-  - cname:   [OUT] Array{UInt8, 1}
-"""
-function cnames!(n::Int, m::Int, vname::Array{UInt8, 1}, cname::Array{UInt8, 1})
-  io_err = Cint[0]
-  pname = Cchar[0]
-  cnames(io_err, Cint[n], Cint[m], pname, vname, cname)
-  @cutest_error
-  return pname[1]
+  return String(pname), [String(vname[:,i]) for i = 1:n], [String(cname[:,i]) for i = 1:m]
 end
 
 """
@@ -445,50 +413,37 @@ end
 """
 function connames(m::Int)
   io_err = Cint[0]
-  cname = Array(Cchar, m)
+  cname = Array{UInt8,2}(10, m)
   connames(io_err, Cint[m], cname)
   @cutest_error
-  return cname
+  return [String(cname[:,i]) for i = 1:m]
 end
 
 """
-    connames!(m, cname)
-
-  - m:       [IN] Int
-  - cname:   [OUT] Array{UInt8, 1}
-"""
-function connames!(m::Int, cname::Array{UInt8, 1})
-  io_err = Cint[0]
-  connames(io_err, Cint[m], cname)
-  @cutest_error
-  return
-end
-
-"""
-    pname = pname(input)
+    problem_name = pname(input)
 
   - input:   [IN] Int
   - pname:   [OUT] UInt8
 """
 function pname(input::Int)
   io_err = Cint[0]
-  pname = Cchar[0]
-  pname(io_err, Cint[input], pname)
+  problem_name = Array{UInt8,1}(10)
+  pname(io_err, Cint[input], problem_name)
   @cutest_error
-  return pname[1]
+  return String(problem_name)
 end
 
 """
     pname = probname()
 
-  - pname:   [OUT] UInt8
+  - pname:   [OUT] String
 """
 function probname()
   io_err = Cint[0]
-  pname = Cchar[0]
+  pname = Array{UInt8,1}(10)
   probname(io_err, pname)
   @cutest_error
-  return pname[1]
+  return String(pname)
 end
 
 """
@@ -499,23 +454,10 @@ end
 """
 function varnames(n::Int)
   io_err = Cint[0]
-  vname = Array(Cchar, n)
+  vname = Array{UInt8,2}(10, n)
   varnames(io_err, Cint[n], vname)
   @cutest_error
-  return vname
-end
-
-"""
-    varnames!(n, vname)
-
-  - n:       [IN] Int
-  - vname:   [OUT] Array{UInt8, 1}
-"""
-function varnames!(n::Int, vname::Array{UInt8, 1})
-  io_err = Cint[0]
-  varnames(io_err, Cint[n], vname)
-  @cutest_error
-  return
+  return [String(vname[:,i]) for i = 1:n]
 end
 
 """

@@ -10,6 +10,7 @@ path = joinpath(Pkg.dir("NLPModels"), "test")
 include("test_core.jl")
 include("test_specialized.jl")
 include("test_julia.jl")
+include("coverage.jl")
 
 for problem in problems
   println("Testing interfaces on problem $problem")
@@ -21,6 +22,7 @@ for problem in problems
   test_nlpinterface(nlp, adnlp)
   test_specinterface(nlp, adnlp)
   test_coreinterface(nlp, adnlp)
+  coverage_increase(nlp)
 
   println("Finalizing")
   finalize(nlp)
