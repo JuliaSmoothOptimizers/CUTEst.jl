@@ -216,13 +216,13 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
-  - pname:   [OUT] Array{Cchar, 1}
-  - vname:   [OUT] Array{Cchar, 1}
+  - pname:   [OUT] Array{UInt8, 1}
+  - vname:   [OUT] Array{UInt8, 1}
 """
-function unames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, pname::Array{Cchar, 1},
-    vname::Array{Cchar, 1})
+function unames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, pname::Array{UInt8, 1},
+    vname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_unames_"), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}, Ptr{Cchar}),
+    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}, Ptr{UInt8}),
     io_err, n, pname, vname)
 end
 
@@ -471,14 +471,14 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - m:       [IN] Array{Cint, 1}
-  - pname:   [OUT] Array{Cchar, 1}
-  - vname:   [OUT] Array{Cchar, 1}
-  - cname:   [OUT] Array{Cchar, 1}
+  - pname:   [OUT] Array{UInt8, 1}
+  - vname:   [OUT] Array{UInt8, 1}
+  - cname:   [OUT] Array{UInt8, 1}
 """
 function cnames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    pname::Array{Cchar, 1}, vname::Array{Cchar, 1}, cname::Array{Cchar, 1})
+    pname::Array{UInt8, 1}, vname::Array{UInt8, 2}, cname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_cnames_"), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}, Ptr{Cchar}, Ptr{Cchar}),
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}, Ptr{UInt8}, Ptr{UInt8}),
     io_err, n, m, pname, vname, cname)
 end
 
@@ -530,11 +530,11 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - m:       [IN] Array{Cint, 1}
-  - cname:   [OUT] Array{Cchar, 1}
+  - cname:   [OUT] Array{UInt8, 1}
 """
-function connames(io_err::Array{Cint, 1}, m::Array{Cint, 1}, cname::Array{Cchar, 1})
+function connames(io_err::Array{Cint, 1}, m::Array{Cint, 1}, cname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_connames_"), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}),
+    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
     io_err, m, cname)
 end
 
@@ -558,11 +558,11 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - input:   [IN] Array{Cint, 1}
-  - pname:   [OUT] Array{Cchar, 1}
+  - pname:   [OUT] Array{UInt8, 1}
 """
-function pname(io_err::Array{Cint, 1}, input::Array{Cint, 1}, pname::Array{Cchar, 1})
+function pname(io_err::Array{Cint, 1}, input::Array{Cint, 1}, pname::Array{UInt8, 1})
   ccall(dlsym(cutest_lib, "cutest_pname_"), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}),
+    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
     io_err, input, pname)
 end
 
@@ -583,11 +583,11 @@ Usage:
     probname(io_err, pname)
 
   - io_err:  [OUT] Array{Cint, 1}
-  - pname:   [OUT] Array{Cchar, 1}
+  - pname:   [OUT] Array{UInt8, 1}
 """
-function probname(io_err::Array{Cint, 1}, pname::Array{Cchar, 1})
+function probname(io_err::Array{Cint, 1}, pname::Array{UInt8, 1})
   ccall(dlsym(cutest_lib, "cutest_probname_"), Void,
-    (Ptr{Cint}, Ptr{Cchar}),
+    (Ptr{Cint}, Ptr{UInt8}),
     io_err, pname)
 end
 
@@ -610,11 +610,11 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
-  - vname:   [OUT] Array{Cchar, 1}
+  - vname:   [OUT] Array{UInt8, 1}
 """
-function varnames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, vname::Array{Cchar, 1})
+function varnames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, vname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_varnames_"), Void,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cchar}),
+    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
     io_err, n, vname)
 end
 
