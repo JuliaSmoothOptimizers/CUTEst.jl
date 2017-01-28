@@ -45,10 +45,9 @@ On Archlinux, do
 sudo pacman -S wget gfortran
 ```
 
-The following commands should automatically download NLPModels.jl and CUTEst,
-and install them.
+The following commands should automatically download and install CUTEst and its
+dependencies.
 ````julia
-Pkg.clone("https://github.com/JuliaSmoothOptimizers/NLPModels.jl.git")
 Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
 Pkg.build("CUTEst")
 ````
