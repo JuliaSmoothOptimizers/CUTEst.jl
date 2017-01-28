@@ -14,6 +14,7 @@ makedocs(
 
 deploydocs(deps = nothing, make = nothing,
   repo = "github.com/JuliaSmoothOptimizers/CUTEst.jl.git",
+  target = "build",
   julia = "0.5",
   latest = "master"
 )

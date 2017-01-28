@@ -28,7 +28,6 @@ addons:
 branches:
   only:
     - master
-    - develop
 
 sudo: required
 
