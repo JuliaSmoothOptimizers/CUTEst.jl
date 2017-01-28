@@ -299,8 +299,8 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       Jx = jac(comp_nlp, x0)
       @fact nnzj --> sum(Jx .!= 0) + nlp.meta.nvar
 
-      Wx = hess(comp_nlp, x0, y=y0)
       nnzh = cdimsh()
+      Wx = hess(comp_nlp, x0, y=y0)
       @fact nnzh --> sum(Wx .!= 0)
 
       _, _, eq, lin = cstats()
@@ -347,6 +347,101 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
 
       nnzr = cshcprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0], Ir, r)
       @fact r --> roughly(Cx[Ir,1], rtol=rtol)
+
+      # Finite element
+      ne, vlen, rlen = cdimse()
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      _, rp, vp, rows, vals = ceh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, Int(ne+1), Int(rlen), Int(vlen), true)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Wx, rtol=rtol)
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      ceh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Wx, rtol=rtol)
+
+      nnzj, Jx, j_var, j_fun = csgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      nnzj, j_val, j_var, j_fun, _, rp, vp, rows, vals = csgreh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nvar+nlp.meta.nnzj, Int(ne+1), Int(rlen), Int(vlen), true)
+      gx = zeros(nlp.meta.nvar)
+      Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
+      for k = 1:nnzj
+        if j_fun[k] == 0
+          gx[j_var[k]] = j_val[k]
+        else
+          Jx[j_fun[k],j_var[k]] = j_val[k]
+        end
+      end
+      @fact gx --> roughly(g(x0), rtol=rtol)
+      @fact Jx --> roughly(J(x0), rtol=rtol)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Wx, rtol=rtol)
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      nnzj, ne = csgreh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nvar+nlp.meta.nnzj, j_val, j_var, j_fun, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
+      gx = zeros(nlp.meta.nvar)
+      Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
+      for k = 1:nnzj
+        if j_fun[k] == 0
+          gx[j_var[k]] = j_val[k]
+        else
+          Jx[j_fun[k],j_var[k]] = j_val[k]
+        end
+      end
+      @fact gx --> roughly(g(x0), rtol=rtol)
+      @fact Jx --> roughly(J(x0), rtol=rtol)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Wx, rtol=rtol)
     else
       fx = ufn(nlp.meta.nvar, x0)
       @fact fx --> roughly(f(x0), rtol=rtol)
@@ -445,6 +540,79 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
 
       _ = ubandh!(nlp.meta.nvar, x0, 0, B, 0)
       @fact B[:] --> roughly(diag(Hx), rtol=rtol)
+
+      # Finite element
+      ne, vlen, rlen = udimse()
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      _, rp, vp, rows, vals = ueh(nlp.meta.nvar, x0, Int(ne+1), Int(rlen), Int(vlen), true)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Hx, rtol=rtol)
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      ueh!(nlp.meta.nvar, x0, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Hx, rtol=rtol)
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      gx, _, rp, vp, rows, vals = ugreh(nlp.meta.nvar, x0, Int(ne+1), Int(rlen), Int(vlen), true)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Hx, rtol=rtol)
+      @fact gx --> roughly(g(x0), rtol=rtol)
+
+      Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
+      ugreh!(nlp.meta.nvar, x0, gx, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
+      for e = 1:ne
+        row = rows[rp[e]:rp[e+1]-1]
+        val = vals[vp[e]:vp[e+1]-1]
+        len = length(row)
+        k = 1
+        for j = 1:len
+          for i = j:len
+            ii, jj = row[i], row[j]
+            Ex[ii,jj] += val[k]
+            k += 1
+          end
+        end
+      end
+      @fact Ex --> roughly(Hx, rtol=rtol)
+      @fact gx --> roughly(g(x0), rtol=rtol)
     end
 
   end
