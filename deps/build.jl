@@ -36,9 +36,12 @@ function validate_libcutest()
       errlog = tempname()
       run(pipeline(`$runcutest -p genc -D $hs3`, stdout=outlog, stderr=errlog))
       print(readstring(errlog))
+      rm(outlog, force=true)
+      rm(errlog, force=true)
     end
     return true
   end
+  rm(tmpdir, force=true, recursive=true)
   false
 end
 
