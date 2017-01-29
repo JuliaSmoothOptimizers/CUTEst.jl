@@ -51,15 +51,15 @@ function __init__()
   if ispath(cutestenv)
     include(cutestenv)
   else
-    ENV["CUTEst problems"] = joinpath(deps, "files")
+    ENV["cutest-problems"] = joinpath(deps, "files")
   end
-  isdir(ENV["CUTEst problems"]) || mkdir(ENV["CUTEst problems"])
+  isdir(ENV["cutest-problems"]) || mkdir(ENV["cutest-problems"])
   global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
 
   global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
       "double/libcutest_double.$(Libdl.dlext)")
 
-  push!(Libdl.DL_LOAD_PATH, ENV["CUTEst problems"])
+  push!(Libdl.DL_LOAD_PATH, ENV["cutest-problems"])
 end
 
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
@@ -91,7 +91,7 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false)
   # should be more elegant after https://github.com/JuliaLang/julia/pull/12807
   outlog = tempname()
   errlog = tempname()
-  cd(ENV["CUTEst problems"]) do
+  cd(ENV["cutest-problems"]) do
     run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
     print(readstring(errlog))
     verbose && println(readstring(outlog))
@@ -110,7 +110,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0];
   global cutest_lib
-  cd(ENV["CUTEst problems"]) do
+  cd(ENV["cutest-problems"]) do
     if !decode
       (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
       libname = "lib$name"

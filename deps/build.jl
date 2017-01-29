@@ -12,9 +12,6 @@ libgsl = library_dependency("libgsl", aliases=["libgsl-0"])
 #provides(Pacman, "gsl", libgsl)
 
 if is_apple()
-    if Pkg.installed("Homebrew") === nothing
-        error("Homebrew package not installed, please run Pkg.add(\"Homebrew\")")
-    end
     using Homebrew
     provides(Homebrew.HB, "homebrew/versions/gsl1", libgsl, os = :Darwin)
 end
@@ -70,7 +67,6 @@ else
   if install
     # Install CUTEst
     @static if is_apple()
-      using Homebrew
       Homebrew.add("optimizers/cutest/cutest")
       Homebrew.add("optimizers/cutest/mastsif")
 
@@ -90,7 +86,7 @@ else
           mkdir("files")
         end
         path = joinpath(here, "files", "problems")
-        println(cenv, "ENV[\"CUTEst problems\"] = \"$path\"")
+        println(cenv, "ENV[\"cutest-problems\"] = \"$path\"")
       end
     end
 
@@ -99,7 +95,7 @@ else
         isdir("files") && rm("files", recursive=true)
         mkdir("files")
         cd("files") do
-          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/master/install.sh"
+          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.1.0/install.sh"
           run(`wget $lnxurl -O install.sh`)
           ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
           run(`bash install.sh`)
@@ -114,7 +110,7 @@ else
                 path = chomp(split(line, "=")[2])
                 write(cenv, "ENV[\"$var\"] = \"$path\"\n")
               end
-              println(cenv, "ENV[\"CUTEst problems\"] = \"$(pwd())/problems\"")
+              println(cenv, "ENV[\"cutest-problems\"] = \"$(pwd())/problems\"")
             end
           end
         end
