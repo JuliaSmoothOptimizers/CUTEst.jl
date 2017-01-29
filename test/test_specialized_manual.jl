@@ -1,6 +1,6 @@
 print("Testing non-NLP interface... ")
 
-outsdif, io_err = joinpath(ENV["CUTEst problems"], "OUTSDIF.d"), Cint[0]
+outsdif, io_err = joinpath(ENV["cutest-problems"], "OUTSDIF.d"), Cint[0]
 funit = 42
 
 sifdecoder("ROSENBR")
