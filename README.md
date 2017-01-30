@@ -29,7 +29,7 @@ On OSX, Homebrew.jl will install gfortran if gfortran is not detected on your sy
 You may either use standard Homebrew to install gfortran yourself from precompiled bottled using `brew install gcc` or let Homebrew.jl install its private version.
 In the latter scenario, gcc and gfortran need to be compiled from source.
 
-On Linux, you'll need to install `wget` and `gfortran`. See [this
+On Linux, you'll need to install `wget` and `gfortran`, and also make `libgfortran.so` visible by `julia`. See [this
 page](https://github.com/abelsiqueira/linux-cutest#requirements) for how to
 install the requirements on some linux distributions.
 
@@ -60,23 +60,6 @@ gx = grad(nlp, nlp.meta.x0)
 Hx = hess(nlp, nlp.meta.x0)
 ````
 
-It also accepts the traditional CUTEst naming, with and without the Julian touch
-````
-if nlp.meta.ncon > 0
-  f, c = cfn(nlp, nlp.meta.x0)
-  f, c = cfn(nlp.meta.nvar, nlp.meta.ncon, nlp.meta.x0)
-else
-  f = ufn(nlp, nlp.meta.x0)
-  f = ufn(nlp.meta.nvar, nlp.meta.x0)
-end
-````
-There is also a wrapper for the Fortran functions directly, which you probably
-don't need.
-
-## Documentation
-
-Work in progress.
-
 ## Related Packages
 
 - [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) provides an
@@ -90,7 +73,7 @@ Work in progress.
 - [AmplNLReader.jl](https://github.com/JuliaSmoothOptimizers/AmplNLReader.jl)
   provides an interface to [AMPL](http://www.ampl.com) models based on
   [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
-- [OptimizationProblems](https://github.com/JuliaSmoothOptimizers/OptimizationProblems.jl)
+- [OptimizationProblems.jl](https://github.com/JuliaSmoothOptimizers/OptimizationProblems.jl)
   provides a collection of optimization problems in
   [JuMP.jl](https://github.com/JuliaOpt/JuMP.jl) syntax.
 

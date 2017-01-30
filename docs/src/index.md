@@ -48,8 +48,7 @@ sudo pacman -S wget gfortran
 The following commands should automatically download and install CUTEst and its
 dependencies.
 ````julia
-Pkg.clone("https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git")
-Pkg.build("CUTEst")
+Pkg.add("CUTEst")
 ````
 
 ## Usage
