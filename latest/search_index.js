@@ -29,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Installing",
     "category": "section",
-    "text": "On Linux, you'll need to install wget and gfortran, and possibly have to fix the location of libgfortran.so.On Ubuntu 14.04, you can do this withsudo apt-get install wget gfortran\nsudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.)/libgfortran.so /usr/local/libOn Ubuntu 16.04,sudo apt-get install wget gfortran\nsudo ln -s /usr/lib/x86_64-linux-gnu/libgfortran.so /usr/local/libOn Archlinux, dosudo pacman -S wget gfortranThe following commands should automatically download and install CUTEst and its dependencies.Pkg.clone(\"https://github.com/JuliaSmoothOptimizers/CUTEst.jl.git\")\nPkg.build(\"CUTEst\")"
+    "text": "On Linux, you'll need to install wget and gfortran, and possibly have to fix the location of libgfortran.so.On Ubuntu 14.04, you can do this withsudo apt-get install wget gfortran\nsudo ln -s /usr/lib/gcc/x86_64-linux-gnu/$(gfortran -dumpversion | cut -f1,2 -d.)/libgfortran.so /usr/local/libOn Ubuntu 16.04,sudo apt-get install wget gfortran\nsudo ln -s /usr/lib/x86_64-linux-gnu/libgfortran.so.3 /usr/local/lib/libgfortran.soOn Archlinux, dosudo pacman -S wget gfortranThe following commands should automatically download and install CUTEst and its dependencies.Pkg.add(\"CUTEst\")"
 },
 
 {
