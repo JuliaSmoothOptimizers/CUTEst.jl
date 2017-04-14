@@ -13,7 +13,7 @@ libgsl = library_dependency("libgsl", aliases=["libgsl-0"])
 
 if is_apple()
     using Homebrew
-    provides(Homebrew.HB, "homebrew/versions/gsl1", libgsl, os = :Darwin)
+    provides(Homebrew.HB, "gsl@1", libgsl, os = :Darwin)
 end
 
 # build from source
