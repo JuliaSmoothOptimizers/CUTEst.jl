@@ -16,7 +16,7 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
 
 facts("CUTEst selection tool") do
   problems = filter(x->ismatch(r"SIF$",x), readdir(ENV["MASTSIF"]))
-  np = length(problems)
+  np = length(problems) - 2 # BROWDENE and DMN15102LS are not included
   @fact np --> length(CUTEst.select())
   context("Variables") do
     selection = CUTEst.select(max_var=10)
