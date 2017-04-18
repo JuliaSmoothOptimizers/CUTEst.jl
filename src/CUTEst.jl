@@ -63,7 +63,7 @@ end
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
 
 macro cutest_error()  # Handle nonzero exit codes.
-  :(io_err[1] > 0 && throw(CUTEstException(io_err[1])))
+  esc(:(io_err[1] > 0 && throw(CUTEstException(io_err[1]))))
 end
 
 include("core_interface.jl")
@@ -151,7 +151,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   @cutest_error
 
   for lim in Any[bl, bu, cl, cu]
-    I = find(abs(lim) .>= 1e20)
+    I = find(abs.(lim) .>= 1e20)
     lim[I] = Inf * lim[I]
   end
 
