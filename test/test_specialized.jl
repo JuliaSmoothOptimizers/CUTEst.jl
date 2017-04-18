@@ -11,63 +11,63 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   rtol = 1e-8
 
   v = ones(nlp.meta.nvar)
-  facts("Specialized interface") do
+  @testset "Specialized interface" begin
     if nlp.meta.ncon > 0
       fx, cx = cfn(nlp.meta.nvar, nlp.meta.ncon, x0)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact cx --> roughly(c(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol=rtol)
 
       cx = zeros(nlp.meta.ncon)
       fx = cfn!(nlp.meta.nvar, nlp.meta.ncon, x0, cx)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact cx --> roughly(c(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol=rtol)
 
       fx, gx = cofg(nlp.meta.nvar, x0, true)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
 
       gx = zeros(nlp.meta.nvar)
       fx = cofg!(nlp.meta.nvar, x0, gx, true)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
 
       fx, nnzg, g_val, g_var = cofsg(nlp.meta.nvar, x0, nlp.meta.nvar, true)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact g_val[1:nnzg] --> roughly(g(x0)[g_var[1:nnzg]], rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(g_val[1:nnzg], g(x0)[g_var[1:nnzg]], rtol=rtol)
 
       g_var = zeros(Cint, nlp.meta.nvar)
       g_val = zeros(nlp.meta.nvar)
       fx, nnzg = cofsg!(nlp.meta.nvar, x0, nlp.meta.nvar, g_val, g_var, true)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact g_val[1:nnzg] --> roughly(g(x0)[g_var[1:nnzg]], rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(g_val[1:nnzg], g(x0)[g_var[1:nnzg]], rtol=rtol)
 
       cx, Jx = ccfg(nlp.meta.nvar, nlp.meta.ncon, x0, false, nlp.meta.ncon, nlp.meta.nvar, true)
-      @fact cx --> roughly(c(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
       cx = zeros(nlp.meta.ncon)
       ccfg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, true)
-      @fact cx --> roughly(c(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       fx, gx = clfg(nlp.meta.nvar, nlp.meta.ncon, x0, y0, true)
-      @fact fx --> roughly(f(x0)+dot(y0,c(x0)), rtol=rtol)
-      @fact gx --> roughly(g(x0)+J(x0)'*y0, rtol=rtol)
+      @test isapprox(fx, f(x0)+dot(y0,c(x0)), rtol=rtol)
+      @test isapprox(gx, g(x0)+J(x0)'*y0, rtol=rtol)
 
       fx = clfg!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, gx, true)
-      @fact fx --> roughly(f(x0)+dot(y0,c(x0)), rtol=rtol)
-      @fact gx --> roughly(g(x0)+J(x0)'*y0, rtol=rtol)
+      @test isapprox(fx, f(x0)+dot(y0,c(x0)), rtol=rtol)
+      @test isapprox(gx, g(x0)+J(x0)'*y0, rtol=rtol)
 
       gx, Jx = cgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar)
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
       gx = zeros(nlp.meta.nvar)
       cgr!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx)
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       nnzj, Jx, j_var, j_fun = csgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
       j_val = copy(Jx)
@@ -76,7 +76,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         j_fun[k] == 0 && continue
         Jx[j_fun[k],j_var[k]] = j_val[k]
       end
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
       j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
@@ -88,76 +88,76 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         j_fun[k] == 0 && continue
         Jx[j_fun[k],j_var[k]] = j_val[k]
       end
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       cx, nnzj, Jx, j_var, j_fun = ccfsg(nlp.meta.nvar, nlp.meta.ncon, x0, nlp.meta.nnzj+nlp.meta.nvar, true)
-      @fact cx --> roughly(c(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol=rtol)
       j_val = copy(Jx)
       Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
       for k = 1:nnzj
         Jx[j_fun[k],j_var[k]] = j_val[k]
       end
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       j_fun = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
       j_var = zeros(Cint, nlp.meta.nnzj+nlp.meta.nvar)
       Jx = zeros(nlp.meta.nnzj+nlp.meta.nvar)
       cx = zeros(nlp.meta.ncon)
       nnzj = ccfsg!(nlp.meta.nvar, nlp.meta.ncon, x0, cx, nlp.meta.nnzj+nlp.meta.nvar, Jx, j_var, j_fun, true)
-      @fact cx --> roughly(c(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol=rtol)
       j_val = copy(Jx)
       Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
       for k = 1:nnzj
         Jx[j_fun[k],j_var[k]] = j_val[k]
       end
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
 
       for j = 1:nlp.meta.ncon
         ci, gci = ccifg(nlp.meta.nvar, j, x0, true)
-        @fact ci --> roughly(c(x0)[j], rtol=rtol)
-        @fact gci --> roughly(J(x0)[j,:][:], rtol=rtol)
+        @test isapprox(ci, c(x0)[j], rtol=rtol)
+        @test isapprox(gci, J(x0)[j,:][:], rtol=rtol)
       end
 
       for j = 1:nlp.meta.ncon
         gci = zeros(nlp.meta.nvar)
         ci = ccifg!(nlp.meta.nvar, j, x0, gci, true)
-        @fact ci --> roughly(c(x0)[j], rtol=rtol)
-        @fact gci --> roughly(J(x0)[j,:][:], rtol=rtol)
+        @test isapprox(ci, c(x0)[j], rtol=rtol)
+        @test isapprox(gci, J(x0)[j,:][:], rtol=rtol)
       end
 
       for j = 1:nlp.meta.ncon
         ci, nnzgci, gci_val, gci_var = ccifsg(nlp.meta.nvar, j, x0, nlp.meta.nvar, true)
-        @fact ci --> roughly(c(x0)[j], rtol=rtol)
-        @fact gci_val --> roughly(J(x0)[j,gci_var][:], rtol=rtol)
+        @test isapprox(ci, c(x0)[j], rtol=rtol)
+        @test isapprox(gci_val, J(x0)[j,gci_var][:], rtol=rtol)
       end
 
       for j = 1:nlp.meta.ncon
         gci_var = zeros(Cint, nlp.meta.nvar)
         gci_val = zeros(nlp.meta.nvar)
         ci, nnzgci = ccifsg!(nlp.meta.nvar, j, x0, nlp.meta.nvar, gci_val, gci_var, true)
-        @fact ci --> roughly(c(x0)[j], rtol=rtol)
-        @fact gci_val --> roughly(J(x0)[j,gci_var][:], rtol=rtol)
+        @test isapprox(ci, c(x0)[j], rtol=rtol)
+        @test isapprox(gci_val, J(x0)[j,gci_var][:], rtol=rtol)
       end
 
       gx, Jx, Wx = cgrdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, false, nlp.meta.ncon, nlp.meta.nvar, nlp.meta.nvar)
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
       Jx = zeros(nlp.meta.ncon, nlp.meta.nvar)
       gx = zeros(nlp.meta.nvar)
       cgrdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, gx, false, nlp.meta.ncon, nlp.meta.nvar, Jx, nlp.meta.nvar, Wx)
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       Wx = cdh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar)
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
       cdh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Wx)
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       nnzh, Wx, h_row, h_col = csh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
       w_val = copy(Wx)
@@ -166,7 +166,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       h_col = zeros(Cint, nlp.meta.nnzh)
       h_row = zeros(Cint, nlp.meta.nnzh)
@@ -178,7 +178,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       nnzh, Wx, h_row, h_col = cshc(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nnzh)
       w_val = copy(Wx)
@@ -187,7 +187,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(W(x0,y0)-H(x0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0)-H(x0), rtol=rtol)
 
       h_col = zeros(Cint, nlp.meta.nnzh)
       h_row = zeros(Cint, nlp.meta.nnzh)
@@ -199,17 +199,17 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(W(x0,y0)-H(x0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0)-H(x0), rtol=rtol)
 
       for j = 1:nlp.meta.ncon
         h = cidh(nlp.meta.nvar, x0, j, nlp.meta.nvar)
-        @fact h --> roughly((W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)), rtol=rtol)
+        @test isapprox(h, (W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)), rtol=rtol)
       end
 
       for j = 1:nlp.meta.ncon
         h = zeros(nlp.meta.nvar, nlp.meta.nvar)
         cidh!(nlp.meta.nvar, x0, j, nlp.meta.nvar, h)
-        @fact h --> roughly((W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)), rtol=rtol)
+        @test isapprox(h, (W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0)), rtol=rtol)
       end
 
       for j = 1:nlp.meta.ncon
@@ -220,7 +220,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           Wx[h_row[k],h_col[k]] = w_val[k]
           Wx[h_col[k],h_row[k]] = w_val[k]
         end
-        @fact Wx --> roughly(W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0), rtol=rtol)
+        @test isapprox(Wx, W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0), rtol=rtol)
       end
 
       for j = 1:nlp.meta.ncon
@@ -234,7 +234,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           Wx[h_row[k],h_col[k]] = w_val[k]
           Wx[h_col[k],h_row[k]] = w_val[k]
         end
-        @fact Wx --> roughly(W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0), rtol=rtol)
+        @test isapprox(Wx, W(x0,[i == j ? 1.0 : 0.0 for i = 1:nlp.meta.ncon])-H(x0), rtol=rtol)
       end
 
       nnzj, Jx, j_var, j_fun, nnzh, Wx, h_row, h_col = csgrsh(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar, nlp.meta.nnzh)
@@ -244,7 +244,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         j_fun[k] == 0 && continue
         Jx[j_fun[k],j_var[k]] = j_val[k]
       end
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
       w_val = copy(Wx)
       Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
       for k = 1:nnzh
@@ -252,7 +252,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       h_col = zeros(Cint, nlp.meta.nnzh)
       h_row = zeros(Cint, nlp.meta.nnzh)
@@ -267,7 +267,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         j_fun[k] == 0 && continue
         Jx[j_fun[k],j_var[k]] = j_val[k]
       end
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
       w_val = copy(Wx)
       Wx = zeros(nlp.meta.nvar, nlp.meta.nvar)
       for k = 1:nnzh
@@ -275,78 +275,78 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(W(x0,y0), rtol=rtol)
+      @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       result = chprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
-      @fact result --> roughly(W(x0,y0)*v, rtol=rtol)
+      @test isapprox(result, W(x0,y0)*v, rtol=rtol)
 
       result = zeros(W(x0,y0)*v)
       chprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
 
       result = chcprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar))
-      @fact result --> roughly((W(x0,y0)-H(x0))*v, rtol=rtol)
+      @test isapprox(result, (W(x0,y0)-H(x0))*v, rtol=rtol)
 
       result = zeros((W(x0,y0)-H(x0))*v)
       chcprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, ones(nlp.meta.nvar), result)
 
       result = cjprod(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, nlp.meta.ncon)
-      @fact result --> roughly(J(x0)*v, rtol=rtol)
+      @test isapprox(result, J(x0)*v, rtol=rtol)
 
       result = zeros(J(x0)*v)
       cjprod!(nlp.meta.nvar, nlp.meta.ncon, false, false, x0, ones(nlp.meta.nvar), nlp.meta.nvar, result, nlp.meta.ncon)
 
       nnzj = cdimsj()
       Jx = jac(comp_nlp, x0)
-      @fact nnzj --> sum(Jx .!= 0) + nlp.meta.nvar
+      @test nnzj == sum(Jx .!= 0) + nlp.meta.nvar
 
       nnzh = cdimsh()
       Wx = hess(comp_nlp, x0, y=y0)
-      @fact nnzh --> sum(Wx .!= 0)
+      @test nnzh == sum(Wx .!= 0)
 
       _, _, eq, lin = cstats()
-      @fact eq --> length(nlp.meta.jfix)
-      @fact lin --> nlp.meta.nlin
+      @test eq == length(nlp.meta.jfix)
+      @test lin == nlp.meta.nlin
 
       t = cvartype(nlp.meta.nvar)
-      @fact all(t .== 0) --> true
+      @test all(t .== 0)
 
       cvartype!(nlp.meta.nvar, t)
-      @fact all(t .== 0) --> true
+      @test all(t .== 0)
 
       Cx = hess(comp_nlp, x0, y=y0, obj_weight=0.0)
       Cx2 = cdhc(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar)
-      @fact tril(Cx2) --> roughly(Cx, rtol=rtol)
+      @test isapprox(tril(Cx2), Cx, rtol=rtol)
 
       cdhc!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, nlp.meta.nvar, Cx2)
-      @fact tril(Cx2) --> roughly(Cx, rtol=rtol)
+      @test isapprox(tril(Cx2), Cx, rtol=rtol)
 
       _, cols, rows = cshp(nlp.meta.nvar, Int(nnzh))
       V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
-      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Wx), rtol=rtol)
+      @test isapprox(sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar), sparse(Wx), rtol=rtol)
 
       cshp!(nlp.meta.nvar, Int(nnzh), cols, rows)
       V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
-      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Wx), rtol=rtol)
+      @test isapprox(sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar), sparse(Wx), rtol=rtol)
 
       nnzr, Ir, r = cshprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0])
       if nnzr < length(r)
         Ir = Ir[1:nnzr]
         r = r[1:nnzr]
       end
-      @fact r --> roughly(Wx[Ir,1], rtol=rtol)
+      @test isapprox(r, Wx[Ir,1], rtol=rtol)
 
       nnzr = cshprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0], Ir, r)
-      @fact r --> roughly(Wx[Ir,1], rtol=rtol)
+      @test isapprox(r, Wx[Ir,1], rtol=rtol)
 
       nnzr, Ir, r = cshcprod(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0])
       if nnzr < length(r)
         Ir = Ir[1:nnzr]
         r = r[1:nnzr]
       end
-      @fact r --> roughly(Cx[Ir,1], rtol=rtol)
+      @test isapprox(r, Cx[Ir,1], rtol=rtol)
 
       nnzr = cshcprod!(nlp.meta.nvar, nlp.meta.ncon, false, x0, y0, 1, Cint[1], [1.0], Ir, r)
-      @fact r --> roughly(Cx[Ir,1], rtol=rtol)
+      @test isapprox(r, Cx[Ir,1], rtol=rtol)
 
       # Finite element
       ne, vlen, rlen = cdimse()
@@ -366,7 +366,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Wx, rtol=rtol)
+      @test isapprox(Ex, Wx, rtol=rtol)
 
       Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
       ceh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
@@ -383,7 +383,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Wx, rtol=rtol)
+      @test isapprox(Ex, Wx, rtol=rtol)
 
       nnzj, Jx, j_var, j_fun = csgr(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nnzj+nlp.meta.nvar)
 
@@ -398,8 +398,8 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           Jx[j_fun[k],j_var[k]] = j_val[k]
         end
       end
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
       for e = 1:ne
         row = rows[rp[e]:rp[e+1]-1]
         val = vals[vp[e]:vp[e+1]-1]
@@ -413,7 +413,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Wx, rtol=rtol)
+      @test isapprox(Ex, Wx, rtol=rtol)
 
       Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
       nnzj, ne = csgreh!(nlp.meta.nvar, nlp.meta.ncon, x0, y0, false, nlp.meta.nvar+nlp.meta.nnzj, j_val, j_var, j_fun, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
@@ -426,8 +426,8 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           Jx[j_fun[k],j_var[k]] = j_val[k]
         end
       end
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Jx --> roughly(J(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol=rtol)
       for e = 1:ne
         row = rows[rp[e]:rp[e+1]-1]
         val = vals[vp[e]:vp[e+1]-1]
@@ -441,32 +441,32 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Wx, rtol=rtol)
+      @test isapprox(Ex, Wx, rtol=rtol)
     else
       fx = ufn(nlp.meta.nvar, x0)
-      @fact fx --> roughly(f(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
 
       gx = ugr(nlp.meta.nvar, x0)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
 
       gx = zeros(nlp.meta.nvar)
       ugr!(nlp.meta.nvar, x0, gx)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
 
       fx, gx = uofg(nlp.meta.nvar, x0, true)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
 
       gx = zeros(nlp.meta.nvar)
       fx = uofg!(nlp.meta.nvar, x0, gx, true)
-      @fact fx --> roughly(f(x0), rtol=rtol)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
 
       h = udh(nlp.meta.nvar, x0, nlp.meta.nvar)
-      @fact h --> roughly(H(x0), rtol=rtol)
+      @test isapprox(h, H(x0), rtol=rtol)
 
       udh!(nlp.meta.nvar, x0, nlp.meta.nvar, h)
-      @fact h --> roughly(H(x0), rtol=rtol)
+      @test isapprox(h, H(x0), rtol=rtol)
 
       nnzh, Wx, h_row, h_col = ush(nlp.meta.nvar, x0, nlp.meta.nnzh)
       w_val = copy(Wx)
@@ -475,7 +475,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(H(x0), rtol=rtol)
+      @test isapprox(Wx, H(x0), rtol=rtol)
 
       h_col = zeros(Cint, nlp.meta.nnzh)
       h_row = zeros(Cint, nlp.meta.nnzh)
@@ -487,59 +487,59 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Wx[h_row[k],h_col[k]] = w_val[k]
         Wx[h_col[k],h_row[k]] = w_val[k]
       end
-      @fact Wx --> roughly(H(x0), rtol=rtol)
+      @test isapprox(Wx, H(x0), rtol=rtol)
 
       result = uhprod(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar))
-      @fact result --> roughly(H(x0)*v, rtol=rtol)
+      @test isapprox(result, H(x0)*v, rtol=rtol)
 
       result = zeros(H(x0)*v)
       uhprod!(nlp.meta.nvar, false, x0, ones(nlp.meta.nvar), result)
 
       nnzh = udimsh()
       Hx = hess(comp_nlp, x0)
-      @fact nnzh --> sum(Hx .!= 0)
+      @test nnzh == sum(Hx .!= 0)
 
       t = uvartype(nlp.meta.nvar)
-      @fact all(t .== 0) --> true
+      @test all(t .== 0)
 
       uvartype!(nlp.meta.nvar, t)
-      @fact all(t .== 0) --> true
+      @test all(t .== 0)
 
       _, cols, rows = ushp(nlp.meta.nvar, Int(nnzh))
       V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
-      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Hx), rtol=rtol)
+      @test isapprox(sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar), sparse(Hx), rtol=rtol)
 
       ushp!(nlp.meta.nvar, Int(nnzh), cols, rows)
       V = [Wx[rows[i],cols[i]] for i = 1:length(rows)]
-      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Hx), rtol=rtol)
+      @test isapprox(sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar), sparse(Hx), rtol=rtol)
 
       gx, Wx = ugrdh(nlp.meta.nvar, x0, nlp.meta.nvar)
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Wx --> roughly(H(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Wx, H(x0), rtol=rtol)
 
       ugrdh!(nlp.meta.nvar, x0, gx, nlp.meta.nvar, Wx)
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact Wx --> roughly(H(x0), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(Wx, H(x0), rtol=rtol)
 
       gx, _, V, cols, rows = ugrsh(nlp.meta.nvar, x0, Int(nnzh))
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(sparse(Hx), rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar), sparse(Hx), rtol=rtol)
 
       ugrsh!(nlp.meta.nvar, x0, gx, Int(nnzh), V, cols, rows)
-      @fact gx --> roughly(g(x0), rtol=rtol)
-      @fact sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar) --> roughly(Hx, rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
+      @test isapprox(sparse(rows, cols, V, nlp.meta.nvar, nlp.meta.nvar), Hx, rtol=rtol)
 
       nnzr, Ir, r = ushprod(nlp.meta.nvar, false, x0, 1, Cint[1], [1.0])
-      @fact r --> roughly(Hx[Ir,1], rtol=rtol)
+      @test isapprox(r, Hx[Ir,1], rtol=rtol)
 
       nnzr = ushprod!(nlp.meta.nvar, false, x0, 1, Cint[1], [1.0], Ir, r)
-      @fact r --> roughly(Hx[Ir,1], rtol=rtol)
+      @test isapprox(r, Hx[Ir,1], rtol=rtol)
 
       B, _ = ubandh(nlp.meta.nvar, x0, 0, 0)
-      @fact B[:] --> roughly(diag(Hx), rtol=rtol)
+      @test isapprox(B[:], diag(Hx), rtol=rtol)
 
       _ = ubandh!(nlp.meta.nvar, x0, 0, B, 0)
-      @fact B[:] --> roughly(diag(Hx), rtol=rtol)
+      @test isapprox(B[:], diag(Hx), rtol=rtol)
 
       # Finite element
       ne, vlen, rlen = udimse()
@@ -559,7 +559,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Hx, rtol=rtol)
+      @test isapprox(Ex, Hx, rtol=rtol)
 
       Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
       ueh!(nlp.meta.nvar, x0, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
@@ -576,7 +576,7 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Hx, rtol=rtol)
+      @test isapprox(Ex, Hx, rtol=rtol)
 
       Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
       gx, _, rp, vp, rows, vals = ugreh(nlp.meta.nvar, x0, Int(ne+1), Int(rlen), Int(vlen), true)
@@ -593,8 +593,8 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Hx, rtol=rtol)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(Ex, Hx, rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
 
       Ex = zeros(nlp.meta.nvar, nlp.meta.nvar)
       ugreh!(nlp.meta.nvar, x0, gx, Int(ne+1), rp, vp, Int(rlen), rows, Int(vlen), vals, true)
@@ -611,8 +611,8 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
           end
         end
       end
-      @fact Ex --> roughly(Hx, rtol=rtol)
-      @fact gx --> roughly(g(x0), rtol=rtol)
+      @test isapprox(Ex, Hx, rtol=rtol)
+      @test isapprox(gx, g(x0), rtol=rtol)
     end
 
   end
