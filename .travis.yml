@@ -9,17 +9,10 @@ matrix:
       julia: 0.5
       osx_image: xcode7.3
     - os: linux
-      julia: nightly
+      julia: 0.6
     - os: osx
-      julia: nightly
+      julia: 0.6
       osx_image: xcode7.3
-  allow_failures:
-    - os: linux
-      julia: nightly
-    - os: osx
-      julia: nightly
-      osx_image: xcode7.3
-
 
 addons:
   apt_packages:
