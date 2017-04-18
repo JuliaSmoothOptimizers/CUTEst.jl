@@ -5,8 +5,6 @@ __precompile__(false)  # due to optional dependencies
 module CUTEst
 
 importall NLPModels
-using Compat
-import Compat.String
 import Base.Libdl.dlsym
 
 # Only one problem can be interfaced at any given time.
