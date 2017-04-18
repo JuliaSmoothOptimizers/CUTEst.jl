@@ -11,7 +11,7 @@ function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
   ncon = nlp.meta.ncon;
   io_err = Cint[0];
   f = Cdouble[0];
-  c = Array(Float64, ncon);
+  c = Array{Float64}(ncon);
   if ncon > 0
     ccall(dlsym(cutest_lib, :cutest_cfn_), Void,
                 (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
@@ -57,10 +57,10 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool = true)
   f = Cdouble[0];
   io_err = Cint[0];
   if grad
-    g = Array(Float64, nvar);
+    g = Array{Float64}(nvar);
     get_grad = 1;
   else
-    g = Array(Float64, 0);
+    g = Array{Float64}(0);
     get_grad = 0;
   end
   if ncon > 0
@@ -107,7 +107,7 @@ obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
 
 @doc (@doc NLPModels.grad)
 function grad(nlp :: CUTEstModel, x :: Array{Float64,1})
-  g = Array(Float64, nlp.meta.nvar)
+  g = Array{Float64}(nlp.meta.nvar)
   return grad!(nlp, x, g)
 end
 
@@ -155,12 +155,12 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
   ncon = nlp.meta.ncon;
   nnzj = nlp.meta.nnzj;
   io_err = Cint[0];
-  c = Array(Float64, ncon);
+  c = Array{Float64}(ncon);
   jsize = jac ? nlp.meta.nnzj : 0;
   get_j = jac ? 1 : 0;
-  jval = Array(Float64, jsize);
-  jrow = Array(Int32, jsize);
-  jcol = Array(Int32, jsize);
+  jval = Array{Float64}(jsize);
+  jrow = Array{Int32}(jsize);
+  jcol = Array{Int32}(jsize);
 
   ccall(dlsym(cutest_lib, :cutest_ccfsg_), Void,
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
@@ -208,9 +208,9 @@ function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
   nnzj = 0;
   jsize = 0;
   get_j = 0;
-  jval = Array(Float64, jsize);
-  jrow = Array(Int32, jsize);
-  jcol = Array(Int32, jsize);
+  jval = Array{Float64}(jsize);
+  jrow = Array{Int32}(jsize);
+  jcol = Array{Int32}(jsize);
 
   ccall(dlsym(cutest_lib, :cutest_ccfsg_), Void,
               (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
@@ -282,9 +282,9 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float6
   ncon = nlp.meta.ncon;
   nnzh = nlp.meta.nnzh;
   io_err = Cint[0];
-  hval = Array(Float64, nnzh);
-  hrow = Array(Int32, nnzh);
-  hcol = Array(Int32, nnzh);
+  hval = Array{Float64}(nnzh);
+  hrow = Array{Int32}(nnzh);
+  hcol = Array{Int32}(nnzh);
   this_nnzh = Cint[0];
 
   if obj_weight == 0.0 && ncon > 0
@@ -323,7 +323,7 @@ end
 
 @doc (@doc NLPModels.hprod)
 function hprod(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}; y :: Array{Float64,1} = zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
-  hv = Array(Float64, nlp.meta.nvar);
+  hv = Array{Float64}(nlp.meta.nvar);
   return hprod!(nlp, x, v, hv, y=y, obj_weight=obj_weight)
 end
 

@@ -132,14 +132,14 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   nvar = nvar[1];
   ncon = ncon[1];
 
-  x  = Array(Float64, nvar)
-  bl = Array(Float64, nvar)
-  bu = Array(Float64, nvar)
-  v  = Array(Float64, ncon)
-  cl = Array(Float64, ncon)
-  cu = Array(Float64, ncon)
-  equatn = Array(Int32, ncon)
-  linear = Array(Int32, ncon)
+  x  = Array{Float64}(nvar)
+  bl = Array{Float64}(nvar)
+  bu = Array{Float64}(nvar)
+  v  = Array{Float64}(ncon)
+  cl = Array{Float64}(ncon)
+  cu = Array{Float64}(ncon)
+  equatn = Array{Int32}(ncon)
+  linear = Array{Int32}(ncon)
 
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
