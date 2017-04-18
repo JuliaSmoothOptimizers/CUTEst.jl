@@ -98,7 +98,7 @@ else
         isdir("files") && rm("files", recursive=true)
         mkdir("files")
         cd("files") do
-          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.2/install.sh"
+          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.2.1/install.sh"
           run(`wget $lnxurl -O install.sh`)
           ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
           run(`bash install.sh`)
