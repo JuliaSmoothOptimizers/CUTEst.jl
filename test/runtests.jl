@@ -1,4 +1,4 @@
-using Base.Test, CUTEst, FactCheck, Ipopt, JuMP, MathProgBase, NLPModels
+using Base.Test, CUTEst, Ipopt, JuMP, MathProgBase, NLPModels
 
 include("test_specialized_manual.jl")
 
@@ -26,8 +26,6 @@ for problem in problems
 
   println("Finalizing")
   finalize(nlp)
-
-  FactCheck.exitstatus()
 end
 
 include("consistency.jl")
