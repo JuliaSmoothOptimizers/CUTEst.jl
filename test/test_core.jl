@@ -50,6 +50,13 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test isapprox(fx[1], f(x0), rtol=rtol)
       @test isapprox(cx, c(x0), rtol=rtol)
 
+      cifn(st, nvar, Cint[0], x0, fx)
+      @test isapprox(fx[1], f(x0), rtol=rtol)
+      for i = 1:ncon[1]
+        cifn(st, nvar, Cint[i], x0, cx)
+        @test isapprox(cx[1], c(x0)[i], rtol=rtol)
+      end
+
       cofg(st, nvar, x0, fx, gx, True)
       @test isapprox(fx[1], f(x0), rtol=rtol)
       @test isapprox(gx, g(x0), rtol=rtol)

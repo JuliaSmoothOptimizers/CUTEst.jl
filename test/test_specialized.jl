@@ -17,6 +17,14 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test isapprox(fx, f(x0), rtol=rtol)
       @test isapprox(cx, c(x0), rtol=rtol)
 
+      fx = cifn(nlp.meta.nvar, 0, x0)
+      @test isapprox(fx, f(x0), rtol=rtol)
+      cx = c(x0)
+      for i = 1:nlp.meta.ncon
+        cxi = cifn(nlp.meta.nvar, i, x0)
+        @test isapprox(cxi, cx[i], rtol=rtol)
+      end
+
       cx = zeros(nlp.meta.ncon)
       fx = cfn!(nlp.meta.nvar, nlp.meta.ncon, x0, cx)
       @test isapprox(fx, f(x0), rtol=rtol)
