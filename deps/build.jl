@@ -1,4 +1,3 @@
-using Compat
 using BinDeps
 
 @BinDeps.setup
