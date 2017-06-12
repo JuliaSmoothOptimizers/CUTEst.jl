@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate, cifn
+    uterminate, cterminate, cifn, cisgr
 
 """# usetup
 The usetup subroutine sets up the correct data structures for
@@ -2293,4 +2293,34 @@ function cifn(io_err::Array{Cint, 1}, n::Array{Cint, 1}, iprob::Array{Cint, 1},
   ccall(dlsym(cutest_lib, "cutest_cifn_"), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, n, iprob, x, f)
+end
+
+"""# cisgr
+The cisgr subroutine evaluates the gradient of either the objective function or
+a constraint function of the problem decoded from a SIF file by the script
+sifdecoder at the point X, in the constrained minimization case. The gradient
+is stored in sparse format.
+
+For more information, run the shell command
+
+    man cutest_cisgr
+
+Usage:
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - iprob:   [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - nnzg:    [OUT] Array{Cint, 1}
+  - lg:      [IN] Array{Cint, 1}
+  - g_val:   [OUT] Array{Cdouble, 1}
+  - g_var:   [OUT] Array{Cint, 1}
+"""
+function cisgr(io_err::Array{Cint, 1}, n::Array{Cint, 1}, iprod::Array{Cint, 1},
+    x::Array{Cdouble, 1}, nnzg::Array{Cint, 1}, lg::Array{Cint, 1},
+    g_val::Array{Cdouble, 1}, g_var::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cisgr_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
+     Ptr{Cdouble}, Ptr{Cint}),
+    io_err, n, iprod, x, nnzg, lg, g_val, g_var)
 end
