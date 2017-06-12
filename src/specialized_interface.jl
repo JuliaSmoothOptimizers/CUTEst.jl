@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate, cifn, cisgr
+    uterminate, cterminate, cifn, cisgr, csgrp
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
     cstats!, cvartype!, creport!,
@@ -14,7 +14,7 @@ export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     cgr!, csgr!, ccfsg!, ccifg!, ccifsg!, cgrdh!, cdh!, cdhc!, cshp!,
     csh!, cshc!, ceh!, cidh!, cish!, csgrsh!, csgreh!, chprod!, cshprod!,
     chcprod!, cshcprod!, cjprod!, csjprod!, cchprods!, cchprodsp!, uterminate!,
-    cterminate!, cisgr!
+    cterminate!, cisgr!, csgrp!
 
 """
     x, x_l, x_u = usetup(input, out, io_buffer, n)
@@ -2420,4 +2420,40 @@ function cisgr!(n::Int, iprob::Int, x::Array{Float64, 1}, lg::Int,
   cisgr(io_err, Cint[n], Cint[iprob], x, nnzg, Cint[lg], g_val, g_var)
   @cutest_error
   return nnzg[1]
+end
+
+"""
+    nnzj, j_var, j_fun = csgrp(n, lj)
+
+  - n:       [IN] Int
+  - lj:      [IN] Int
+  - nnzj:    [OUT] Int
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
+"""
+function csgrp(n::Int, lj::Int)
+  io_err = Cint[0]
+  nnzj = Cint[0]
+  j_var = Array{Cint}(lj)
+  j_fun = Array{Cint}(lj)
+  csgrp(io_err, Cint[n], nnzj, Cint[lj], j_var, j_fun)
+  @cutest_error
+  return nnzj[1], j_var, j_fun
+end
+
+"""
+    nnzj = csgrp!(n, lj, j_var, j_fun)
+
+  - n:       [IN] Int
+  - lj:      [IN] Int
+  - nnzj:    [OUT] Int
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
+"""
+function csgrp!(n::Int, lj::Int, j_var::Array{Cint, 1}, j_fun::Array{Cint, 1})
+  io_err = Cint[0]
+  nnzj = Cint[0]
+  csgrp(io_err, Cint[n], nnzj, Cint[lj], j_var, j_fun)
+  @cutest_error
+  return nnzj[1]
 end
