@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate
+    uterminate, cterminate, cifn
 
 """# usetup
 The usetup subroutine sets up the correct data structures for
@@ -2271,3 +2271,26 @@ function cterminate(io_err::Array{Cint, 1})
     io_err)
 end
 
+"""# cifn
+The cifn subroutine evaluates the value of either the objective function or a
+constrainted function of the problem decoded from a SIF file by the script
+sifdecoder at the point X, in the constrained minimization case.
+
+For more information, run the shell command
+
+    man cutest_cifn
+
+Usage:
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - iprob:   [IN] Array{Cint, 1}
+  - x:       [IN] Array{Cdouble, 1}
+  - f:       [OUT] Array{Cdouble, 1}
+"""
+function cifn(io_err::Array{Cint, 1}, n::Array{Cint, 1}, iprob::Array{Cint, 1},
+    x::Array{Cdouble, 1}, f::Array{Cdouble, 1})
+  ccall(dlsym(cutest_lib, "cutest_cifn_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
+    io_err, n, iprob, x, f)
+end

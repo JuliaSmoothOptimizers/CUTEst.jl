@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate
+    uterminate, cterminate, cifn
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
     cstats!, cvartype!, creport!,
@@ -2365,3 +2365,18 @@ function cterminate()
   return
 end
 
+"""
+    f = cifn(n, iprob, x)
+
+  - n:       [IN] Int
+  - iprob:   [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - f:       [OUT] Float64
+"""
+function cifn(n::Int, iprob::Int, x::Array{Float64, 1})
+  io_err = Cint[0]
+  f = Cdouble[0]
+  cifn(io_err, Cint[n], Cint[iprob], x, f)
+  @cutest_error
+  return f[1]
+end
