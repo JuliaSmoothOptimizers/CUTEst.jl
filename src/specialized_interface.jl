@@ -4,8 +4,8 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     udh, ushp, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, ushprod, ubandh,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
-    cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, uterminate,
-    cterminate
+    cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
+    uterminate, cterminate
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
     cstats!, cvartype!, creport!,
@@ -13,7 +13,7 @@ export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     ugreh!, uhprod!, ushprod!, ubandh!, cfn!, cofg!, cofsg!, ccfg!, clfg!,
     cgr!, csgr!, ccfsg!, ccifg!, ccifsg!, cgrdh!, cdh!, cdhc!, cshp!,
     csh!, cshc!, ceh!, cidh!, cish!, csgrsh!, csgreh!, chprod!, cshprod!,
-    chcprod!, cshcprod!, cjprod!, csjprod!, cchprods!, uterminate!,
+    chcprod!, cshcprod!, cjprod!, csjprod!, cchprods!, cchprodsp!, uterminate!,
     cterminate!
 
 """
@@ -2289,6 +2289,23 @@ function cchprods(n::Int, m::Int, goth::Bool, x::Array{Float64, 1},
 end
 
 """
+    chp_ind, chp_ptr = cchprodsp(m, lchp)
+
+  - m:       [IN] Int
+  - lchp:    [IN] Int
+  - chp_ind: [OUT] Array{Cint, 1}
+  - chp_ptr: [OUT] Array{Cint, 1}
+"""
+function cchprodsp(m::Int, lchp::Int)
+  io_err = Cint[0]
+  chp_ind = Array{Cint}(lchp)
+  chp_ptr = Array{Cint}(m+1)
+  cchprodsp(io_err, Cint[m], Cint[lchp], chp_ind, chp_ptr)
+  @cutest_error
+  return chp_ind, chp_ptr
+end
+
+"""
     cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
 
   - n:       [IN] Int
@@ -2307,6 +2324,21 @@ function cchprods!(n::Int, m::Int, goth::Bool, x::Array{Float64, 1},
   io_err = Cint[0]
   cchprods(io_err, Cint[n], Cint[m], Cint[goth], x, vector,
     Cint[lchp], chp_val, chp_ind, chp_ptr)
+  @cutest_error
+  return
+end
+
+"""
+    cchprodsp!(m, lchp, chp_ind, chp_ptr)
+
+  - m:       [IN] Int
+  - lchp:    [IN] Int
+  - chp_ind: [OUT] Array{Cint, 1}
+  - chp_ptr: [OUT] Array{Cint, 1}
+"""
+function cchprodsp!(m::Int, lchp::Int, chp_ind, chp_ptr)
+  io_err = Cint[0]
+  cchprodsp(io_err, Cint[m], Cint[lchp], chp_ind, chp_ptr)
   @cutest_error
   return
 end

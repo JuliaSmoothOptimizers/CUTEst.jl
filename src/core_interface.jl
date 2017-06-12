@@ -4,8 +4,8 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     udh, ushp, ush, ueh, ugrdh, ugrsh, ugreh, uhprod, ushprod, ubandh,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
-    cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, uterminate,
-    cterminate
+    cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
+    uterminate, cterminate
 
 """# usetup
 The usetup subroutine sets up the correct data structures for
@@ -2206,6 +2206,29 @@ function cchprods(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
     io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+end
+
+"""# cchprodsp
+The cchprodsp subroutine obtains the sparsity structure used when forming the
+product of a vector with each of the Hessian matrices of the constraint
+functions c(x) corresponding to the problem decoded from a SIF file by the
+script sifdecoder at the point x= X.
+
+Usage:
+
+    cchprodsp(io_err, m, lchp, chp_ind, chp_ptr)
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - m:       [IN] Array{Cint, 1}
+  - lchp:    [IN] Array{Cint, 1}
+  - chp_ind: [IN] Array{Cint, 1}
+  - chp_ptr: [IN] Array{Cint, 1}
+"""
+function cchprodsp(io_err::Array{Cint, 1}, m::Array{Cint, 1}, lchp::Array{Cint, 1},
+    chp_ind::Array{Cint, 1}, chp_ptr::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_cchprodsp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    io_err, m, lchp, chp_ind, chp_ptr)
 end
 
 """# uterminate
