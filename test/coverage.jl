@@ -24,5 +24,12 @@ function coverage_increase(nlp :: CUTEstModel)
     csgrp!(nlp.meta.nvar, lj, j_var, j_fun)
     nnzj = Cint[0]
     csgrp(io_err, Cint[nlp.meta.nvar], nnzj, Cint[lj], j_var, j_fun)
+    lh = Int(cdimsh())
+    nnzj, j_var, j_fun, nnzh, h_row, h_col = csgrshp(nlp.meta.nvar, lj, lh)
+    csgrshp!(nlp.meta.nvar, lj, j_var, j_fun, lh, h_row, h_col)
+    nnzj = Cint[0]
+    nnzh = Cint[0]
+    csgrshp(io_err, Cint[nlp.meta.nvar], nnzj, Cint[lj], j_var, j_fun, nnzh,
+            Cint[lh], h_row, h_col)
   end
 end
