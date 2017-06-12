@@ -36,11 +36,6 @@ problems = CUTEst.select(max_var=2, max_con=2)
 problems = randsubseq(problems, 0.1)
 
 for p in problems
-  if !contains(p, "SIF")
-    continue
-  end
-  p = p[1:end-4]
-
   nlp = CUTEstModel(p)
   x0 = nlp.meta.x0
   nvar, ncon = nlp.meta.nvar, nlp.meta.ncon
