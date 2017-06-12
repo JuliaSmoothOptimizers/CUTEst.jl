@@ -19,5 +19,10 @@ function coverage_increase(nlp :: CUTEstModel)
     chp_ind, chp_ptr = cchprodsp(nlp.meta.ncon, lchp)
     cchprodsp!(nlp.meta.ncon, lchp, chp_ind, chp_ptr)
     cchprodsp(io_err, Cint[nlp.meta.ncon], Cint[lchp], chp_ind, chp_ptr)
+    lj = Int(cdimsj())
+    nnzj, j_var, j_fun = csgrp(nlp.meta.nvar, lj)
+    csgrp!(nlp.meta.nvar, lj, j_var, j_fun)
+    nnzj = Cint[0]
+    csgrp(io_err, Cint[nlp.meta.nvar], nnzj, Cint[lj], j_var, j_fun)
   end
 end
