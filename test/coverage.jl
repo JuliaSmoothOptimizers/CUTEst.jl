@@ -1,5 +1,7 @@
 # Tests made to increase the coverage.
 
+io_err = Cint[0]
+
 function coverage_increase(nlp :: CUTEstModel)
   pname = probname()
   vname = varnames(nlp.meta.nvar)
@@ -12,7 +14,10 @@ function coverage_increase(nlp :: CUTEstModel)
     calls, time = creport()
     creport!(calls, time)
     cname = connames(nlp.meta.ncon)
-    cdimchp() # Not clear how it works
+    lchp = Int(cdimchp())
     cstats()
+    chp_ind, chp_ptr = cchprodsp(nlp.meta.ncon, lchp)
+    cchprodsp!(nlp.meta.ncon, lchp, chp_ind, chp_ptr)
+    cchprodsp(io_err, Cint[nlp.meta.ncon], Cint[lchp], chp_ind, chp_ptr)
   end
 end

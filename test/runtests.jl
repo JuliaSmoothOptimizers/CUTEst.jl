@@ -32,7 +32,8 @@ include("consistency.jl")
 include("test_mpb.jl")
 include("test_select.jl")
 
-problems = randsubseq(readdir(get(ENV, "MASTSIF", "") ), 0.01)
+problems = CUTEst.select(max_var=2, max_con=2)
+problems = randsubseq(problems, 0.1)
 
 for p in problems
   if !contains(p, "SIF")
