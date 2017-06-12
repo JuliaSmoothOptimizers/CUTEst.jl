@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate, cifn
+    uterminate, cterminate, cifn, cisgr
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
     cstats!, cvartype!, creport!,
@@ -14,7 +14,7 @@ export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     cgr!, csgr!, ccfsg!, ccifg!, ccifsg!, cgrdh!, cdh!, cdhc!, cshp!,
     csh!, cshc!, ceh!, cidh!, cish!, csgrsh!, csgreh!, chprod!, cshprod!,
     chcprod!, cshcprod!, cjprod!, csjprod!, cchprods!, cchprodsp!, uterminate!,
-    cterminate!
+    cterminate!, cisgr!
 
 """
     x, x_l, x_u = usetup(input, out, io_buffer, n)
@@ -2379,4 +2379,45 @@ function cifn(n::Int, iprob::Int, x::Array{Float64, 1})
   cifn(io_err, Cint[n], Cint[iprob], x, f)
   @cutest_error
   return f[1]
+end
+
+"""
+    nnzg, g_val, g_var = cisgr(n, iprob, x, lg)
+
+  - n:       [IN] Int
+  - iprob:   [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - lg:      [IN] Int
+  - nnzg:    [OUT] Int
+  - g_val:   [OUT] Array{Float64, 1}
+  - g_var:   [OUT] Array{Cint, 1}
+"""
+function cisgr(n::Int, iprob::Int, x::Array{Float64, 1}, lg::Int)
+  io_err = Cint[0]
+  nnzg = Cint[0]
+  g_val = Array{Cdouble}(lg)
+  g_var = Array{Cint}(lg)
+  cisgr(io_err, Cint[n], Cint[iprob], x, nnzg, Cint[lg], g_val, g_var)
+  @cutest_error
+  return nnzg[1], g_val, g_var
+end
+
+"""
+    nnzg = cisgr!(n, iprob, x, lg, g_val, g_var)
+
+  - n:       [IN] Int
+  - iprob:   [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - lg:      [IN] Int
+  - nnzg:    [OUT] Int
+  - g_val:   [OUT] Array{Float64, 1}
+  - g_var:   [OUT] Array{Cint, 1}
+"""
+function cisgr!(n::Int, iprob::Int, x::Array{Float64, 1}, lg::Int,
+    g_val::Array{Float64, 1}, g_var::Array{Cint, 1})
+  io_err = Cint[0]
+  nnzg = Cint[0]
+  cisgr(io_err, Cint[n], Cint[iprob], x, nnzg, Cint[lg], g_val, g_var)
+  @cutest_error
+  return nnzg[1]
 end
