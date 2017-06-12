@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate, cifn, cisgr, csgrp, cigr
+    uterminate, cterminate, cifn, cisgr, csgrp, cigr, csgrshp
 
 """# usetup
 The usetup subroutine sets up the correct data structures for
@@ -2375,4 +2375,35 @@ function cigr(io_err::Array{Cint, 1}, n::Array{Cint, 1}, iprob::Array{Cint, 1},
   ccall(dlsym(cutest_lib, "cutest_cigr_"), Void,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, n, iprob, x, g_val)
+end
+
+"""# csgrshp
+The csgrshp subroutine evaluates sparsity pattern used when storing the
+gradients of the general constraints and of either the objective function or
+the Lagrangian function l(x,y)=f(x)+yTc(x), as well as the Hessian of the
+Lagrangian function, corresponding to the problem decoded from a SIF file by
+the script sifdecoder.
+
+For more information, run the shell command
+
+    man cutest_csgrshp
+
+  - io_err:  [OUT] Array{Cint, 1}
+  - n:       [IN] Array{Cint, 1}
+  - nnzj:    [OUT] Array{Cint, 1};
+  - lj:      [IN] Array{Cint, 1}
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
+  - nnzh:    [OUT] Array{Cint, 1}
+  - lh:      [IN] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1};
+"""
+function csgrshp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzj::Array{Cint, 1},
+    lj::Array{Cint, 1}, j_var::Array{Cint, 1}, j_fun::Array{Cint, 1}, nnzh::Array{Cint, 1},
+    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  ccall(dlsym(cutest_lib, "cutest_csgrshp_"), Void,
+    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
+    io_err, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
 end

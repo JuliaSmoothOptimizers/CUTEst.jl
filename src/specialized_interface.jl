@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate, cifn, cisgr, csgrp, cigr
+    uterminate, cterminate, cifn, cisgr, csgrp, cigr, csgrshp
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
     cstats!, cvartype!, creport!,
@@ -14,7 +14,7 @@ export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     cgr!, csgr!, ccfsg!, ccifg!, ccifsg!, cgrdh!, cdh!, cdhc!, cshp!,
     csh!, cshc!, ceh!, cidh!, cish!, csgrsh!, csgreh!, chprod!, cshprod!,
     chcprod!, cshcprod!, cjprod!, csjprod!, cchprods!, cchprodsp!, uterminate!,
-    cterminate!, cisgr!, csgrp!, cigr!
+    cterminate!, cisgr!, csgrp!, cigr!, csgrshp!
 
 """
     x, x_l, x_u = usetup(input, out, io_buffer, n)
@@ -2487,4 +2487,53 @@ function cigr!(n::Int, iprob::Int, x::Array{Float64, 1}, g_val::Array{Float64, 1
   cigr(io_err, Cint[n], Cint[iprob], x, g_val)
   @cutest_error
   return
+end
+
+"""
+    nnzj, j_var, j_fun, nnzh, h_row, h_col = csgrshp(n, lj, lh)
+
+  - n:       [IN] Int
+  - lj:      [IN] Int
+  - lh:      [IN] Int
+  - nnzj:    [OUT] Int
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
+  - nnzh:    [OUT] Int
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+"""
+function csgrshp(n::Int, lj::Int, lh::Int)
+  io_err = Cint[0]
+  nnzj = Cint[0]
+  j_var = Array{Cint}(lj)
+  j_fun = Array{Cint}(lj)
+  nnzh = Cint[0]
+  h_row = Array{Cint}(lh)
+  h_col = Array{Cint}(lh)
+  csgrshp(io_err, Cint[n], nnzj, Cint[lj], j_var, j_fun, nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzj[1], j_var, j_fun, nnzh[1], h_row, h_col
+end
+
+"""
+    nnzj, nnzh = csgrshp!(n, lj, lh, j_var, j_fun, h_row, h_col)
+
+  - n:       [IN] Int
+  - lj:      [IN] Int
+  - lh:      [IN] Int
+  - j_var:   [OUT] Array{Cint, 1}
+  - j_fun:   [OUT] Array{Cint, 1}
+  - h_row:   [OUT] Array{Cint, 1}
+  - h_col:   [OUT] Array{Cint, 1}
+  - nnzj:    [OUT] Int
+  - nnzh:    [OUT] Int
+"""
+function csgrshp!(n::Int, lj::Int, j_var::Array{Cint, 1}, j_fun::Array{Cint, 1},
+    lh::Int, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+  io_err = Cint[0]
+  nnzj = Cint[0]
+  nnzh = Cint[0]
+  csgrshp(io_err, Cint[n], nnzj, Cint[lj], j_var, j_fun, nnzh, Cint[lh], h_row, h_col)
+  @cutest_error
+  return nnzj[1], nnzh[1]
 end
