@@ -91,6 +91,13 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test isapprox(glx, g(x0)+J(x0)'*y0, rtol=rtol)
       @test isapprox(Jx, J(x0), rtol=rtol)
 
+      cigr(st, nvar, Cint[0], x0, gval)
+      @test isapprox(gval, g(x0), rtol=rtol)
+      for i = 1:ncon[1]
+        cigr(st, nvar, Cint[i], x0, gval)
+        @test isapprox(gval, J(x0)[i,:], rtol=rtol)
+      end
+
       cisgr(st, nvar, Cint[0], x0, nnzg, nvar, gval, gvar)
       I = 1:nnzg[1]
       @test isapprox(gval[I], g(x0)[gvar[I]], rtol=rtol)
