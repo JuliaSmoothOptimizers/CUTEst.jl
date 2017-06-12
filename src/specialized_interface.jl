@@ -5,7 +5,7 @@ export usetup, csetup, udimen, udimsh, udimse, uvartype, unames,
     cfn, cofg, cofsg, ccfg, clfg, cgr, csgr, ccfsg, ccifg, ccifsg, cgrdh,
     cdh, cdhc, cshp, csh, cshc, ceh, cidh, cish, csgrsh, csgreh, chprod,
     cshprod, chcprod, cshcprod, cjprod, csjprod, cchprods, cchprodsp,
-    uterminate, cterminate, cifn, cisgr, csgrp
+    uterminate, cterminate, cifn, cisgr, csgrp, cigr
 export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     ureport!, cdimen!, cdimsj!, cdimsh!, cdimchp!, cdimse!,
     cstats!, cvartype!, creport!,
@@ -14,7 +14,7 @@ export usetup!, csetup!, udimen!, udimsh!, udimse!, uvartype!,
     cgr!, csgr!, ccfsg!, ccifg!, ccifsg!, cgrdh!, cdh!, cdhc!, cshp!,
     csh!, cshc!, ceh!, cidh!, cish!, csgrsh!, csgreh!, chprod!, cshprod!,
     chcprod!, cshcprod!, cjprod!, csjprod!, cchprods!, cchprodsp!, uterminate!,
-    cterminate!, cisgr!, csgrp!
+    cterminate!, cisgr!, csgrp!, cigr!
 
 """
     x, x_l, x_u = usetup(input, out, io_buffer, n)
@@ -2456,4 +2456,35 @@ function csgrp!(n::Int, lj::Int, j_var::Array{Cint, 1}, j_fun::Array{Cint, 1})
   csgrp(io_err, Cint[n], nnzj, Cint[lj], j_var, j_fun)
   @cutest_error
   return nnzj[1]
+end
+
+"""
+    g_val = cigr(n, iprob, x)
+
+  - n:       [IN] Int
+  - iprob:   [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g_val:   [OUT] Array{Float64, 1}
+"""
+function cigr(n::Int, iprob::Int, x::Array{Float64, 1})
+  io_err = Cint[0]
+  g_val = Array{Cdouble}(n)
+  cigr(io_err, Cint[n], Cint[iprob], x, g_val)
+  @cutest_error
+  return g_val
+end
+
+"""
+    cigr!(n, iprob, x, g_val)
+
+  - n:       [IN] Int
+  - iprob:   [IN] Int
+  - x:       [IN] Array{Float64, 1}
+  - g_val:   [OUT] Array{Float64, 1}
+"""
+function cigr!(n::Int, iprob::Int, x::Array{Float64, 1}, g_val::Array{Float64, 1})
+  io_err = Cint[0]
+  cigr(io_err, Cint[n], Cint[iprob], x, g_val)
+  @cutest_error
+  return
 end

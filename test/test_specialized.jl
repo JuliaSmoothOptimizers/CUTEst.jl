@@ -77,6 +77,17 @@ function test_specinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test isapprox(gx, g(x0), rtol=rtol)
       @test isapprox(Jx, J(x0), rtol=rtol)
 
+      g_val = cigr(nlp.meta.nvar, 0, x0)
+      @test isapprox(g_val, g(x0), rtol=rtol)
+      cigr!(nlp.meta.nvar, 0, x0, g_val)
+      @test isapprox(g_val, g(x0), rtol=rtol)
+      for i = 1:nlp.meta.ncon
+        g_val = cigr(nlp.meta.nvar, i, x0)
+        @test isapprox(g_val, J(x0)[i,:], rtol=rtol)
+        cigr!(nlp.meta.nvar, i, x0, g_val)
+        @test isapprox(g_val, J(x0)[i,:], rtol=rtol)
+      end
+
       nnzg, gval, gvar = cisgr(nlp.meta.nvar, 0, x0, nlp.meta.nvar)
       @test isapprox(gval[1:nnzg], g(x0)[gvar[1:nnzg]], rtol=rtol)
       nnzg = cisgr!(nlp.meta.nvar, 0, x0, nlp.meta.nvar, gval, gvar)
