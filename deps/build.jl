@@ -59,7 +59,7 @@ if validate_libcutest()
   ispath(cutestenv) && rm(cutestenv)
 else
   install = true
-  if isfile(cutestenv)
+  if !is_linux() && isfile(cutestenv)
     include(cutestenv)
     if validate_libcutest()
       println("Valid CUTEst installation detected, no files installed.\nTo force installation, delete $cutestenv and run Pkg.build(\"CUTEst\") again.")
@@ -94,10 +94,9 @@ else
 
     @static if is_linux()
       cd(here) do
-        isdir("files") && rm("files", recursive=true)
-        mkdir("files")
+        isdir("files") || mkdir("files")
         cd("files") do
-          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.2.1/install.sh"
+          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.3/install.sh"
           run(`wget $lnxurl -O install.sh`)
           ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
           run(`bash install.sh`)
@@ -108,6 +107,7 @@ else
                 write(cenv, "$p = get(ENV, \"$p\", \"\")\n")
               end
               for line in readlines(f)
+                chomp(line) == "" && continue
                 var = split(split(line, "=")[1])[2]
                 path = chomp(split(line, "=")[2])
                 write(cenv, "ENV[\"$var\"] = \"$path\"\n")
