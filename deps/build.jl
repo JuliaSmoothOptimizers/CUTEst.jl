@@ -54,21 +54,26 @@ end
 here = dirname(@__FILE__)
 cutestenv = joinpath(here, "cutestenv.jl")
 
+# Check if there is an external CUTEst installation
 if validate_libcutest()
+  cutest_path = get(ENV, "CUTEST", "")
+  info("External CUTEst installation found on $cutest_path")
   check_env()
   ispath(cutestenv) && rm(cutestenv)
 else
-  install = true
-  if !is_linux() && isfile(cutestenv)
-    include(cutestenv)
-    if validate_libcutest()
-      println("Valid CUTEst installation detected, no files installed.\nTo force installation, delete $cutestenv and run Pkg.build(\"CUTEst\") again.")
-      install = false
+  @static if is_apple()
+    install = true
+    if isfile(cutestenv)
+      include(cutestenv)
+      if validate_libcutest()
+        info("Updating CUTEst")
+        Homebrew.brew(`update cutest`)
+        install = false
+      end
     end
-  end
-  if install
-    # Install CUTEst
-    @static if is_apple()
+
+    if install
+      info("Installing CUTEst")
       Homebrew.add("optimizers/cutest/cutest")
       Homebrew.add("optimizers/cutest/mastsif")
 
@@ -91,29 +96,32 @@ else
         println(cenv, "ENV[\"cutest-problems\"] = \"$path\"")
       end
     end
+  elseif is_linux()
+    cd(here) do
+      isdir("files") || mkdir("files")
+      cd("files") do
+        if isfile("install.sh")
+          info("Updating CUTEst")
+        else
+          info("Installing CUTEst")
+        end
+        lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.3/install.sh"
+        run(`wget $lnxurl -O install.sh`)
+        ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
+        run(`bash install.sh`)
 
-    @static if is_linux()
-      cd(here) do
-        isdir("files") || mkdir("files")
-        cd("files") do
-          lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.3/install.sh"
-          run(`wget $lnxurl -O install.sh`)
-          ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
-          run(`bash install.sh`)
-
-          open(cutestenv, "w") do cenv
-            open("cutest_env.bashrc") do f
-              for p in ["PATH", "MANPATH", "LD_LIBRARY_PATH"]
-                write(cenv, "$p = get(ENV, \"$p\", \"\")\n")
-              end
-              for line in readlines(f)
-                chomp(line) == "" && continue
-                var = split(split(line, "=")[1])[2]
-                path = chomp(split(line, "=")[2])
-                write(cenv, "ENV[\"$var\"] = \"$path\"\n")
-              end
-              println(cenv, "ENV[\"cutest-problems\"] = \"$(pwd())/problems\"")
+        open(cutestenv, "w") do cenv
+          open("cutest_env.bashrc") do f
+            for p in ["PATH", "MANPATH", "LD_LIBRARY_PATH"]
+              write(cenv, "$p = get(ENV, \"$p\", \"\")\n")
             end
+            for line in readlines(f)
+              chomp(line) == "" && continue
+              var = split(split(line, "=")[1])[2]
+              path = chomp(split(line, "=")[2])
+              write(cenv, "ENV[\"$var\"] = \"$path\"\n")
+            end
+            println(cenv, "ENV[\"cutest-problems\"] = \"$(pwd())/problems\"")
           end
         end
       end
