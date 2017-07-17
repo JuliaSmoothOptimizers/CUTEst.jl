@@ -56,8 +56,7 @@ cutestenv = joinpath(here, "cutestenv.jl")
 
 # Check if there is an external CUTEst installation
 if validate_libcutest()
-  cutest_path = get(ENV, "CUTEST", "")
-  info("External CUTEst installation found on $cutest_path")
+  info("External CUTEst installation found")
   check_env()
   ispath(cutestenv) && rm(cutestenv)
 else
@@ -100,11 +99,8 @@ else
     cd(here) do
       isdir("files") || mkdir("files")
       cd("files") do
-        if isfile("install.sh")
-          info("Updating CUTEst")
-        else
-          info("Installing CUTEst")
-        end
+        info("Installing CUTEst")
+
         lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.3/install.sh"
         run(`wget $lnxurl -O install.sh`)
         ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
