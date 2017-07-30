@@ -67,6 +67,7 @@ else
       if validate_libcutest()
         info("Updating CUTEst")
         Homebrew.brew(`update cutest`)
+        Homebrew.brew(`update mastsif`)
         install = false
       end
     end
