@@ -75,10 +75,10 @@ Check the [NLPModels API](api/#nlpmodels-api) for details.
 ## Working with CUTEst directly
 
 We also have implemented function to allow access to the CUTEst functions
-directly. There is a specialized API which provides a Julian way to access them,
-and a core API which is only a wrapper for CUTEst.
+directly:
+a core API which is only a wrapper for CUTEst.
 For more information see the section [core](core), or
-the documentation [here](api/#core-and-specialized-api).
+the documentation [here](api/#core-api).
 
 ## Contents
 

@@ -42,11 +42,11 @@ Pages   = ["classification.jl"]
 Order   = [:function]
 ```
 
-## Core and specialized API
+## Core API
 
 ```@autodocs
 Modules = [CUTEst]
-Pages   = ["core_interface.jl", "specialized_interface.jl"]
+Pages   = ["core_interface.jl"]
 Order   = [:function]
 ```
 

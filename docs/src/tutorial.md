@@ -1,6 +1,6 @@
 # Tutorial
 
-CUTEst can be accessed in three ways.
+CUTEst can be accessed in two ways.
 - The first, easiest, and recommended for most users, is using the
   [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
   This is recommended because if you develop something for this an `NLPModel`,
@@ -8,9 +8,6 @@ CUTEst can be accessed in three ways.
 - The second is the core interface, which is just a wrapper of the Fortran
   functions, and is not recommended unless you really need and know what you're
   doing.
-- The third is something in the middle, which we called specialized interface.
-  It follows the same naming as the core functions, but it is more accessible,
-  from the Julia point of view.
 
 ## NLPModels interface
 
