@@ -218,6 +218,8 @@ Usage:
   - n:       [IN] Array{Cint, 1}
   - pname:   [OUT] Array{UInt8, 1}
   - vname:   [OUT] Array{UInt8, 1}
+
+To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
 function unames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, pname::Array{UInt8, 1},
     vname::Array{UInt8, 2})
@@ -474,6 +476,9 @@ Usage:
   - pname:   [OUT] Array{UInt8, 1}
   - vname:   [OUT] Array{UInt8, 1}
   - cname:   [OUT] Array{UInt8, 1}
+
+To get useful names, use `String(x)` where `x` can be `pname`, `vname[:,i]`,
+or `cname[:,i]`.
 """
 function cnames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     pname::Array{UInt8, 1}, vname::Array{UInt8, 2}, cname::Array{UInt8, 2})
@@ -531,6 +536,8 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - m:       [IN] Array{Cint, 1}
   - cname:   [OUT] Array{UInt8, 1}
+
+To get useful names, use `String(cname[:,i])`.
 """
 function connames(io_err::Array{Cint, 1}, m::Array{Cint, 1}, cname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_connames_"), Void,
@@ -584,6 +591,8 @@ Usage:
 
   - io_err:  [OUT] Array{Cint, 1}
   - pname:   [OUT] Array{UInt8, 1}
+
+To get a useful name, use `String(pname)`.
 """
 function probname(io_err::Array{Cint, 1}, pname::Array{UInt8, 1})
   ccall(dlsym(cutest_lib, "cutest_probname_"), Void,
@@ -611,6 +620,8 @@ Usage:
   - io_err:  [OUT] Array{Cint, 1}
   - n:       [IN] Array{Cint, 1}
   - vname:   [OUT] Array{UInt8, 1}
+
+To get useful names, use `String(vname[:, i])`.
 """
 function varnames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, vname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_varnames_"), Void,
