@@ -3,33 +3,35 @@
 io_err = Cint[0]
 
 function coverage_increase(nlp :: CUTEstModel)
-  pname = probname()
-  vname = varnames(nlp.meta.nvar)
-  if nlp.meta.ncon == 0
-    pname, vname = unames(nlp.meta.nvar)
-    calls, time = ureport()
-    ureport!(calls, time)
+  n, m = nlp.meta.nvar, nlp.meta.ncon
+  pname = Array{UInt8, 1}(10)
+  probname(io_err, pname)
+  vname = Array{UInt8, 2}(10, n)
+  varnames(io_err, Cint[n], vname)
+  if m == 0
+    unames(io_err, Cint[n], pname, vname)
+    calls, time = Array{Cdouble}(4), Array{Cdouble}(2)
+    ureport(io_err, calls, time)
   else
-    pname, vname, cname = cnames(nlp.meta.nvar, nlp.meta.ncon)
-    calls, time = creport()
-    creport!(calls, time)
-    cname = connames(nlp.meta.ncon)
-    lchp = Int(cdimchp())
-    cstats()
-    chp_ind, chp_ptr = cchprodsp(nlp.meta.ncon, lchp)
-    cchprodsp!(nlp.meta.ncon, lchp, chp_ind, chp_ptr)
-    cchprodsp(io_err, Cint[nlp.meta.ncon], Cint[lchp], chp_ind, chp_ptr)
-    lj = Int(cdimsj())
-    nnzj, j_var, j_fun = csgrp(nlp.meta.nvar, lj)
-    csgrp!(nlp.meta.nvar, lj, j_var, j_fun)
-    nnzj = Cint[0]
-    csgrp(io_err, Cint[nlp.meta.nvar], nnzj, Cint[lj], j_var, j_fun)
-    lh = Int(cdimsh())
-    nnzj, j_var, j_fun, nnzh, h_row, h_col = csgrshp(nlp.meta.nvar, lj, lh)
-    csgrshp!(nlp.meta.nvar, lj, j_var, j_fun, lh, h_row, h_col)
-    nnzj = Cint[0]
-    nnzh = Cint[0]
-    csgrshp(io_err, Cint[nlp.meta.nvar], nnzj, Cint[lj], j_var, j_fun, nnzh,
-            Cint[lh], h_row, h_col)
+    cname = Array{UInt8, 2}(10, m)
+    connames(io_err, Cint[m], cname)
+    cnames(io_err, Cint[n], Cint[m], pname, vname, cname)
+    calls, time = Array{Cdouble}(7), Array{Cdouble}(2)
+    creport(io_err, calls, time)
+    nvo, nvc, ec, lc = Cint[0], Cint[0], Cint[0], Cint[0]
+    cstats(io_err, nvo, nvc, ec, lc)
+
+    lchp = Cint[0]
+    cdimchp(io_err, lchp)
+    chp_ind, chp_ptr = Array{Cint}(lchp[1]), Array{Cint}(m+1)
+    cchprodsp(io_err, Cint[m], lchp, chp_ind, chp_ptr)
+    lj, nnzj = Cint[0], Cint[0]
+    cdimsj(io_err, lj)
+    j_var, j_fun = Array{Cint}(lj[1]), Array{Cint}(lj[1])
+    csgrp(io_err, Cint[n], nnzj, lj, j_var, j_fun)
+    lh, nnzh = Cint[0], Cint[0]
+    cdimsh(io_err, lh)
+    h_row, h_col = Array{Cint}(lh[1]), Array{Cint}(lh[1])
+    csgrshp(io_err, Cint[n], nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
   end
 end

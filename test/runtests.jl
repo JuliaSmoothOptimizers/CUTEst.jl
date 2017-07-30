@@ -1,14 +1,11 @@
 using Base.Test, CUTEst, Ipopt, JuMP, MathProgBase, NLPModels
 
-include("test_specialized_manual.jl")
-
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
 problems = [:brownden, :hs5, :hs6, :hs11, :hs14]
 path = joinpath(Pkg.dir("NLPModels"), "test")
 
 include("test_core.jl")
-include("test_specialized.jl")
 include("test_julia.jl")
 include("coverage.jl")
 
@@ -20,7 +17,6 @@ for problem in problems
   adnlp = eval(parse("$(problem)_autodiff"))()
 
   test_nlpinterface(nlp, adnlp)
-  test_specinterface(nlp, adnlp)
   test_coreinterface(nlp, adnlp)
   coverage_increase(nlp)
 
@@ -52,13 +48,6 @@ for p in problems
   end
   println("$p: core interface: f(x₀) = $(fval[1])")
 
-  if ncon > 0
-    cx = zeros(ncon)
-    println("$p: specialized interface: f(x₀) = $(cfn(nvar, ncon, x0)[1])")
-    println("$p: specialized interface: f(x₀) = $(cfn!(nvar, ncon, x0, cx)[1])")
-  else
-    println("$p: specialized interface: f(x₀) = $(ufn(nvar, x0))")
-  end
   finalize(nlp)
 end
 

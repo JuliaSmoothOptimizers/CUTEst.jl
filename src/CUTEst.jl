@@ -67,7 +67,6 @@ macro cutest_error()  # Handle nonzero exit codes.
 end
 
 include("core_interface.jl")
-include("specialized_interface.jl")
 include("julia_interface.jl")
 if Pkg.installed("MathProgBase") != nothing
   include("mpb_interface.jl")
