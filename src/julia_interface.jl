@@ -1,5 +1,5 @@
-export objcons, objgrad, obj, grad, grad!,
-       cons_coord, cons, cons!,
+export objcons, objgrad, objgrad!, obj, grad, grad!,
+       cons_coord, consjac, cons, cons!,
        jac_coord, jac, jprod, jprod!, jtprod, jtprod!,
        hess_coord, hess, hess_op, hprod, hprod!
 
@@ -76,7 +76,7 @@ function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool = true)
   grad && (nlp.counters.neval_grad += 1)
   @cutest_error
 
-  return grad ? (f[1], g) : f[1];
+  return f[1], g
 end
 
 @doc (@doc NLPModels.objgrad!)
@@ -103,7 +103,7 @@ function objgrad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,
 end
 
 @doc (@doc NLPModels.obj)
-obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false);
+obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false)[1]
 
 @doc (@doc NLPModels.grad)
 function grad(nlp :: CUTEstModel, x :: Array{Float64,1})
@@ -139,16 +139,15 @@ Computes the constraint vector and, if `jac` is `true`, the Jacobian in
 coordinate format.
 Usage:
 
-    c, jrow, jcol, jval = cons_coord(nlp, x, true)
-    c = cons_coord(nlp, x, false)
+    c, jrow, jcol, jval = cons_coord(nlp, x, jac)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
   - jac:  [IN] Bool
   - c:    [OUT] Array{Float64, 1}
-  - jrow: [OUT] Array{Int32, 1}
-  - jcol: [OUT] Array{Int32, 1}
-  - jval: [OUT] Array{Float64, 1}
+  - jrow: [OUT] Array{Int32, 1}   # Empty if jac = false
+  - jcol: [OUT] Array{Int32, 1}   # Empty if jac = false
+  - jval: [OUT] Array{Float64, 1} # Empty if jac = false
 """
 function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
   nvar = nlp.meta.nvar;
@@ -168,36 +167,31 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
   @cutest_error
   nlp.counters.neval_cons += 1
   jac && (nlp.counters.neval_jac += 1)
-  return jac ? (c, jrow, jcol, jval) : c;
+  return c, jrow, jcol, jval
 end
 
 """
-    cons(nlp, x, jac)
+    consjac(nlp, x, jac)
 
 Computes the constraint vector and, if `jac` is `true`, the Jacobian in
 internal sparse format.
 Usage:
 
-    c, J = cons(nlp, x, true)
-    c = cons(nlp, x, false)
+    c, J = consjac(nlp, x, jac)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
   - jac:  [IN] Bool
   - c:    [OUT] Array{Float64, 1}
-  - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}
+  - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32} # Empty if jac = false
 """
-function cons(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
-  if jac
-    (c, jrow, jcol, jval) = cons_coord(nlp, x, jac);
-    return (c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar))
-  else
-    return cons_coord(nlp, x, jac);
-  end
+function consjac(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
+  c, jrow, jcol, jval = cons_coord(nlp, x, jac);
+  return c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
 end
 
 @doc (@doc NLPModels.cons)
-cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false);
+cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false)[1]
 
 @doc (@doc NLPModels.cons!)
 function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
@@ -229,7 +223,7 @@ end
 
 @doc (@doc NLPModels.jac)
 function jac(nlp :: CUTEstModel, x :: Array{Float64,1})
-  c, J = cons(nlp, x, true)
+  c, J = consjac(nlp, x, true)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return J
 end
