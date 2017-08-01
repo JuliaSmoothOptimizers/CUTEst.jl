@@ -1026,6 +1026,8 @@ index_nz_result, result)
   - nnz_result:      [OUT] Array{Cint, 1}
   - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Cdouble, 1}
+
+Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function ushprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
     x::Array{Cdouble, 1}, nnz_vector::Array{Cint, 1},
@@ -1993,6 +1995,8 @@ nnz_result, index_nz_result, result)
   - nnz_result:      [OUT] Array{Cint, 1}
   - index_nz_result: [OUT] Array{Cint, 1}
   - result:          [OUT] Array{Cdouble, 1}
+
+Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function cshprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
     goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
