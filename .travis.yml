@@ -16,7 +16,7 @@ branches:
 before_install:
   - if [ `uname` == "Linux" ]; then
       unset DY_LIBRARY_PATH;
-      julia -E 'Pkg.clone("https://github.com/dpo/Linuxbrew.jl.git"); Pkg.build("Linuxbrew")';
+    julia -E 'Pkg.clone("https://github.com/dpo/Linuxbrew.jl.git"); Pkg.build("Linuxbrew"); using Linuxbrew; Linuxbrew.add("patchelf")';
     fi
   - if [ `uname` == "Darwin" ]; then brew update && brew install gcc; fi
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
