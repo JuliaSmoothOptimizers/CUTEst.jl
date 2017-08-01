@@ -64,7 +64,6 @@ CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
 
 macro cutest_error()  # Handle nonzero exit codes.
   esc(:(io_err[1] > 0 && throw(CUTEstException(io_err[1]))))
-  nothing
 end
 
 include("core_interface.jl")

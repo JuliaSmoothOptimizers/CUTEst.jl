@@ -7,25 +7,8 @@ importall NLPModels
 
 @doc (@doc NLPModels.objcons)
 function objcons(nlp :: CUTEstModel, x :: Array{Float64,1})
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  io_err = Cint[0];
-  f = Cdouble[0];
-  c = Array{Float64}(ncon);
-  if ncon > 0
-    ccall(dlsym(cutest_lib, :cutest_cfn_), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,  &nvar,   &ncon,   x,         f,         c);
-    nlp.counters.neval_cons += 1
-  else
-    ccall(dlsym(cutest_lib, :cutest_ufn_), Void,
-                (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,  &nvar,    x,         f);
-  end
-  nlp.counters.neval_obj += 1
-  @cutest_error
-
-  return f[1], c
+  c = Array{Float64}(nlp.meta.ncon);
+  objcons!(nlp, x, c)
 end
 
 @doc (@doc NLPModels.objcons!)
@@ -51,32 +34,9 @@ function objcons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,
 end
 
 @doc (@doc NLPModels.objgrad)
-function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1}, grad :: Bool = true)
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  f = Cdouble[0];
-  io_err = Cint[0];
-  if grad
-    g = Array{Float64}(nvar);
-    get_grad = 1;
-  else
-    g = Array{Float64}(0);
-    get_grad = 0;
-  end
-  if ncon > 0
-    ccall(dlsym(cutest_lib, "cutest_cofg_"), Void,
-        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
-             io_err,      &nvar,            x,            f,            g,  &get_grad);
-  else
-    ccall(dlsym(cutest_lib, "cutest_uofg_"), Void,
-        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
-             io_err,      &nvar,            x,            f,            g,  &get_grad);
-  end
-  nlp.counters.neval_obj += 1
-  grad && (nlp.counters.neval_grad += 1)
-  @cutest_error
-
-  return f[1], g
+function objgrad(nlp :: CUTEstModel, x :: Array{Float64,1})
+  g = Array{Float64}(nlp.meta.nvar);
+  objgrad!(nlp, x, g)
 end
 
 @doc (@doc NLPModels.objgrad!)
@@ -103,7 +63,13 @@ function objgrad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,
 end
 
 @doc (@doc NLPModels.obj)
-obj(nlp :: CUTEstModel, x :: Array{Float64,1}) = objgrad(nlp, x, false)[1]
+function obj(nlp :: CUTEstModel, x :: Array{Float64,1})
+  f = objcons(nlp, x)[1]
+  if nlp.meta.ncon > 0
+    nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
+  end
+  return f
+end
 
 @doc (@doc NLPModels.grad)
 function grad(nlp :: CUTEstModel, x :: Array{Float64,1})
@@ -113,50 +79,35 @@ end
 
 @doc (@doc NLPModels.grad!)
 function grad!(nlp :: CUTEstModel, x :: Array{Float64,1}, g :: Array{Float64,1})
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  f = Cdouble[0];
-  io_err = Cint[0];
-  get_grad = 1;
-  if ncon > 0
-    ccall(dlsym(cutest_lib, "cutest_cofg_"), Void,
-        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
-             io_err,      &nvar,            x,            f,            g,  &get_grad);
-  else
-    ccall(dlsym(cutest_lib, "cutest_uofg_"), Void,
-        (Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}),
-             io_err,      &nvar,            x,            f,            g,  &get_grad);
-  end
-  @cutest_error
-  nlp.counters.neval_grad += 1
+  objgrad!(nlp, x, g)
+  nlp.counters.neval_obj -= 1  # does not really count as a objective eval
   return g
 end
 
 """
-    cons_coord(nlp, x, jac)
+    cons_coord(nlp, x)
 
-Computes the constraint vector and, if `jac` is `true`, the Jacobian in
+Computes the constraint vector and the Jacobian in
 coordinate format.
 Usage:
 
-    c, jrow, jcol, jval = cons_coord(nlp, x, jac)
+    c, jrow, jcol, jval = cons_coord(nlp, x)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
-  - jac:  [IN] Bool
   - c:    [OUT] Array{Float64, 1}
-  - jrow: [OUT] Array{Int32, 1}   # Empty if jac = false
-  - jcol: [OUT] Array{Int32, 1}   # Empty if jac = false
-  - jval: [OUT] Array{Float64, 1} # Empty if jac = false
+  - jrow: [OUT] Array{Int32, 1}
+  - jcol: [OUT] Array{Int32, 1}
+  - jval: [OUT] Array{Float64, 1}
 """
-function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
+function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzj = nlp.meta.nnzj;
   io_err = Cint[0];
   c = Array{Float64}(ncon);
-  jsize = jac ? nlp.meta.nnzj : 0;
-  get_j = jac ? 1 : 0;
+  jsize = nlp.meta.nnzj
+  get_j = 1
   jval = Array{Float64}(jsize);
   jrow = Array{Int32}(jsize);
   jcol = Array{Int32}(jsize);
@@ -166,64 +117,52 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
                io_err,  &nvar,   &ncon,   x,         c,         &nnzj,   &jsize,  jval,      jcol,    jrow,    &get_j);
   @cutest_error
   nlp.counters.neval_cons += 1
-  jac && (nlp.counters.neval_jac += 1)
+  nlp.counters.neval_jac += 1
   return c, jrow, jcol, jval
 end
 
 """
-    consjac(nlp, x, jac)
+    consjac(nlp, x)
 
-Computes the constraint vector and, if `jac` is `true`, the Jacobian in
+Computes the constraint vector and the Jacobian in
 internal sparse format.
 Usage:
 
-    c, J = consjac(nlp, x, jac)
+    c, J = consjac(nlp, x)
 
   - nlp:  [IN] CUTEstModel
   - x:    [IN] Array{Float64, 1}
-  - jac:  [IN] Bool
   - c:    [OUT] Array{Float64, 1}
-  - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32} # Empty if jac = false
+  - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}
 """
-function consjac(nlp :: CUTEstModel, x :: Array{Float64,1}, jac :: Bool)
-  c, jrow, jcol, jval = cons_coord(nlp, x, jac);
+function consjac(nlp :: CUTEstModel, x :: Array{Float64,1})
+  c, jrow, jcol, jval = cons_coord(nlp, x);
   return c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
 end
 
 @doc (@doc NLPModels.cons)
-cons(nlp :: CUTEstModel, x :: Array{Float64,1}) = cons_coord(nlp, x, false)[1]
+function cons(nlp :: CUTEstModel, x :: Array{Float64,1})
+  c = Array{Float64}(nlp.meta.ncon)
+  cons!(nlp, x, c)
+end
 
 @doc (@doc NLPModels.cons!)
 function cons!(nlp :: CUTEstModel, x :: Array{Float64,1}, c :: Array{Float64,1})
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  ncon > 0 || return c
-  io_err = Cint[0];
-  nnzj = 0;
-  jsize = 0;
-  get_j = 0;
-  jval = Array{Float64}(jsize);
-  jrow = Array{Int32}(jsize);
-  jcol = Array{Int32}(jsize);
-
-  ccall(dlsym(cutest_lib, :cutest_ccfsg_), Void,
-              (Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ptr{Int32}),
-               io_err,  &nvar,   &ncon,   x,         c,         &nnzj,   &jsize,  jval,      jcol,    jrow,    &get_j);
-  @cutest_error
-  nlp.counters.neval_cons += 1
+  objcons!(nlp, x, c)
+  nlp.counters.neval_obj -= 1  # does not really count as a objective eval
   return c;
 end
 
 @doc (@doc NLPModels.jac_coord!)
 function jac_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
-  c, jrow, jcol, jval = cons_coord(nlp, x, true)
+  c, jrow, jcol, jval = cons_coord(nlp, x)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return (jrow, jcol, jval)
 end
 
 @doc (@doc NLPModels.jac)
 function jac(nlp :: CUTEstModel, x :: Array{Float64,1})
-  c, J = consjac(nlp, x, true)
+  c, J = consjac(nlp, x)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return J
 end

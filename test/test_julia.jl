@@ -20,7 +20,7 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     fx = obj(nlp, x0);
     @test isapprox(fx, f(x0), rtol=rtol)
 
-    (fx, gx) = objgrad(nlp, x0, true);
+    (fx, gx) = objgrad(nlp, x0)
     @test isapprox(fx, f(x0), rtol=rtol)
     @test isapprox(gx, g(x0), rtol=rtol)
 
@@ -36,17 +36,14 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test isapprox(fx, f(x0), rtol=rtol)
       @test isapprox(cx, c(x0), rtol=rtol)
 
-      (cx, jrow, jcol, jval) = cons_coord(nlp, x0, true)
+      (cx, jrow, jcol, jval) = cons_coord(nlp, x0)
       Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
       @test isapprox(cx, c(x0), rtol=rtol)
       @test isapprox(Jx, J(x0), rtol=rtol)
 
-      (cx, Jx) = consjac(nlp, x0, true);
+      (cx, Jx) = consjac(nlp, x0)
       @test isapprox(cx, c(x0), rtol=rtol)
       @test isapprox(Jx, J(x0), rtol=rtol)
-
-      (cx, Jx) = consjac(nlp, x0, false)
-      @test isapprox(cx, c(x0), rtol=rtol)
 
       cx = cons(nlp, x0) # This is here to improve coverage
       @test isapprox(cx, c(x0), rtol=rtol)
@@ -102,7 +99,7 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     if nlp.meta.ncon > 0
       @assert nlp.counters.neval_obj == 3
       @assert nlp.counters.neval_grad == 3
-      @assert nlp.counters.neval_cons == 6
+      @assert nlp.counters.neval_cons == 5
       @assert nlp.counters.neval_jac == 4
       @assert nlp.counters.neval_jprod == 1
       @assert nlp.counters.neval_jtprod == 1
@@ -122,7 +119,7 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     print("Julia interface stress test... ")
     for i = 1:10000
       fx = obj(nlp, x0);
-      (fx, gx) = objgrad(nlp, x0, true);
+      (fx, gx) = objgrad(nlp, x0)
       gx = grad(nlp, x0)
       grad!(nlp, x0, gx)
       Hx = hess(nlp, x0);
@@ -131,10 +128,9 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       hprod!(nlp, x0, v, hv)
       if nlp.meta.ncon > 0
         (fx, cx) = objcons(nlp, x0)
-        (cx, jrow, jcol, jval) = cons_coord(nlp, x0, true)
+        (cx, jrow, jcol, jval) = cons_coord(nlp, x0)
         Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
-        (cx, Jx) = consjac(nlp, x0, true);
-        cx, Jx = consjac(nlp, x0, false)
+        (cx, Jx) = consjac(nlp, x0)
         cx = cons(nlp, x0)
         cons!(nlp, x0, cx)
         (jrow, jcol, jval) = jac_coord(nlp, x0)
