@@ -9,16 +9,15 @@ matrix:
       julia: 0.6
       osx_image: xcode7.3
 
-addons:
-  apt_packages:
-    - gfortran
-
 branches:
   only:
     - master
 
 before_install:
-  - if [ `uname` == "Linux" ]; then unset DY_LIBRARY_PATH; fi
+  - if [ `uname` == "Linux" ]; then
+      unset DY_LIBRARY_PATH;
+      julia -E 'Pkg.clone("https://github.com/dpo/Linuxbrew.jl.git"); Pkg.build("Linuxbrew")';
+    fi
   - if [ `uname` == "Darwin" ]; then brew update && brew install gcc; fi
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 
