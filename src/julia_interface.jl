@@ -118,7 +118,7 @@ function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
   @cutest_error
   nlp.counters.neval_cons += 1
   nlp.counters.neval_jac += 1
-  return c, jrow, jcol, jval
+  return c, Int.(jrow), Int.(jcol), jval
 end
 
 """
@@ -226,7 +226,7 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float6
                  io_err,     &nvar,      &ncon,      x,            y,            this_nnzh,  &nnzh,      hval,         hrow,       hcol);
     @cutest_error
     nlp.counters.neval_hess += 1
-    return (hcol, hrow, hval)
+    return (Int.(hcol), Int.(hrow), hval)
   end
 
   if ncon > 0
@@ -245,7 +245,7 @@ function hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float6
 
   obj_weight != 1.0 && (hval[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   nlp.counters.neval_hess += 1
-  return (hcol, hrow, hval);  # swap rows and column
+  return (Int.(hcol), Int.(hrow), hval);  # swap rows and column
 end
 
 @doc (@doc NLPModels.hess)
