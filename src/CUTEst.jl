@@ -171,15 +171,15 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   end
   @cutest_error
 
-  nnzh = nnzh[1];
-  nnzj = nnzj[1];
+  nnzh = Int(nnzh[1])
+  nnzj = Int(nnzj[1])
 
   ccall(dlsym(cutest_lib, :fortran_close_), Void,
       (Ptr{Int32}, Ptr{Int32}), &funit, io_err);
   @cutest_error
 
-  meta = NLPModelMeta(nvar, x0=x, lvar=bl, uvar=bu,
-                      ncon=ncon, y0=v, lcon=cl, ucon=cu,
+  meta = NLPModelMeta(Int(nvar), x0=x, lvar=bl, uvar=bu,
+                      ncon=Int(ncon), y0=v, lcon=cl, ucon=cu,
                       nnzj=nnzj, nnzh=nnzh,
                       lin=lin, nln=nln,
                       nlin=nlin, nnln=nnln,
