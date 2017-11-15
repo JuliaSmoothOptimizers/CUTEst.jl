@@ -1,4 +1,4 @@
-__precompile__(false)  # due to optional dependencies
+__precompile__()
 
 # Using CUTEst from Julia.
 
