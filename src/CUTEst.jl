@@ -23,6 +23,7 @@ const automat = "AUTOMAT.d";
 const funit   = convert(Int32, 42);
 @static is_apple() ? (const linker = "gfortran") : (const linker = "ld")
 @static is_apple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
+@static is_apple() ? (const libgfortran = []) : (const libgfortran = ["../../usr/lib/libgfortran.so"])
 
 type CUTEstException <: Exception
   info :: Int32
@@ -94,7 +95,7 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false)
     verbose && println(readstring(outlog))
 
     run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-    run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath`);
+    run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`);
     run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
     global cutest_lib = Libdl.dlopen(libname,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
