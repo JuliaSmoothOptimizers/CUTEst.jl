@@ -45,7 +45,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Working with CUTEst directly",
     "category": "section",
-    "text": "We also have implemented function to allow access to the CUTEst functions directly. There is a specialized API which provides a Julian way to access them, and a core API which is only a wrapper for CUTEst. For more information see the section core, or the documentation here."
+    "text": "We also have implemented function to allow access to the CUTEst functions directly: a core API which is only a wrapper for CUTEst. For more information see the section core, or the documentation here."
 },
 
 {
@@ -69,7 +69,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Tutorial",
     "title": "Tutorial",
     "category": "section",
-    "text": "CUTEst can be accessed in three ways.The first, easiest, and recommended for most users, is using the NLPModels.jl. This is recommended because if you develop something for this an NLPModel, then it can work with CUTEst, but also with other models.\nThe second is the core interface, which is just a wrapper of the Fortran functions, and is not recommended unless you really need and know what you're doing.\nThe third is something in the middle, which we called specialized interface. It follows the same naming as the core functions, but it is more accessible, from the Julia point of view."
+    "text": "CUTEst can be accessed in two ways.The first, easiest, and recommended for most users, is using the NLPModels.jl. This is recommended because if you develop something for this an NLPModel, then it can work with CUTEst, but also with other models.\nThe second is the core interface, which is just a wrapper of the Fortran functions, and is not recommended unless you really need and know what you're doing."
 },
 
 {
@@ -173,7 +173,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.cons_coord",
     "category": "Function",
-    "text": "cons_coord(nlp, x, jac)\n\nComputes the constraint vector and, if jac is true, the Jacobian in coordinate format. Usage:\n\nc, jrow, jcol, jval = cons_coord(nlp, x, true)\nc = cons_coord(nlp, x, false)\n\nnlp:  [IN] CUTEstModel\nx:    [IN] Array{Float64, 1}\njac:  [IN] Bool\nc:    [OUT] Array{Float64, 1}\njrow: [OUT] Array{Int32, 1}\njcol: [OUT] Array{Int32, 1}\njval: [OUT] Array{Float64, 1}\n\n\n\n"
+    "text": "cons_coord(nlp, x)\n\nComputes the constraint vector and the Jacobian in coordinate format. Usage:\n\nc, jrow, jcol, jval = cons_coord(nlp, x)\n\nnlp:  [IN] CUTEstModel\nx:    [IN] Array{Float64, 1}\nc:    [OUT] Array{Float64, 1}\njrow: [OUT] Array{Int32, 1}\njcol: [OUT] Array{Int32, 1}\njval: [OUT] Array{Float64, 1}\n\n\n\n"
 },
 
 {
@@ -182,14 +182,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Extra Julian API",
     "category": "section",
     "text": "objgrad\nobjcons\ncons_coord"
-},
-
-{
-    "location": "api.html#CUTEst.create_class-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.create_class",
-    "category": "Method",
-    "text": "create_class()\n\nCreates the file classf.json, running each problem in $MASTSIF/CLASSF.DB and extracting the necessary information. It should be left alone, unless you think it is not updated. If you do, please open an issue at https://github.com/JuliaSmoothOptimizers/CUTEst.jl\n\n\n\n"
 },
 
 {
@@ -233,6 +225,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "api.html#CUTEst.cchprodsp-NTuple{5,Array{Int32,1}}",
+    "page": "API",
+    "title": "CUTEst.cchprodsp",
+    "category": "Method",
+    "text": "cchprodsp\n\nThe cchprodsp subroutine obtains the sparsity structure used when forming the product of a vector with each of the Hessian matrices of the constraint functions c(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point x= X.\n\nUsage:\n\ncchprodsp(io_err, m, lchp, chp_ind, chp_ptr)\n\nio_err:  [OUT] Array{Cint, 1}\nm:       [IN] Array{Cint, 1}\nlchp:    [IN] Array{Cint, 1}\nchp_ind: [IN] Array{Cint, 1}\nchp_ptr: [IN] Array{Cint, 1}\n\n\n\n"
+},
+
+{
     "location": "api.html#CUTEst.ccifg-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.ccifg",
@@ -273,7 +273,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#CUTEst.cdimen-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}",
+    "location": "api.html#CUTEst.cdimen-NTuple{4,Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.cdimen",
     "category": "Method",
@@ -281,7 +281,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#CUTEst.cdimse-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}",
+    "location": "api.html#CUTEst.cdimse-NTuple{4,Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.cdimse",
     "category": "Method",
@@ -361,6 +361,30 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "api.html#CUTEst.cifn-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1}}",
+    "page": "API",
+    "title": "CUTEst.cifn",
+    "category": "Method",
+    "text": "cifn\n\nThe cifn subroutine evaluates the value of either the objective function or a constrainted function of the problem decoded from a SIF file by the script sifdecoder at the point X, in the constrained minimization case.\n\nFor more information, run the shell command\n\nman cutest_cifn\n\nUsage:\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\niprob:   [IN] Array{Cint, 1}\nx:       [IN] Array{Cdouble, 1}\nf:       [OUT] Array{Cdouble, 1}\n\n\n\n"
+},
+
+{
+    "location": "api.html#CUTEst.cigr-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1}}",
+    "page": "API",
+    "title": "CUTEst.cigr",
+    "category": "Method",
+    "text": "cigr\n\nThe cigr subroutine evaluates the gradient of either the objective function or a constraint function of the problem decoded from a SIF file by the script sifdecoder at the point X, in the constrained minimization case.\n\nFor more information, run the shell command\n\nman cutest_cigr\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\niprob:   [IN] Array{Cint, 1}\nx:       [IN] Array{Cdouble, 1}\ng_val:   [OUT] Array{Cdouble, 1}\n\n\n\n"
+},
+
+{
+    "location": "api.html#CUTEst.cisgr-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1}}",
+    "page": "API",
+    "title": "CUTEst.cisgr",
+    "category": "Method",
+    "text": "cisgr\n\nThe cisgr subroutine evaluates the gradient of either the objective function or a constraint function of the problem decoded from a SIF file by the script sifdecoder at the point X, in the constrained minimization case. The gradient is stored in sparse format.\n\nFor more information, run the shell command\n\nman cutest_cisgr\n\nUsage:\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\niprob:   [IN] Array{Cint, 1}\nx:       [IN] Array{Cdouble, 1}\nnnzg:    [OUT] Array{Cint, 1}\nlg:      [IN] Array{Cint, 1}\ng_val:   [OUT] Array{Cdouble, 1}\ng_var:   [OUT] Array{Cint, 1}\n\n\n\n"
+},
+
+{
     "location": "api.html#CUTEst.cish-Tuple{Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.cish",
@@ -389,7 +413,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.cnames",
     "category": "Method",
-    "text": "cnames\n\nThe cnames subroutine obtains the names of the problem, its variables and general constraints. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_cnames\n\nUsage:\n\ncnames(io_err, n, m, pname, vname, cname)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\nm:       [IN] Array{Cint, 1}\npname:   [OUT] Array{UInt8, 1}\nvname:   [OUT] Array{UInt8, 1}\ncname:   [OUT] Array{UInt8, 1}\n\n\n\n"
+    "text": "cnames\n\nThe cnames subroutine obtains the names of the problem, its variables and general constraints. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_cnames\n\nUsage:\n\ncnames(io_err, n, m, pname, vname, cname)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\nm:       [IN] Array{Cint, 1}\npname:   [OUT] Array{UInt8, 1}\nvname:   [OUT] Array{UInt8, 1}\ncname:   [OUT] Array{UInt8, 1}\n\nTo get useful names, use String(x) where x can be pname, vname[:,i], or cname[:,i].\n\n\n\n"
 },
 
 {
@@ -413,7 +437,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.connames",
     "category": "Method",
-    "text": "connames\n\nThe connames subroutine obtains the names of the general constraints of the problem. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_connames\n\nUsage:\n\nconnames(io_err, m, cname)\n\nio_err:  [OUT] Array{Cint, 1}\nm:       [IN] Array{Cint, 1}\ncname:   [OUT] Array{UInt8, 1}\n\n\n\n"
+    "text": "connames\n\nThe connames subroutine obtains the names of the general constraints of the problem. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_connames\n\nUsage:\n\nconnames(io_err, m, cname)\n\nio_err:  [OUT] Array{Cint, 1}\nm:       [IN] Array{Cint, 1}\ncname:   [OUT] Array{UInt8, 1}\n\nTo get useful names, use String(cname[:,i]).\n\n\n\n"
 },
 
 {
@@ -449,11 +473,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "api.html#CUTEst.csgrp-NTuple{6,Array{Int32,1}}",
+    "page": "API",
+    "title": "CUTEst.csgrp",
+    "category": "Method",
+    "text": "csgrp\n\nThe csgrp subroutine evaluates sparsity pattern used when storing the gradients of the general constraints and of either the objective function or the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder.\n\nFor more information, run the shell command\n\nman cutest_csgrp\n\nUsage:\n\ncsgrp(io_err, n, nnzj, lj, j_var, j_fun)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\nnnzj:       [OUT] Array{Cint, 1}\nlj:         [IN] Array{Cint, 1}\nj_var:      [OUT] Array{Cint, 1}\nj_fun:      [OUT] Array{Cint, 1}\n\n\n\n"
+},
+
+{
     "location": "api.html#CUTEst.csgrsh-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.csgrsh",
     "category": "Method",
     "text": "csgrsh\n\nThe csgrsh subroutine evaluates the gradients of the general constraints, the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) and the gradient of either the objective function or the Lagrangian corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The data is stored in sparse format. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_csgrsh\n\nUsage:\n\ncsgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,\n\nh_val, h_row, h_col)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\nm:       [IN] Array{Cint, 1}\nx:       [IN] Array{Cdouble, 1}\ny:       [IN] Array{Cdouble, 1}\ngrlagf:  [IN] Array{Cint, 1}\nnnzj:    [OUT] Array{Cint, 1}\nlj:      [IN] Array{Cint, 1}\nj_val:   [OUT] Array{Cdouble, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\nnnzh:    [OUT] Array{Cint, 1}\nlh:      [IN] Array{Cint, 1}\nh_val:   [OUT] Array{Cdouble, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
+},
+
+{
+    "location": "api.html#CUTEst.csgrshp-NTuple{10,Array{Int32,1}}",
+    "page": "API",
+    "title": "CUTEst.csgrshp",
+    "category": "Method",
+    "text": "csgrshp\n\nThe csgrshp subroutine evaluates sparsity pattern used when storing the gradients of the general constraints and of either the objective function or the Lagrangian function l(x,y)=f(x)+yTc(x), as well as the Hessian of the Lagrangian function, corresponding to the problem decoded from a SIF file by the script sifdecoder.\n\nFor more information, run the shell command\n\nman cutest_csgrshp\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\nnnzj:    [OUT] Array{Cint, 1};\nlj:      [IN] Array{Cint, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\nnnzh:    [OUT] Array{Cint, 1}\nlh:      [IN] Array{Cint, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1};\n\n\n\n"
 },
 
 {
@@ -481,7 +521,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#CUTEst.cshp-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}",
+    "location": "api.html#CUTEst.cshp-NTuple{6,Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.cshp",
     "category": "Method",
@@ -493,7 +533,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.cshprod",
     "category": "Method",
-    "text": "cshprod\n\nThe cshprod subroutine forms the product of a sparse vector with the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_cshprod\n\nUsage:\n\ncshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,\n\nnnz_result, index_nz_result, result)\n\nio_err:          [OUT] Array{Cint, 1}\nn:               [IN] Array{Cint, 1}\nm:               [IN] Array{Cint, 1}\ngoth:            [IN] Array{Cint, 1}\nx:               [IN] Array{Cdouble, 1}\ny:               [IN] Array{Cdouble, 1}\nnnz_vector:      [IN] Array{Cint, 1}\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Cdouble, 1}\nnnz_result:      [OUT] Array{Cint, 1}\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Cdouble, 1}\n\n\n\n"
+    "text": "cshprod\n\nThe cshprod subroutine forms the product of a sparse vector with the Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF file by the script sifdecoder at the point (x,y)= (X,Y). The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_cshprod\n\nUsage:\n\ncshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,\n\nnnz_result, index_nz_result, result)\n\nio_err:          [OUT] Array{Cint, 1}\nn:               [IN] Array{Cint, 1}\nm:               [IN] Array{Cint, 1}\ngoth:            [IN] Array{Cint, 1}\nx:               [IN] Array{Cdouble, 1}\ny:               [IN] Array{Cdouble, 1}\nnnz_vector:      [IN] Array{Cint, 1}\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Cdouble, 1}\nnnz_result:      [OUT] Array{Cint, 1}\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Cdouble, 1}\n\nNotice that vector and result should have allocated dimension of n.\n\n\n\n"
 },
 
 {
@@ -505,7 +545,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#CUTEst.cstats-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}",
+    "location": "api.html#CUTEst.cstats-NTuple{5,Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.cstats",
     "category": "Method",
@@ -541,7 +581,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.probname",
     "category": "Method",
-    "text": "probname\n\nThe probname subroutine obtains the name of the problem. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_probname\n\nUsage:\n\nprobname(io_err, pname)\n\nio_err:  [OUT] Array{Cint, 1}\npname:   [OUT] Array{UInt8, 1}\n\n\n\n"
+    "text": "probname\n\nThe probname subroutine obtains the name of the problem. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_probname\n\nUsage:\n\nprobname(io_err, pname)\n\nio_err:  [OUT] Array{Cint, 1}\npname:   [OUT] Array{UInt8, 1}\n\nTo get a useful name, use String(pname).\n\n\n\n"
 },
 
 {
@@ -569,7 +609,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#CUTEst.udimse-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}",
+    "location": "api.html#CUTEst.udimse-NTuple{4,Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.udimse",
     "category": "Method",
@@ -645,7 +685,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.unames",
     "category": "Method",
-    "text": "unames\n\nThe unames subroutine obtains the names of the problem and its variables. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.\n\nFor more information, run the shell command\n\nman cutest_unames\n\nUsage:\n\nunames(io_err, n, pname, vname)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\npname:   [OUT] Array{UInt8, 1}\nvname:   [OUT] Array{UInt8, 1}\n\n\n\n"
+    "text": "unames\n\nThe unames subroutine obtains the names of the problem and its variables. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.\n\nFor more information, run the shell command\n\nman cutest_unames\n\nUsage:\n\nunames(io_err, n, pname, vname)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\npname:   [OUT] Array{UInt8, 1}\nvname:   [OUT] Array{UInt8, 1}\n\nTo get useful names, use String(x) where x can be pname or vname[:,i].\n\n\n\n"
 },
 
 {
@@ -681,7 +721,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#CUTEst.ushp-Tuple{Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1},Array{Int32,1}}",
+    "location": "api.html#CUTEst.ushp-NTuple{6,Array{Int32,1}}",
     "page": "API",
     "title": "CUTEst.ushp",
     "category": "Method",
@@ -693,7 +733,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.ushprod",
     "category": "Method",
-    "text": "ushprod\n\nThe ushprod subroutine forms the product of a sparse vector with the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.\n\nFor more information, run the shell command\n\nman cutest_ushprod\n\nUsage:\n\nushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,\n\nindex_nz_result, result)\n\nio_err:          [OUT] Array{Cint, 1}\nn:               [IN] Array{Cint, 1}\ngoth:            [IN] Array{Cint, 1}\nx:               [IN] Array{Cdouble, 1}\nnnz_vector:      [IN] Array{Cint, 1}\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Cdouble, 1}\nnnz_result:      [OUT] Array{Cint, 1}\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Cdouble, 1}\n\n\n\n"
+    "text": "ushprod\n\nThe ushprod subroutine forms the product of a sparse vector with the Hessian matrix of the objective function of the problem decoded from a SIF file by the script sifdecoder at the point X. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective function is group-partially separable.\n\nFor more information, run the shell command\n\nman cutest_ushprod\n\nUsage:\n\nushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,\n\nindex_nz_result, result)\n\nio_err:          [OUT] Array{Cint, 1}\nn:               [IN] Array{Cint, 1}\ngoth:            [IN] Array{Cint, 1}\nx:               [IN] Array{Cdouble, 1}\nnnz_vector:      [IN] Array{Cint, 1}\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Cdouble, 1}\nnnz_result:      [OUT] Array{Cint, 1}\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Cdouble, 1}\n\nNotice that vector and result should have allocated dimension of n.\n\n\n\n"
 },
 
 {
@@ -717,899 +757,19 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "CUTEst.varnames",
     "category": "Method",
-    "text": "varnames\n\nThe varnames subroutine obtains the names of the problem variables. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_varnames\n\nUsage:\n\nvarnames(io_err, n, vname)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\nvname:   [OUT] Array{UInt8, 1}\n\n\n\n"
+    "text": "varnames\n\nThe varnames subroutine obtains the names of the problem variables. The problem under consideration is to minimize or maximize an objective function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈ 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is group-partially separable and all constraint functions are partially separable.\n\nFor more information, run the shell command\n\nman cutest_varnames\n\nUsage:\n\nvarnames(io_err, n, vname)\n\nio_err:  [OUT] Array{Cint, 1}\nn:       [IN] Array{Cint, 1}\nvname:   [OUT] Array{UInt8, 1}\n\nTo get useful names, use String(vname[:, i]).\n\n\n\n"
 },
 
 {
-    "location": "api.html#CUTEst.ccfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Bool}",
+    "location": "api.html#Core-API-1",
     "page": "API",
-    "title": "CUTEst.ccfg!",
-    "category": "Method",
-    "text": "ccfg!(n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\nc:       [OUT] Array{Float64, 1}\njtrans:  [IN] Bool\nlcjac1:  [IN] Int\nlcjac2:  [IN] Int\ncjac:    [OUT] Array{Float64, 2}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ccfg-Tuple{Int64,Int64,Array{Float64,1},Bool,Int64,Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.ccfg",
-    "category": "Method",
-    "text": "c, cjac = ccfg(n, m, x, jtrans, lcjac1, lcjac2, grad)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\nc:       [OUT] Array{Float64, 1}\njtrans:  [IN] Bool\nlcjac1:  [IN] Int\nlcjac2:  [IN] Int\ncjac:    [OUT] Array{Float64, 2}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ccfsg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.ccfsg!",
-    "category": "Method",
-    "text": "nnzj = ccfsg!(n, m, x, c, lj, j_val, j_var, j_fun, grad)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\nc:       [OUT] Array{Float64, 1}\nnnzj:    [OUT] Int\nlj:      [IN] Int\nj_val:   [OUT] Array{Float64, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ccfsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.ccfsg",
-    "category": "Method",
-    "text": "c, nnzj, j_val, j_var, j_fun = ccfsg(n, m, x, lj, grad)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\nc:       [OUT] Array{Float64, 1}\nnnzj:    [OUT] Int\nlj:      [IN] Int\nj_val:   [OUT] Array{Float64, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cchprods!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.cchprods!",
-    "category": "Method",
-    "text": "cchprods!(n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)\n\nn:       [IN] Int\nm:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nlchp:    [IN] Int\nchp_val: [OUT] Array{Float64, 1}\nchp_ind: [IN] Array{Cint, 1}\nchp_ptr: [IN] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cchprods-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.cchprods",
-    "category": "Method",
-    "text": "chp_val = cchprods(n, m, goth, x, vector, lchp, chp_ind, chp_ptr)\n\nn:       [IN] Int\nm:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nlchp:    [IN] Int\nchp_val: [OUT] Array{Float64, 1}\nchp_ind: [IN] Array{Cint, 1}\nchp_ptr: [IN] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ccifg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.ccifg!",
-    "category": "Method",
-    "text": "ci = ccifg!(n, icon, x, gci, grad)\n\nn:       [IN] Int\nicon:    [IN] Int\nx:       [IN] Array{Float64, 1}\nci:      [OUT] Float64\ngci:     [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ccifg-Tuple{Int64,Int64,Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.ccifg",
-    "category": "Method",
-    "text": "ci, gci = ccifg(n, icon, x, grad)\n\nn:       [IN] Int\nicon:    [IN] Int\nx:       [IN] Array{Float64, 1}\nci:      [OUT] Float64\ngci:     [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ccifsg!-Tuple{Int64,Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.ccifsg!",
-    "category": "Method",
-    "text": "ci, nnzgci = ccifsg!(n, icon, x, lgci, gci_val, gci_var, grad)\n\nn:       [IN] Int\nicon:    [IN] Int\nx:       [IN] Array{Float64, 1}\nci:      [OUT] Float64\nnnzgci:  [OUT] Int\nlgci:    [IN] Int\ngci_val: [OUT] Array{Float64, 1}\ngci_var: [OUT] Array{Cint, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ccifsg-Tuple{Int64,Int64,Array{Float64,1},Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.ccifsg",
-    "category": "Method",
-    "text": "ci, nnzgci, gci_val, gci_var = ccifsg(n, icon, x, lgci, grad)\n\nn:       [IN] Int\nicon:    [IN] Int\nx:       [IN] Array{Float64, 1}\nci:      [OUT] Float64\nnnzgci:  [OUT] Int\nlgci:    [IN] Int\ngci_val: [OUT] Array{Float64, 1}\ngci_var: [OUT] Array{Cint, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}",
-    "page": "API",
-    "title": "CUTEst.cdh!",
-    "category": "Method",
-    "text": "cdh!(n, m, x, y, lh1, h_val)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nlh1:     [IN] Int\nh_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.cdh",
-    "category": "Method",
-    "text": "h_val = cdh(n, m, x, y, lh1)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nlh1:     [IN] Int\nh_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdhc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}",
-    "page": "API",
-    "title": "CUTEst.cdhc!",
-    "category": "Method",
-    "text": "cdhc!(n, m, x, y, lh1, h_val)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nlh1:     [IN] Int\nh_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdhc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.cdhc",
-    "category": "Method",
-    "text": "h_val = cdhc(n, m, x, y, lh1)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nlh1:     [IN] Int\nh_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdimchp-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.cdimchp",
-    "category": "Method",
-    "text": "nnzchp = cdimchp()\n\nnnzchp:  [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdimen-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.cdimen",
-    "category": "Method",
-    "text": "n, m = cdimen(input)\n\ninput:   [IN] Int\nn:       [OUT] Int\nm:       [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdimse-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.cdimse",
-    "category": "Method",
-    "text": "ne, he_val_ne, he_row_ne = cdimse()\n\nne:        [OUT] Int\nhe_val_ne: [OUT] Int\nhe_row_ne: [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdimsh-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.cdimsh",
-    "category": "Method",
-    "text": "nnzh = cdimsh()\n\nnnzh:    [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cdimsj-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.cdimsj",
-    "category": "Method",
-    "text": "nnzj = cdimsj()\n\nnnzj:    [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ceh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.ceh!",
-    "category": "Method",
-    "text": "ne = ceh!(n, m, x, y, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)\n\nn:          [IN] Int\nm:          [IN] Int\nx:          [IN] Array{Float64, 1}\ny:          [IN] Array{Float64, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ceh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Int64,Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.ceh",
-    "category": "Method",
-    "text": "ne, he_row_ptr, he_val_ptr, he_row, he_val = ceh(n, m, x, y, lhe_ptr, lhe_row, lhe_val, byrows)\n\nn:          [IN] Int\nm:          [IN] Int\nx:          [IN] Array{Float64, 1}\ny:          [IN] Array{Float64, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cfn!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.cfn!",
-    "category": "Method",
-    "text": "f = cfn!(n, m, x, c)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\nc:       [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cfn-Tuple{Int64,Int64,Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.cfn",
-    "category": "Method",
-    "text": "f, c = cfn(n, m, x)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\nc:       [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2}}",
-    "page": "API",
-    "title": "CUTEst.cgr!",
-    "category": "Method",
-    "text": "cgr!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\ng:       [OUT] Array{Float64, 1}\njtrans:  [IN] Bool\nlj1:     [IN] Int\nlj2:     [IN] Int\nj_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.cgr",
-    "category": "Method",
-    "text": "g, j_val = cgr(n, m, x, y, grlagf, jtrans, lj1, lj2)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\ng:       [OUT] Array{Float64, 1}\njtrans:  [IN] Bool\nlj1:     [IN] Int\nlj2:     [IN] Int\nj_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cgrdh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Array{Float64,1},Bool,Int64,Int64,Array{Float64,2},Int64,Array{Float64,2}}",
-    "page": "API",
-    "title": "CUTEst.cgrdh!",
-    "category": "Method",
-    "text": "cgrdh!(n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\ng:       [OUT] Array{Float64, 1}\njtrans:  [IN] Bool\nlj1:     [IN] Int\nlj2:     [IN] Int\nj_val:   [OUT] Array{Float64, 2}\nlh1:     [IN] Int\nh_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cgrdh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Bool,Int64,Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.cgrdh",
-    "category": "Method",
-    "text": "g, j_val, h_val = cgrdh(n, m, x, y, grlagf, jtrans, lj1, lj2, lh1)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\ng:       [OUT] Array{Float64, 1}\njtrans:  [IN] Bool\nlj1:     [IN] Int\nlj2:     [IN] Int\nj_val:   [OUT] Array{Float64, 2}\nlh1:     [IN] Int\nh_val:   [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.chcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.chcprod!",
-    "category": "Method",
-    "text": "chcprod!(n, m, goth, x, y, vector, result)\n\nn:       [IN] Int\nm:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nresult:  [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.chcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.chcprod",
-    "category": "Method",
-    "text": "result = chcprod(n, m, goth, x, y, vector)\n\nn:       [IN] Int\nm:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nresult:  [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.chprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.chprod!",
-    "category": "Method",
-    "text": "chprod!(n, m, goth, x, y, vector, result)\n\nn:       [IN] Int\nm:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nresult:  [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.chprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.chprod",
-    "category": "Method",
-    "text": "result = chprod(n, m, goth, x, y, vector)\n\nn:       [IN] Int\nm:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nresult:  [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cidh!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,2}}",
-    "page": "API",
-    "title": "CUTEst.cidh!",
-    "category": "Method",
-    "text": "cidh!(n, x, iprob, lh1, h)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\niprob:   [IN] Int\nlh1:     [IN] Int\nh:       [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cidh-Tuple{Int64,Array{Float64,1},Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.cidh",
-    "category": "Method",
-    "text": "h = cidh(n, x, iprob, lh1)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\niprob:   [IN] Int\nlh1:     [IN] Int\nh:       [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cish!-Tuple{Int64,Array{Float64,1},Int64,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.cish!",
-    "category": "Method",
-    "text": "nnzh = cish!(n, x, iprob, lh, h_val, h_row, h_col)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\niprob:   [IN] Int\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cish-Tuple{Int64,Array{Float64,1},Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.cish",
-    "category": "Method",
-    "text": "nnzh, h_val, h_row, h_col = cish(n, x, iprob, lh)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\niprob:   [IN] Int\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.cjprod!",
-    "category": "Method",
-    "text": "cjprod!(n, m, gotj, jtrans, x, vector, lvector, result, lresult)\n\nn:       [IN] Int\nm:       [IN] Int\ngotj:    [IN] Bool\njtrans:  [IN] Bool\nx:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nlvector: [IN] Int\nresult:  [OUT] Array{Float64, 1}\nlresult: [IN] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Array{Float64,1},Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.cjprod",
-    "category": "Method",
-    "text": "result = cjprod(n, m, gotj, jtrans, x, vector, lvector, lresult)\n\nn:       [IN] Int\nm:       [IN] Int\ngotj:    [IN] Bool\njtrans:  [IN] Bool\nx:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nlvector: [IN] Int\nresult:  [OUT] Array{Float64, 1}\nlresult: [IN] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.clfg!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.clfg!",
-    "category": "Method",
-    "text": "f = clfg!(n, m, x, y, g, grad)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\ng:       [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.clfg-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.clfg",
-    "category": "Method",
-    "text": "f, g = clfg(n, m, x, y, grad)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\ng:       [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cnames-Tuple{Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.cnames",
-    "category": "Method",
-    "text": "pname, vname, cname = cnames(n, m)\n\nn:       [IN] Int\nm:       [IN] Int\npname:   [OUT] UInt8\nvname:   [OUT] Array{UInt8, 1}\ncname:   [OUT] Array{UInt8, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.cofg!",
-    "category": "Method",
-    "text": "f = cofg!(n, x, g, grad)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\ng:       [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cofg-Tuple{Int64,Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.cofg",
-    "category": "Method",
-    "text": "f, g = cofg(n, x, grad)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\ng:       [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cofsg!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.cofsg!",
-    "category": "Method",
-    "text": "f, nnzg = cofsg!(n, x, lg, g_val, g_var, grad)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\nnnzg:    [OUT] Int\nlg:      [IN] Int\ng_val:   [OUT] Array{Float64, 1}\ng_var:   [OUT] Array{Cint, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cofsg-Tuple{Int64,Array{Float64,1},Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.cofsg",
-    "category": "Method",
-    "text": "f, nnzg, g_val, g_var = cofsg(n, x, lg, grad)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\nnnzg:    [OUT] Int\nlg:      [IN] Int\ng_val:   [OUT] Array{Float64, 1}\ng_var:   [OUT] Array{Cint, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.connames-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.connames",
-    "category": "Method",
-    "text": "cname = connames(m)\n\nm:       [IN] Int\ncname:   [OUT] Array{UInt8, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.creport!-Tuple{Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.creport!",
-    "category": "Method",
-    "text": "creport!(calls, time)\n\ncalls:   [OUT] Array{Float64, 1}\ntime:    [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.creport-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.creport",
-    "category": "Method",
-    "text": "calls, time = creport()\n\ncalls:   [OUT] Array{Float64, 1}\ntime:    [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csetup!-Tuple{Int64,Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.csetup!",
-    "category": "Method",
-    "text": "csetup!(input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)\n\ninput:     [IN] Int\nout:       [IN] Int\nio_buffer: [IN] Int\nn:         [IN] Int\nm:         [IN] Int\nx:         [OUT] Array{Float64, 1}\nx_l:       [OUT] Array{Float64, 1}\nx_u:       [OUT] Array{Float64, 1}\ny:         [OUT] Array{Float64, 1}\nc_l:       [OUT] Array{Float64, 1}\nc_u:       [OUT] Array{Float64, 1}\nequatn:    [OUT] Array{Bool, 1}\nlinear:    [OUT] Array{Bool, 1}\ne_order:   [IN] Int\nl_order:   [IN] Int\nv_order:   [IN] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csetup-Tuple{Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.csetup",
-    "category": "Method",
-    "text": "x, x_l, x_u, y, c_l, c_u, equatn, linear = csetup(input, out, io_buffer, n, m, e_order, l_order, v_order)\n\ninput:     [IN] Int\nout:       [IN] Int\nio_buffer: [IN] Int\nn:         [IN] Int\nm:         [IN] Int\nx:         [OUT] Array{Float64, 1}\nx_l:       [OUT] Array{Float64, 1}\nx_u:       [OUT] Array{Float64, 1}\ny:         [OUT] Array{Float64, 1}\nc_l:       [OUT] Array{Float64, 1}\nc_u:       [OUT] Array{Float64, 1}\nequatn:    [OUT] Array{Bool, 1}\nlinear:    [OUT] Array{Bool, 1}\ne_order:   [IN] Int\nl_order:   [IN] Int\nv_order:   [IN] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csgr!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.csgr!",
-    "category": "Method",
-    "text": "nnzj = csgr!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\nnnzj:    [OUT] Int\nlj:      [IN] Int\nj_val:   [OUT] Array{Float64, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csgr-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64}",
-    "page": "API",
-    "title": "CUTEst.csgr",
-    "category": "Method",
-    "text": "nnzj, j_val, j_var, j_fun = csgr(n, m, x, y, grlagf, lj)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\nnnzj:    [OUT] Int\nlj:      [IN] Int\nj_val:   [OUT] Array{Float64, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csgreh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.csgreh!",
-    "category": "Method",
-    "text": "nnzj, ne = csgreh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)\n\nn:          [IN] Int\nm:          [IN] Int\nx:          [IN] Array{Float64, 1}\ny:          [IN] Array{Float64, 1}\ngrlagf:     [IN] Bool\nnnzj:       [OUT] Int\nlj:         [IN] Int\nj_val:      [OUT] Array{Float64, 1}\nj_var:      [OUT] Array{Cint, 1}\nj_fun:      [OUT] Array{Cint, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csgreh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64,Int64,Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.csgreh",
-    "category": "Method",
-    "text": "nnzj, j_val, j_var, j_fun, ne, he_row_ptr, he_val_ptr, he_row, he_val = csgreh(n, m, x, y, grlagf, lj, lhe_ptr, lhe_row, lhe_val, byrows)\n\nn:          [IN] Int\nm:          [IN] Int\nx:          [IN] Array{Float64, 1}\ny:          [IN] Array{Float64, 1}\ngrlagf:     [IN] Bool\nnnzj:       [OUT] Int\nlj:         [IN] Int\nj_val:      [OUT] Array{Float64, 1}\nj_var:      [OUT] Array{Cint, 1}\nj_fun:      [OUT] Array{Cint, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csgrsh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.csgrsh!",
-    "category": "Method",
-    "text": "nnzj, nnzh = csgrsh!(n, m, x, y, grlagf, lj, j_val, j_var, j_fun, lh, h_val, h_row, h_col)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\nnnzj:    [OUT] Int\nlj:      [IN] Int\nj_val:   [OUT] Array{Float64, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csgrsh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Bool,Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.csgrsh",
-    "category": "Method",
-    "text": "nnzj, j_val, j_var, j_fun, nnzh, h_val, h_row, h_col = csgrsh(n, m, x, y, grlagf, lj, lh)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\ngrlagf:  [IN] Bool\nnnzj:    [OUT] Int\nlj:      [IN] Int\nj_val:   [OUT] Array{Float64, 1}\nj_var:   [OUT] Array{Cint, 1}\nj_fun:   [OUT] Array{Cint, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csh!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.csh!",
-    "category": "Method",
-    "text": "nnzh = csh!(n, m, x, y, lh, h_val, h_row, h_col)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csh-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.csh",
-    "category": "Method",
-    "text": "nnzh, h_val, h_row, h_col = csh(n, m, x, y, lh)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshc!-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.cshc!",
-    "category": "Method",
-    "text": "nnzh = cshc!(n, m, x, y, lh, h_val, h_row, h_col)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshc-Tuple{Int64,Int64,Array{Float64,1},Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.cshc",
-    "category": "Method",
-    "text": "nnzh, h_val, h_row, h_col = cshc(n, m, x, y, lh)\n\nn:       [IN] Int\nm:       [IN] Int\nx:       [IN] Array{Float64, 1}\ny:       [IN] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshcprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.cshcprod!",
-    "category": "Method",
-    "text": "nnz_result = cshcprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)\n\nn:               [IN] Int\nm:               [IN] Int\ngoth:            [IN] Bool\nx:               [IN] Array{Float64, 1}\ny:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshcprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.cshcprod",
-    "category": "Method",
-    "text": "nnz_result, index_nz_result, result = cshcprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)\n\nn:               [IN] Int\nm:               [IN] Int\ngoth:            [IN] Bool\nx:               [IN] Array{Float64, 1}\ny:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshp!-Tuple{Int64,Int64,Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.cshp!",
-    "category": "Method",
-    "text": "nnzh = cshp!(n, lh, h_row, h_col)\n\nn:       [IN] Int\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshp-Tuple{Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.cshp",
-    "category": "Method",
-    "text": "nnzh, h_row, h_col = cshp(n, lh)\n\nn:       [IN] Int\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshprod!-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.cshprod!",
-    "category": "Method",
-    "text": "nnz_result = cshprod!(n, m, goth, x, y, nnz_vector, index_nz_vector, vector, index_nz_result, result)\n\nn:               [IN] Int\nm:               [IN] Int\ngoth:            [IN] Bool\nx:               [IN] Array{Float64, 1}\ny:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cshprod-Tuple{Int64,Int64,Bool,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.cshprod",
-    "category": "Method",
-    "text": "nnz_result, index_nz_result, result = cshprod(n, m, goth, x, y, nnz_vector, index_nz_vector, vector)\n\nn:               [IN] Int\nm:               [IN] Int\ngoth:            [IN] Bool\nx:               [IN] Array{Float64, 1}\ny:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csjprod!-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.csjprod!",
-    "category": "Method",
-    "text": "nnz_result = csjprod!(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, index_nz_result, result, lresult)\n\nn:               [IN] Int\nm:               [IN] Int\ngotj:            [IN] Bool\njtrans:          [IN] Bool\nx:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nlvector:         [IN] Int\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\nlresult:         [IN] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.csjprod-Tuple{Int64,Int64,Bool,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.csjprod",
-    "category": "Method",
-    "text": "nnz_result, index_nz_result, result = csjprod(n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, lresult)\n\nn:               [IN] Int\nm:               [IN] Int\ngotj:            [IN] Bool\njtrans:          [IN] Bool\nx:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nlvector:         [IN] Int\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\nlresult:         [IN] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cstats-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.cstats",
-    "category": "Method",
-    "text": "\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cterminate-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.cterminate",
-    "category": "Method",
-    "text": "cterminate()\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cvartype!-Tuple{Int64,Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.cvartype!",
-    "category": "Method",
-    "text": "cvartype!(n, x_type)\n\nn:       [IN] Int\nx_type:  [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.cvartype-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.cvartype",
-    "category": "Method",
-    "text": "x_type = cvartype(n)\n\nn:       [IN] Int\nx_type:  [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.pname-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.pname",
-    "category": "Method",
-    "text": "problem_name = pname(input)\n\ninput:   [IN] Int\npname:   [OUT] UInt8\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.probname-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.probname",
-    "category": "Method",
-    "text": "pname = probname()\n\npname:   [OUT] String\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ubandh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2},Int64}",
-    "page": "API",
-    "title": "CUTEst.ubandh!",
-    "category": "Method",
-    "text": "max_semibandwidth = ubandh!(n, x, semibandwidth, h_band, lbandh)\n\nn:                 [IN] Int\nx:                 [IN] Array{Float64, 1}\nsemibandwidth:     [IN] Int\nh_band:            [OUT] Array{Float64, 2}\nlbandh:            [IN] Int\nmax_semibandwidth: [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ubandh-Tuple{Int64,Array{Float64,1},Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.ubandh",
-    "category": "Method",
-    "text": "h_band, max_semibandwidth = ubandh(n, x, semibandwidth, lbandh)\n\nn:                 [IN] Int\nx:                 [IN] Array{Float64, 1}\nsemibandwidth:     [IN] Int\nh_band:            [OUT] Array{Float64, 2}\nlbandh:            [IN] Int\nmax_semibandwidth: [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.udh!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,2}}",
-    "page": "API",
-    "title": "CUTEst.udh!",
-    "category": "Method",
-    "text": "udh!(n, x, lh1, h)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nlh1:     [IN] Int\nh:       [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.udh-Tuple{Int64,Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.udh",
-    "category": "Method",
-    "text": "h = udh(n, x, lh1)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nlh1:     [IN] Int\nh:       [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.udimen-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.udimen",
-    "category": "Method",
-    "text": "n = udimen(input)\n\ninput:   [IN] Int\nn:       [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.udimse-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.udimse",
-    "category": "Method",
-    "text": "ne, he_val_ne, he_row_ne = udimse()\n\nne:        [OUT] Int\nhe_val_ne: [OUT] Int\nhe_row_ne: [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.udimsh-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.udimsh",
-    "category": "Method",
-    "text": "nnzh = udimsh()\n\nnnzh:    [OUT] Int\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ueh!-Tuple{Int64,Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.ueh!",
-    "category": "Method",
-    "text": "ne = ueh!(n, x, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)\n\nn:          [IN] Int\nx:          [IN] Array{Float64, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ueh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.ueh",
-    "category": "Method",
-    "text": "ne, he_row_ptr, he_val_ptr, he_row, he_val = ueh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)\n\nn:          [IN] Int\nx:          [IN] Array{Float64, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ufn-Tuple{Int64,Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.ufn",
-    "category": "Method",
-    "text": "f = ufn(n, x)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugr!-Tuple{Int64,Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.ugr!",
-    "category": "Method",
-    "text": "ugr!(n, x, g)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\ng:       [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugr-Tuple{Int64,Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.ugr",
-    "category": "Method",
-    "text": "g = ugr(n, x)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\ng:       [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugrdh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,2}}",
-    "page": "API",
-    "title": "CUTEst.ugrdh!",
-    "category": "Method",
-    "text": "ugrdh!(n, x, g, lh1, h)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\ng:       [OUT] Array{Float64, 1}\nlh1:     [IN] Int\nh:       [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugrdh-Tuple{Int64,Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.ugrdh",
-    "category": "Method",
-    "text": "g, h = ugrdh(n, x, lh1)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\ng:       [OUT] Array{Float64, 1}\nlh1:     [IN] Int\nh:       [OUT] Array{Float64, 2}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugreh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Int32,1},Array{Int32,1},Int64,Array{Int32,1},Int64,Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.ugreh!",
-    "category": "Method",
-    "text": "ne = ugreh!(n, x, g, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)\n\nn:          [IN] Int\nx:          [IN] Array{Float64, 1}\ng:          [OUT] Array{Float64, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugreh-Tuple{Int64,Array{Float64,1},Int64,Int64,Int64,Bool}",
-    "page": "API",
-    "title": "CUTEst.ugreh",
-    "category": "Method",
-    "text": "g, ne, he_row_ptr, he_val_ptr, he_row, he_val = ugreh(n, x, lhe_ptr, lhe_row, lhe_val, byrows)\n\nn:          [IN] Int\nx:          [IN] Array{Float64, 1}\ng:          [OUT] Array{Float64, 1}\nne:         [OUT] Int\nlhe_ptr:    [IN] Int\nhe_row_ptr: [OUT] Array{Cint, 1}\nhe_val_ptr: [OUT] Array{Cint, 1}\nlhe_row:    [IN] Int\nhe_row:     [OUT] Array{Cint, 1}\nlhe_val:    [IN] Int\nhe_val:     [OUT] Array{Float64, 1}\nbyrows:     [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugrsh!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.ugrsh!",
-    "category": "Method",
-    "text": "nnzh = ugrsh!(n, x, g, lh, h_val, h_row, h_col)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\ng:       [OUT] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ugrsh-Tuple{Int64,Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.ugrsh",
-    "category": "Method",
-    "text": "g, nnzh, h_val, h_row, h_col = ugrsh(n, x, lh)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\ng:       [OUT] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.uhprod!-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.uhprod!",
-    "category": "Method",
-    "text": "uhprod!(n, goth, x, vector, result)\n\nn:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nresult:  [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.uhprod-Tuple{Int64,Bool,Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.uhprod",
-    "category": "Method",
-    "text": "result = uhprod(n, goth, x, vector)\n\nn:       [IN] Int\ngoth:    [IN] Bool\nx:       [IN] Array{Float64, 1}\nvector:  [IN] Array{Float64, 1}\nresult:  [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.unames-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.unames",
-    "category": "Method",
-    "text": "pname, vname = unames(n)\n\nn:       [IN] Int\npname:   [OUT] UInt8\nvname:   [OUT] Array{UInt8, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.uofg!-Tuple{Int64,Array{Float64,1},Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.uofg!",
-    "category": "Method",
-    "text": "f = uofg!(n, x, g, grad)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\ng:       [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.uofg-Tuple{Int64,Array{Float64,1},Bool}",
-    "page": "API",
-    "title": "CUTEst.uofg",
-    "category": "Method",
-    "text": "f, g = uofg(n, x, grad)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nf:       [OUT] Float64\ng:       [OUT] Array{Float64, 1}\ngrad:    [IN] Bool\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ureport!-Tuple{Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.ureport!",
-    "category": "Method",
-    "text": "ureport!(calls, time)\n\ncalls:   [OUT] Array{Float64, 1}\ntime:    [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ureport-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.ureport",
-    "category": "Method",
-    "text": "calls, time = ureport()\n\ncalls:   [OUT] Array{Float64, 1}\ntime:    [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.usetup!-Tuple{Int64,Int64,Int64,Int64,Array{Float64,1},Array{Float64,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.usetup!",
-    "category": "Method",
-    "text": "usetup!(input, out, io_buffer, n, x, x_l, x_u)\n\ninput:     [IN] Int\nout:       [IN] Int\nio_buffer: [IN] Int\nn:         [IN] Int\nx:         [OUT] Array{Float64, 1}\nx_l:       [OUT] Array{Float64, 1}\nx_u:       [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.usetup-Tuple{Int64,Int64,Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.usetup",
-    "category": "Method",
-    "text": "x, x_l, x_u = usetup(input, out, io_buffer, n)\n\ninput:     [IN] Int\nout:       [IN] Int\nio_buffer: [IN] Int\nn:         [IN] Int\nx:         [OUT] Array{Float64, 1}\nx_l:       [OUT] Array{Float64, 1}\nx_u:       [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ush!-Tuple{Int64,Array{Float64,1},Int64,Array{Float64,1},Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.ush!",
-    "category": "Method",
-    "text": "nnzh = ush!(n, x, lh, h_val, h_row, h_col)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ush-Tuple{Int64,Array{Float64,1},Int64}",
-    "page": "API",
-    "title": "CUTEst.ush",
-    "category": "Method",
-    "text": "nnzh, h_val, h_row, h_col = ush(n, x, lh)\n\nn:       [IN] Int\nx:       [IN] Array{Float64, 1}\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_val:   [OUT] Array{Float64, 1}\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ushp!-Tuple{Int64,Int64,Array{Int32,1},Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.ushp!",
-    "category": "Method",
-    "text": "nnzh = ushp!(n, lh, h_row, h_col)\n\nn:       [IN] Int\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ushp-Tuple{Int64,Int64}",
-    "page": "API",
-    "title": "CUTEst.ushp",
-    "category": "Method",
-    "text": "nnzh, h_row, h_col = ushp(n, lh)\n\nn:       [IN] Int\nnnzh:    [OUT] Int\nlh:      [IN] Int\nh_row:   [OUT] Array{Cint, 1}\nh_col:   [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ushprod!-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1},Array{Int32,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.ushprod!",
-    "category": "Method",
-    "text": "nnz_result = ushprod!(n, goth, x, nnz_vector, index_nz_vector, vector, index_nz_result, result)\n\nn:               [IN] Int\ngoth:            [IN] Bool\nx:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.ushprod-Tuple{Int64,Bool,Array{Float64,1},Int64,Array{Int32,1},Array{Float64,1}}",
-    "page": "API",
-    "title": "CUTEst.ushprod",
-    "category": "Method",
-    "text": "nnz_result, index_nz_result, result = ushprod(n, goth, x, nnz_vector, index_nz_vector, vector)\n\nn:               [IN] Int\ngoth:            [IN] Bool\nx:               [IN] Array{Float64, 1}\nnnz_vector:      [IN] Int\nindex_nz_vector: [IN] Array{Cint, 1}\nvector:          [IN] Array{Float64, 1}\nnnz_result:      [OUT] Int\nindex_nz_result: [OUT] Array{Cint, 1}\nresult:          [OUT] Array{Float64, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.uterminate-Tuple{}",
-    "page": "API",
-    "title": "CUTEst.uterminate",
-    "category": "Method",
-    "text": "uterminate()\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.uvartype!-Tuple{Int64,Array{Int32,1}}",
-    "page": "API",
-    "title": "CUTEst.uvartype!",
-    "category": "Method",
-    "text": "uvartype!(n, x_type)\n\nn:       [IN] Int\nx_type:  [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.uvartype-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.uvartype",
-    "category": "Method",
-    "text": "x_type = uvartype(n)\n\nn:       [IN] Int\nx_type:  [OUT] Array{Cint, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#CUTEst.varnames-Tuple{Int64}",
-    "page": "API",
-    "title": "CUTEst.varnames",
-    "category": "Method",
-    "text": "vname = varnames(n)\n\nn:       [IN] Int\nvname:   [OUT] Array{UInt8, 1}\n\n\n\n"
-},
-
-{
-    "location": "api.html#Core-and-specialized-API-1",
-    "page": "API",
-    "title": "Core and specialized API",
+    "title": "Core API",
     "category": "section",
-    "text": "Modules = [CUTEst]\nPages   = [\"core_interface.jl\", \"specialized_interface.jl\"]\nOrder   = [:function]"
+    "text": "Modules = [CUTEst]\nPages   = [\"core_interface.jl\"]\nOrder   = [:function]"
 },
 
 {
-    "location": "api.html#CUTEst.sifdecoder-Tuple{String,Vararg{Any,N}}",
+    "location": "api.html#CUTEst.sifdecoder-Tuple{String,Vararg{Any,N} where N}",
     "page": "API",
     "title": "CUTEst.sifdecoder",
     "category": "Method",
@@ -1637,23 +797,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Core",
     "title": "Working with CUTEst directly",
     "category": "section",
-    "text": "When working with CUTEst, we created a core interface, which is essentially a wrapper for the CUTEst functions. You probably don't want to use that, because the NLPModels interface is much more friendlier, as just as useful. See its tutorial.CUTEst in Fortran defines functions called with cutest_u* or cutest_c*, for the unconstrained and constrained cases, respectively. For each of those, we dropped the cutest_, so the functions cutest_ufn and cutest_cfn are available as ufn and cfn. To use then you have to convert the types using Cint and Cdouble, and pass arrays because of the underlying pointers in Fortran. In practice, there isn't much improvement in calling these or ccalls.Only use these functions if you really know what you're doing."
-},
-
-{
-    "location": "core.html#Specialized-Interface-1",
-    "page": "Core",
-    "title": "Specialized Interface",
-    "category": "section",
-    "text": "The specialized interface takes the original CUTEst's functions and make them more Julian. To explain, let's look at two simple CUTEst functions: cutest_ufn and cutest_cfn.The original cutest_ufn function is defined asCALL CUTEST_ufn(status, n, X, f)wherestatus (output) is an integer signalling whether there was some problem with the CUTEst call;\nn (input) is number of variables in the problem, i.e., the dimension of X;\nX (input) is an array with the current estimate of the solution of the problem;\nf (output) is the value of the objective function evaluated at X.In Julia, we havef = ufn(n, x)In other words, a simplification of the original function, returning what is simple to return, and reducing the parameters to only what is needed.Notice that the problem has to be decoded first. Decoding the problem manually is not advised, as you would have to keep track of the variables, bounds, sizes, library, and closing the problem yourself. It can be done through thorough thought, though.Using nlp is better, because we can keep everything inside it.For cutest_cfn, we would haveCALL CUTEST_cfn(status, n, m, X, f, C)wherestatus (output) is an integer signalling whether there was some problem with the CUTEst call;\nn (input) is number of variables in the problem, i.e., the dimension of X;\nm (input) is number of constraints in the problem, i.e., the dimension of C;\nX (input) is an array with the current estimate of the solution of the problem;\nf (output) is the value of the objective function evaluated at X;\nC (output) is the value of the constraints function evaluated at X.In Julia, we havef, c = cfn(n, m, x)\nf = cfn!(n, m, x, c)As before, we have a simplification of the original call. In addition, there are two new functions here, obtained by addind a ! in front of the function name. These functions modify the vector c storing the result in it. This can be done to save memory, since c will not be recreated. As a convention in Julia, every function that has a ! in the end modifies some input."
-},
-
-{
-    "location": "core.html#Reference-Guide-1",
-    "page": "Core",
-    "title": "Reference Guide",
-    "category": "section",
-    "text": "There are a lot of functions in CUTEst. To see them all, you can check the Technical Report decribing them.Below is a little guide to search the functions documentation. Only some functions are shown. Remember that we are looking into problems in the form \\begin{align} \\min \\quad & f(x) \\\\\n& c_L \\leq c(x) \\leq c_U \\\\\n& \\ell \\leq x \\leq u, \\end{align} with Lagrangian \\begin{align} L(x,y) = f(x) + y^Tc(x). \\end{align}Note: x in the beginning of the function name means that both u and c versions exist.Function Specialized Interface Functions\nf(x) ufn, uofg, cfn, cofg\nnabla f(x) ugr, uofg, cfn, cofg\nnabla^2 f(x) udh, ugrdh, ush, ugrsh, uhprod\nc(x) cfn, ccfg, ccfsg, ccifg\nJ(x) ccfg, ccfsg, ccifg\nnabla^2 L(xy) cdh, cgrdh, csh, cgrsh, chprod\nnabla^2 (y^Tc(x)) chcprodExamplesusing CUTEst\n\nnlp = CUTEstModel(\"ROSENBR\")\nnvar = nlp.meta.nvar\n\nx = nlp.meta.x0\nfx = ufn(nvar, x)ld = nvar # leading dimension\nnnzj, hval, hrow, hcol = ush(nvar, x, ld)finalize(nlp)\nnlp = CUTEstModel(\"HS51\")\nx = nlp.meta.x0\n\n# Checking documentation, in REPL use ?ccfsg\n@doc ccfsgnvar = nlp.meta.nvar\nncon = nlp.meta.ncon\nlj = nlp.meta.nnzj\nc, nnzj, jval, jvar, jfun = ccfsg(nvar, ncon, x, lj, true)\nprintln(\"c = $c\")\nprintln(\"J = $(sparse(jfun, jvar, jval))\")Compare with the NLPModels interfacec = cons(nlp, x)\nJ = jac(nlp, x)\nprintln(\"c = $c\")\nprintln(\"J = $J\")finalize(nlp)"
+    "text": "When working with CUTEst, we created a core interface, which is essentially a wrapper for the CUTEst functions. You probably don't want to use that, because the NLPModels interface is much more friendlier, as just as useful. See its tutorial.CUTEst in Fortran defines functions called with cutest_u* or cutest_c*, for the unconstrained and constrained cases, respectively. For each of those, we dropped the cutest_, so the functions cutest_ufn and cutest_cfn are available as ufn and cfn. To use then you have to convert the types using Cint and Cdouble, and pass arrays because of the underlying pointers in Fortran. In practice, there isn't much improvement in calling these or ccalls, except for the use of the internal cutest_lib.Only use these functions if you really know what you're doing.If you want to use these functions, you should still decode the problem as an NLP, by doingnlp = CUTEstModel(\"PROBLEM\")\n...\nfinalize(nlp)Otherwise you'll have to manage the CUTEst library, the decoding, the file unit numbers, OUTSDIF.d, setup, etc."
 },
 
 {
