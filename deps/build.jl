@@ -66,8 +66,13 @@ else
       include(cutestenv)
       if validate_libcutest()
         info("Updating CUTEst")
-        Homebrew.brew(`update cutest`)
-        Homebrew.brew(`update mastsif`)
+        try
+          Homebrew.brew(`upgrade cutest`)
+          Homebrew.brew(`upgrade mastsif`)
+        catch
+          # brew upgrade returns an error if the latest version is already installed
+          info("Ignore error message above; latest version already installed")
+        end
         install = false
       end
     end
