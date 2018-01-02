@@ -18,8 +18,6 @@ type CUTEstModel <: AbstractNLPModel
   counters :: Counters
 end
 
-const outsdif = "OUTSDIF.d";
-const automat = "AUTOMAT.d";
 const funit   = convert(Int32, 42);
 @static is_apple() ? (const linker = "gfortran") : (const linker = "ld")
 @static is_apple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
@@ -80,7 +78,9 @@ Optional arguments are passed directly to the SIF decoder.
 Example:
     `sifdecoder("DIXMAANJ", "-param", "M=30")`.
 """
-function sifdecoder(name :: String, args...; verbose :: Bool=false)
+function sifdecoder(name :: String, args...; verbose :: Bool=false,
+                    outsdif :: String="OUTSDIF_$name.d",
+                    automat :: String="AUTOMAT_$name.d")
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(name);
   libname = "lib$pname";
@@ -96,6 +96,8 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false)
 
     run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
     run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`);
+    run(`mv OUTSDIF.d $outsdif`)
+    run(`mv AUTOMAT.d $automat`)
     run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
     global cutest_lib = Libdl.dlopen(libname,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
@@ -104,6 +106,8 @@ end
 
 # Initialize problem.
 function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
+  const outsdif = "OUTSDIF_$name.d";
+  const automat = "AUTOMAT_$name.d";
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0];
@@ -116,7 +120,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
       cutest_lib = Libdl.dlopen(libname,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
-      sifdecoder(name, args..., verbose=verbose)
+      sifdecoder(name, args..., verbose=verbose, outsdif=outsdif, automat=automat)
     end
     ccall(dlsym(cutest_lib, :fortran_open_), Void,
           (Ptr{Int32}, Ptr{UInt8}, Ptr{Int32}), &funit, outsdif, io_err);
