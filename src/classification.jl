@@ -122,7 +122,7 @@ function select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
 
   data = JSON.parsefile(joinpath(dirname(@__FILE__), "classf.json"))
   problems = keys(data)
-  selection = []
+  selection = Array{String,1}()
   for p in problems
     pv = data[p]["variables"]
     pc = data[p]["constraints"]
