@@ -45,20 +45,48 @@ After installing, you can create instances of
 [NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) models, with
 the name `CUTEstModel`:
 
-````JULIA
+```jl
 using CUTEst
 
 nlp = CUTEstModel("BYRDSPHR");
 print(nlp);
-````
+```
 
 This model accepts the same functions as the other NLPModels, for instance
 
-````
+```jl
 fx = obj(nlp, nlp.meta.x0)
 gx = grad(nlp, nlp.meta.x0)
 Hx = hess(nlp, nlp.meta.x0)
-````
+```
+
+### Run multiple models in parallel
+
+First, decode each of the problems in serial.
+
+```jl
+function decodemodel(name)
+    finalize(CUTEstModel(name))
+end
+
+probs = ["AKIVA", "ALLINITU", "ARGLINA", "ARGLINB", "ARGLINC","ARGTRIGLS", "ARWHEAD"]
+broadcast(decodemodel, probs)
+```
+
+Then, call functions handling models in parallel. It is important to pass `decode=false` to `CUTEstModel`.
+
+```jl
+addprocs(2)
+@everywhere using CUTEst
+@everywhere function evalmodel(name)
+   nlp = CUTEstModel(name; decode=false)
+   retval = obj(nlp, nlp.meta.x0)
+   finalize(nlp)
+   retval
+end
+
+fvals = pmap(evalmodel, probs)
+```
 
 ## Related Packages
 
