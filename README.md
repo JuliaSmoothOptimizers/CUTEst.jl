@@ -5,7 +5,7 @@ constrained and unconstrained nonlinear programming problems for testing and
 comparing optimization algorithms, derived from the abstract model on
 [NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
 
-### Stable release [![Github release](https://img.shields.io/github/release/JuliaSmoothOptimizers/CUTEst.jl.svg)](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest)
+### Stable release [![Github release](https://img.shields.io/github/release/JuliaSmoothOptimizers/CUTEst.jl.svg)](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest) [![DOI](https://zenodo.org/badge/30661559.svg)](https://zenodo.org/badge/latestdoi/30661559)
 
 - Documentation: [![Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/stable)
 - Package Evaluator: [![CUTEst.jl](https://pkg.julialang.org/badges/CUTEst_0.5.svg)](https://pkg.julialang.org/?pkg=CUTEst)
