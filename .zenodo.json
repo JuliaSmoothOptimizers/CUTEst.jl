@@ -1,25 +1,36 @@
 {
   "description": "Julia's CUTEst Interface",
-  "license": "LGPLv3",
-  "title": "JuliaSmoothOptimizers/CUTEst.jl: v0.3.0",
-  "version": "v0.3.0",
+  "license": "lgpl-3.0",
+  "title": "CUTEst.jl",
   "upload_type": "software",
-  "publication_date": "2018-03-05",
+  "publication_date": "2018-03-06",
   "creators": [
     {
-      "affiliation": "Federal University of Paraná - UFPR",
+      "affiliation": "Federal University of Paran\u00e1 - UFPR",
       "name": "Abel Soares Siqueira"
     },
     {
-      "affiliation": "École Polytechnique - Montreal",
+      "affiliation": "\u00c9cole Polytechnique/GERAD - Montr\u00e9al",
       "name": "Dominique Orban"
+    }
+  ],
+  "contributors": [
+    {
+      "affiliation": "Washington University in St. Louis",
+      "name": "Timothy E. Holy",
+      "type": "Researcher"
+    },
+    {
+      "affiliation": "University of Oxford",
+      "name": "Asbj\u00f8rn Nilsen Riseth",
+      "type": "Researcher"
     }
   ],
   "access_right": "open",
   "related_identifiers": [
     {
       "scheme": "url",
-      "identifier": "https://github.com/JuliaSmoothOptimizers/CUTEst.jl/tree/v0.3.0",
+      "identifier": "https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest",
       "relation": "isSupplementTo"
     },
     {
