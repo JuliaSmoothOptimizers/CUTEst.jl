@@ -21,7 +21,7 @@ end
 const funit   = convert(Int32, 42);
 @static is_apple() ? (const linker = "gfortran") : (const linker = "ld")
 @static is_apple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
-@static is_apple() ? (const libgfortran = []) : (const libgfortran = [joinpath(@__DIR__, "..", "deps", "usr", "lib", "libgfortran.so")])
+@static is_apple() ? (const libgfortran = []) : (const libgfortran = [strip(readstring(`gfortran --print-file libgfortran.so`))])
 
 type CUTEstException <: Exception
   info :: Int32
