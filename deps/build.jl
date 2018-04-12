@@ -107,10 +107,10 @@ else
       cd("files") do
         info("Installing CUTEst")
 
-        lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.3.4/install.sh"
+        lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.4.0/install.sh"
         run(`wget $lnxurl -O install.sh`)
         ENV["C_INCLUDE_PATH"] = joinpath(here, "usr", "include")
-        run(`bash install.sh --libgfortran-dest ../usr/lib`)
+        run(`bash install.sh`)
 
         open(cutestenv, "w") do cenv
           open("cutest_env.bashrc") do f
