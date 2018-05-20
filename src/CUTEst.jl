@@ -1,4 +1,5 @@
-__precompile__()
+#See JuliaSmoothOptimizers/NLPModels.jl/issues/113
+#__precompile__()
 
 # Using CUTEst from Julia.
 
