@@ -12,14 +12,12 @@ libgsl = library_dependency("libgsl", aliases=["libgsl-0"])
 
 if is_apple()
     using Homebrew
-    provides(Homebrew.HB, "gsl@1", libgsl, os = :Darwin)
+    provides(Homebrew.HB, "optimizers/cutest/gsl@1", libgsl, os = :Darwin)
 end
 
 # build from source
 provides(Sources, URI("http://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz"), libgsl)
 provides(BuildProcess, Autotools(libtarget = "libgsl.la"), libgsl)
-
-@BinDeps.install Dict(:libgsl => :libgsl)
 
 ## BinDeps end
 
@@ -60,6 +58,7 @@ if validate_libcutest()
   check_env()
   ispath(cutestenv) && rm(cutestenv)
 else
+  @BinDeps.install Dict(:libgsl => :libgsl)
   @static if is_apple()
     install = true
     if isfile(cutestenv)
