@@ -1,5 +1,5 @@
 #See JuliaSmoothOptimizers/NLPModels.jl/issues/113
-#__precompile__()
+__precompile__()
 
 # Using CUTEst from Julia.
 
@@ -68,9 +68,6 @@ end
 
 include("core_interface.jl")
 include("julia_interface.jl")
-if Pkg.installed("MathProgBase") != nothing
-  include("mpb_interface.jl")
-end
 include("classification.jl")
 
 """Decode problem and build shared library.
@@ -124,7 +121,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
       sifdecoder(name, args..., verbose=verbose, outsdif=outsdif, automat=automat)
     end
     ccall(dlsym(cutest_lib, :fortran_open_), Void,
-          (Ptr{Int32}, Ptr{UInt8}, Ptr{Int32}), &funit, outsdif, io_err);
+          (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}), funit, outsdif, io_err);
     @cutest_error
   end
 
@@ -181,7 +178,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   nnzj = Int(nnzj[1])
 
   ccall(dlsym(cutest_lib, :fortran_close_), Void,
-      (Ptr{Int32}, Ptr{Int32}), &funit, io_err);
+      (Ref{Int32}, Ptr{Int32}), funit, io_err);
   @cutest_error
 
   meta = NLPModelMeta(Int(nvar), x0=x, lvar=bl, uvar=bu,
