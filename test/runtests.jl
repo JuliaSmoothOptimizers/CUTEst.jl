@@ -1,8 +1,8 @@
-using Base.Test, CUTEst, Ipopt, JuMP, MathProgBase, NLPModels
+using Base.Test, CUTEst, NLPModels
 
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
-problems = [:brownden, :hs5, :hs6, :hs11, :hs14]
+problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
 path = joinpath(Pkg.dir("NLPModels"), "test")
 
 include("test_core.jl")
@@ -25,7 +25,6 @@ for problem in problems
 end
 
 include("consistency.jl")
-include("test_mpb.jl")
 include("test_select.jl")
 
 problems = CUTEst.select(max_var=2, max_con=2)

@@ -25,9 +25,7 @@ const classdb_origin = Dict("A"=>origins[1],
                             "M"=>origins[2],
                             "R"=>origins[3])
 
-if Pkg.installed("DataStructures") != nothing
-  include("create_class.jl")
-end
+include("create_class.jl")
 
 """select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
     objtype=*, contype=*,
