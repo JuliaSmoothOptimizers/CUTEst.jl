@@ -35,7 +35,5 @@ script:
   - julia --check-bounds=yes -E 'VERSION >= v"0.7" && using Pkg; Pkg.test("CUTEst"; coverage=true)'
 
 after_success:
-  - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'Pkg.clone("https://github.com/JuliaSmoothOptimizers/Krylov.jl"); Pkg.checkout("Krylov", "develop")'
-  - julia -e 'cd(Pkg.dir("CUTEst")); include(joinpath("docs", "make.jl"))'
-  - julia -e 'cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'VERSION >= v"0.7" && using Pkg; Pkg.add("Documenter"); Pkg.clone("https://github.com/JuliaSmoothOptimizers/Krylov.jl"); Pkg.add("Krylov"); cd(Pkg.dir("CUTEst")); include(joinpath("docs", "make.jl"))'
+  - julia -e 'VERSION >= v"0.7" && using Pkg; cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
