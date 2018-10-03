@@ -5,26 +5,28 @@ __precompile__()
 
 module CUTEst
 
-importall NLPModels
-import Base.Libdl.dlsym
+using Libdl
+
+using NLPModels
+import Libdl.dlsym
 
 # Only one problem can be interfaced at any given time.
 global cutest_instances = 0
 
 export CUTEstModel, sifdecoder
 
-type CUTEstModel <: AbstractNLPModel
+mutable struct CUTEstModel <: AbstractNLPModel
   meta    :: NLPModelMeta;
 
   counters :: Counters
 end
 
 const funit   = convert(Int32, 42);
-@static is_apple() ? (const linker = "gfortran") : (const linker = "ld")
-@static is_apple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
-@static is_apple() ? (const libgfortran = []) : (const libgfortran = [strip(readstring(`gfortran --print-file libgfortran.so`))])
+@static Sys.isapple() ? (const linker = "gfortran") : (const linker = "ld")
+@static Sys.isapple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
+@static Sys.isapple() ? (const libgfortran = []) : (const libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
 
-type CUTEstException <: Exception
+struct CUTEstException <: Exception
   info :: Int32
   msg  :: String
 
@@ -89,8 +91,8 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
   errlog = tempname()
   cd(ENV["cutest-problems"]) do
     run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
-    print(readstring(errlog))
-    verbose && println(readstring(outlog))
+    print(read(errlog, String))
+    verbose && println(read(outlog, String))
 
     run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
     run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`);
@@ -104,8 +106,8 @@ end
 
 # Initialize problem.
 function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
-  const outsdif = "OUTSDIF_$name.d";
-  const automat = "AUTOMAT_$name.d";
+  outsdif = "OUTSDIF_$name.d";
+  automat = "AUTOMAT_$name.d";
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0];
@@ -120,7 +122,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
     else
       sifdecoder(name, args..., verbose=verbose, outsdif=outsdif, automat=automat)
     end
-    ccall(dlsym(cutest_lib, :fortran_open_), Void,
+    ccall(dlsym(cutest_lib, :fortran_open_), Nothing,
           (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}), funit, outsdif, io_err);
     @cutest_error
   end
@@ -134,14 +136,14 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   nvar = nvar[1];
   ncon = ncon[1];
 
-  x  = Array{Float64}(nvar)
-  bl = Array{Float64}(nvar)
-  bu = Array{Float64}(nvar)
-  v  = Array{Float64}(ncon)
-  cl = Array{Float64}(ncon)
-  cu = Array{Float64}(ncon)
-  equatn = Array{Int32}(ncon)
-  linear = Array{Int32}(ncon)
+  x  = Array{Float64}(undef, nvar)
+  bl = Array{Float64}(undef, nvar)
+  bu = Array{Float64}(undef, nvar)
+  v  = Array{Float64}(undef, ncon)
+  cl = Array{Float64}(undef, ncon)
+  cu = Array{Float64}(undef, ncon)
+  equatn = Array{Int32}(undef, ncon)
+  linear = Array{Int32}(undef, ncon)
 
   if ncon > 0
     # Equality constraints first, linear constraints first, nonlinear variables first.
@@ -153,11 +155,11 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   @cutest_error
 
   for lim in Any[bl, bu, cl, cu]
-    I = find(abs.(lim) .>= 1e20)
+    I = findall(abs.(lim) .>= 1e20)
     lim[I] = Inf * lim[I]
   end
 
-  lin = find(linear);
+  lin = findall(linear .!= 0);
   nln = setdiff(1:ncon, lin);
   nlin = sum(linear);
   nnln = ncon - nlin;
@@ -177,7 +179,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   nnzh = Int(nnzh[1])
   nnzj = Int(nnzj[1])
 
-  ccall(dlsym(cutest_lib, :fortran_close_), Void,
+  ccall(dlsym(cutest_lib, :fortran_close_), Nothing,
       (Ref{Int32}, Ptr{Int32}), funit, io_err);
   @cutest_error
 
@@ -191,7 +193,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   nlp = CUTEstModel(meta, Counters())
 
   cutest_instances += 1;
-  finalizer(nlp, cutest_finalize)
+  finalizer(cutest_finalize, nlp)
 
   return nlp
 end

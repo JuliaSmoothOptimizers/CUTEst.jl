@@ -19,12 +19,12 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   fx = [0.0]
   lx = [0.0]
   ci = [0.0]
-  cx = Array{Cdouble}(ncon[1])
-  gx = Array{Cdouble}(nvar[1])
-  gci = Array{Cdouble}(nvar[1])
-  glx = Array{Cdouble}(nvar[1])
-  gval = Array{Cdouble}(nvar[1])
-  gvar = Array{Cint}(nvar[1])
+  cx = Array{Cdouble}(undef, ncon[1])
+  gx = Array{Cdouble}(undef, nvar[1])
+  gci = Array{Cdouble}(undef, nvar[1])
+  glx = Array{Cdouble}(undef, nvar[1])
+  gval = Array{Cdouble}(undef, nvar[1])
+  gvar = Array{Cint}(undef, nvar[1])
   lj = Cint[nlp.meta.nnzj+nlp.meta.nvar]
   lh = Cint[nlp.meta.nnzh]
   nnzg = Cint[0]
@@ -32,17 +32,17 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   nnzh = Cint[0]
   True = Cint[true]
   False = Cint[false]
-  Jx = Array{Cdouble}(ncon[1],nvar[1])
-  Jtx = Array{Cdouble}(nvar[1],ncon[1])
-  Jval = Array{Cdouble}(nlp.meta.nnzj+nlp.meta.nvar)
-  Jvar = Array{Cint}(nlp.meta.nnzj+nlp.meta.nvar)
-  Jfun = Array{Cint}(nlp.meta.nnzj+nlp.meta.nvar)
-  Hx = Array{Cdouble}(nvar[1], nvar[1])
-  Wx = Array{Cdouble}(nvar[1], nvar[1])
-  Cx = Array{Cdouble}(nvar[1], nvar[1])
-  Hval = Array{Cdouble}(nlp.meta.nnzh)
-  Hrow = Array{Cint}(nlp.meta.nnzh)
-  Hcol = Array{Cint}(nlp.meta.nnzh)
+  Jx = Array{Cdouble}(undef, ncon[1],nvar[1])
+  Jtx = Array{Cdouble}(undef, nvar[1],ncon[1])
+  Jval = Array{Cdouble}(undef, nlp.meta.nnzj+nlp.meta.nvar)
+  Jvar = Array{Cint}(undef, nlp.meta.nnzj+nlp.meta.nvar)
+  Jfun = Array{Cint}(undef, nlp.meta.nnzj+nlp.meta.nvar)
+  Hx = Array{Cdouble}(undef, nvar[1], nvar[1])
+  Wx = Array{Cdouble}(undef, nvar[1], nvar[1])
+  Cx = Array{Cdouble}(undef, nvar[1], nvar[1])
+  Hval = Array{Cdouble}(undef, nlp.meta.nnzh)
+  Hrow = Array{Cint}(undef, nlp.meta.nnzh)
+  Hcol = Array{Cint}(undef, nlp.meta.nnzh)
 
   @testset "Core interface" begin
     if (ncon[1] > 0)
@@ -274,20 +274,20 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test isapprox(Wx, W(x0,y0), rtol=rtol)
 
       v = ones(nvar[1])
-      Hv = Array{Cdouble}(nvar[1])
+      Hv = Array{Cdouble}(undef, nvar[1])
       chprod(st, nvar, ncon, False, x0, y0, v, Hv)
       @test isapprox(Hv, W(x0,y0)*v, rtol=rtol)
 
-      Hv = Array{Cdouble}(nvar[1])
+      Hv = Array{Cdouble}(undef, nvar[1])
       chcprod(st, nvar, ncon, False, x0, y0, v, Hv)
       @test isapprox(Hv, (W(x0,y0)-H(x0))*v, rtol=rtol)
 
       v = ones(nvar[1])
-      Jv = Array{Cdouble}(ncon[1])
+      Jv = Array{Cdouble}(undef, ncon[1])
       cjprod(st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon)
       @test isapprox(Jv, J(x0)*v, rtol=rtol)
       v = ones(ncon[1])
-      Jtv = Array{Cdouble}(nvar[1])
+      Jtv = Array{Cdouble}(undef, nvar[1])
       cjprod(st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar)
       @test isapprox(Jtv, J(x0)'*v, rtol=rtol)
     else
@@ -324,7 +324,7 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test isapprox(Hx, H(x0), rtol=rtol)
 
       v = ones(nvar[1])
-      Hv = Array{Cdouble}(nvar[1])
+      Hv = Array{Cdouble}(undef, nvar[1])
       uhprod(st, nvar, False, x0, v, Hv)
       @test isapprox(Hv, H(x0)*v, rtol=rtol)
 

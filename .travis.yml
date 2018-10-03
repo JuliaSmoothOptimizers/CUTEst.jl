@@ -5,14 +5,12 @@ os:
   - osx
 
 julia:
-  - 0.6
   - 0.7
   - 1.0
   - nightly
 
 matrix:
   allow_failures:
-    - julia: 1.0
     - julia: nightly
 
 addons:
@@ -29,11 +27,11 @@ before_install:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 
 install:
-  - julia -E 'VERSION >= v"0.7" && using Pkg; Pkg.clone(pwd()); Pkg.build("CUTEst");'
+  - julia -E 'using Pkg; Pkg.clone(pwd()); Pkg.build("CUTEst");'
 
 script:
-  - julia --check-bounds=yes -E 'VERSION >= v"0.7" && using Pkg; Pkg.test("CUTEst"; coverage=true)'
+  - julia --check-bounds=yes -E 'using Pkg; Pkg.test("CUTEst"; coverage=true)'
 
 after_success:
-  - julia -e 'VERSION >= v"0.7" && using Pkg; Pkg.add("Documenter"); Pkg.clone("https://github.com/JuliaSmoothOptimizers/Krylov.jl"); Pkg.add("Krylov"); cd(Pkg.dir("CUTEst")); include(joinpath("docs", "make.jl"))'
-  - julia -e 'VERSION >= v"0.7" && using Pkg; cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder()); Codecov.submit(process_folder())'
+  - julia -e 'using Pkg; Pkg.add("Documenter"); Pkg.clone("https://github.com/JuliaSmoothOptimizers/Krylov.jl"); Pkg.add("Krylov"); cd(Pkg.dir("CUTEst")); include(joinpath("docs", "make.jl"))'
+  - julia -e 'using Pkg; cd(Pkg.dir("CUTEst")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder()); Codecov.submit(process_folder())'

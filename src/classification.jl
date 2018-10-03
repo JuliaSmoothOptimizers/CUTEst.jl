@@ -146,7 +146,7 @@ end
 canonicalize_ftype(reqtype::Integer, allowedtypes) = [allowedtypes[reqtype]]
 canonicalize_ftype(reqtype::Symbol, allowedtypes) = [string(reqtype)]
 canonicalize_ftype(reqtype::AbstractString, allowedtypes) = [reqtype]
-canonicalize_ftype{T<:Integer}(reqtype::AbstractVector{T}, allowedtypes) =
+canonicalize_ftype(reqtype::AbstractVector{T}, allowedtypes) where T <: Integer =
     allowedtypes[reqtype]
 canonicalize_ftype(reqtype::AbstractVector{Symbol}, allowedtypes) = map(string, reqtype)
 canonicalize_ftype(reqtype, allowedtypes) = reqtype

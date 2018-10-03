@@ -1,9 +1,9 @@
-using Base.Test, CUTEst, NLPModels
+using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Pkg, Printf
 
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
 problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
-path = joinpath(Pkg.dir("NLPModels"), "test")
+path = joinpath(dirname(pathof(NLPModels)), "..", "test")
 
 include("test_core.jl")
 include("test_julia.jl")
@@ -14,7 +14,7 @@ for problem in problems
   problem_s = string(problem)
   include(joinpath(path, "$problem_s.jl"))
   nlp = CUTEstModel(uppercase(problem_s))
-  adnlp = eval(parse("$(problem)_autodiff"))()
+  adnlp = eval(Meta.parse("$(problem)_autodiff"))()
 
   test_nlpinterface(nlp, adnlp)
   test_coreinterface(nlp, adnlp)
