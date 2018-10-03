@@ -10,7 +10,7 @@ libgsl = library_dependency("libgsl", aliases=["libgsl-0"])
 #provides(Yum, "gsl-devel", libgsl)
 #provides(Pacman, "gsl", libgsl)
 
-if is_apple()
+if Sys.isapple()
     using Homebrew
     provides(Homebrew.HB, "optimizers/cutest/gsl@1", libgsl, os = :Darwin)
 end
@@ -32,11 +32,12 @@ function validate_libcutest()
       outlog = tempname()
       errlog = tempname()
       run(pipeline(`$runcutest -p genc -D $hs3`, stdout=outlog, stderr=errlog))
-      print(readstring(errlog))
+      print(read(errlog, String))
       rm(outlog, force=true)
       rm(errlog, force=true)
     end
     return true
+  catch
   end
   rm(tmpdir, force=true, recursive=true)
   false
@@ -54,30 +55,30 @@ cutestenv = joinpath(here, "cutestenv.jl")
 
 # Check if there is an external CUTEst installation
 if validate_libcutest()
-  info("External CUTEst installation found")
+  @info("External CUTEst installation found")
   check_env()
   ispath(cutestenv) && rm(cutestenv)
 else
   @BinDeps.install Dict(:libgsl => :libgsl)
-  @static if is_apple()
+  @static if Sys.isapple()
     install = true
     if isfile(cutestenv)
       include(cutestenv)
       if validate_libcutest()
-        info("Updating CUTEst")
+        @info("Updating CUTEst")
         try
           Homebrew.brew(`upgrade cutest`)
           Homebrew.brew(`upgrade mastsif`)
         catch
           # brew upgrade returns an error if the latest version is already installed
-          info("Ignore error message above; latest version already installed")
+          @info("Ignore error message above; latest version already installed")
         end
         install = false
       end
     end
 
     if install
-      info("Installing CUTEst")
+      @info("Installing CUTEst")
       Homebrew.add("optimizers/cutest/cutest")
       Homebrew.add("optimizers/cutest/mastsif")
 
@@ -100,11 +101,11 @@ else
         println(cenv, "ENV[\"cutest-problems\"] = \"$path\"")
       end
     end
-  elseif is_linux()
+  elseif Sys.islinux()
     cd(here) do
       isdir("files") || mkdir("files")
       cd("files") do
-        info("Installing CUTEst")
+        @info("Installing CUTEst")
 
         lnxurl = "https://raw.githubusercontent.com/abelsiqueira/linux-cutest/v0.4.0/install.sh"
         run(`wget $lnxurl -O install.sh`)
