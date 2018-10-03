@@ -15,7 +15,7 @@ objtypes_problems = ["CHANDHEQ", "HS8", "TRO5X5", "BT8", "HIMMELBF", "JIMACK"]
 contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HANGING", "SYNTHES1"]
 
 @testset "CUTEst selection tool" begin
-  problems = filter(x->ismatch(r"SIF$",x), readdir(ENV["MASTSIF"]))
+  problems = filter(x->occursin(r"SIF$",x), readdir(ENV["MASTSIF"]))
   np = length(problems)
   @test np == length(CUTEst.select())
   @testset "Variables" begin
