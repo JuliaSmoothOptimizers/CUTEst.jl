@@ -81,6 +81,14 @@ Example:
 function sifdecoder(name :: String, args...; verbose :: Bool=false,
                     outsdif :: String="OUTSDIF_$(basename(name)).d",
                     automat :: String="AUTOMAT_$(basename(name)).d")
+
+  if length(name) < 4 || name[end-3:end] != ".SIF"
+    name = "$name.SIF"
+  end
+  if !isfile(name) && !isfile(joinpath(ENV["MASTSIF"], name))
+    error("$name not found")
+  end
+
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(basename(name));
   libname = "lib$pname";
@@ -106,6 +114,12 @@ end
 
 # Initialize problem.
 function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
+  if length(name) < 4 || name[end-3:end] != ".SIF"
+    name = "$name.SIF"
+  end
+  if !isfile(name) && !isfile(joinpath(ENV["MASTSIF"], name))
+    error("$name not found")
+  end
   outsdif = "OUTSDIF_$(basename(name)).d";
   automat = "AUTOMAT_$(basename(name)).d";
   global cutest_instances
