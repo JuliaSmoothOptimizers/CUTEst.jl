@@ -79,9 +79,8 @@ Example:
     `sifdecoder("DIXMAANJ", "-param", "M=30")`.
 """
 function sifdecoder(name :: String, args...; verbose :: Bool=false,
-                    outsdif :: String="OUTSDIF_$name.d",
-                    automat :: String="AUTOMAT_$name.d")
-
+                    outsdif :: String="OUTSDIF_$(basename(name)).d",
+                    automat :: String="AUTOMAT_$(basename(name)).d")
   if length(name) < 4 || name[end-3:end] != ".SIF"
     name = "$name.SIF"
   end
@@ -90,7 +89,7 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
   end
 
   # TODO: Accept options to pass to sifdecoder.
-  pname, sif = splitext(name);
+  pname, sif = splitext(basename(name));
   libname = "lib$pname";
 
   # work around bogus "ERROR: failed process"
@@ -120,8 +119,8 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   if !isfile(name) && !isfile(joinpath(ENV["MASTSIF"], name))
     error("$name not found")
   end
-  outsdif = "OUTSDIF_$name.d";
-  automat = "AUTOMAT_$name.d";
+  outsdif = "OUTSDIF_$(basename(name)).d";
+  automat = "AUTOMAT_$(basename(name)).d";
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0];
