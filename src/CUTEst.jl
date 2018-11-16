@@ -113,7 +113,8 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
 end
 
 # Initialize problem.
-function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Bool=false)
+function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bool=false,
+                     efirst :: Bool=true, lfirst :: Bool=true, lvfirst :: Bool=true)
   if length(name) < 4 || name[end-3:end] != ".SIF"
     name = "$name.SIF"
   end
@@ -160,9 +161,12 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose ::Boo
   linear = Array{Int32}(undef, ncon)
 
   if ncon > 0
+    e_order = efirst ? Cint[1] : Cint[0]
+    l_order = lfirst ? Cint[1] : Cint[0]
+    v_order = lvfirst ? Cint[1] : Cint[0]
     # Equality constraints first, linear constraints first, nonlinear variables first.
     csetup(io_err, [funit], Cint[0], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
-      equatn, linear, Cint[1], Cint[1], Cint[1])
+      equatn, linear, e_order, l_order, v_order)
   else
     usetup(io_err, [funit], Cint[0], Cint[6], [nvar], x, bl, bu)
   end
