@@ -125,29 +125,17 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
   @testset "Consistency" begin
     set1 = CUTEst.select(contype=["unc"])
     set2 = CUTEst.select(max_con=0, only_free_var=true)
-    println("Mastsif says U but are not unc free")
-    println(setdiff(set1, set2))
-    println("Are unc and free but Mastsif is not U")
-    println(setdiff(set2, set1))
-    #@test sort(set1) == sort(set2)
+    @test sort(set1) == sort(set2)
 
     set1 = CUTEst.select(contype=["fixed_vars"])
     set2 = CUTEst.select(max_con=0, custom_filter=x ->(
       x["variables"]["fixed"] > 0) && (x["variables"]["fixed"] +
       x["variables"]["free"] == x["variables"]["number"]))
-    println("Mastsif says X but aren't")
-    println(setdiff(set1, set2))
-    println("Unconstrained with some fixed variables, no bounds but not X")
-    println(setdiff(set2, set1))
-    #@test sort(set1) == sort(set2)
+    @test sort(set1) == sort(set2)
 
     set1 = CUTEst.select(contype=["unc", "fixed_vars", "bounds"])
     set2 = CUTEst.select(max_con=0)
-    println("Mastsif says U, X or B, but are not unconstrained")
-    println(setdiff(set1, set2))
-    println("Unconstrained problems, but not U, X or B")
-    println(setdiff(set2, set1))
-    #@test sort(set1) == sort(set2)
+    @test sort(set1) == sort(set2)
 
     set1 = CUTEst.select(contype=["linear"])
     set2 = CUTEst.select(min_con=1, only_linear_con=true)
