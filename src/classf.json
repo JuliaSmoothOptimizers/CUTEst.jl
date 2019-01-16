@@ -1914,7 +1914,7 @@
       "free": 0
     },
     "regular": true,
-    "contype": "bounds"
+    "contype": "linear"
   },
   "ARGAUSS": {
     "objtype": "none",
@@ -2149,12 +2149,12 @@
     "derivative_order": 2,
     "variables": {
       "bounded_below": 0,
-      "number": 10,
+      "number": 200,
       "bounded_both": 0,
       "can_choose": false,
       "bounded_above": 0,
       "fixed": 0,
-      "free": 10
+      "free": 200
     },
     "regular": true,
     "contype": "unc"
@@ -2673,7 +2673,7 @@
     "contype": "general"
   },
   "BA-L1SPLS": {
-    "objtype": "none",
+    "objtype": "sum_of_squares",
     "constraints": {
       "equality": 0,
       "ineq_both": 0,
@@ -2697,7 +2697,7 @@
       "free": 57
     },
     "regular": true,
-    "contype": "general"
+    "contype": "unc"
   },
   "BA-L21": {
     "objtype": "none",
@@ -4538,10 +4538,10 @@
   "BROWNDENE": {
     "objtype": "none",
     "constraints": {
-      "equality": 0,
+      "equality": 20,
       "ineq_both": 0,
-      "nonlinear": 0,
-      "number": 0,
+      "nonlinear": 20,
+      "number": 20,
       "linear": 0,
       "can_choose": false,
       "ineq_below": 0,
@@ -4606,12 +4606,12 @@
     "derivative_order": 2,
     "variables": {
       "bounded_below": 0,
-      "number": 10,
+      "number": 5000,
       "bounded_both": 0,
       "can_choose": false,
       "bounded_above": 0,
       "fixed": 0,
-      "free": 10
+      "free": 5000
     },
     "regular": true,
     "contype": "unc"
@@ -4687,12 +4687,12 @@
     "derivative_order": 2,
     "variables": {
       "bounded_below": 0,
-      "number": 10,
+      "number": 5000,
       "bounded_both": 0,
       "can_choose": false,
       "bounded_above": 0,
       "fixed": 0,
-      "free": 10
+      "free": 5000
     },
     "regular": true,
     "contype": "unc"
@@ -7206,7 +7206,7 @@
       "free": 51
     },
     "regular": true,
-    "contype": "unc"
+    "contype": "fixed_vars"
   },
   "DEGDIAG": {
     "objtype": "quadratic",
@@ -8316,7 +8316,7 @@
     "contype": "general"
   },
   "DMN15102LS": {
-    "objtype": "none",
+    "objtype": "sum_of_squares",
     "constraints": {
       "equality": 0,
       "ineq_both": 0,
@@ -8340,7 +8340,7 @@
       "free": 66
     },
     "regular": true,
-    "contype": "general"
+    "contype": "unc"
   },
   "DMN15103": {
     "objtype": "none",
@@ -10662,7 +10662,7 @@
       "free": 0
     },
     "regular": true,
-    "contype": "unc"
+    "contype": "bounds"
   },
   "FBRAIN3": {
     "objtype": "none",
@@ -10743,7 +10743,7 @@
       "free": 0
     },
     "regular": true,
-    "contype": "unc"
+    "contype": "bounds"
   },
   "FCCU": {
     "objtype": "sum_of_squares",
@@ -11502,7 +11502,7 @@
     "contype": "general"
   },
   "GAUSS3LS": {
-    "objtype": "none",
+    "objtype": "sum_of_squares",
     "constraints": {
       "equality": 0,
       "ineq_both": 0,
@@ -11526,7 +11526,7 @@
       "free": 8
     },
     "regular": true,
-    "contype": "general"
+    "contype": "unc"
   },
   "GAUSSELM": {
     "objtype": "linear",
@@ -11580,7 +11580,7 @@
       "free": 3
     },
     "regular": true,
-    "contype": "general"
+    "contype": "unc"
   },
   "GBRAIN": {
     "objtype": "none",
@@ -22005,7 +22005,7 @@
     "contype": "quadratic"
   },
   "MARATOSB": {
-    "objtype": "quadratic",
+    "objtype": "other",
     "constraints": {
       "equality": 0,
       "ineq_both": 0,
@@ -23056,6 +23056,114 @@
     },
     "regular": true,
     "contype": "quadratic"
+  },
+  "MNISTS0": {
+    "objtype": "none",
+    "constraints": {
+      "equality": 60000,
+      "ineq_both": 0,
+      "nonlinear": 60000,
+      "number": 60000,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 494,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 494
+    },
+    "regular": true,
+    "contype": "general"
+  },
+  "MNISTS0LS": {
+    "objtype": "sum_of_squares",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 0,
+      "number": 0,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 494,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 494
+    },
+    "regular": true,
+    "contype": "unc"
+  },
+  "MNISTS5": {
+    "objtype": "none",
+    "constraints": {
+      "equality": 60000,
+      "ineq_both": 0,
+      "nonlinear": 60000,
+      "number": 60000,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 494,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 494
+    },
+    "regular": true,
+    "contype": "general"
+  },
+  "MNISTS5LS": {
+    "objtype": "sum_of_squares",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 0,
+      "number": 0,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 494,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 494
+    },
+    "regular": true,
+    "contype": "unc"
   },
   "MODBEALE": {
     "objtype": "sum_of_squares",
@@ -26700,7 +26808,7 @@
       "free": 4
     },
     "regular": true,
-    "contype": "bounds"
+    "contype": "unc"
   },
   "PALMER5E": {
     "objtype": "sum_of_squares",
@@ -29562,7 +29670,7 @@
       "free": 0
     },
     "regular": true,
-    "contype": "general"
+    "contype": "linear"
   },
   "RK23": {
     "objtype": "linear",
@@ -29673,6 +29781,33 @@
     "contype": "general"
   },
   "ROSENBR": {
+    "objtype": "sum_of_squares",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 0,
+      "number": 0,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "academic",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 2,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 2
+    },
+    "regular": true,
+    "contype": "unc"
+  },
+  "ROSENBRTU": {
     "objtype": "sum_of_squares",
     "constraints": {
       "equality": 0,
@@ -30105,7 +30240,7 @@
     "contype": "general"
   },
   "SANTALS": {
-    "objtype": "none",
+    "objtype": "sum_of_squares",
     "constraints": {
       "equality": 0,
       "ineq_both": 0,
@@ -30129,7 +30264,7 @@
       "free": 0
     },
     "regular": true,
-    "contype": "general"
+    "contype": "bounds"
   },
   "SARO": {
     "objtype": "linear",
@@ -32075,6 +32210,33 @@
     "regular": true,
     "contype": "unc"
   },
+  "STREG": {
+    "objtype": "sum_of_squares",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 0,
+      "number": 0,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "academic",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 4,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 4
+    },
+    "regular": true,
+    "contype": "unc"
+  },
   "SUPERSIM": {
     "objtype": "linear",
     "constraints": {
@@ -32181,7 +32343,7 @@
       "free": 0
     },
     "regular": true,
-    "contype": "general"
+    "contype": "linear"
   },
   "SYNTHES1": {
     "objtype": "other",
@@ -32506,6 +32668,168 @@
     },
     "regular": true,
     "contype": "linear"
+  },
+  "TAX13322": {
+    "objtype": "other",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 1260,
+      "number": 1261,
+      "linear": 1,
+      "can_choose": false,
+      "ineq_below": 1261,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 72,
+      "number": 72,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 0
+    },
+    "regular": true,
+    "contype": "general"
+  },
+  "TAX213322": {
+    "objtype": "other",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 570780,
+      "number": 570781,
+      "linear": 1,
+      "can_choose": false,
+      "ineq_below": 570781,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 1512,
+      "number": 1512,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 0
+    },
+    "regular": true,
+    "contype": "general"
+  },
+  "TAX53322": {
+    "objtype": "other",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 32220,
+      "number": 32221,
+      "linear": 1,
+      "can_choose": false,
+      "ineq_below": 32221,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 360,
+      "number": 360,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 0
+    },
+    "regular": true,
+    "contype": "general"
+  },
+  "TAXR13322": {
+    "objtype": "other",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 1260,
+      "number": 1261,
+      "linear": 1,
+      "can_choose": false,
+      "ineq_below": 1261,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 72,
+      "number": 72,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 0
+    },
+    "regular": true,
+    "contype": "general"
+  },
+  "TAXR213322": {
+    "objtype": "other",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 570780,
+      "number": 570781,
+      "linear": 1,
+      "can_choose": false,
+      "ineq_below": 570781,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 1512,
+      "number": 1512,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 0
+    },
+    "regular": true,
+    "contype": "general"
+  },
+  "TAXR53322": {
+    "objtype": "other",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 32220,
+      "number": 32221,
+      "linear": 1,
+      "can_choose": false,
+      "ineq_below": 32221,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 360,
+      "number": 360,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 0
+    },
+    "regular": true,
+    "contype": "general"
   },
   "TENBARS1": {
     "objtype": "linear",
@@ -34341,7 +34665,7 @@
       "free": 1044
     },
     "regular": true,
-    "contype": "linear"
+    "contype": "bounds"
   },
   "WALL100": {
     "objtype": "quadratic",
@@ -34368,7 +34692,7 @@
       "free": 104949
     },
     "regular": true,
-    "contype": "linear"
+    "contype": "bounds"
   },
   "WALL20": {
     "objtype": "quadratic",
@@ -34395,7 +34719,7 @@
       "free": 4189
     },
     "regular": true,
-    "contype": "linear"
+    "contype": "bounds"
   },
   "WALL50": {
     "objtype": "quadratic",
@@ -34422,7 +34746,7 @@
       "free": 26224
     },
     "regular": true,
-    "contype": "linear"
+    "contype": "bounds"
   },
   "WATER": {
     "objtype": "other",
@@ -34657,44 +34981,17 @@
     "derivative_order": 2,
     "variables": {
       "bounded_below": 0,
-      "number": 2600,
+      "number": 123200,
       "bounded_both": 0,
       "can_choose": false,
       "bounded_above": 0,
       "fixed": 0,
-      "free": 2600
+      "free": 123200
     },
     "regular": true,
     "contype": "unc"
   },
   "YATP1NE": {
-    "objtype": "none",
-    "constraints": {
-      "equality": 2600,
-      "ineq_both": 0,
-      "nonlinear": 2600,
-      "number": 2600,
-      "linear": 0,
-      "can_choose": false,
-      "ineq_below": 0,
-      "ineq_above": 0
-    },
-    "origin": "academic",
-    "has_internal_var": false,
-    "derivative_order": 2,
-    "variables": {
-      "bounded_below": 0,
-      "number": 2600,
-      "bounded_both": 0,
-      "can_choose": false,
-      "bounded_above": 0,
-      "fixed": 0,
-      "free": 2600
-    },
-    "regular": true,
-    "contype": "general"
-  },
-  "YATP1SQ": {
     "objtype": "none",
     "constraints": {
       "equality": 123200,
@@ -34721,33 +35018,6 @@
     "regular": true,
     "contype": "general"
   },
-  "YATP1SS": {
-    "objtype": "none",
-    "constraints": {
-      "equality": 2600,
-      "ineq_both": 0,
-      "nonlinear": 2600,
-      "number": 2600,
-      "linear": 0,
-      "can_choose": false,
-      "ineq_below": 0,
-      "ineq_above": 0
-    },
-    "origin": "academic",
-    "has_internal_var": false,
-    "derivative_order": 2,
-    "variables": {
-      "bounded_below": 0,
-      "number": 2600,
-      "bounded_both": 0,
-      "can_choose": false,
-      "bounded_above": 0,
-      "fixed": 0,
-      "free": 2600
-    },
-    "regular": true,
-    "contype": "general"
-  },
   "YATP2LS": {
     "objtype": "sum_of_squares",
     "constraints": {
@@ -34765,12 +35035,12 @@
     "derivative_order": 2,
     "variables": {
       "bounded_below": 0,
-      "number": 2600,
+      "number": 123200,
       "bounded_both": 0,
       "can_choose": false,
       "bounded_above": 0,
       "fixed": 0,
-      "free": 2600
+      "free": 123200
     },
     "regular": true,
     "contype": "unc"
