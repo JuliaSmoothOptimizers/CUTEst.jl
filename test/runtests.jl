@@ -3,7 +3,7 @@ using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Pkg, Printf
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
 problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
-path = joinpath(dirname(pathof(NLPModels)), "..", "test")
+nlpmodels_path = joinpath(dirname(pathof(NLPModels)), "..", "test")
 
 include("test_core.jl")
 include("test_julia.jl")
@@ -12,7 +12,7 @@ include("coverage.jl")
 for problem in problems
   println("Testing interfaces on problem $problem")
   problem_s = string(problem)
-  include(joinpath(path, "$problem_s.jl"))
+  include(joinpath(nlpmodels_path, "$problem_s.jl"))
   nlp = CUTEstModel(uppercase(problem_s))
   adnlp = eval(Meta.parse("$(problem)_autodiff"))()
 
@@ -58,3 +58,4 @@ finalize(nlp)
 nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
 @assert nlp.meta.nvar == 90
 finalize(nlp)
+include("test_view_subarray.jl")

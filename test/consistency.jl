@@ -1,4 +1,4 @@
-include(joinpath(path, "consistency.jl"))
+include(joinpath(nlpmodels_path, "consistency.jl"))
 
 problems = [:brownden, :hs5, :hs6, :hs11, :hs14]
 for problem in problems
