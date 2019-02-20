@@ -1,9 +1,14 @@
 using Documenter, CUTEst, NLPModels
 
 makedocs(
-  modules = [CUTEst, NLPModels],
+  modules = [CUTEst],
+  doctest = true,
+  linkcheck = true,
+  strict = true,
   assets = ["assets/style.css"],
-  format = :html,
+  format = Documenter.HTML(
+              prettyurls = get(ENV, "CI", nothing) == "true"
+            ),
   sitename = "CUTEst.jl",
   pages = Any["Home" => "index.md",
               "Tutorial" => "tutorial.md",
@@ -15,6 +20,5 @@ makedocs(
 deploydocs(deps = nothing, make = nothing,
   repo = "github.com/JuliaSmoothOptimizers/CUTEst.jl.git",
   target = "build",
-  julia = "0.6",
-  latest = "master"
+  devbranch = "master"
 )

@@ -3,7 +3,7 @@
 When working with CUTEst, we created a **core** interface, which is essentially
 a wrapper for the CUTEst functions.
 You probably don't want to use that, because the NLPModels interface is much
-more friendlier, as just as useful. See its [tutorial](tutorial).
+more friendlier, as just as useful. See its tutorial.
 
 CUTEst in Fortran defines functions called with `cutest_u*` or `cutest_c*`,
 for the unconstrained and constrained cases, respectively.

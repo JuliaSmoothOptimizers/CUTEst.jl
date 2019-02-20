@@ -1,4 +1,5 @@
-using JSON, DataStructures
+import DataStructures: OrderedDict
+using JSON
 
 """`create_class()`
 

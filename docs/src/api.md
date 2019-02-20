@@ -10,28 +10,25 @@ cons
 cons!
 jac_coord
 jac
-jac_op
-jac_op!
 jprod
 jprod!
 jtprod
 jtprod!
 hess_coord
 hess
-hess_op
-hess_op!
 hprod
 hprod!
-NLPModels.NLPtoMPB
-NLPModels.reset!
 ```
 
 ## Extra Julian API
 
 ```@docs
 objgrad
+objgrad!
 objcons
+objcons!
 cons_coord
+consjac
 ```
 
 ## Select tools
@@ -40,6 +37,10 @@ cons_coord
 Modules = [CUTEst]
 Pages   = ["classification.jl"]
 Order   = [:function]
+```
+
+```@docs
+CUTEst.create_class
 ```
 
 ## Core API

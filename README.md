@@ -1,4 +1,4 @@
-# CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki) Interface
+# CUTEst.jl: [Julia](http://julialang.org)'s [CUTEst](https://github.com/ralna/CUTEst/wiki) Interface
 
 This package provides an interface to CUTEst, a repository of
 constrained and unconstrained nonlinear programming problems for testing and

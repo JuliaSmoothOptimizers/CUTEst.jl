@@ -1,7 +1,7 @@
 # CUTEst.jl documentation
 
 This package provides an interface to
-[CUTEst](http://ccpforge.cse.rl.ac.uk/gf/project/cutest/wiki),
+[CUTEst](https://github.com/ralna/CUTEst/wiki),
 the *Constrained and Unconstrained Test Environment with safe threads*
 for nonlinear optimization.
 
@@ -13,7 +13,7 @@ also gives direct access to the CUTEst functions.
 
 CUTEst has been around for a while. It started as CUTE, then CUTEr,
 then CUTEr2, and finally CUTEst.
-The [original project](https://ccpforge.cse.rl.ac.uk/gf/project/cutest/) can be
+The [original project](https://github.com/ralna/CUTEst/wiki) can be
 used independently of Julia.
 
 CUTEst works by decoding a `.SIF` file into other files and objects so that a
@@ -45,22 +45,20 @@ On Archlinux, do
 sudo pacman -S wget gfortran
 ```
 
-The following commands should automatically download and install CUTEst and its
-dependencies.
+The following command should automatically download and install CUTEst and its
+dependencies (Use `]` to enter `pkg>` mode).
 ````julia
-Pkg.add("CUTEst")
+pkg> add CUTEst
 ````
 
 ## Usage
 
-Check the [tutorial](tutorial) for complete usage.
+Check the tutorial for complete usage.
 
 The simplest use of CUTEst is through the interface of NLPModels.jl.
-Here's the quick [reference
-guide](https://github.com/JuliaSmoothOptimizers/NLPModels.jl/api#reference-guide).
 
 ```@example
-using CUTEst
+using CUTEst, NLPModels
 
 nlp = CUTEstModel("ROSENBR")
 println("x0 = $(nlp.meta.x0)")
@@ -70,15 +68,14 @@ println("Hx = $( hess(nlp, nlp.meta.x0) )")
 finalize(nlp)
 ```
 
-Check the [NLPModels API](api/#nlpmodels-api) for details.
+Check the [NLPModels
+API](https://JuliaSmoothOptimizers.github.io/NLPModels.jl/stable/api/) for details.
 
 ## Working with CUTEst directly
 
-We also have implemented function to allow access to the CUTEst functions
-directly:
+We also have implemented function to allow access to the CUTEst functions directly:
 a core API which is only a wrapper for CUTEst.
-For more information see the section [core](core), or
-the documentation [here](api/#core-api).
+For more information see the section core.
 
 ## Contents
 
