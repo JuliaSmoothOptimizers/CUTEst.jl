@@ -13,7 +13,7 @@ CUTEst can be accessed in two ways.
 
 NLPModels defines an abstract interface to access the objective, constraints,
 derivatives, etc. of the problem. A
-[reference guide](https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api#reference-guide)
+[reference guide](https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api/)
 is available to check what you need.
 
 Once CUTEst has been installed, open a problem with
@@ -41,7 +41,7 @@ has implementations of optimization methods for AbstractNLPModels.
 Let's make some demonstration of the CUTEstModel.
 
 ```@example ex1
-using CUTEst
+using CUTEst, NLPModels
 
 nlp = CUTEstModel("ROSENBR")
 println("x0 = $( nlp.meta.x0 )")
@@ -51,7 +51,7 @@ println("Hx = $( hess(nlp, nlp.meta.x0) )")
 ```
 
 Remember to check the
-[API](https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api)
+[API](https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api/)
 in case of doubts about these functions.
 
 Notice how `hess` returns a lower triangle matrix.
@@ -84,15 +84,17 @@ For instance, here is an example computation of a Newton trust-region step.
 ```@example ex1
 using Krylov
 
-Delta = 10.0
-x = nlp.meta.x0
-println("0: x = $x")
-for i = 1:5
-  print("$i: ")
-  H = hess_op(nlp, x)
-  d, stats = Krylov.cg(H, -grad(nlp, x), radius=Delta)
-  x = x + d
-  println("x = $x")
+function newton()
+  Delta = 10.0
+  x = nlp.meta.x0
+  println("0: x = $x")
+  for i = 1:5
+    print("$i: ")
+    H = hess_op(nlp, x)
+    d, stats = Krylov.cg(H, -grad(nlp, x), radius=Delta)
+    x = x + d
+    println("x = $x")
+  end
 end
 ```
 
@@ -104,7 +106,7 @@ There is no difference in calling a constrained problem, only that some
 additional functions are available.
 
 ```@example ex2
-using CUTEst
+using CUTEst, NLPModels
 
 nlp = CUTEstModel("HS35")
 ```
