@@ -29,12 +29,14 @@ function validate_libcutest()
   tmpdir = mktempdir()
   try
     cd(tmpdir) do
-      outlog = tempname()
-      errlog = tempname()
-      run(pipeline(`$runcutest -p genc -D $hs3`, stdout=outlog, stderr=errlog))
-      print(read(errlog, String))
-      rm(outlog, force=true)
-      rm(errlog, force=true)
+      for prec in ("", "--single")
+        outlog = tempname()
+        errlog = tempname()
+        run(pipeline(`$runcutest -p genc $prec -D $hs3`, stdout=outlog, stderr=errlog))
+        print(read(errlog, String))
+        rm(outlog, force=true)
+        rm(errlog, force=true)
+      end
     end
     return true
   catch

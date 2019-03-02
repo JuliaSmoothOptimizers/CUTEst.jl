@@ -45,7 +45,8 @@ struct CUTEstException <: Exception
 end
 
 function __init__()
-  global cutest_lib = C_NULL
+  global cutest_lib_single = C_NULL
+  global cutest_lib_double = C_NULL
   deps = joinpath(dirname(@__FILE__), "../deps")
   cutestenv = joinpath(deps, "cutestenv.jl")
   if ispath(cutestenv)
@@ -56,7 +57,9 @@ function __init__()
   isdir(ENV["cutest-problems"]) || mkdir(ENV["cutest-problems"])
   global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
 
-  global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
+  global libpath_single = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
+      "single/libcutest_single.$(Libdl.dlext)")
+  global libpath_double = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
       "double/libcutest_double.$(Libdl.dlext)")
 
   push!(Libdl.DL_LOAD_PATH, ENV["cutest-problems"])
@@ -91,7 +94,8 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
 
   # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(basename(name));
-  libname = "lib$pname";
+  libname_single = "lib$(pname)_single"
+  libname_double = "lib$(pname)_double"
 
   # work around bogus "ERROR: failed process"
   # should be more elegant after https://github.com/JuliaLang/julia/pull/12807
@@ -103,11 +107,14 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
     verbose && println(read(outlog, String))
 
     run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-    run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`);
+    run(`$linker $sh_flags -o $(libname_single).$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath_single $libgfortran`);
+    run(`$linker $sh_flags -o $(libname_double).$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath_double $libgfortran`);
     run(`mv OUTSDIF.d $outsdif`)
     run(`mv AUTOMAT.d $automat`)
     run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
-    global cutest_lib = Libdl.dlopen(libname,
+    global cutest_lib_single = Libdl.dlopen(libname_single,
+      Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+    global cutest_lib_double = Libdl.dlopen(libname_double,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
   end
 end
@@ -126,18 +133,22 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0];
-  global cutest_lib
+  global cutest_lib_single
+  global cutest_lib_double
   cd(ENV["cutest-problems"]) do
     if !decode
       (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
       libname = "lib$name"
-      isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
-      cutest_lib = Libdl.dlopen(libname,
+      isfile("$libname_single.$(Libdl.dlext)") || error("CUTEst: single lib not found; decode problem first")
+      isfile("$libname_double.$(Libdl.dlext)") || error("CUTEst: double lib not found; decode problem first")
+      cutest_lib_single = Libdl.dlopen(libname_single,
+        Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      cutest_lib_double = Libdl.dlopen(libname_double,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
       sifdecoder(name, args..., verbose=verbose, outsdif=outsdif, automat=automat)
     end
-    ccall(dlsym(cutest_lib, :fortran_open_), Nothing,
+    ccall(dlsym(cutest_lib_double, :fortran_open_), Nothing,
           (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}), funit, outsdif, io_err);
     @cutest_error
   end
@@ -151,6 +162,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
   nvar = nvar[1];
   ncon = ncon[1];
 
+  # the OUTSDIF data is in double precision
   x  = Array{Float64}(undef, nvar)
   bl = Array{Float64}(undef, nvar)
   bu = Array{Float64}(undef, nvar)
@@ -197,7 +209,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
   nnzh = Int(nnzh[1])
   nnzj = Int(nnzj[1])
 
-  ccall(dlsym(cutest_lib, :fortran_close_), Nothing,
+  ccall(dlsym(cutest_lib_double, :fortran_close_), Nothing,
       (Ref{Int32}, Ptr{Int32}), funit, io_err);
   @cutest_error
 
@@ -220,7 +232,8 @@ end
 function cutest_finalize(nlp :: CUTEstModel)
   global cutest_instances
   cutest_instances == 0 && return;
-  global cutest_lib
+  global cutest_lib_single
+  global cutest_lib_double
   io_err = Cint[0];
   if nlp.meta.ncon > 0
     cterminate(io_err)
@@ -228,9 +241,11 @@ function cutest_finalize(nlp :: CUTEstModel)
     uterminate(io_err)
   end
   @cutest_error
-  Libdl.dlclose(cutest_lib)
+  Libdl.dlclose(cutest_lib_single)
+  Libdl.dlclose(cutest_lib_double)
   cutest_instances -= 1;
-  cutest_lib = C_NULL
+  cutest_lib_single = C_NULL
+  cutest_lib_double = C_NULL
   return;
 end
 
