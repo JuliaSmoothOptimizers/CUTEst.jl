@@ -59,3 +59,4 @@ nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
 @assert nlp.meta.nvar == 90
 finalize(nlp)
 include("test_view_subarray.jl")
+include("test_memory_of_coord.jl")
