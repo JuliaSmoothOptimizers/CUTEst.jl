@@ -33,9 +33,13 @@ function validate_libcutest()
         outlog = tempname()
         errlog = tempname()
         run(pipeline(`$runcutest -p genc $prec -D $hs3`, stdout=outlog, stderr=errlog))
-        print(read(errlog, String))
+        errstr = read(errlog, String)
         rm(outlog, force=true)
         rm(errlog, force=true)
+        if length(errstr) > 0
+          print(errstr)
+          error("There was some error")
+        end
       end
     end
     return true
