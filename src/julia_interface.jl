@@ -19,6 +19,7 @@ for (typ, ctyp, cutest_lib) in ((Float64, Cdouble, :cutest_lib_double),
                                 (Float32, Cfloat, :cutest_lib_single))
 
   @eval begin
+    @doc (@doc NLPModels.objcons!)
     function NLPModels.objcons!(nlp :: CUTEstModel, x :: Vector{$typ}, c :: Vector{$typ})
       nvar = nlp.meta.nvar
       ncon = nlp.meta.ncon
@@ -52,6 +53,7 @@ for (typ, ctyp, cutest_lib) in ((Float64, Cdouble, :cutest_lib_double),
       end
     end
 
+    @doc (@doc NLPModels.objgrad!)
     function NLPModels.objgrad!(nlp :: CUTEstModel, x :: Vector{$typ}, g :: Vector{$typ})
       nvar = nlp.meta.nvar
       ncon = nlp.meta.ncon
@@ -230,6 +232,7 @@ for (typ, cutest_lib) in ((Float64, :cutest_lib_double),
       return jv
     end
 
+    @doc (@doc NLPModels.jprod!)
     function NLPModels.jtprod!(nlp :: CUTEstModel, x :: Vector{$typ}, v :: Vector{$typ}, jtv :: Vector{$typ})
       nvar = nlp.meta.nvar
       ncon = nlp.meta.ncon
