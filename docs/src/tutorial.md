@@ -35,7 +35,7 @@ finalize(nlp)
 
 Being a NLPModel means that everything created for an AbstractNLPModel will work
 for CUTEstModel. For instance,
-[Optimize.jl](https://github.com/JuliaSmoothOptimizers/Optimize.jl)
+[JSOSolvers.jl](https://github.com/JuliaSmoothOptimizers/JSOSolvers.jl)
 has implementations of optimization methods for AbstractNLPModels.
 
 Let's make some demonstration of the CUTEstModel.
