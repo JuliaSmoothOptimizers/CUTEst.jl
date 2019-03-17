@@ -124,7 +124,7 @@ Usage:
   - jcol: [OUT] Array{Int32, 1}
   - jval: [OUT] Array{Float64, 1}
 """
-function cons_coord!(nlp :: CUTEstModel, x :: AbstractVector, c :: AbstractVector, rows :: AbstractVector{<:Integer}, cols :: AbstractVector{<:Integer}, vals :: AbstractVector)
+function cons_coord!(nlp :: CUTEstModel, x :: AbstractVector, c :: AbstractVector, rows :: AbstractVector{Int32}, cols :: AbstractVector{Int32}, vals :: AbstractVector)
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzj = nlp.meta.nnzj
@@ -140,6 +140,9 @@ function cons_coord!(nlp :: CUTEstModel, x :: AbstractVector, c :: AbstractVecto
   nlp.counters.neval_jac += 1
   return c, rows, cols, vals
 end
+
+cons_coord!(nlp :: CUTEstModel, x :: AbstractVector, c :: AbstractVector, rows :: AbstractVector{<:Integer}, cols :: AbstractVector{<:Integer}, vals :: AbstractVector) =
+  cons_coord!(nlp, x, c, convert(Array{Int32,1}, rows), convert(Array{Int32,1}, cols), vals)
 
 """
     cons_coord(nlp, x)
@@ -340,7 +343,7 @@ function NLPModels.hess_structure(nlp :: CUTEstModel)
 end
 
 @doc (@doc NLPModels.hess_coord)
-function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
+function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{Int32}, cols :: AbstractVector{Int32}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
   nnzh = nlp.meta.nnzh;
@@ -374,6 +377,9 @@ function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: 
   nlp.counters.neval_hess += 1
   return (cols, rows, vals)  # swap rows and column
 end
+
+NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0) =
+NLPModels.hess_coord!(nlp, x, convert(Array{Int32,1}, rows), convert(Array{Int32,1}, cols), vals, y=y, obj_weight=obj_weight)
 
 @doc (@doc NLPModels.hess_coord)
 function NLPModels.hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float64,1}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
