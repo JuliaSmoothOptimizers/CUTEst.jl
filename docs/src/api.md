@@ -9,12 +9,16 @@ grad!
 cons
 cons!
 jac_coord
+jac_coord!
+jac_structure
 jac
 jprod
 jprod!
 jtprod
 jtprod!
 hess_coord
+hess_coord!
+hess_structure
 hess
 hprod
 hprod!
@@ -28,6 +32,7 @@ objgrad!
 objcons
 objcons!
 cons_coord
+cons_coord!
 consjac
 ```
 
