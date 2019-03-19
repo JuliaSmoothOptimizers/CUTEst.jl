@@ -1,4 +1,4 @@
-export cons_coord, consjac
+export cons_coord, cons_coord!, consjac
 
 using NLPModels, SparseArrays
 
