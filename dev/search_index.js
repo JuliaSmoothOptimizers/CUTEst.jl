@@ -189,7 +189,23 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jac_coord",
     "category": "function",
-    "text": "No documentation found.\n\nBinding NLPModels.jac_coord! does not exist.\n\n\n\n"
+    "text": "(rows,cols,vals) = jac_coord(nlp, x)\n\nEvaluate nabla c(x), the constraint\'s Jacobian at x in sparse coordinate format.\n\n\n\n\n\n\n\n"
+},
+
+{
+    "location": "api/#NLPModels.jac_coord!",
+    "page": "API",
+    "title": "NLPModels.jac_coord!",
+    "category": "function",
+    "text": "(rows,cols,vals) = jac_coord!(nlp, x, rows, cols, vals)\n\nEvaluate nabla c(x), the constraint\'s Jacobian at x in sparse coordinate format, rewriting vals. rows and cols are not rewritten.\n\n\n\n\n\n\n\n"
+},
+
+{
+    "location": "api/#NLPModels.jac_structure",
+    "page": "API",
+    "title": "NLPModels.jac_structure",
+    "category": "function",
+    "text": "(rows,cols) = jac_structure(nlp)\n\nReturns the structure of the constraint\'s Jacobian in sparse coordinate format.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -241,6 +257,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "api/#NLPModels.hess_coord!",
+    "page": "API",
+    "title": "NLPModels.hess_coord!",
+    "category": "function",
+    "text": "(rows,cols,vals) = hess_coord(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) in sparse coordinate format, with objective function scaled by obj_weight, i.e.,\n\n\\[ \\nabla^2L(x,y) = \\sigma * \\nabla^2 f(x) + \\sum{i=1}^m yi\\nabla^2 c_i(x), \\]\n\nwith σ = obj_weight. Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
+},
+
+{
+    "location": "api/#NLPModels.hess_structure",
+    "page": "API",
+    "title": "NLPModels.hess_structure",
+    "category": "function",
+    "text": "(rows,cols) = hess_structure(nlp)\n\nReturns the structure of the Lagrangian Hessian in sparse coordinate format.\n\n\n\n\n\n\n\n"
+},
+
+{
     "location": "api/#NLPModels.hess",
     "page": "API",
     "title": "NLPModels.hess",
@@ -269,7 +301,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels API",
     "category": "section",
-    "text": "obj\ngrad\ngrad!\ncons\ncons!\njac_coord\njac\njprod\njprod!\njtprod\njtprod!\nhess_coord\nhess\nhprod\nhprod!"
+    "text": "obj\ngrad\ngrad!\ncons\ncons!\njac_coord\njac_coord!\njac_structure\njac\njprod\njprod!\njtprod\njtprod!\nhess_coord\nhess_coord!\nhess_structure\nhess\nhprod\nhprod!"
 },
 
 {
@@ -313,6 +345,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "api/#CUTEst.cons_coord!",
+    "page": "API",
+    "title": "CUTEst.cons_coord!",
+    "category": "function",
+    "text": "cons_coord!(nlp, x, c, rows, cols, vals)\n\nComputes the constraint vector and the Jacobian in coordinate format. Usage:\n\ncons_coord!(nlp, x, c, rows, cols, vals)\n\nnlp:  [IN] CUTEstModel\nx:    [IN] Array{Float64, 1}\nc:    [OUT] Array{Float64, 1}\njrow: [OUT] Array{Int32, 1}\njcol: [OUT] Array{Int32, 1}\njval: [OUT] Array{Float64, 1}\n\n\n\n\n\n"
+},
+
+{
     "location": "api/#CUTEst.consjac",
     "page": "API",
     "title": "CUTEst.consjac",
@@ -325,7 +365,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "Extra Julian API",
     "category": "section",
-    "text": "objgrad\nobjgrad!\nobjcons\nobjcons!\ncons_coord\nconsjac"
+    "text": "objgrad\nobjgrad!\nobjcons\nobjcons!\ncons_coord\ncons_coord!\nconsjac"
 },
 
 {
