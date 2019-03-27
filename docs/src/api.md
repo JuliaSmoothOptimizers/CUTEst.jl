@@ -19,6 +19,7 @@ jtprod!
 hess_coord
 hess_coord!
 hess_structure
+hess_structure!
 hess
 hprod
 hprod!

@@ -319,13 +319,20 @@ end
 
 @doc (@doc NLPModels.hess_structure)
 function NLPModels.hess_structure(nlp :: CUTEstModel)
+  nnzh = nlp.meta.nnzh
+  rows = Array{Int32}(undef, nnzh)
+  cols = Array{Int32}(undef, nnzh)
+  hess_structure!(nlp, rows, cols)
+  return rows, cols
+end
+
+@doc (@doc NLPModels.hess_structure!)
+function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: AbstractVector{Int32}, cols::AbstractVector{Int32})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh
   io_err = Cint[0]
   this_nnzh = Cint[0]
-  rows = Array{Int32}(undef, nnzh)
-  cols = Array{Int32}(undef, nnzh)
 
   if ncon > 0
     ccall(dlsym(cutest_lib, :cutest_cshp_), Nothing,
@@ -341,6 +348,9 @@ function NLPModels.hess_structure(nlp :: CUTEstModel)
 
   return rows, cols
 end
+
+NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<: Integer}, cols::AbstractVector{<: Integer}) =
+NLPModels.hess_structure!(nlp, convert(Vector{Int32}, rows), convert(Vector{Int32}, cols))
 
 @doc (@doc NLPModels.hess_coord)
 function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{Int32}, cols :: AbstractVector{Int32}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
