@@ -10,7 +10,7 @@ cons
 cons!
 jac_coord
 jac_coord!
-jac_structure
+jac_structure!
 jac
 jprod
 jprod!
@@ -18,7 +18,7 @@ jtprod
 jtprod!
 hess_coord
 hess_coord!
-hess_structure
+hess_structure!
 hess
 hprod
 hprod!
