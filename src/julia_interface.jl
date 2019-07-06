@@ -90,11 +90,6 @@ function NLPModels.obj(nlp :: CUTEstModel, x :: AbstractVector)
   return f
 end
 
-function NLPModels.grad(nlp :: CUTEstModel, x :: AbstractVector)
-  g = Array{Float64}(undef, nlp.meta.nvar)
-  return grad!(nlp, x, g)
-end
-
 function NLPModels.grad!(nlp :: CUTEstModel, x :: AbstractVector, g :: AbstractVector)
   objgrad!(nlp, x, g)
   nlp.counters.neval_obj -= 1  # does not really count as a objective eval
@@ -154,24 +149,11 @@ Usage:
   - jval: [OUT] Array{Float64, 1}
 """
 function cons_coord(nlp :: CUTEstModel, x :: Array{Float64,1})
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  nnzj = nlp.meta.nnzj;
-  io_err = Cint[0];
-  c = Array{Float64}(undef, ncon);
-  jsize = nlp.meta.nnzj
-  get_j = 1
-  jval = Array{Float64}(undef, jsize);
-  jrow = Array{Int32}(undef, jsize);
-  jcol = Array{Int32}(undef, jsize);
-
-  ccall(dlsym(cutest_lib, :cutest_ccfsg_), Nothing,
-              (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}, Ref{Int32}),
-               io_err,     nvar,       ncon,       x,            c,            nnzj,       jsize,      jval,         jcol,       jrow,       get_j);
-  @cutest_error
-  nlp.counters.neval_cons += 1
-  nlp.counters.neval_jac += 1
-  return c, jrow, jcol, jval
+  c = Array{Float64}(undef, nlp.meta.ncon)
+  rows = Array{Int32}(undef, nlp.meta.nnzj)
+  cols = Array{Int32}(undef, nlp.meta.nnzj)
+  vals = Array{Float64}(undef, nlp.meta.nnzj)
+  cons_coord!(nlp, x, c, rows, cols, vals)
 end
 
 function cons_coord(nlp :: CUTEstModel, x :: AbstractVector)
@@ -195,11 +177,6 @@ Usage:
 function consjac(nlp :: CUTEstModel, x :: AbstractVector)
   c, jrow, jcol, jval = cons_coord(nlp, x);
   return c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
-end
-
-function NLPModels.cons(nlp :: CUTEstModel, x :: AbstractVector)
-  c = Array{Float64}(undef, nlp.meta.ncon)
-  cons!(nlp, x, c)
 end
 
 function NLPModels.cons!(nlp :: CUTEstModel, x :: AbstractVector, c :: AbstractVector)
@@ -237,23 +214,6 @@ function NLPModels.jac_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: A
   return (rows, cols, vals)
 end
 
-function NLPModels.jac_coord(nlp :: CUTEstModel, x :: AbstractVector)
-  c, jrow, jcol, jval = cons_coord(nlp, x)
-  nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
-  return (jrow, jcol, jval)
-end
-
-function NLPModels.jac(nlp :: CUTEstModel, x :: AbstractVector)
-  c, J = consjac(nlp, x)
-  nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
-  return J
-end
-
-function NLPModels.jprod(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector)
-  jv = zeros(nlp.meta.ncon)
-  jprod!(nlp, x, v, jv)
-end
-
 function NLPModels.jprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, jv :: Array{Float64,1})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
@@ -276,11 +236,6 @@ function NLPModels.jprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: Abstract
   jvc = zeros(nlp.meta.ncon)
   jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jvc)
   jv .= jvc
-end
-
-function NLPModels.jtprod(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector)
-  jtv = zeros(nlp.meta.nvar)
-  jtprod!(nlp, x, v, jtv)
 end
 
 function NLPModels.jtprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, jtv :: Array{Float64,1})
@@ -376,26 +331,8 @@ end
 NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0) =
 NLPModels.hess_coord!(nlp, x, convert(Array{Int32,1}, rows), convert(Array{Int32,1}, cols), vals, y=y, obj_weight=obj_weight)
 
-function NLPModels.hess_coord(nlp :: CUTEstModel, x :: Array{Float64,1}; y :: Array{Float64,1}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
-  nnzh = nlp.meta.nnzh
-  vals = Array{Float64}(undef, nnzh)
-  rows = Array{Int32}(undef, nnzh)
-  cols = Array{Int32}(undef, nnzh)
-  hess_coord!(nlp, x, rows, cols, vals, obj_weight=obj_weight, y=y)
-end
-
 function NLPModels.hess_coord(nlp :: CUTEstModel, x :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   hess_coord(nlp, Vector{Float64}(x), y=Vector{Float64}(y), obj_weight=obj_weight)
-end
-
-function NLPModels.hess(nlp :: CUTEstModel, x :: AbstractVector; y :: AbstractVector = zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
-  (hrow, hcol, hval) = hess_coord(nlp, x, y=y, obj_weight=obj_weight)
-  return sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar)
-end
-
-function NLPModels.hprod(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector; y :: AbstractVector = zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
-  hv = Array{Float64}(undef, nlp.meta.nvar);
-  return hprod!(nlp, x, v, hv, y=y, obj_weight=obj_weight)
 end
 
 function NLPModels.hprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, hv :: Array{Float64,1}; y :: Array{Float64,1}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
