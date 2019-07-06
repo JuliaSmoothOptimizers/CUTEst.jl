@@ -217,19 +217,26 @@ function NLPModels.cons!(nlp :: CUTEstModel, x :: AbstractVector, c :: AbstractV
   return c;
 end
 
-@doc (@doc NLPModels.jac_structure)
-function NLPModels.jac_structure(nlp :: CUTEstModel)
+function NLPModels.jac_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, cols :: Vector{Int32})
   nnzj = nlp.meta.nnzj
   io_err = Cint[0]
   this_nnzj = Cint[0]
-  rows = Array{Int32}(undef, nnzj)
-  cols = Array{Int32}(undef, nnzj)
 
   ccall(dlsym(cutest_lib, :cutest_csjp_), Nothing,
               (Ptr{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
               io_err, this_nnzj, nnzj, cols, rows)
   @cutest_error
 
+  return rows, cols
+end
+
+@doc (@doc NLPModels.jac_structure!)
+function NLPModels.jac_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<:Integer}, cols :: AbstractVector{<:Integer})
+  hrows = Vector{Int32}(undef, nlp.meta.nnzj)
+  hcols = Vector{Int32}(undef, nlp.meta.nnzj)
+  jac_structure!(nlp, hrows, hcols)
+  rows[1 : nlp.meta.nnzj] .= hrows
+  cols[1 : nlp.meta.nnzj] .= hcols
   return rows, cols
 end
 
@@ -317,15 +324,12 @@ function NLPModels.jtprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: Abstrac
   jtv .= jtvc
 end
 
-@doc (@doc NLPModels.hess_structure)
-function NLPModels.hess_structure(nlp :: CUTEstModel)
+function hess_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, cols :: Vector{Int32})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh
   io_err = Cint[0]
   this_nnzh = Cint[0]
-  rows = Array{Int32}(undef, nnzh)
-  cols = Array{Int32}(undef, nnzh)
 
   if ncon > 0
     ccall(dlsym(cutest_lib, :cutest_cshp_), Nothing,
@@ -342,7 +346,17 @@ function NLPModels.hess_structure(nlp :: CUTEstModel)
   return rows, cols
 end
 
-@doc (@doc NLPModels.hess_coord)
+@doc (@doc NLPModels.hess_structure!)
+function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<:Integer}, cols :: AbstractVector{<:Integer})
+  hrows = Vector{Int32}(undef, nlp.meta.nnzh)
+  hcols = Vector{Int32}(undef, nlp.meta.nnzh)
+  hess_structure!(nlp, hrows, hcols)
+  rows[1 : nlp.meta.nnzh] .= hrows
+  cols[1 : nlp.meta.nnzh] .= hcols
+  return rows, cols
+end
+
+@doc (@doc NLPModels.hess_coord!)
 function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{Int32}, cols :: AbstractVector{Int32}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar;
   ncon = nlp.meta.ncon;
