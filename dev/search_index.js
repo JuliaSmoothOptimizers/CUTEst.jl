@@ -145,195 +145,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api/#NLPModels.obj",
-    "page": "API",
-    "title": "NLPModels.obj",
-    "category": "function",
-    "text": "f = obj(nlp, x)\n\nEvaluate f(x), the objective function of nlp at x.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.grad",
-    "page": "API",
-    "title": "NLPModels.grad",
-    "category": "function",
-    "text": "g = grad(nlp, x)\n\nEvaluate f(x), the gradient of the objective function at x.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.grad!",
-    "page": "API",
-    "title": "NLPModels.grad!",
-    "category": "function",
-    "text": "g = grad!(nlp, x, g)\n\nEvaluate f(x), the gradient of the objective function at x in place.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.cons",
-    "page": "API",
-    "title": "NLPModels.cons",
-    "category": "function",
-    "text": "c = cons(nlp, x)\n\nEvaluate c(x), the constraints at x.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.cons!",
-    "page": "API",
-    "title": "NLPModels.cons!",
-    "category": "function",
-    "text": "c = cons!(nlp, x, c)\n\nEvaluate c(x), the constraints at x in place.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jac_coord",
-    "page": "API",
-    "title": "NLPModels.jac_coord",
-    "category": "function",
-    "text": "(rows,cols,vals) = jac_coord(nlp, x)\n\nEvaluate c(x), the constraint\'s Jacobian at x in sparse coordinate format.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jac_coord!",
-    "page": "API",
-    "title": "NLPModels.jac_coord!",
-    "category": "function",
-    "text": "(rows,cols,vals) = jac_coord!(nlp, x, rows, cols, vals)\n\nEvaluate c(x), the constraint\'s Jacobian at x in sparse coordinate format, rewriting vals. rows and cols are not rewritten.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jac_structure!",
-    "page": "API",
-    "title": "NLPModels.jac_structure!",
-    "category": "function",
-    "text": "jac_structure!(nlp, rows, cols)\n\nReturn the structure of the constraint\'s Jacobian in sparse coordinate format in place.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jac",
-    "page": "API",
-    "title": "NLPModels.jac",
-    "category": "function",
-    "text": "Jx = jac(nlp, x)\n\nEvaluate c(x), the constraint\'s Jacobian at x as a sparse matrix.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jprod",
-    "page": "API",
-    "title": "NLPModels.jprod",
-    "category": "function",
-    "text": "Jv = jprod(nlp, x, v)\n\nEvaluate c(x)v, the Jacobian-vector product at x.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jprod!",
-    "page": "API",
-    "title": "NLPModels.jprod!",
-    "category": "function",
-    "text": "Jv = jprod!(nlp, x, v, Jv)\n\nEvaluate c(x)v, the Jacobian-vector product at x in place.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jtprod",
-    "page": "API",
-    "title": "NLPModels.jtprod",
-    "category": "function",
-    "text": "Jtv = jtprod(nlp, x, v, Jtv)\n\nEvaluate c(x)^Tv, the transposed-Jacobian-vector product at x.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.jtprod!",
-    "page": "API",
-    "title": "NLPModels.jtprod!",
-    "category": "function",
-    "text": "Jtv = jtprod!(nlp, x, v, Jtv)\n\nEvaluate c(x)^Tv, the transposed-Jacobian-vector product at x in place.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.hess_coord",
-    "page": "API",
-    "title": "NLPModels.hess_coord",
-    "category": "function",
-    "text": "(rows,cols,vals) = hess_coord(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) in sparse coordinate format, with objective function scaled by obj_weight, i.e.,\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight . Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.hess_coord!",
-    "page": "API",
-    "title": "NLPModels.hess_coord!",
-    "category": "function",
-    "text": "(rows,cols,vals) = hess_coord!(nlp, x, rows, cols, vals; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) in sparse coordinate format, with objective function scaled by obj_weight, i.e.,\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight ,rewriting vals. rows and cols are not rewritten. Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.hess_structure!",
-    "page": "API",
-    "title": "NLPModels.hess_structure!",
-    "category": "function",
-    "text": "hess_structure!(nlp, rows, cols)\n\nReturn the structure of the Lagrangian Hessian in sparse coordinate format in place.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.hess",
-    "page": "API",
-    "title": "NLPModels.hess",
-    "category": "function",
-    "text": "Hx = hess(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) as a sparse matrix, with objective function scaled by obj_weight, i.e.,\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight . Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.hprod",
-    "page": "API",
-    "title": "NLPModels.hprod",
-    "category": "function",
-    "text": "Hv = hprod(nlp, x, v; obj_weight=1.0, y=zeros)\n\nEvaluate the product of the Lagrangian Hessian at (x,y) with the vector v, with objective function scaled by obj_weight, where the Lagrangian Hessian is\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight .\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.hprod!",
-    "page": "API",
-    "title": "NLPModels.hprod!",
-    "category": "function",
-    "text": "Hv = hprod!(nlp, x, v, Hv; obj_weight=1.0, y=zeros)\n\nEvaluate the product of the Lagrangian Hessian at (x,y) with the vector v in place, with objective function scaled by obj_weight, where the Lagrangian Hessian is\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight .\n\n\n\n\n\n\n\n"
-},
-
-{
     "location": "api/#NLPModels-API-1",
     "page": "API",
     "title": "NLPModels API",
     "category": "section",
-    "text": "obj\ngrad\ngrad!\ncons\ncons!\njac_coord\njac_coord!\njac_structure!\njac\njprod\njprod!\njtprod\njtprod!\nhess_coord\nhess_coord!\nhess_structure!\nhess\nhprod\nhprod!"
-},
-
-{
-    "location": "api/#NLPModels.objgrad",
-    "page": "API",
-    "title": "NLPModels.objgrad",
-    "category": "function",
-    "text": "f, g = objgrad(nlp, x)\n\nEvaluate f(x) and f(x) at x.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.objgrad!",
-    "page": "API",
-    "title": "NLPModels.objgrad!",
-    "category": "function",
-    "text": "f, g = objgrad!(nlp, x, g)\n\nEvaluate f(x) and f(x) at x. g is overwritten with the value of f(x).\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.objcons",
-    "page": "API",
-    "title": "NLPModels.objcons",
-    "category": "function",
-    "text": "f, c = objcons(nlp, x)\n\nEvaluate f(x) and c(x) at x.\n\n\n\n\n\n\n\n"
-},
-
-{
-    "location": "api/#NLPModels.objcons!",
-    "page": "API",
-    "title": "NLPModels.objcons!",
-    "category": "function",
-    "text": "f = objcons!(nlp, x, c)\n\nEvaluate f(x) and c(x) at x. c is overwritten with the value of c(x).\n\n\n\n\n\n\n\n"
+    "text": "CUTEst accepts the API of NLPModels."
 },
 
 {
@@ -361,11 +177,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api/#Extra-Julian-API-1",
+    "location": "api/#Additional-NLPModels-like-API-1",
     "page": "API",
-    "title": "Extra Julian API",
+    "title": "Additional NLPModels-like API",
     "category": "section",
-    "text": "objgrad\nobjgrad!\nobjcons\nobjcons!\ncons_coord\ncons_coord!\nconsjac"
+    "text": "cons_coord\ncons_coord!\nconsjac"
 },
 
 {
