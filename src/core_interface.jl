@@ -23,18 +23,18 @@ Usage:
 
     usetup(io_err, input, out, io_buffer, n, x, x_l, x_u)
 
-  - io_err:    [OUT] Array{Cint, 1}
-  - input:     [IN] Array{Cint, 1}
-  - out:       [IN] Array{Cint, 1}
-  - io_buffer: [IN] Array{Cint, 1}
-  - n:         [IN] Array{Cint, 1}
-  - x:         [OUT] Array{Cdouble, 1}
-  - x_l:       [OUT] Array{Cdouble, 1}
-  - x_u:       [OUT] Array{Cdouble, 1}
+  - io_err:    [OUT] Vector{Cint}
+  - input:     [IN] Vector{Cint}
+  - out:       [IN] Vector{Cint}
+  - io_buffer: [IN] Vector{Cint}
+  - n:         [IN] Vector{Cint}
+  - x:         [OUT] Vector{Cdouble}
+  - x_l:       [OUT] Vector{Cdouble}
+  - x_u:       [OUT] Vector{Cdouble}
 """
-function usetup(io_err::Array{Cint, 1}, input::Array{Cint, 1}, out::Array{Cint, 1},
-    io_buffer::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    x_l::Array{Cdouble, 1}, x_u::Array{Cdouble, 1})
+function usetup(io_err::Vector{Cint}, input::Vector{Cint}, out::Vector{Cint},
+    io_buffer::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    x_l::Vector{Cdouble}, x_u::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_usetup_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cdouble}),
@@ -60,30 +60,30 @@ Usage:
     csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
 linear, e_order, l_order, v_order)
 
-  - io_err:    [OUT] Array{Cint, 1}
-  - input:     [IN] Array{Cint, 1}
-  - out:       [IN] Array{Cint, 1}
-  - io_buffer: [IN] Array{Cint, 1}
-  - n:         [IN] Array{Cint, 1}
-  - m:         [IN] Array{Cint, 1}
-  - x:         [OUT] Array{Cdouble, 1}
-  - x_l:       [OUT] Array{Cdouble, 1}
-  - x_u:       [OUT] Array{Cdouble, 1}
-  - y:         [OUT] Array{Cdouble, 1}
-  - c_l:       [OUT] Array{Cdouble, 1}
-  - c_u:       [OUT] Array{Cdouble, 1}
-  - equatn:    [OUT] Array{Cint, 1}
-  - linear:    [OUT] Array{Cint, 1}
-  - e_order:   [IN] Array{Cint, 1}
-  - l_order:   [IN] Array{Cint, 1}
-  - v_order:   [IN] Array{Cint, 1}
+  - io_err:    [OUT] Vector{Cint}
+  - input:     [IN] Vector{Cint}
+  - out:       [IN] Vector{Cint}
+  - io_buffer: [IN] Vector{Cint}
+  - n:         [IN] Vector{Cint}
+  - m:         [IN] Vector{Cint}
+  - x:         [OUT] Vector{Cdouble}
+  - x_l:       [OUT] Vector{Cdouble}
+  - x_u:       [OUT] Vector{Cdouble}
+  - y:         [OUT] Vector{Cdouble}
+  - c_l:       [OUT] Vector{Cdouble}
+  - c_u:       [OUT] Vector{Cdouble}
+  - equatn:    [OUT] Vector{Cint}
+  - linear:    [OUT] Vector{Cint}
+  - e_order:   [IN] Vector{Cint}
+  - l_order:   [IN] Vector{Cint}
+  - v_order:   [IN] Vector{Cint}
 """
-function csetup(io_err::Array{Cint, 1}, input::Array{Cint, 1}, out::Array{Cint, 1},
-    io_buffer::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, x_l::Array{Cdouble, 1}, x_u::Array{Cdouble, 1},
-    y::Array{Cdouble, 1}, c_l::Array{Cdouble, 1}, c_u::Array{Cdouble, 1},
-    equatn::Array{Cint, 1}, linear::Array{Cint, 1}, e_order::Array{Cint,
-    1}, l_order::Array{Cint, 1}, v_order::Array{Cint, 1})
+function csetup(io_err::Vector{Cint}, input::Vector{Cint}, out::Vector{Cint},
+    io_buffer::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, x_l::Vector{Cdouble}, x_u::Vector{Cdouble},
+    y::Vector{Cdouble}, c_l::Vector{Cdouble}, c_u::Vector{Cdouble},
+    equatn::Vector{Cint}, linear::Vector{Cint}, e_order::Vector{Cint},
+    l_order::Vector{Cint}, v_order::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csetup_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
@@ -107,11 +107,11 @@ Usage:
 
     udimen(io_err, input, n)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - input:   [IN] Array{Cint, 1}
-  - n:       [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - input:   [IN] Vector{Cint}
+  - n:       [OUT] Vector{Cint}
 """
-function udimen(io_err::Array{Cint, 1}, input::Array{Cint, 1}, n::Array{Cint, 1})
+function udimen(io_err::Vector{Cint}, input::Vector{Cint}, n::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_udimen_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, input, n)
@@ -134,10 +134,10 @@ Usage:
 
     udimsh(io_err, nnzh)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - nnzh:    [OUT] Vector{Cint}
 """
-function udimsh(io_err::Array{Cint, 1}, nnzh::Array{Cint, 1})
+function udimsh(io_err::Vector{Cint}, nnzh::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_udimsh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}),
     io_err, nnzh)
@@ -162,13 +162,13 @@ Usage:
 
     udimse(io_err, ne, he_val_ne, he_row_ne)
 
-  - io_err:    [OUT] Array{Cint, 1}
-  - ne:        [OUT] Array{Cint, 1}
-  - he_val_ne: [OUT] Array{Cint, 1}
-  - he_row_ne: [OUT] Array{Cint, 1}
+  - io_err:    [OUT] Vector{Cint}
+  - ne:        [OUT] Vector{Cint}
+  - he_val_ne: [OUT] Vector{Cint}
+  - he_row_ne: [OUT] Vector{Cint}
 """
-function udimse(io_err::Array{Cint, 1}, ne::Array{Cint, 1}, he_val_ne::Array{Cint, 1},
-    he_row_ne::Array{Cint, 1})
+function udimse(io_err::Vector{Cint}, ne::Vector{Cint}, he_val_ne::Vector{Cint},
+    he_row_ne::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_udimse_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, ne, he_val_ne, he_row_ne)
@@ -190,11 +190,11 @@ Usage:
 
     uvartype(io_err, n, x_type)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x_type:  [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x_type:  [OUT] Vector{Cint}
 """
-function uvartype(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x_type::Array{Cint, 1})
+function uvartype(io_err::Vector{Cint}, n::Vector{Cint}, x_type::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_uvartype_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, n, x_type)
@@ -214,14 +214,14 @@ Usage:
 
     unames(io_err, n, pname, vname)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - pname:   [OUT] Array{UInt8, 1}
-  - vname:   [OUT] Array{UInt8, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - pname:   [OUT] Vector{UInt8}
+  - vname:   [OUT] Vector{UInt8}
 
 To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
-function unames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, pname::Array{UInt8, 1},
+function unames(io_err::Vector{Cint}, n::Vector{Cint}, pname::Vector{UInt8},
     vname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_unames_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}, Ptr{UInt8}),
@@ -244,12 +244,11 @@ Usage:
 
     ureport(io_err, calls, time)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - calls:   [OUT] Array{Cdouble, 1}
-  - time:    [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - calls:   [OUT] Vector{Cdouble}
+  - time:    [OUT] Vector{Cdouble}
 """
-function ureport(io_err::Array{Cint, 1}, calls::Array{Cdouble, 1}, time::Array{Cdouble,
-    1})
+function ureport(io_err::Vector{Cint}, calls::Vector{Cdouble}, time::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_ureport_"), Nothing,
     (Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, calls, time)
@@ -273,13 +272,13 @@ Usage:
 
     cdimen(io_err, input, n, m)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - input:   [IN] Array{Cint, 1}
-  - n:       [OUT] Array{Cint, 1}
-  - m:       [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - input:   [IN] Vector{Cint}
+  - n:       [OUT] Vector{Cint}
+  - m:       [OUT] Vector{Cint}
 """
-function cdimen(io_err::Array{Cint, 1}, input::Array{Cint, 1}, n::Array{Cint, 1},
-    m::Array{Cint, 1})
+function cdimen(io_err::Vector{Cint}, input::Vector{Cint}, n::Vector{Cint},
+    m::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cdimen_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, input, n, m)
@@ -305,10 +304,10 @@ Usage:
 
     cdimsj(io_err, nnzj)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - nnzj:    [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - nnzj:    [OUT] Vector{Cint}
 """
-function cdimsj(io_err::Array{Cint, 1}, nnzj::Array{Cint, 1})
+function cdimsj(io_err::Vector{Cint}, nnzj::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cdimsj_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}),
     io_err, nnzj)
@@ -333,10 +332,10 @@ Usage:
 
     cdimsh(io_err, nnzh)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - nnzh:    [OUT] Vector{Cint}
 """
-function cdimsh(io_err::Array{Cint, 1}, nnzh::Array{Cint, 1})
+function cdimsh(io_err::Vector{Cint}, nnzh::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cdimsh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}),
     io_err, nnzh)
@@ -361,10 +360,10 @@ Usage:
 
     cdimchp(io_err, nnzchp)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - nnzchp:  [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - nnzchp:  [OUT] Vector{Cint}
 """
-function cdimchp(io_err::Array{Cint, 1}, nnzchp::Array{Cint, 1})
+function cdimchp(io_err::Vector{Cint}, nnzchp::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cdimchp_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}),
     io_err, nnzchp)
@@ -391,13 +390,13 @@ Usage:
 
     cdimse(io_err, ne, he_val_ne, he_row_ne)
 
-  - io_err:    [OUT] Array{Cint, 1}
-  - ne:        [OUT] Array{Cint, 1}
-  - he_val_ne: [OUT] Array{Cint, 1}
-  - he_row_ne: [OUT] Array{Cint, 1}
+  - io_err:    [OUT] Vector{Cint}
+  - ne:        [OUT] Vector{Cint}
+  - he_val_ne: [OUT] Vector{Cint}
+  - he_row_ne: [OUT] Vector{Cint}
 """
-function cdimse(io_err::Array{Cint, 1}, ne::Array{Cint, 1}, he_val_ne::Array{Cint, 1},
-    he_row_ne::Array{Cint, 1})
+function cdimse(io_err::Vector{Cint}, ne::Vector{Cint}, he_val_ne::Vector{Cint},
+    he_row_ne::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cdimse_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, ne, he_val_ne, he_row_ne)
@@ -408,16 +407,15 @@ end
 nonlinear_variables_constraints, equality_constraints,
 linear_constraints)
 
-  - io_err:                          [OUT] Array{Cint, 1}
-  - nonlinear_variables_objective:   [OUT] Array{Cint, 1}
-  - nonlinear_variables_constraints: [OUT] Array{Cint, 1}
-  - equality_constraints:            [OUT] Array{Cint, 1}
-  - linear_constraints:              [OUT] Array{Cint, 1}
+  - io_err:                          [OUT] Vector{Cint}
+  - nonlinear_variables_objective:   [OUT] Vector{Cint}
+  - nonlinear_variables_constraints: [OUT] Vector{Cint}
+  - equality_constraints:            [OUT] Vector{Cint}
+  - linear_constraints:              [OUT] Vector{Cint}
 """
-function cstats(io_err::Array{Cint, 1}, nonlinear_variables_objective::Array{Cint, 1},
-    nonlinear_variables_constraints::Array{Cint, 1},
-    equality_constraints::Array{Cint, 1}, linear_constraints::Array{Cint,
-    1})
+function cstats(io_err::Vector{Cint}, nonlinear_variables_objective::Vector{Cint},
+    nonlinear_variables_constraints::Vector{Cint},
+    equality_constraints::Vector{Cint}, linear_constraints::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cstats_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, nonlinear_variables_objective,
@@ -443,11 +441,11 @@ Usage:
 
     cvartype(io_err, n, x_type)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x_type:  [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x_type:  [OUT] Vector{Cint}
 """
-function cvartype(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x_type::Array{Cint, 1})
+function cvartype(io_err::Vector{Cint}, n::Vector{Cint}, x_type::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cvartype_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, n, x_type)
@@ -470,18 +468,18 @@ Usage:
 
     cnames(io_err, n, m, pname, vname, cname)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - pname:   [OUT] Array{UInt8, 1}
-  - vname:   [OUT] Array{UInt8, 1}
-  - cname:   [OUT] Array{UInt8, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - pname:   [OUT] Vector{UInt8}
+  - vname:   [OUT] Vector{UInt8}
+  - cname:   [OUT] Vector{UInt8}
 
 To get useful names, use `String(x)` where `x` can be `pname`, `vname[:,i]`,
 or `cname[:,i]`.
 """
-function cnames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    pname::Array{UInt8, 1}, vname::Array{UInt8, 2}, cname::Array{UInt8, 2})
+function cnames(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    pname::Vector{UInt8}, vname::Array{UInt8, 2}, cname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_cnames_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}, Ptr{UInt8}, Ptr{UInt8}),
     io_err, n, m, pname, vname, cname)
@@ -505,12 +503,11 @@ Usage:
 
     creport(io_err, calls, time)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - calls:   [OUT] Array{Cdouble, 1}
-  - time:    [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - calls:   [OUT] Vector{Cdouble}
+  - time:    [OUT] Vector{Cdouble}
 """
-function creport(io_err::Array{Cint, 1}, calls::Array{Cdouble, 1}, time::Array{Cdouble,
-    1})
+function creport(io_err::Vector{Cint}, calls::Vector{Cdouble}, time::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_creport_"), Nothing,
     (Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, calls, time)
@@ -533,13 +530,13 @@ Usage:
 
     connames(io_err, m, cname)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - cname:   [OUT] Array{UInt8, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - cname:   [OUT] Vector{UInt8}
 
 To get useful names, use `String(cname[:,i])`.
 """
-function connames(io_err::Array{Cint, 1}, m::Array{Cint, 1}, cname::Array{UInt8, 2})
+function connames(io_err::Vector{Cint}, m::Vector{Cint}, cname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_connames_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
     io_err, m, cname)
@@ -563,11 +560,11 @@ Usage:
 
     pname(io_err, input, pname)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - input:   [IN] Array{Cint, 1}
-  - pname:   [OUT] Array{UInt8, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - input:   [IN] Vector{Cint}
+  - pname:   [OUT] Vector{UInt8}
 """
-function pname(io_err::Array{Cint, 1}, input::Array{Cint, 1}, pname::Array{UInt8, 1})
+function pname(io_err::Vector{Cint}, input::Vector{Cint}, pname::Vector{UInt8})
   ccall(dlsym(cutest_lib, "cutest_pname_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
     io_err, input, pname)
@@ -589,12 +586,12 @@ Usage:
 
     probname(io_err, pname)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - pname:   [OUT] Array{UInt8, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - pname:   [OUT] Vector{UInt8}
 
 To get a useful name, use `String(pname)`.
 """
-function probname(io_err::Array{Cint, 1}, pname::Array{UInt8, 1})
+function probname(io_err::Vector{Cint}, pname::Vector{UInt8})
   ccall(dlsym(cutest_lib, "cutest_probname_"), Nothing,
     (Ptr{Cint}, Ptr{UInt8}),
     io_err, pname)
@@ -617,13 +614,13 @@ Usage:
 
     varnames(io_err, n, vname)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - vname:   [OUT] Array{UInt8, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - vname:   [OUT] Vector{UInt8}
 
 To get useful names, use `String(vname[:, i])`.
 """
-function varnames(io_err::Array{Cint, 1}, n::Array{Cint, 1}, vname::Array{UInt8, 2})
+function varnames(io_err::Vector{Cint}, n::Vector{Cint}, vname::Array{UInt8, 2})
   ccall(dlsym(cutest_lib, "cutest_varnames_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
     io_err, n, vname)
@@ -644,13 +641,13 @@ Usage:
 
     ufn(io_err, n, x, f)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - f:       [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - f:       [OUT] Vector{Cdouble}
 """
-function ufn(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    f::Array{Cdouble, 1})
+function ufn(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    f::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_ufn_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, n, x, f)
@@ -671,13 +668,13 @@ Usage:
 
     ugr(io_err, n, x, g)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - g:       [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - g:       [OUT] Vector{Cdouble}
 """
-function ugr(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    g::Array{Cdouble, 1})
+function ugr(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    g::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_ugr_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, n, x, g)
@@ -699,15 +696,15 @@ Usage:
 
     uofg(io_err, n, x, f, g, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - f:       [OUT] Array{Cdouble, 1}
-  - g:       [OUT] Array{Cdouble, 1}
-  - grad:    [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - f:       [OUT] Vector{Cdouble}
+  - g:       [OUT] Vector{Cdouble}
+  - grad:    [IN] Vector{Cint}
 """
-function uofg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    f::Array{Cdouble, 1}, g::Array{Cdouble, 1}, grad::Array{Cint, 1})
+function uofg(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    f::Vector{Cdouble}, g::Vector{Cdouble}, grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_uofg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}),
@@ -730,14 +727,14 @@ Usage:
 
     udh(io_err, n, x, lh1, h)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - lh1:     [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - lh1:     [IN] Vector{Cint}
   - h:       [OUT] Array{Cdouble, 2}
 """
-function udh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    lh1::Array{Cint, 1}, h::Array{Cdouble, 2})
+function udh(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    lh1::Vector{Cint}, h::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_udh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
     io_err, n, x, lh1, h)
@@ -759,15 +756,15 @@ Usage:
 
     ushp(io_err, n, nnzh, lh, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function ushp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzh::Array{Cint, 1},
-    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+function ushp(io_err::Vector{Cint}, n::Vector{Cint}, nnzh::Vector{Cint},
+    lh::Vector{Cint}, h_row::Vector{Cint}, h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ushp_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, n, nnzh, lh, h_row, h_col)
@@ -790,18 +787,18 @@ Usage:
 
     ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_val:   [OUT] Array{Cdouble, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_val:   [OUT] Vector{Cdouble}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function ush(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    nnzh::Array{Cint, 1}, lh::Array{Cint, 1}, h_val::Array{Cdouble, 1},
-    h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+function ush(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    nnzh::Vector{Cint}, lh::Vector{Cint}, h_val::Vector{Cdouble},
+    h_row::Vector{Cint}, h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ush_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -827,24 +824,24 @@ Usage:
     ueh(io_err, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
 lhe_val, he_val, byrows)
 
-  - io_err:     [OUT] Array{Cint, 1}
-  - n:          [IN] Array{Cint, 1}
-  - x:          [IN] Array{Cdouble, 1}
-  - ne:         [OUT] Array{Cint, 1}
-  - lhe_ptr:    [IN] Array{Cint, 1}
-  - he_row_ptr: [OUT] Array{Cint, 1}
-  - he_val_ptr: [OUT] Array{Cint, 1}
-  - lhe_row:    [IN] Array{Cint, 1}
-  - he_row:     [OUT] Array{Cint, 1}
-  - lhe_val:    [IN] Array{Cint, 1}
-  - he_val:     [OUT] Array{Cdouble, 1}
-  - byrows:     [IN] Array{Cint, 1}
+  - io_err:     [OUT] Vector{Cint}
+  - n:          [IN] Vector{Cint}
+  - x:          [IN] Vector{Cdouble}
+  - ne:         [OUT] Vector{Cint}
+  - lhe_ptr:    [IN] Vector{Cint}
+  - he_row_ptr: [OUT] Vector{Cint}
+  - he_val_ptr: [OUT] Vector{Cint}
+  - lhe_row:    [IN] Vector{Cint}
+  - he_row:     [OUT] Vector{Cint}
+  - lhe_val:    [IN] Vector{Cint}
+  - he_val:     [OUT] Vector{Cdouble}
+  - byrows:     [IN] Vector{Cint}
 """
-function ueh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    ne::Array{Cint, 1}, lhe_ptr::Array{Cint, 1}, he_row_ptr::Array{Cint,
-    1}, he_val_ptr::Array{Cint, 1}, lhe_row::Array{Cint, 1},
-    he_row::Array{Cint, 1}, lhe_val::Array{Cint, 1},
-    he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1})
+function ueh(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    ne::Vector{Cint}, lhe_ptr::Vector{Cint}, he_row_ptr::Vector{Cint},
+    he_val_ptr::Vector{Cint}, lhe_row::Vector{Cint},
+    he_row::Vector{Cint}, lhe_val::Vector{Cint},
+    he_val::Vector{Cdouble}, byrows::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ueh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
@@ -869,15 +866,15 @@ Usage:
 
     ugrdh(io_err, n, x, g, lh1, h)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - g:       [OUT] Array{Cdouble, 1}
-  - lh1:     [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - g:       [OUT] Vector{Cdouble}
+  - lh1:     [IN] Vector{Cint}
   - h:       [OUT] Array{Cdouble, 2}
 """
-function ugrdh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    g::Array{Cdouble, 1}, lh1::Array{Cint, 1}, h::Array{Cdouble, 2})
+function ugrdh(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    g::Vector{Cdouble}, lh1::Vector{Cint}, h::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_ugrdh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
     Ptr{Cdouble}),
@@ -901,19 +898,19 @@ Usage:
 
     ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - g:       [OUT] Array{Cdouble, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_val:   [OUT] Array{Cdouble, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - g:       [OUT] Vector{Cdouble}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_val:   [OUT] Vector{Cdouble}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function ugrsh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    g::Array{Cdouble, 1}, nnzh::Array{Cint, 1}, lh::Array{Cint, 1},
-    h_val::Array{Cdouble, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+function ugrsh(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    g::Vector{Cdouble}, nnzh::Vector{Cint}, lh::Vector{Cint},
+    h_val::Vector{Cdouble}, h_row::Vector{Cint}, h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ugrsh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
     Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -940,25 +937,25 @@ Usage:
     ugreh(io_err, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
 lhe_val, he_val, byrows)
 
-  - io_err:     [OUT] Array{Cint, 1}
-  - n:          [IN] Array{Cint, 1}
-  - x:          [IN] Array{Cdouble, 1}
-  - g:          [OUT] Array{Cdouble, 1}
-  - ne:         [OUT] Array{Cint, 1}
-  - lhe_ptr:    [IN] Array{Cint, 1}
-  - he_row_ptr: [OUT] Array{Cint, 1}
-  - he_val_ptr: [OUT] Array{Cint, 1}
-  - lhe_row:    [IN] Array{Cint, 1}
-  - he_row:     [OUT] Array{Cint, 1}
-  - lhe_val:    [IN] Array{Cint, 1}
-  - he_val:     [OUT] Array{Cdouble, 1}
-  - byrows:     [IN] Array{Cint, 1}
+  - io_err:     [OUT] Vector{Cint}
+  - n:          [IN] Vector{Cint}
+  - x:          [IN] Vector{Cdouble}
+  - g:          [OUT] Vector{Cdouble}
+  - ne:         [OUT] Vector{Cint}
+  - lhe_ptr:    [IN] Vector{Cint}
+  - he_row_ptr: [OUT] Vector{Cint}
+  - he_val_ptr: [OUT] Vector{Cint}
+  - lhe_row:    [IN] Vector{Cint}
+  - he_row:     [OUT] Vector{Cint}
+  - lhe_val:    [IN] Vector{Cint}
+  - he_val:     [OUT] Vector{Cdouble}
+  - byrows:     [IN] Vector{Cint}
 """
-function ugreh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    g::Array{Cdouble, 1}, ne::Array{Cint, 1}, lhe_ptr::Array{Cint, 1},
-    he_row_ptr::Array{Cint, 1}, he_val_ptr::Array{Cint, 1},
-    lhe_row::Array{Cint, 1}, he_row::Array{Cint, 1}, lhe_val::Array{Cint,
-    1}, he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1})
+function ugreh(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    g::Vector{Cdouble}, ne::Vector{Cint}, lhe_ptr::Vector{Cint},
+    he_row_ptr::Vector{Cint}, he_val_ptr::Vector{Cint},
+    lhe_row::Vector{Cint}, he_row::Vector{Cint}, lhe_val::Vector{Cint},
+    he_val::Vector{Cdouble}, byrows::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ugreh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
@@ -983,16 +980,16 @@ Usage:
 
     uhprod(io_err, n, goth, x, vector, result)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - goth:    [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - vector:  [IN] Array{Cdouble, 1}
-  - result:  [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - goth:    [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - vector:  [IN] Vector{Cdouble}
+  - result:  [OUT] Vector{Cdouble}
 """
-function uhprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
-    x::Array{Cdouble, 1}, vector::Array{Cdouble, 1},
-    result::Array{Cdouble, 1})
+function uhprod(io_err::Vector{Cint}, n::Vector{Cint}, goth::Vector{Cint},
+    x::Vector{Cdouble}, vector::Vector{Cdouble},
+    result::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_uhprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cdouble}),
@@ -1016,24 +1013,24 @@ Usage:
     ushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
 index_nz_result, result)
 
-  - io_err:          [OUT] Array{Cint, 1}
-  - n:               [IN] Array{Cint, 1}
-  - goth:            [IN] Array{Cint, 1}
-  - x:               [IN] Array{Cdouble, 1}
-  - nnz_vector:      [IN] Array{Cint, 1}
-  - index_nz_vector: [IN] Array{Cint, 1}
-  - vector:          [IN] Array{Cdouble, 1}
-  - nnz_result:      [OUT] Array{Cint, 1}
-  - index_nz_result: [OUT] Array{Cint, 1}
-  - result:          [OUT] Array{Cdouble, 1}
+  - io_err:          [OUT] Vector{Cint}
+  - n:               [IN] Vector{Cint}
+  - goth:            [IN] Vector{Cint}
+  - x:               [IN] Vector{Cdouble}
+  - nnz_vector:      [IN] Vector{Cint}
+  - index_nz_vector: [IN] Vector{Cint}
+  - vector:          [IN] Vector{Cdouble}
+  - nnz_result:      [OUT] Vector{Cint}
+  - index_nz_result: [OUT] Vector{Cint}
+  - result:          [OUT] Vector{Cdouble}
 
 Notice that `vector` and `result` should have allocated dimension of `n`.
 """
-function ushprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, goth::Array{Cint, 1},
-    x::Array{Cdouble, 1}, nnz_vector::Array{Cint, 1},
-    index_nz_vector::Array{Cint, 1}, vector::Array{Cdouble, 1},
-    nnz_result::Array{Cint, 1}, index_nz_result::Array{Cint, 1},
-    result::Array{Cdouble, 1})
+function ushprod(io_err::Vector{Cint}, n::Vector{Cint}, goth::Vector{Cint},
+    x::Vector{Cdouble}, nnz_vector::Vector{Cint},
+    index_nz_vector::Vector{Cint}, vector::Vector{Cdouble},
+    nnz_result::Vector{Cint}, index_nz_result::Vector{Cint},
+    result::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_ushprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
@@ -1058,17 +1055,17 @@ Usage:
 
     ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
 
-  - io_err:            [OUT] Array{Cint, 1}
-  - n:                 [IN] Array{Cint, 1}
-  - x:                 [IN] Array{Cdouble, 1}
-  - semibandwidth:     [IN] Array{Cint, 1}
+  - io_err:            [OUT] Vector{Cint}
+  - n:                 [IN] Vector{Cint}
+  - x:                 [IN] Vector{Cdouble}
+  - semibandwidth:     [IN] Vector{Cint}
   - h_band:            [OUT] Array{Cdouble, 2}
-  - lbandh:            [IN] Array{Cint, 1}
-  - max_semibandwidth: [OUT] Array{Cint, 1}
+  - lbandh:            [IN] Vector{Cint}
+  - max_semibandwidth: [OUT] Vector{Cint}
 """
-function ubandh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    semibandwidth::Array{Cint, 1}, h_band::Array{Cdouble, 2},
-    lbandh::Array{Cint, 1}, max_semibandwidth::Array{Cint, 1})
+function ubandh(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    semibandwidth::Vector{Cint}, h_band::Array{Cdouble, 2},
+    lbandh::Vector{Cint}, max_semibandwidth::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ubandh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}),
@@ -1093,15 +1090,15 @@ Usage:
 
     cfn(io_err, n, m, x, f, c)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - f:       [OUT] Array{Cdouble, 1}
-  - c:       [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - f:       [OUT] Vector{Cdouble}
+  - c:       [OUT] Vector{Cdouble}
 """
-function cfn(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, f::Array{Cdouble, 1}, c::Array{Cdouble, 1})
+function cfn(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, f::Vector{Cdouble}, c::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_cfn_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cdouble}),
@@ -1126,15 +1123,15 @@ Usage:
 
     cofg(io_err, n, x, f, g, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - f:       [OUT] Array{Cdouble, 1}
-  - g:       [OUT] Array{Cdouble, 1}
-  - grad:    [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - f:       [OUT] Vector{Cdouble}
+  - g:       [OUT] Vector{Cdouble}
+  - grad:    [IN] Vector{Cint}
 """
-function cofg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    f::Array{Cdouble, 1}, g::Array{Cdouble, 1}, grad::Array{Cint, 1})
+function cofg(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    f::Vector{Cdouble}, g::Vector{Cdouble}, grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cofg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}),
@@ -1159,19 +1156,19 @@ Usage:
 
     cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - f:       [OUT] Array{Cdouble, 1}
-  - nnzg:    [OUT] Array{Cint, 1}
-  - lg:      [IN] Array{Cint, 1}
-  - g_val:   [OUT] Array{Cdouble, 1}
-  - g_var:   [OUT] Array{Cint, 1}
-  - grad:    [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - f:       [OUT] Vector{Cdouble}
+  - nnzg:    [OUT] Vector{Cint}
+  - lg:      [IN] Vector{Cint}
+  - g_val:   [OUT] Vector{Cdouble}
+  - g_var:   [OUT] Vector{Cint}
+  - grad:    [IN] Vector{Cint}
 """
-function cofsg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    f::Array{Cdouble, 1}, nnzg::Array{Cint, 1}, lg::Array{Cint, 1},
-    g_val::Array{Cdouble, 1}, g_var::Array{Cint, 1}, grad::Array{Cint, 1})
+function cofsg(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    f::Vector{Cdouble}, nnzg::Vector{Cint}, lg::Vector{Cint},
+    g_val::Vector{Cdouble}, g_var::Vector{Cint}, grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cofsg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint},
     Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -1196,21 +1193,21 @@ Usage:
 
     ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - c:       [OUT] Array{Cdouble, 1}
-  - jtrans:  [IN] Array{Cint, 1}
-  - lcjac1:  [IN] Array{Cint, 1}
-  - lcjac2:  [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - c:       [OUT] Vector{Cdouble}
+  - jtrans:  [IN] Vector{Cint}
+  - lcjac1:  [IN] Vector{Cint}
+  - lcjac2:  [IN] Vector{Cint}
   - cjac:    [OUT] Array{Cdouble, 2}
-  - grad:    [IN] Array{Cint, 1}
+  - grad:    [IN] Vector{Cint}
 """
-function ccfg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, c::Array{Cdouble, 1}, jtrans::Array{Cint, 1},
-    lcjac1::Array{Cint, 1}, lcjac2::Array{Cint, 1}, cjac::Array{Cdouble,
-    2}, grad::Array{Cint, 1})
+function ccfg(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, c::Vector{Cdouble}, jtrans::Vector{Cint},
+    lcjac1::Vector{Cint}, lcjac2::Vector{Cint}, cjac::Array{Cdouble,
+    2}, grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ccfg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
@@ -1235,18 +1232,18 @@ Usage:
 
     clfg(io_err, n, m, x, y, f, g, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - f:       [OUT] Array{Cdouble, 1}
-  - g:       [OUT] Array{Cdouble, 1}
-  - grad:    [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - f:       [OUT] Vector{Cdouble}
+  - g:       [OUT] Vector{Cdouble}
+  - grad:    [IN] Vector{Cint}
 """
-function clfg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, f::Array{Cdouble, 1},
-    g::Array{Cdouble, 1}, grad::Array{Cint, 1})
+function clfg(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, f::Vector{Cdouble},
+    g::Vector{Cdouble}, grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_clfg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}),
@@ -1272,22 +1269,22 @@ Usage:
 
     cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - grlagf:  [IN] Array{Cint, 1}
-  - g:       [OUT] Array{Cdouble, 1}
-  - jtrans:  [IN] Array{Cint, 1}
-  - lj1:     [IN] Array{Cint, 1}
-  - lj2:     [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - grlagf:  [IN] Vector{Cint}
+  - g:       [OUT] Vector{Cdouble}
+  - jtrans:  [IN] Vector{Cint}
+  - lj1:     [IN] Vector{Cint}
+  - lj2:     [IN] Vector{Cint}
   - j_val:   [OUT] Array{Cdouble, 2}
 """
-function cgr(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, grlagf::Array{Cint, 1},
-    g::Array{Cdouble, 1}, jtrans::Array{Cint, 1}, lj1::Array{Cint, 1},
-    lj2::Array{Cint, 1}, j_val::Array{Cdouble, 2})
+function cgr(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, grlagf::Vector{Cint},
+    g::Vector{Cdouble}, jtrans::Vector{Cint}, lj1::Vector{Cint},
+    lj2::Vector{Cint}, j_val::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_cgr_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
@@ -1315,22 +1312,22 @@ Usage:
 
     csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - grlagf:  [IN] Array{Cint, 1}
-  - nnzj:    [OUT] Array{Cint, 1}
-  - lj:      [IN] Array{Cint, 1}
-  - j_val:   [OUT] Array{Cdouble, 1}
-  - j_var:   [OUT] Array{Cint, 1}
-  - j_fun:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - grlagf:  [IN] Vector{Cint}
+  - nnzj:    [OUT] Vector{Cint}
+  - lj:      [IN] Vector{Cint}
+  - j_val:   [OUT] Vector{Cdouble}
+  - j_var:   [OUT] Vector{Cint}
+  - j_fun:   [OUT] Vector{Cint}
 """
-function csgr(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, grlagf::Array{Cint, 1},
-    nnzj::Array{Cint, 1}, lj::Array{Cint, 1}, j_val::Array{Cdouble, 1},
-    j_var::Array{Cint, 1}, j_fun::Array{Cint, 1})
+function csgr(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, grlagf::Vector{Cint},
+    nnzj::Vector{Cint}, lj::Vector{Cint}, j_val::Vector{Cdouble},
+    j_var::Vector{Cint}, j_fun::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csgr_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -1356,22 +1353,22 @@ Usage:
 
     ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - c:       [OUT] Array{Cdouble, 1}
-  - nnzj:    [OUT] Array{Cint, 1}
-  - lj:      [IN] Array{Cint, 1}
-  - j_val:   [OUT] Array{Cdouble, 1}
-  - j_var:   [OUT] Array{Cint, 1}
-  - j_fun:   [OUT] Array{Cint, 1}
-  - grad:    [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - c:       [OUT] Vector{Cdouble}
+  - nnzj:    [OUT] Vector{Cint}
+  - lj:      [IN] Vector{Cint}
+  - j_val:   [OUT] Vector{Cdouble}
+  - j_var:   [OUT] Vector{Cint}
+  - j_fun:   [OUT] Vector{Cint}
+  - grad:    [IN] Vector{Cint}
 """
-function ccfsg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, c::Array{Cdouble, 1}, nnzj::Array{Cint, 1},
-    lj::Array{Cint, 1}, j_val::Array{Cdouble, 1}, j_var::Array{Cint, 1},
-    j_fun::Array{Cint, 1}, grad::Array{Cint, 1})
+function ccfsg(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, c::Vector{Cdouble}, nnzj::Vector{Cint},
+    lj::Vector{Cint}, j_val::Vector{Cdouble}, j_var::Vector{Cint},
+    j_fun::Vector{Cint}, grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ccfsg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
@@ -1397,17 +1394,17 @@ Usage:
 
     ccifg(io_err, n, icon, x, ci, gci, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - icon:    [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - ci:      [OUT] Array{Cdouble, 1}
-  - gci:     [OUT] Array{Cdouble, 1}
-  - grad:    [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - icon:    [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - ci:      [OUT] Vector{Cdouble}
+  - gci:     [OUT] Vector{Cdouble}
+  - grad:    [IN] Vector{Cint}
 """
-function ccifg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, icon::Array{Cint, 1},
-    x::Array{Cdouble, 1}, ci::Array{Cdouble, 1}, gci::Array{Cdouble, 1},
-    grad::Array{Cint, 1})
+function ccifg(io_err::Vector{Cint}, n::Vector{Cint}, icon::Vector{Cint},
+    x::Vector{Cdouble}, ci::Vector{Cdouble}, gci::Vector{Cdouble},
+    grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ccifg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}),
@@ -1434,21 +1431,21 @@ Usage:
 
     ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - icon:    [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - ci:      [OUT] Array{Cdouble, 1}
-  - nnzgci:  [OUT] Array{Cint, 1}
-  - lgci:    [IN] Array{Cint, 1}
-  - gci_val: [OUT] Array{Cdouble, 1}
-  - gci_var: [OUT] Array{Cint, 1}
-  - grad:    [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - icon:    [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - ci:      [OUT] Vector{Cdouble}
+  - nnzgci:  [OUT] Vector{Cint}
+  - lgci:    [IN] Vector{Cint}
+  - gci_val: [OUT] Vector{Cdouble}
+  - gci_var: [OUT] Vector{Cint}
+  - grad:    [IN] Vector{Cint}
 """
-function ccifsg(io_err::Array{Cint, 1}, n::Array{Cint, 1}, icon::Array{Cint, 1},
-    x::Array{Cdouble, 1}, ci::Array{Cdouble, 1}, nnzgci::Array{Cint, 1},
-    lgci::Array{Cint, 1}, gci_val::Array{Cdouble, 1}, gci_var::Array{Cint,
-    1}, grad::Array{Cint, 1})
+function ccifsg(io_err::Vector{Cint}, n::Vector{Cint}, icon::Vector{Cint},
+    x::Vector{Cdouble}, ci::Vector{Cdouble}, nnzgci::Vector{Cint},
+    lgci::Vector{Cint}, gci_val::Vector{Cdouble}, gci_var::Vector{Cint},
+    grad::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ccifsg_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -1476,24 +1473,24 @@ Usage:
 
     cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - grlagf:  [IN] Array{Cint, 1}
-  - g:       [OUT] Array{Cdouble, 1}
-  - jtrans:  [IN] Array{Cint, 1}
-  - lj1:     [IN] Array{Cint, 1}
-  - lj2:     [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - grlagf:  [IN] Vector{Cint}
+  - g:       [OUT] Vector{Cdouble}
+  - jtrans:  [IN] Vector{Cint}
+  - lj1:     [IN] Vector{Cint}
+  - lj2:     [IN] Vector{Cint}
   - j_val:   [OUT] Array{Cdouble, 2}
-  - lh1:     [IN] Array{Cint, 1}
+  - lh1:     [IN] Vector{Cint}
   - h_val:   [OUT] Array{Cdouble, 2}
 """
-function cgrdh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, grlagf::Array{Cint, 1},
-    g::Array{Cdouble, 1}, jtrans::Array{Cint, 1}, lj1::Array{Cint, 1},
-    lj2::Array{Cint, 1}, j_val::Array{Cdouble, 2}, lh1::Array{Cint, 1},
+function cgrdh(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, grlagf::Vector{Cint},
+    g::Vector{Cdouble}, jtrans::Vector{Cint}, lj1::Vector{Cint},
+    lj2::Vector{Cint}, j_val::Array{Cdouble, 2}, lh1::Vector{Cint},
     h_val::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_cgrdh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
@@ -1521,16 +1518,16 @@ Usage:
 
     cdh(io_err, n, m, x, y, lh1, h_val)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - lh1:     [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - lh1:     [IN] Vector{Cint}
   - h_val:   [OUT] Array{Cdouble, 2}
 """
-function cdh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, lh1::Array{Cint, 1},
+function cdh(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, lh1::Vector{Cint},
     h_val::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_cdh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
@@ -1557,16 +1554,16 @@ Usage:
 
     cdhc(io_err, n, m, x, y, lh1, h_val)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - lh1:     [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - lh1:     [IN] Vector{Cint}
   - h_val:   [OUT] Array{Cdouble, 2}
 """
-function cdhc(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, lh1::Array{Cint, 1},
+function cdhc(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, lh1::Vector{Cint},
     h_val::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_cdhc_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
@@ -1592,15 +1589,15 @@ Usage:
 
     cshp(io_err, n, nnzh, lh, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function cshp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzh::Array{Cint, 1},
-    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+function cshp(io_err::Vector{Cint}, n::Vector{Cint}, nnzh::Vector{Cint},
+    lh::Vector{Cint}, h_row::Vector{Cint}, h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cshp_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, n, nnzh, lh, h_row, h_col)
@@ -1625,21 +1622,21 @@ Usage:
 
     csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_val:   [OUT] Array{Cdouble, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_val:   [OUT] Vector{Cdouble}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function csh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, nnzh::Array{Cint, 1},
-    lh::Array{Cint, 1}, h_val::Array{Cdouble, 1}, h_row::Array{Cint, 1},
-    h_col::Array{Cint, 1})
+function csh(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, nnzh::Vector{Cint},
+    lh::Vector{Cint}, h_val::Vector{Cdouble}, h_row::Vector{Cint},
+    h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -1665,21 +1662,21 @@ Usage:
 
     cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_val:   [OUT] Array{Cdouble, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_val:   [OUT] Vector{Cdouble}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function cshc(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, nnzh::Array{Cint, 1},
-    lh::Array{Cint, 1}, h_val::Array{Cdouble, 1}, h_row::Array{Cint, 1},
-    h_col::Array{Cint, 1})
+function cshc(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, nnzh::Vector{Cint},
+    lh::Vector{Cint}, h_val::Vector{Cdouble}, h_row::Vector{Cint},
+    h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cshc_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -1708,27 +1705,27 @@ Usage:
     ceh(io_err, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
 he_row, lhe_val, he_val, byrows)
 
-  - io_err:     [OUT] Array{Cint, 1}
-  - n:          [IN] Array{Cint, 1}
-  - m:          [IN] Array{Cint, 1}
-  - x:          [IN] Array{Cdouble, 1}
-  - y:          [IN] Array{Cdouble, 1}
-  - ne:         [OUT] Array{Cint, 1}
-  - lhe_ptr:    [IN] Array{Cint, 1}
-  - he_row_ptr: [OUT] Array{Cint, 1}
-  - he_val_ptr: [OUT] Array{Cint, 1}
-  - lhe_row:    [IN] Array{Cint, 1}
-  - he_row:     [OUT] Array{Cint, 1}
-  - lhe_val:    [IN] Array{Cint, 1}
-  - he_val:     [OUT] Array{Cdouble, 1}
-  - byrows:     [IN] Array{Cint, 1}
+  - io_err:     [OUT] Vector{Cint}
+  - n:          [IN] Vector{Cint}
+  - m:          [IN] Vector{Cint}
+  - x:          [IN] Vector{Cdouble}
+  - y:          [IN] Vector{Cdouble}
+  - ne:         [OUT] Vector{Cint}
+  - lhe_ptr:    [IN] Vector{Cint}
+  - he_row_ptr: [OUT] Vector{Cint}
+  - he_val_ptr: [OUT] Vector{Cint}
+  - lhe_row:    [IN] Vector{Cint}
+  - he_row:     [OUT] Vector{Cint}
+  - lhe_val:    [IN] Vector{Cint}
+  - he_val:     [OUT] Vector{Cdouble}
+  - byrows:     [IN] Vector{Cint}
 """
-function ceh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, ne::Array{Cint, 1},
-    lhe_ptr::Array{Cint, 1}, he_row_ptr::Array{Cint, 1},
-    he_val_ptr::Array{Cint, 1}, lhe_row::Array{Cint, 1},
-    he_row::Array{Cint, 1}, lhe_val::Array{Cint, 1},
-    he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1})
+function ceh(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, ne::Vector{Cint},
+    lhe_ptr::Vector{Cint}, he_row_ptr::Vector{Cint},
+    he_val_ptr::Vector{Cint}, lhe_row::Vector{Cint},
+    he_row::Vector{Cint}, lhe_val::Vector{Cint},
+    he_val::Vector{Cdouble}, byrows::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_ceh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
@@ -1756,15 +1753,15 @@ Usage:
 
     cidh(io_err, n, x, iprob, lh1, h)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - iprob:   [IN] Array{Cint, 1}
-  - lh1:     [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - iprob:   [IN] Vector{Cint}
+  - lh1:     [IN] Vector{Cint}
   - h:       [OUT] Array{Cdouble, 2}
 """
-function cidh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    iprob::Array{Cint, 1}, lh1::Array{Cint, 1}, h::Array{Cdouble, 2})
+function cidh(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    iprob::Vector{Cint}, lh1::Vector{Cint}, h::Array{Cdouble, 2})
   ccall(dlsym(cutest_lib, "cutest_cidh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
     io_err, n, x, iprob, lh1, h)
@@ -1789,19 +1786,19 @@ Usage:
 
     cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - iprob:   [IN] Array{Cint, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_val:   [OUT] Array{Cdouble, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - iprob:   [IN] Vector{Cint}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_val:   [OUT] Vector{Cdouble}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function cish(io_err::Array{Cint, 1}, n::Array{Cint, 1}, x::Array{Cdouble, 1},
-    iprob::Array{Cint, 1}, nnzh::Array{Cint, 1}, lh::Array{Cint, 1},
-    h_val::Array{Cdouble, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+function cish(io_err::Vector{Cint}, n::Vector{Cint}, x::Vector{Cdouble},
+    iprob::Vector{Cint}, nnzh::Vector{Cint}, lh::Vector{Cint},
+    h_val::Vector{Cdouble}, h_row::Vector{Cint}, h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cish_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -1830,29 +1827,29 @@ Usage:
     csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
 h_val, h_row, h_col)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - grlagf:  [IN] Array{Cint, 1}
-  - nnzj:    [OUT] Array{Cint, 1}
-  - lj:      [IN] Array{Cint, 1}
-  - j_val:   [OUT] Array{Cdouble, 1}
-  - j_var:   [OUT] Array{Cint, 1}
-  - j_fun:   [OUT] Array{Cint, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_val:   [OUT] Array{Cdouble, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - grlagf:  [IN] Vector{Cint}
+  - nnzj:    [OUT] Vector{Cint}
+  - lj:      [IN] Vector{Cint}
+  - j_val:   [OUT] Vector{Cdouble}
+  - j_var:   [OUT] Vector{Cint}
+  - j_fun:   [OUT] Vector{Cint}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_val:   [OUT] Vector{Cdouble}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function csgrsh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, grlagf::Array{Cint, 1},
-    nnzj::Array{Cint, 1}, lj::Array{Cint, 1}, j_val::Array{Cdouble, 1},
-    j_var::Array{Cint, 1}, j_fun::Array{Cint, 1}, nnzh::Array{Cint, 1},
-    lh::Array{Cint, 1}, h_val::Array{Cdouble, 1}, h_row::Array{Cint, 1},
-    h_col::Array{Cint, 1})
+function csgrsh(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, grlagf::Vector{Cint},
+    nnzj::Vector{Cint}, lj::Vector{Cint}, j_val::Vector{Cdouble},
+    j_var::Vector{Cint}, j_fun::Vector{Cint}, nnzh::Vector{Cint},
+    lh::Vector{Cint}, h_val::Vector{Cdouble}, h_row::Vector{Cint},
+    h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csgrsh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
@@ -1887,35 +1884,35 @@ Usage:
 lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val,
 byrows)
 
-  - io_err:     [OUT] Array{Cint, 1}
-  - n:          [IN] Array{Cint, 1}
-  - m:          [IN] Array{Cint, 1}
-  - x:          [IN] Array{Cdouble, 1}
-  - y:          [IN] Array{Cdouble, 1}
-  - grlagf:     [IN] Array{Cint, 1}
-  - nnzj:       [OUT] Array{Cint, 1}
-  - lj:         [IN] Array{Cint, 1}
-  - j_val:      [OUT] Array{Cdouble, 1}
-  - j_var:      [OUT] Array{Cint, 1}
-  - j_fun:      [OUT] Array{Cint, 1}
-  - ne:         [OUT] Array{Cint, 1}
-  - lhe_ptr:    [IN] Array{Cint, 1}
-  - he_row_ptr: [OUT] Array{Cint, 1}
-  - he_val_ptr: [OUT] Array{Cint, 1}
-  - lhe_row:    [IN] Array{Cint, 1}
-  - he_row:     [OUT] Array{Cint, 1}
-  - lhe_val:    [IN] Array{Cint, 1}
-  - he_val:     [OUT] Array{Cdouble, 1}
-  - byrows:     [IN] Array{Cint, 1}
+  - io_err:     [OUT] Vector{Cint}
+  - n:          [IN] Vector{Cint}
+  - m:          [IN] Vector{Cint}
+  - x:          [IN] Vector{Cdouble}
+  - y:          [IN] Vector{Cdouble}
+  - grlagf:     [IN] Vector{Cint}
+  - nnzj:       [OUT] Vector{Cint}
+  - lj:         [IN] Vector{Cint}
+  - j_val:      [OUT] Vector{Cdouble}
+  - j_var:      [OUT] Vector{Cint}
+  - j_fun:      [OUT] Vector{Cint}
+  - ne:         [OUT] Vector{Cint}
+  - lhe_ptr:    [IN] Vector{Cint}
+  - he_row_ptr: [OUT] Vector{Cint}
+  - he_val_ptr: [OUT] Vector{Cint}
+  - lhe_row:    [IN] Vector{Cint}
+  - he_row:     [OUT] Vector{Cint}
+  - lhe_val:    [IN] Vector{Cint}
+  - he_val:     [OUT] Vector{Cdouble}
+  - byrows:     [IN] Vector{Cint}
 """
-function csgreh(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    x::Array{Cdouble, 1}, y::Array{Cdouble, 1}, grlagf::Array{Cint, 1},
-    nnzj::Array{Cint, 1}, lj::Array{Cint, 1}, j_val::Array{Cdouble, 1},
-    j_var::Array{Cint, 1}, j_fun::Array{Cint, 1}, ne::Array{Cint, 1},
-    lhe_ptr::Array{Cint, 1}, he_row_ptr::Array{Cint, 1},
-    he_val_ptr::Array{Cint, 1}, lhe_row::Array{Cint, 1},
-    he_row::Array{Cint, 1}, lhe_val::Array{Cint, 1},
-    he_val::Array{Cdouble, 1}, byrows::Array{Cint, 1})
+function csgreh(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    x::Vector{Cdouble}, y::Vector{Cdouble}, grlagf::Vector{Cint},
+    nnzj::Vector{Cint}, lj::Vector{Cint}, j_val::Vector{Cdouble},
+    j_var::Vector{Cint}, j_fun::Vector{Cint}, ne::Vector{Cint},
+    lhe_ptr::Vector{Cint}, he_row_ptr::Vector{Cint},
+    he_val_ptr::Vector{Cint}, lhe_row::Vector{Cint},
+    he_row::Vector{Cint}, lhe_val::Vector{Cint},
+    he_val::Vector{Cdouble}, byrows::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csgreh_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
@@ -1945,18 +1942,18 @@ Usage:
 
     chprod(io_err, n, m, goth, x, y, vector, result)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - goth:    [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - vector:  [IN] Array{Cdouble, 1}
-  - result:  [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - goth:    [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - vector:  [IN] Vector{Cdouble}
+  - result:  [OUT] Vector{Cdouble}
 """
-function chprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
-    vector::Array{Cdouble, 1}, result::Array{Cdouble, 1})
+function chprod(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    goth::Vector{Cint}, x::Vector{Cdouble}, y::Vector{Cdouble},
+    vector::Vector{Cdouble}, result::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_chprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
@@ -1983,26 +1980,26 @@ Usage:
     cshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
 nnz_result, index_nz_result, result)
 
-  - io_err:          [OUT] Array{Cint, 1}
-  - n:               [IN] Array{Cint, 1}
-  - m:               [IN] Array{Cint, 1}
-  - goth:            [IN] Array{Cint, 1}
-  - x:               [IN] Array{Cdouble, 1}
-  - y:               [IN] Array{Cdouble, 1}
-  - nnz_vector:      [IN] Array{Cint, 1}
-  - index_nz_vector: [IN] Array{Cint, 1}
-  - vector:          [IN] Array{Cdouble, 1}
-  - nnz_result:      [OUT] Array{Cint, 1}
-  - index_nz_result: [OUT] Array{Cint, 1}
-  - result:          [OUT] Array{Cdouble, 1}
+  - io_err:          [OUT] Vector{Cint}
+  - n:               [IN] Vector{Cint}
+  - m:               [IN] Vector{Cint}
+  - goth:            [IN] Vector{Cint}
+  - x:               [IN] Vector{Cdouble}
+  - y:               [IN] Vector{Cdouble}
+  - nnz_vector:      [IN] Vector{Cint}
+  - index_nz_vector: [IN] Vector{Cint}
+  - vector:          [IN] Vector{Cdouble}
+  - nnz_result:      [OUT] Vector{Cint}
+  - index_nz_result: [OUT] Vector{Cint}
+  - result:          [OUT] Vector{Cdouble}
 
 Notice that `vector` and `result` should have allocated dimension of `n`.
 """
-function cshprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
-    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
-    vector::Array{Cdouble, 1}, nnz_result::Array{Cint, 1},
-    index_nz_result::Array{Cint, 1}, result::Array{Cdouble, 1})
+function cshprod(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    goth::Vector{Cint}, x::Vector{Cdouble}, y::Vector{Cdouble},
+    nnz_vector::Vector{Cint}, index_nz_vector::Vector{Cint},
+    vector::Vector{Cdouble}, nnz_result::Vector{Cint},
+    index_nz_result::Vector{Cint}, result::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_cshprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
@@ -2030,18 +2027,18 @@ Usage:
 
     chcprod(io_err, n, m, goth, x, y, vector, result)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - goth:    [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - y:       [IN] Array{Cdouble, 1}
-  - vector:  [IN] Array{Cdouble, 1}
-  - result:  [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - goth:    [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - y:       [IN] Vector{Cdouble}
+  - vector:  [IN] Vector{Cdouble}
+  - result:  [OUT] Vector{Cdouble}
 """
-function chcprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
-    vector::Array{Cdouble, 1}, result::Array{Cdouble, 1})
+function chcprod(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    goth::Vector{Cint}, x::Vector{Cdouble}, y::Vector{Cdouble},
+    vector::Vector{Cdouble}, result::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_chcprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
@@ -2068,24 +2065,24 @@ Usage:
     cshcprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
 nnz_result, index_nz_result, result)
 
-  - io_err:          [OUT] Array{Cint, 1}
-  - n:               [IN] Array{Cint, 1}
-  - m:               [IN] Array{Cint, 1}
-  - goth:            [IN] Array{Cint, 1}
-  - x:               [IN] Array{Cdouble, 1}
-  - y:               [IN] Array{Cdouble, 1}
-  - nnz_vector:      [IN] Array{Cint, 1}
-  - index_nz_vector: [IN] Array{Cint, 1}
-  - vector:          [IN] Array{Cdouble, 1}
-  - nnz_result:      [OUT] Array{Cint, 1}
-  - index_nz_result: [OUT] Array{Cint, 1}
-  - result:          [OUT] Array{Cdouble, 1}
+  - io_err:          [OUT] Vector{Cint}
+  - n:               [IN] Vector{Cint}
+  - m:               [IN] Vector{Cint}
+  - goth:            [IN] Vector{Cint}
+  - x:               [IN] Vector{Cdouble}
+  - y:               [IN] Vector{Cdouble}
+  - nnz_vector:      [IN] Vector{Cint}
+  - index_nz_vector: [IN] Vector{Cint}
+  - vector:          [IN] Vector{Cdouble}
+  - nnz_result:      [OUT] Vector{Cint}
+  - index_nz_result: [OUT] Vector{Cint}
+  - result:          [OUT] Vector{Cdouble}
 """
-function cshcprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, y::Array{Cdouble, 1},
-    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
-    vector::Array{Cdouble, 1}, nnz_result::Array{Cint, 1},
-    index_nz_result::Array{Cint, 1}, result::Array{Cdouble, 1})
+function cshcprod(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    goth::Vector{Cint}, x::Vector{Cdouble}, y::Vector{Cdouble},
+    nnz_vector::Vector{Cint}, index_nz_vector::Vector{Cint},
+    vector::Vector{Cdouble}, nnz_result::Vector{Cint},
+    index_nz_result::Vector{Cint}, result::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_cshcprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint},
@@ -2113,21 +2110,21 @@ Usage:
 
     cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - gotj:    [IN] Array{Cint, 1}
-  - jtrans:  [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - vector:  [IN] Array{Cdouble, 1}
-  - lvector: [IN] Array{Cint, 1}
-  - result:  [OUT] Array{Cdouble, 1}
-  - lresult: [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - gotj:    [IN] Vector{Cint}
+  - jtrans:  [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - vector:  [IN] Vector{Cdouble}
+  - lvector: [IN] Vector{Cint}
+  - result:  [OUT] Vector{Cdouble}
+  - lresult: [IN] Vector{Cint}
 """
-function cjprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    gotj::Array{Cint, 1}, jtrans::Array{Cint, 1}, x::Array{Cdouble, 1},
-    vector::Array{Cdouble, 1}, lvector::Array{Cint, 1},
-    result::Array{Cdouble, 1}, lresult::Array{Cint, 1})
+function cjprod(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    gotj::Vector{Cint}, jtrans::Vector{Cint}, x::Vector{Cdouble},
+    vector::Vector{Cdouble}, lvector::Vector{Cint},
+    result::Vector{Cdouble}, lresult::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cjprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
@@ -2154,27 +2151,27 @@ Usage:
     csjprod(io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
 lvector, nnz_result, index_nz_result, result, lresult)
 
-  - io_err:          [OUT] Array{Cint, 1}
-  - n:               [IN] Array{Cint, 1}
-  - m:               [IN] Array{Cint, 1}
-  - gotj:            [IN] Array{Cint, 1}
-  - jtrans:          [IN] Array{Cint, 1}
-  - x:               [IN] Array{Cdouble, 1}
-  - nnz_vector:      [IN] Array{Cint, 1}
-  - index_nz_vector: [IN] Array{Cint, 1}
-  - vector:          [IN] Array{Cdouble, 1}
-  - lvector:         [IN] Array{Cint, 1}
-  - nnz_result:      [OUT] Array{Cint, 1}
-  - index_nz_result: [OUT] Array{Cint, 1}
-  - result:          [OUT] Array{Cdouble, 1}
-  - lresult:         [IN] Array{Cint, 1}
+  - io_err:          [OUT] Vector{Cint}
+  - n:               [IN] Vector{Cint}
+  - m:               [IN] Vector{Cint}
+  - gotj:            [IN] Vector{Cint}
+  - jtrans:          [IN] Vector{Cint}
+  - x:               [IN] Vector{Cdouble}
+  - nnz_vector:      [IN] Vector{Cint}
+  - index_nz_vector: [IN] Vector{Cint}
+  - vector:          [IN] Vector{Cdouble}
+  - lvector:         [IN] Vector{Cint}
+  - nnz_result:      [OUT] Vector{Cint}
+  - index_nz_result: [OUT] Vector{Cint}
+  - result:          [OUT] Vector{Cdouble}
+  - lresult:         [IN] Vector{Cint}
 """
-function csjprod(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    gotj::Array{Cint, 1}, jtrans::Array{Cint, 1}, x::Array{Cdouble, 1},
-    nnz_vector::Array{Cint, 1}, index_nz_vector::Array{Cint, 1},
-    vector::Array{Cdouble, 1}, lvector::Array{Cint, 1},
-    nnz_result::Array{Cint, 1}, index_nz_result::Array{Cint, 1},
-    result::Array{Cdouble, 1}, lresult::Array{Cint, 1})
+function csjprod(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    gotj::Vector{Cint}, jtrans::Vector{Cint}, x::Vector{Cdouble},
+    nnz_vector::Vector{Cint}, index_nz_vector::Vector{Cint},
+    vector::Vector{Cdouble}, lvector::Vector{Cint},
+    nnz_result::Vector{Cint}, index_nz_result::Vector{Cint},
+    result::Vector{Cdouble}, lresult::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csjprod_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
@@ -2202,21 +2199,21 @@ Usage:
 
     cchprods(io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - goth:    [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - vector:  [IN] Array{Cdouble, 1}
-  - lchp:    [IN] Array{Cint, 1}
-  - chp_val: [OUT] Array{Cdouble, 1}
-  - chp_ind: [IN] Array{Cint, 1}
-  - chp_ptr: [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - goth:    [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - vector:  [IN] Vector{Cdouble}
+  - lchp:    [IN] Vector{Cint}
+  - chp_val: [OUT] Vector{Cdouble}
+  - chp_ind: [IN] Vector{Cint}
+  - chp_ptr: [IN] Vector{Cint}
 """
-function cchprods(io_err::Array{Cint, 1}, n::Array{Cint, 1}, m::Array{Cint, 1},
-    goth::Array{Cint, 1}, x::Array{Cdouble, 1}, vector::Array{Cdouble, 1},
-    lchp::Array{Cint, 1}, chp_val::Array{Cdouble, 1}, chp_ind::Array{Cint,
-    1}, chp_ptr::Array{Cint, 1})
+function cchprods(io_err::Vector{Cint}, n::Vector{Cint}, m::Vector{Cint},
+    goth::Vector{Cint}, x::Vector{Cdouble}, vector::Vector{Cdouble},
+    lchp::Vector{Cint}, chp_val::Vector{Cdouble}, chp_ind::Vector{Cint},
+    chp_ptr::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cchprods_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble},
     Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
@@ -2233,14 +2230,14 @@ Usage:
 
     cchprodsp(io_err, m, lchp, chp_ind, chp_ptr)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - m:       [IN] Array{Cint, 1}
-  - lchp:    [IN] Array{Cint, 1}
-  - chp_ind: [IN] Array{Cint, 1}
-  - chp_ptr: [IN] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - m:       [IN] Vector{Cint}
+  - lchp:    [IN] Vector{Cint}
+  - chp_ind: [IN] Vector{Cint}
+  - chp_ptr: [IN] Vector{Cint}
 """
-function cchprodsp(io_err::Array{Cint, 1}, m::Array{Cint, 1}, lchp::Array{Cint, 1},
-    chp_ind::Array{Cint, 1}, chp_ptr::Array{Cint, 1})
+function cchprodsp(io_err::Vector{Cint}, m::Vector{Cint}, lchp::Vector{Cint},
+    chp_ind::Vector{Cint}, chp_ptr::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cchprodsp_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, m, lchp, chp_ind, chp_ptr)
@@ -2258,9 +2255,9 @@ Usage:
 
     uterminate(io_err)
 
-  - io_err:  [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
 """
-function uterminate(io_err::Array{Cint, 1})
+function uterminate(io_err::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_uterminate_"), Nothing,
     (Ptr{Cint},),
     io_err)
@@ -2278,9 +2275,9 @@ Usage:
 
     cterminate(io_err)
 
-  - io_err:  [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
 """
-function cterminate(io_err::Array{Cint, 1})
+function cterminate(io_err::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cterminate_"), Nothing,
     (Ptr{Cint},),
     io_err)
@@ -2297,16 +2294,16 @@ For more information, run the shell command
 
 Usage:
 
-    
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - iprob:   [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - f:       [OUT] Array{Cdouble, 1}
+
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - iprob:   [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - f:       [OUT] Vector{Cdouble}
 """
-function cifn(io_err::Array{Cint, 1}, n::Array{Cint, 1}, iprob::Array{Cint, 1},
-    x::Array{Cdouble, 1}, f::Array{Cdouble, 1})
+function cifn(io_err::Vector{Cint}, n::Vector{Cint}, iprob::Vector{Cint},
+    x::Vector{Cdouble}, f::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_cifn_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, n, iprob, x, f)
@@ -2324,18 +2321,18 @@ For more information, run the shell command
 
 Usage:
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - iprob:   [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - nnzg:    [OUT] Array{Cint, 1}
-  - lg:      [IN] Array{Cint, 1}
-  - g_val:   [OUT] Array{Cdouble, 1}
-  - g_var:   [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - iprob:   [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - nnzg:    [OUT] Vector{Cint}
+  - lg:      [IN] Vector{Cint}
+  - g_val:   [OUT] Vector{Cdouble}
+  - g_var:   [OUT] Vector{Cint}
 """
-function cisgr(io_err::Array{Cint, 1}, n::Array{Cint, 1}, iprod::Array{Cint, 1},
-    x::Array{Cdouble, 1}, nnzg::Array{Cint, 1}, lg::Array{Cint, 1},
-    g_val::Array{Cdouble, 1}, g_var::Array{Cint, 1})
+function cisgr(io_err::Vector{Cint}, n::Vector{Cint}, iprod::Vector{Cint},
+    x::Vector{Cdouble}, nnzg::Vector{Cint}, lg::Vector{Cint},
+    g_val::Vector{Cdouble}, g_var::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_cisgr_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint},
      Ptr{Cdouble}, Ptr{Cint}),
@@ -2356,15 +2353,15 @@ Usage:
 
     csgrp(io_err, n, nnzj, lj, j_var, j_fun)
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - nnzj:       [OUT] Array{Cint, 1}
-  - lj:         [IN] Array{Cint, 1}
-  - j_var:      [OUT] Array{Cint, 1}
-  - j_fun:      [OUT] Array{Cint, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - nnzj:       [OUT] Vector{Cint}
+  - lj:         [IN] Vector{Cint}
+  - j_var:      [OUT] Vector{Cint}
+  - j_fun:      [OUT] Vector{Cint}
 """
-function csgrp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzj::Array{Cint, 1},
-    lj::Array{Cint, 1}, j_var::Array{Cint, 1}, j_fun::Array{Cint, 1})
+function csgrp(io_err::Vector{Cint}, n::Vector{Cint}, nnzj::Vector{Cint},
+    lj::Vector{Cint}, j_var::Vector{Cint}, j_fun::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csgrp_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
     io_err, n, nnzj, lj, j_var, j_fun)
@@ -2379,14 +2376,14 @@ For more information, run the shell command
 
     man cutest_cigr
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - iprob:   [IN] Array{Cint, 1}
-  - x:       [IN] Array{Cdouble, 1}
-  - g_val:   [OUT] Array{Cdouble, 1}
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - iprob:   [IN] Vector{Cint}
+  - x:       [IN] Vector{Cdouble}
+  - g_val:   [OUT] Vector{Cdouble}
 """
-function cigr(io_err::Array{Cint, 1}, n::Array{Cint, 1}, iprob::Array{Cint, 1},
-    x::Array{Cdouble, 1}, g_val::Array{Cdouble, 1})
+function cigr(io_err::Vector{Cint}, n::Vector{Cint}, iprob::Vector{Cint},
+    x::Vector{Cdouble}, g_val::Vector{Cdouble})
   ccall(dlsym(cutest_lib, "cutest_cigr_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
     io_err, n, iprob, x, g_val)
@@ -2403,20 +2400,20 @@ For more information, run the shell command
 
     man cutest_csgrshp
 
-  - io_err:  [OUT] Array{Cint, 1}
-  - n:       [IN] Array{Cint, 1}
-  - nnzj:    [OUT] Array{Cint, 1};
-  - lj:      [IN] Array{Cint, 1}
-  - j_var:   [OUT] Array{Cint, 1}
-  - j_fun:   [OUT] Array{Cint, 1}
-  - nnzh:    [OUT] Array{Cint, 1}
-  - lh:      [IN] Array{Cint, 1}
-  - h_row:   [OUT] Array{Cint, 1}
-  - h_col:   [OUT] Array{Cint, 1};
+  - io_err:  [OUT] Vector{Cint}
+  - n:       [IN] Vector{Cint}
+  - nnzj:    [OUT] Vector{Cint}
+  - lj:      [IN] Vector{Cint}
+  - j_var:   [OUT] Vector{Cint}
+  - j_fun:   [OUT] Vector{Cint}
+  - nnzh:    [OUT] Vector{Cint}
+  - lh:      [IN] Vector{Cint}
+  - h_row:   [OUT] Vector{Cint}
+  - h_col:   [OUT] Vector{Cint}
 """
-function csgrshp(io_err::Array{Cint, 1}, n::Array{Cint, 1}, nnzj::Array{Cint, 1},
-    lj::Array{Cint, 1}, j_var::Array{Cint, 1}, j_fun::Array{Cint, 1}, nnzh::Array{Cint, 1},
-    lh::Array{Cint, 1}, h_row::Array{Cint, 1}, h_col::Array{Cint, 1})
+function csgrshp(io_err::Vector{Cint}, n::Vector{Cint}, nnzj::Vector{Cint},
+    lj::Vector{Cint}, j_var::Vector{Cint}, j_fun::Vector{Cint}, nnzh::Vector{Cint},
+    lh::Vector{Cint}, h_row::Vector{Cint}, h_col::Vector{Cint})
   ccall(dlsym(cutest_lib, "cutest_csgrshp_"), Nothing,
     (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
      Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
