@@ -307,7 +307,7 @@ function NLPModels.jtprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: Abstrac
   jtv .= jtvc
 end
 
-function hess_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, cols :: Vector{Int32})
+function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, cols :: Vector{Int32})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh
