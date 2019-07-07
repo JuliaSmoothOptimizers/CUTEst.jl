@@ -16,14 +16,14 @@ global cutest_instances = 0
 export CUTEstModel, sifdecoder
 
 mutable struct CUTEstModel <: AbstractNLPModel
-  meta    :: NLPModelMeta;
+  meta    :: NLPModelMeta
 
   counters :: Counters
 end
 
-const funit   = convert(Int32, 42);
+const funit   = convert(Int32, 42)
 @static Sys.isapple() ? (const linker = "gfortran") : (const linker = "ld")
-@static Sys.isapple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"]);
+@static Sys.isapple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"])
 @static Sys.isapple() ? (const libgfortran = []) : (const libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
 
 struct CUTEstException <: Exception
@@ -62,7 +62,7 @@ function __init__()
   push!(Libdl.DL_LOAD_PATH, ENV["cutest-problems"])
 end
 
-CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info));
+CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info))
 
 macro cutest_error()  # Handle nonzero exit codes.
   esc(:(io_err[1] > 0 && throw(CUTEstException(io_err[1]))))
@@ -90,8 +90,8 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
   end
 
   # TODO: Accept options to pass to sifdecoder.
-  pname, sif = splitext(basename(name));
-  libname = "lib$pname";
+  pname, sif = splitext(basename(name))
+  libname = "lib$pname"
 
   # work around bogus "ERROR: failed process"
   # should be more elegant after https://github.com/JuliaLang/julia/pull/12807
@@ -102,11 +102,11 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
     print(read(errlog, String))
     verbose && println(read(outlog, String))
 
-    run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`);
-    run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`);
+    run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`)
+    run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`)
     run(`mv OUTSDIF.d $outsdif`)
     run(`mv AUTOMAT.d $automat`)
-    run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`);
+    run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`)
     global cutest_lib = Libdl.dlopen(libname,
       Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
   end
@@ -121,11 +121,11 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
   if !isfile(name) && !isfile(joinpath(ENV["MASTSIF"], name))
     error("$name not found")
   end
-  outsdif = "OUTSDIF_$(basename(name)).d";
-  automat = "AUTOMAT_$(basename(name)).d";
+  outsdif = "OUTSDIF_$(basename(name)).d"
+  automat = "AUTOMAT_$(basename(name)).d"
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
-  io_err = Cint[0];
+  io_err = Cint[0]
   global cutest_lib
   cd(ENV["cutest-problems"]) do
     if !decode
@@ -138,18 +138,18 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
       sifdecoder(name, args..., verbose=verbose, outsdif=outsdif, automat=automat)
     end
     ccall(dlsym(cutest_lib, :fortran_open_), Nothing,
-          (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}), funit, outsdif, io_err);
+          (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}), funit, outsdif, io_err)
     @cutest_error
   end
 
   # Obtain problem size.
-  nvar = Cint[0];
-  ncon = Cint[0];
+  nvar = Cint[0]
+  ncon = Cint[0]
 
   cdimen(io_err, [funit], nvar, ncon)
   @cutest_error
-  nvar = nvar[1];
-  ncon = ncon[1];
+  nvar = nvar[1]
+  ncon = ncon[1]
 
   x  = Vector{Float64}(undef, nvar)
   bl = Vector{Float64}(undef, nvar)
@@ -177,18 +177,18 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
     lim[I] = Inf * lim[I]
   end
 
-  lin = findall(linear .!= 0);
-  nln = setdiff(1:ncon, lin);
-  nlin = sum(linear);
-  nnln = ncon - nlin;
+  lin = findall(linear .!= 0)
+  nln = setdiff(1:ncon, lin)
+  nlin = sum(linear)
+  nnln = ncon - nlin
 
-  nnzh = Cint[0];
-  nnzj = Cint[0];
+  nnzh = Cint[0]
+  nnzj = Cint[0]
 
   if ncon > 0
     cdimsh(io_err, nnzh)
     cdimsj(io_err, nnzj)
-    nnzj[1] -= nvar;  # nnzj also counts the nonzeros in the objective gradient.
+    nnzj[1] -= nvar  # nnzj also counts the nonzeros in the objective gradient.
   else
     udimsh(io_err, nnzh)
   end
@@ -198,7 +198,7 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
   nnzj = Int(nnzj[1])
 
   ccall(dlsym(cutest_lib, :fortran_close_), Nothing,
-      (Ref{Int32}, Ptr{Int32}), funit, io_err);
+      (Ref{Int32}, Ptr{Int32}), funit, io_err)
   @cutest_error
 
   meta = NLPModelMeta(Int(nvar), x0=x, lvar=bl, uvar=bu,
@@ -206,11 +206,11 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
                       nnzj=nnzj, nnzh=nnzh,
                       lin=lin, nln=nln,
                       nlin=nlin, nnln=nnln,
-                      name=splitext(name)[1]);
+                      name=splitext(name)[1])
 
   nlp = CUTEstModel(meta, Counters())
 
-  cutest_instances += 1;
+  cutest_instances += 1
   finalizer(cutest_finalize, nlp)
 
   return nlp
@@ -219,9 +219,9 @@ end
 
 function cutest_finalize(nlp :: CUTEstModel)
   global cutest_instances
-  cutest_instances == 0 && return;
+  cutest_instances == 0 && return
   global cutest_lib
-  io_err = Cint[0];
+  io_err = Cint[0]
   if nlp.meta.ncon > 0
     cterminate(io_err)
   else
@@ -229,9 +229,9 @@ function cutest_finalize(nlp :: CUTEstModel)
   end
   @cutest_error
   Libdl.dlclose(cutest_lib)
-  cutest_instances -= 1;
+  cutest_instances -= 1
   cutest_lib = C_NULL
-  return;
+  return
 end
 
 
@@ -239,11 +239,11 @@ end
 
 import Base.show, Base.print
 function show(io :: IO, nlp :: CUTEstModel)
-  show(io, nlp.meta);
+  show(io, nlp.meta)
 end
 
 function print(io :: IO, nlp :: CUTEstModel)
-  print(io, nlp.meta);
+  print(io, nlp.meta)
 end
 
 end  # module CUTEst.

@@ -8,19 +8,19 @@ function NLPModels.objcons(nlp :: CUTEstModel, x :: AbstractVector)
 end
 
 function NLPModels.objcons!(nlp :: CUTEstModel, x :: Vector{Float64}, c :: Vector{Float64})
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  io_err = Cint[0];
-  f = Cdouble[0];
+  nvar = nlp.meta.nvar
+  ncon = nlp.meta.ncon
+  io_err = Cint[0]
+  f = Cdouble[0]
   if ncon > 0
     ccall(dlsym(cutest_lib, :cutest_cfn_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,  nvar,   ncon,   x,         f,         c);
+                 io_err,  nvar,   ncon,   x,         f,         c)
     nlp.counters.neval_cons += 1
   else
     ccall(dlsym(cutest_lib, :cutest_ufn_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,  nvar,    x,         f);
+                 io_err,  nvar,    x,         f)
   end
   nlp.counters.neval_obj += 1
   @cutest_error
@@ -50,19 +50,19 @@ function NLPModels.objgrad(nlp :: CUTEstModel, x :: AbstractVector)
 end
 
 function NLPModels.objgrad!(nlp :: CUTEstModel, x :: Vector{Float64}, g :: Vector{Float64})
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  f = Cdouble[0];
-  io_err = Cint[0];
-  get_grad = 1;
+  nvar = nlp.meta.nvar
+  ncon = nlp.meta.ncon
+  f = Cdouble[0]
+  io_err = Cint[0]
+  get_grad = 1
   if ncon > 0
     ccall(dlsym(cutest_lib, "cutest_cofg_"), Nothing,
         (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ref{Int32}),
-             io_err,       nvar,            x,            f,            g,   get_grad);
+             io_err,       nvar,            x,            f,            g,   get_grad)
   else
     ccall(dlsym(cutest_lib, "cutest_uofg_"), Nothing,
         (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ref{Int32}),
-             io_err,       nvar,            x,            f,            g,   get_grad);
+             io_err,       nvar,            x,            f,            g,   get_grad)
   end
   nlp.counters.neval_obj += 1
   nlp.counters.neval_grad += 1
@@ -185,14 +185,14 @@ Usage:
   - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}
 """
 function consjac(nlp :: CUTEstModel, x :: AbstractVector)
-  c, jrow, jcol, jval = cons_coord(nlp, x);
+  c, jrow, jcol, jval = cons_coord(nlp, x)
   return c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
 end
 
 function NLPModels.cons!(nlp :: CUTEstModel, x :: AbstractVector, c :: AbstractVector)
   objcons!(nlp, x, c)
   nlp.counters.neval_obj -= 1  # does not really count as a objective eval
-  return c;
+  return c
 end
 
 function NLPModels.jac_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, cols :: Vector{Int32})
@@ -229,10 +229,10 @@ function NLPModels.jprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector{
   ncon = nlp.meta.ncon
   got_j = 0
   jtrans = 0
-  io_err = Cint[0];
+  io_err = Cint[0]
   ccall(dlsym(cutest_lib, :cutest_cjprod_), Nothing,
               (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ref{Int32}, Ptr{Float64}, Ref{Int32}),
-               io_err,     nvar,       ncon,       got_j,      jtrans,    x,            v,             nvar,      jv,            ncon);
+               io_err,     nvar,       ncon,       got_j,      jtrans,    x,            v,             nvar,      jv,            ncon)
   @cutest_error
   nlp.counters.neval_jprod += 1
   return jv
@@ -253,10 +253,10 @@ function NLPModels.jtprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector
   ncon = nlp.meta.ncon
   got_j = 0
   jtrans = 1
-  io_err = Cint[0];
+  io_err = Cint[0]
   ccall(dlsym(cutest_lib, :cutest_cjprod_), Nothing,
               (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ref{Int32}, Ptr{Float64}, Ref{Int32}),
-               io_err,     nvar,       ncon,       got_j,      jtrans,    x,            v,             ncon,      jtv,           nvar);
+               io_err,     nvar,       ncon,       got_j,      jtrans,    x,            v,             ncon,      jtv,           nvar)
   @cutest_error
   nlp.counters.neval_jtprod += 1
   return jtv
@@ -304,11 +304,11 @@ function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<:
 end
 
 function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: Vector{Float64}, rows :: Vector{Int32}, cols :: Vector{Int32}, vals :: Vector{Float64}; y :: Vector{Float64}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  nnzh = nlp.meta.nnzh;
-  io_err = Cint[0];
-  this_nnzh = Cint[0];
+  nvar = nlp.meta.nvar
+  ncon = nlp.meta.ncon
+  nnzh = nlp.meta.nnzh
+  io_err = Cint[0]
+  this_nnzh = Cint[0]
 
   if obj_weight == 0.0 && ncon > 0
     ccall(dlsym(cutest_lib, :cutest_cshc_), Nothing,
@@ -346,14 +346,14 @@ function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: 
 end
 
 function NLPModels.hprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector{Float64}, hv :: Vector{Float64}; y :: Vector{Float64}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
-  nvar = nlp.meta.nvar;
-  ncon = nlp.meta.ncon;
-  io_err = Cint[0];
-  goth = Cint[0];
+  nvar = nlp.meta.nvar
+  ncon = nlp.meta.ncon
+  io_err = Cint[0]
+  goth = Cint[0]
   if obj_weight == 0.0 && ncon > 0
     ccall(dlsym(cutest_lib, :cutest_chcprod_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,     nvar,       ncon,       goth,       x,            y,            v,            hv);
+                 io_err,     nvar,       ncon,       goth,       x,            y,            v,            hv)
     @cutest_error
     nlp.counters.neval_hprod += 1
     return hv
@@ -365,11 +365,11 @@ function NLPModels.hprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector{
 
     ccall(dlsym(cutest_lib, :cutest_chprod_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,     nvar,       ncon,       goth,       x,            y,            v,            hv);
+                 io_err,     nvar,       ncon,       goth,       x,            y,            v,            hv)
   else
     ccall(dlsym(cutest_lib, :cutest_uhprod_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,     nvar,       goth,       x,            v,            hv);
+                 io_err,     nvar,       goth,       x,            v,            hv)
   end
   @cutest_error
 
