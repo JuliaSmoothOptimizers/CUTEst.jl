@@ -2,35 +2,11 @@
 
 ## NLPModels API
 
-```@docs
-obj
-grad
-grad!
-cons
-cons!
-jac_coord
-jac_coord!
-jac_structure!
-jac
-jprod
-jprod!
-jtprod
-jtprod!
-hess_coord
-hess_coord!
-hess_structure!
-hess
-hprod
-hprod!
-```
+CUTEst accepts the API of [NLPModels](https://juliasmoothoptimizers.github.io/NLPModels.jl/).
 
-## Extra Julian API
+## Additional NLPModels-like API
 
 ```@docs
-objgrad
-objgrad!
-objcons
-objcons!
 cons_coord
 cons_coord!
 consjac
