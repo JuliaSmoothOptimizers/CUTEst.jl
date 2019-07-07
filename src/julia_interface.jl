@@ -78,7 +78,7 @@ end
 function NLPModels.objgrad!(nlp :: CUTEstModel, x :: AbstractVector, g :: AbstractVector)
   gc = zeros(nlp.meta.nvar)
   f, _ = objgrad!(nlp, Vector{Float64}(x), gc)
-  g .= gc
+  g[1 : nlp.meta.nvar] .= gc
   return f, g
 end
 
@@ -235,7 +235,7 @@ end
 function NLPModels.jprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector, jv :: AbstractVector)
   jvc = zeros(nlp.meta.ncon)
   jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jvc)
-  jv .= jvc
+  jv[1 : nlp.meta.ncon] .= jvc
 end
 
 function NLPModels.jtprod!(nlp :: CUTEstModel, x :: Array{Float64,1}, v :: Array{Float64,1}, jtv :: Array{Float64,1})
@@ -259,7 +259,7 @@ end
 function NLPModels.jtprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector, jtv :: AbstractVector)
   jtvc = zeros(nlp.meta.nvar)
   jtprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jtvc)
-  jtv .= jtvc
+  jtv[1 : nlp.meta.nvar] .= jtvc
 end
 
 function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, cols :: Vector{Int32})
@@ -376,5 +376,5 @@ end
 function NLPModels.hprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector, hv :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   hvc = zeros(nlp.meta.nvar)
   hprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), hvc, y=Vector{Float64}(y), obj_weight=obj_weight)
-  hv .= hvc
+  hv[1 : nlp.meta.nvar] .= hvc
 end
