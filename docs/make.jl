@@ -4,7 +4,7 @@ makedocs(
   modules = [CUTEst],
   doctest = true,
   linkcheck = true,
-  strict = true,
+  # strict = true,
   assets = ["assets/style.css"],
   format = Documenter.HTML(
               prettyurls = get(ENV, "CI", nothing) == "true"
