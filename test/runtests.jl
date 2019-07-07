@@ -1,4 +1,4 @@
-using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Pkg, Printf
+using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Printf
 
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
