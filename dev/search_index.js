@@ -157,7 +157,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.grad",
     "category": "function",
-    "text": "g = grad(nlp, x)\n\nEvaluate nabla f(x), the gradient of the objective function at x.\n\n\n\n\n\n\n\n"
+    "text": "g = grad(nlp, x)\n\nEvaluate f(x), the gradient of the objective function at x.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -165,7 +165,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.grad!",
     "category": "function",
-    "text": "g = grad!(nlp, x, g)\n\nEvaluate nabla f(x), the gradient of the objective function at x in place.\n\n\n\n\n\n\n\n"
+    "text": "g = grad!(nlp, x, g)\n\nEvaluate f(x), the gradient of the objective function at x in place.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -189,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jac_coord",
     "category": "function",
-    "text": "(rows,cols,vals) = jac_coord(nlp, x)\n\nEvaluate nabla c(x), the constraint\'s Jacobian at x in sparse coordinate format.\n\n\n\n\n\n\n\n"
+    "text": "(rows,cols,vals) = jac_coord(nlp, x)\n\nEvaluate c(x), the constraint\'s Jacobian at x in sparse coordinate format.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -197,15 +197,15 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jac_coord!",
     "category": "function",
-    "text": "(rows,cols,vals) = jac_coord!(nlp, x, rows, cols, vals)\n\nEvaluate nabla c(x), the constraint\'s Jacobian at x in sparse coordinate format, rewriting vals. rows and cols are not rewritten.\n\n\n\n\n\n\n\n"
+    "text": "(rows,cols,vals) = jac_coord!(nlp, x, rows, cols, vals)\n\nEvaluate c(x), the constraint\'s Jacobian at x in sparse coordinate format, rewriting vals. rows and cols are not rewritten.\n\n\n\n\n\n\n\n"
 },
 
 {
-    "location": "api/#NLPModels.jac_structure",
+    "location": "api/#NLPModels.jac_structure!",
     "page": "API",
-    "title": "NLPModels.jac_structure",
+    "title": "NLPModels.jac_structure!",
     "category": "function",
-    "text": "(rows,cols) = jac_structure(nlp)\n\nReturns the structure of the constraint\'s Jacobian in sparse coordinate format.\n\n\n\n\n\n\n\n"
+    "text": "jac_structure!(nlp, rows, cols)\n\nReturn the structure of the constraint\'s Jacobian in sparse coordinate format in place.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -213,7 +213,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jac",
     "category": "function",
-    "text": "Jx = jac(nlp, x)\n\nEvaluate nabla c(x), the constraint\'s Jacobian at x as a sparse matrix.\n\n\n\n\n\n\n\n"
+    "text": "Jx = jac(nlp, x)\n\nEvaluate c(x), the constraint\'s Jacobian at x as a sparse matrix.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -221,7 +221,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jprod",
     "category": "function",
-    "text": "Jv = jprod(nlp, x, v)\n\nEvaluate nabla c(x)v, the Jacobian-vector product at x.\n\n\n\n\n\n\n\n"
+    "text": "Jv = jprod(nlp, x, v)\n\nEvaluate c(x)v, the Jacobian-vector product at x.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -229,7 +229,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jprod!",
     "category": "function",
-    "text": "Jv = jprod!(nlp, x, v, Jv)\n\nEvaluate nabla c(x)v, the Jacobian-vector product at x in place.\n\n\n\n\n\n\n\n"
+    "text": "Jv = jprod!(nlp, x, v, Jv)\n\nEvaluate c(x)v, the Jacobian-vector product at x in place.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -237,7 +237,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jtprod",
     "category": "function",
-    "text": "Jtv = jtprod(nlp, x, v, Jtv)\n\nEvaluate nabla c(x)^Tv, the transposed-Jacobian-vector product at x.\n\n\n\n\n\n\n\n"
+    "text": "Jtv = jtprod(nlp, x, v, Jtv)\n\nEvaluate c(x)^Tv, the transposed-Jacobian-vector product at x.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -245,7 +245,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.jtprod!",
     "category": "function",
-    "text": "Jtv = jtprod!(nlp, x, v, Jtv)\n\nEvaluate nabla c(x)^Tv, the transposed-Jacobian-vector product at x in place.\n\n\n\n\n\n\n\n"
+    "text": "Jtv = jtprod!(nlp, x, v, Jtv)\n\nEvaluate c(x)^Tv, the transposed-Jacobian-vector product at x in place.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -253,7 +253,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.hess_coord",
     "category": "function",
-    "text": "(rows,cols,vals) = hess_coord(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) in sparse coordinate format, with objective function scaled by obj_weight, i.e.,\n\n\\[ \\nabla^2L(x,y) = \\sigma * \\nabla^2 f(x) + \\sum{i=1}^m yi\\nabla^2 c_i(x), \\]\n\nwith σ = obj_weight. Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
+    "text": "(rows,cols,vals) = hess_coord(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) in sparse coordinate format, with objective function scaled by obj_weight, i.e.,\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight . Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -261,15 +261,15 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.hess_coord!",
     "category": "function",
-    "text": "(rows,cols,vals) = hess_coord(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) in sparse coordinate format, with objective function scaled by obj_weight, i.e.,\n\n\\[ \\nabla^2L(x,y) = \\sigma * \\nabla^2 f(x) + \\sum{i=1}^m yi\\nabla^2 c_i(x), \\]\n\nwith σ = obj_weight. Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
+    "text": "(rows,cols,vals) = hess_coord!(nlp, x, rows, cols, vals; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) in sparse coordinate format, with objective function scaled by obj_weight, i.e.,\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight ,rewriting vals. rows and cols are not rewritten. Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
 },
 
 {
-    "location": "api/#NLPModels.hess_structure",
+    "location": "api/#NLPModels.hess_structure!",
     "page": "API",
-    "title": "NLPModels.hess_structure",
+    "title": "NLPModels.hess_structure!",
     "category": "function",
-    "text": "(rows,cols) = hess_structure(nlp)\n\nReturns the structure of the Lagrangian Hessian in sparse coordinate format.\n\n\n\n\n\n\n\n"
+    "text": "hess_structure!(nlp, rows, cols)\n\nReturn the structure of the Lagrangian Hessian in sparse coordinate format in place.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -277,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.hess",
     "category": "function",
-    "text": "Hx = hess(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) as a sparse matrix, with objective function scaled by obj_weight, i.e.,\n\n\\[ \\nabla^2L(x,y) = \\sigma * \\nabla^2 f(x) + \\sum{i=1}^m yi\\nabla^2 c_i(x), \\]\n\nwith σ = obj_weight. Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
+    "text": "Hx = hess(nlp, x; obj_weight=1.0, y=zeros)\n\nEvaluate the Lagrangian Hessian at (x,y) as a sparse matrix, with objective function scaled by obj_weight, i.e.,\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight . Only the lower triangle is returned.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -285,7 +285,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.hprod",
     "category": "function",
-    "text": "Hv = hprod(nlp, x, v; obj_weight=1.0, y=zeros)\n\nEvaluate the product of the Lagrangian Hessian at (x,y) with the vector v, with objective function scaled by obj_weight, i.e.,\n\n\\[ \\nabla^2L(x,y) = \\sigma * \\nabla^2 f(x) + \\sum{i=1}^m yi\\nabla^2 c_i(x), \\]\n\nwith σ = obj_weight.\n\n\n\n\n\n\n\n"
+    "text": "Hv = hprod(nlp, x, v; obj_weight=1.0, y=zeros)\n\nEvaluate the product of the Lagrangian Hessian at (x,y) with the vector v, with objective function scaled by obj_weight, where the Lagrangian Hessian is\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight .\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -293,7 +293,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.hprod!",
     "category": "function",
-    "text": "Hv = hprod!(nlp, x, v, Hv; obj_weight=1.0, y=zeros)\n\nEvaluate the product of the Lagrangian Hessian at (x,y) with the vector v in place, with objective function scaled by obj_weight, i.e.,\n\n\\[ \\nabla^2L(x,y) = \\sigma * \\nabla^2 f(x) + \\sum{i=1}^m yi\\nabla^2 c_i(x), \\]\n\nwith σ = obj_weight.\n\n\n\n\n\n\n\n"
+    "text": "Hv = hprod!(nlp, x, v, Hv; obj_weight=1.0, y=zeros)\n\nEvaluate the product of the Lagrangian Hessian at (x,y) with the vector v in place, with objective function scaled by obj_weight, where the Lagrangian Hessian is\n\n²L(xy) = σ ²f(x) + ᵢ yᵢ ²cᵢ(x)\n\nwith σ = obj_weight .\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -301,7 +301,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels API",
     "category": "section",
-    "text": "obj\ngrad\ngrad!\ncons\ncons!\njac_coord\njac_coord!\njac_structure\njac\njprod\njprod!\njtprod\njtprod!\nhess_coord\nhess_coord!\nhess_structure\nhess\nhprod\nhprod!"
+    "text": "obj\ngrad\ngrad!\ncons\ncons!\njac_coord\njac_coord!\njac_structure!\njac\njprod\njprod!\njtprod\njtprod!\nhess_coord\nhess_coord!\nhess_structure!\nhess\nhprod\nhprod!"
 },
 
 {
@@ -309,7 +309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.objgrad",
     "category": "function",
-    "text": "f, g = objgrad(nlp, x)\n\nEvaluate f(x) and nabla f(x) at x.\n\n\n\n\n\n\n\n"
+    "text": "f, g = objgrad(nlp, x)\n\nEvaluate f(x) and f(x) at x.\n\n\n\n\n\n\n\n"
 },
 
 {
@@ -317,7 +317,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "NLPModels.objgrad!",
     "category": "function",
-    "text": "f, g = objgrad!(nlp, x, g)\n\nEvaluate f(x) and nabla f(x) at x. g is overwritten with the value of nabla f(x).\n\n\n\n\n\n\n\n"
+    "text": "f, g = objgrad!(nlp, x, g)\n\nEvaluate f(x) and f(x) at x. g is overwritten with the value of f(x).\n\n\n\n\n\n\n\n"
 },
 
 {
