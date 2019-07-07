@@ -151,14 +151,14 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
   nvar = nvar[1];
   ncon = ncon[1];
 
-  x  = Array{Float64}(undef, nvar)
-  bl = Array{Float64}(undef, nvar)
-  bu = Array{Float64}(undef, nvar)
-  v  = Array{Float64}(undef, ncon)
-  cl = Array{Float64}(undef, ncon)
-  cu = Array{Float64}(undef, ncon)
-  equatn = Array{Int32}(undef, ncon)
-  linear = Array{Int32}(undef, ncon)
+  x  = Vector{Float64}(undef, nvar)
+  bl = Vector{Float64}(undef, nvar)
+  bu = Vector{Float64}(undef, nvar)
+  v  = Vector{Float64}(undef, ncon)
+  cl = Vector{Float64}(undef, ncon)
+  cu = Vector{Float64}(undef, ncon)
+  equatn = Vector{Int32}(undef, ncon)
+  linear = Vector{Int32}(undef, ncon)
 
   if ncon > 0
     e_order = efirst ? Cint[1] : Cint[0]
