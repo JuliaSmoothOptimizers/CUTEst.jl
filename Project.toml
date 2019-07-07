@@ -1,0 +1,31 @@
+name = "CUTEst"
+uuid = "1b53aba6-35b6-5f92-a507-53c67d53f819"
+version = "0.6.0"
+
+[deps]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
+[compat]
+Combinatorics = "≥ 0.2.1"
+Homebrew = "≥ 0.4.0"
+JSON = "≥ 0.8.0"
+Krylov = "≥ 0.2.0"
+NLPModels = "~0.8.0"
+julia = "^1.0.0"
+
+[extras]
+Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
+Krylov = "ba0b0d4f-ebba-5204-a429-3ac8c609bfb7"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Combinatorics", "LinearAlgebra", "SparseArrays", "Random", "Test", "Printf", "Krylov"]
