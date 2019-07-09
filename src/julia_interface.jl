@@ -341,7 +341,7 @@ end
 function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
   vals_ = Vector{Float64}(undef, nlp.meta.nnzh)
   NLPModels.hess_coord!(nlp, convert(Vector{Float64}, x), convert(Vector{Int32}, rows), convert(Vector{Int32}, cols), vals_, y=convert(Vector{Float64}, y), obj_weight=obj_weight)
-  vals .= vals_
+  vals[1 : nlp.meta.nnzh] .= vals_
   return rows, cols, vals
 end
 
