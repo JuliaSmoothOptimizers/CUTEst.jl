@@ -205,7 +205,23 @@ function NLPModels.jac_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, col
               io_err, this_nnzj, nnzj, cols, rows)
   @cutest_error
 
+  nlp.jrows .= rows
+  nlp.jcols .= cols
+
   return rows, cols
+end
+
+function NLPModels.jac_structure!(nlp :: CUTEstModel)
+  nnzj = nlp.meta.nnzj
+  io_err = Cint[0]
+  this_nnzj = Cint[0]
+
+  ccall(dlsym(cutest_lib, :cutest_csjp_), Nothing,
+              (Ptr{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
+              io_err, this_nnzj, nnzj, nlp.jcols, nlp.jrows)
+  @cutest_error
+
+  return nlp
 end
 
 function NLPModels.jac_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<:Integer}, cols :: AbstractVector{<:Integer})
@@ -219,7 +235,7 @@ end
 
 function NLPModels.jac_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector)
   c = Vector{Float64}(undef, nlp.meta.ncon)
-  cons_coord!(nlp, x, c, rows, cols, vals)
+  cons_coord!(nlp, x, c, nlp.jrows, nlp.jcols, vals)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return (rows, cols, vals)
 end
@@ -291,7 +307,32 @@ function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, co
     @cutest_error
   end
 
+  nlp.hrows .= rows
+  nlp.hcols .= cols
+
   return rows, cols
+end
+
+function NLPModels.hess_structure!(nlp :: CUTEstModel)
+  nvar = nlp.meta.nvar
+  ncon = nlp.meta.ncon
+  nnzh = nlp.meta.nnzh
+  io_err = Cint[0]
+  this_nnzh = Cint[0]
+
+  if ncon > 0
+    ccall(dlsym(cutest_lib, :cutest_cshp_), Nothing,
+                (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
+                io_err, nvar, this_nnzh, nnzh, nlp.hcols, nlp.hrows)
+    @cutest_error
+  else
+    ccall(dlsym(cutest_lib, :cutest_ushp_), Nothing,
+                (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
+                io_err, nvar, this_nnzh, nnzh, nlp.hcols, nlp.hrows)
+    @cutest_error
+  end
+
+  return nlp
 end
 
 function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<:Integer}, cols :: AbstractVector{<:Integer})
@@ -313,7 +354,7 @@ function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: Vector{Float64}, rows ::
   if obj_weight == 0.0 && ncon > 0
     ccall(dlsym(cutest_lib, :cutest_cshc_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
-                 io_err,     nvar,       ncon,      x,            y,            this_nnzh,   nnzh,      vals,         rows,       cols)
+                 io_err,     nvar,       ncon,       x,            y,            this_nnzh,  nnzh,       vals,         nlp.hcols,  nlp.hrows)
     @cutest_error
     nlp.counters.neval_hess += 1
     return (cols, rows, vals)
@@ -325,17 +366,17 @@ function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: Vector{Float64}, rows ::
 
     ccall(dlsym(cutest_lib, :cutest_csh_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
-                 io_err,     nvar,       ncon,       x,            y,            this_nnzh,  nnzh,       vals,         rows,       cols)
+                 io_err,     nvar,       ncon,       x,            y,            this_nnzh,  nnzh,       vals,         nlp.hcols,  nlp.hrows)
   else
     ccall(dlsym(cutest_lib, :cutest_ush_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
-                 io_err,     nvar,       x,            this_nnzh,  nnzh,       vals,         rows,       cols)
+                 io_err,     nvar,       x,            this_nnzh,  nnzh,       vals,         nlp.hcols,  nlp.hrows)
   end
   @cutest_error
 
   obj_weight != 1.0 && (vals[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   nlp.counters.neval_hess += 1
-  return (cols, rows, vals)  # swap rows and column
+  return (rows, cols, vals)
 end
 
 function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)

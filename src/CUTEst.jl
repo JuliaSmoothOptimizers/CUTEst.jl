@@ -17,8 +17,11 @@ export CUTEstModel, sifdecoder
 
 mutable struct CUTEstModel <: AbstractNLPModel
   meta    :: NLPModelMeta
-
   counters :: Counters
+  hrows :: Vector{Int32}
+  hcols :: Vector{Int32}
+  jrows :: Vector{Int32}
+  jcols :: Vector{Int32}
 end
 
 const funit   = convert(Int32, 42)
@@ -224,7 +227,11 @@ function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bo
                       nlin=nlin, nnln=nnln,
                       name=splitext(name)[1])
 
-  nlp = CUTEstModel(meta, Counters())
+  hrows = Vector{Int32}(undef, nnzh)
+  hcols = Vector{Int32}(undef, nnzh)
+  jrows = Vector{Int32}(undef, nnzj)
+  jcols = Vector{Int32}(undef, nnzj)
+  nlp = CUTEstModel(meta, Counters(), hrows, hcols, jrows, jcols)
 
   cutest_instances += 1
   finalizer(cutest_finalize, nlp)
