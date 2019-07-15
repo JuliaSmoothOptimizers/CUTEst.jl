@@ -72,6 +72,19 @@ include("core_interface.jl")
 include("julia_interface.jl")
 include("classification.jl")
 
+function delete_temp_files()
+  for f in ("ELFUN", "EXTER", "GROUP", "RANGE")
+    for ext in ("f", "o")
+      fname = "$f.$ext"
+      isfile(fname) && rm(fname, force=true)
+    end
+  end
+  for f in ("OUTSDIF.d", "AUTOMAT.d")
+    isfile(f) && rm(f, force=true)
+  end
+  nothing
+end
+
 """Decode problem and build shared library.
 
 Optional arguments are passed directly to the SIF decoder.
@@ -98,7 +111,7 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
   outlog = tempname()
   errlog = tempname()
   cd(ENV["cutest-problems"]) do
-    run(`rm -f ELFUN.[fo] EXTER.[fo] GROUP.[fo] RANGE.[fo] OUTSDIF.d AUTOMAT.d`)
+    delete_temp_files()
     run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
     print(read(errlog, String))
     verbose && println(read(outlog, String))
@@ -108,7 +121,7 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
       run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`)
       run(`mv OUTSDIF.d $outsdif`)
       run(`mv AUTOMAT.d $automat`)
-      run(`rm ELFUN.f EXTER.f GROUP.f RANGE.f ELFUN.o EXTER.o GROUP.o RANGE.o`)
+      delete_temp_files()
       global cutest_lib = Libdl.dlopen(libname,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     end
