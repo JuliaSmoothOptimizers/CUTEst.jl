@@ -205,8 +205,8 @@ function NLPModels.jac_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, col
               io_err, this_nnzj, nnzj, cols, rows)
   @cutest_error
 
-  nlp.jrows .= rows
-  nlp.jcols .= cols
+  nlp.jrows .= rows[1 : nnzj]
+  nlp.jcols .= cols[1 : nnzj]
 
   return rows, cols
 end
@@ -307,8 +307,8 @@ function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: Vector{Int32}, co
     @cutest_error
   end
 
-  nlp.hrows .= rows
-  nlp.hcols .= cols
+  nlp.hrows .= rows[1 : nnzh]
+  nlp.hcols .= cols[1 : nnzh]
 
   return rows, cols
 end
