@@ -1,6 +1,6 @@
 name = "CUTEst"
 uuid = "1b53aba6-35b6-5f92-a507-53c67d53f819"
-version = "0.6.1"
+version = "0.6.2"
 
 [deps]
 BinDeps = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
