@@ -129,6 +129,8 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     end
   end
+  rm(outlog)
+  rm(errlog)
 end
 
 # Initialize problem.
