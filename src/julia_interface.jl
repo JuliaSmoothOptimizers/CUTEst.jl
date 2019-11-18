@@ -233,11 +233,11 @@ function NLPModels.jac_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<:I
   return rows, cols
 end
 
-function NLPModels.jac_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector)
+function NLPModels.jac_coord!(nlp :: CUTEstModel, x :: AbstractVector, vals :: AbstractVector)
   c = Vector{Float64}(undef, nlp.meta.ncon)
   cons_coord!(nlp, x, c, nlp.jrows, nlp.jcols, vals)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
-  return (rows, cols, vals)
+  return vals
 end
 
 function NLPModels.jprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector{Float64}, jv :: Vector{Float64})
@@ -344,7 +344,7 @@ function NLPModels.hess_structure!(nlp :: CUTEstModel, rows :: AbstractVector{<:
   return rows, cols
 end
 
-function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: Vector{Float64}, rows :: Vector{Int32}, cols :: Vector{Int32}, vals :: Vector{Float64}; y :: Vector{Float64}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
+function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: Vector{Float64}, y :: Vector{Float64}, vals :: Vector{Float64}; obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh
@@ -357,16 +357,16 @@ function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: Vector{Float64}, rows ::
                  io_err,     nvar,       ncon,       x,            y,            this_nnzh,  nnzh,       vals,         nlp.hcols,  nlp.hrows)
     @cutest_error
     nlp.counters.neval_hess += 1
-    return (cols, rows, vals)
+    return vals
   end
 
   if ncon > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
-    obj_weight != 1.0 && (y /= obj_weight)
+    z = obj_weight == 1.0 ? y : y / obj_weight
 
     ccall(dlsym(cutest_lib, :cutest_csh_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
-                 io_err,     nvar,       ncon,       x,            y,            this_nnzh,  nnzh,       vals,         nlp.hcols,  nlp.hrows)
+                 io_err,     nvar,       ncon,       x,            z,            this_nnzh,  nnzh,       vals,         nlp.hcols,  nlp.hrows)
   else
     ccall(dlsym(cutest_lib, :cutest_ush_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Int32}, Ptr{Int32}),
@@ -376,17 +376,21 @@ function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: Vector{Float64}, rows ::
 
   obj_weight != 1.0 && (vals[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   nlp.counters.neval_hess += 1
-  return (rows, cols, vals)
+  return vals
 end
 
-function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, rows :: AbstractVector{<: Integer}, cols :: AbstractVector{<: Integer}, vals :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
+function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, y :: AbstractVector, vals :: AbstractVector; obj_weight :: Float64=1.0)
   vals_ = Vector{Float64}(undef, nlp.meta.nnzh)
-  NLPModels.hess_coord!(nlp, convert(Vector{Float64}, x), convert(Vector{Int32}, rows), convert(Vector{Int32}, cols), vals_, y=convert(Vector{Float64}, y), obj_weight=obj_weight)
+  NLPModels.hess_coord!(nlp, Vector{Float64}(x), Vector{Float64}(y), vals_, obj_weight=obj_weight)
   vals[1 : nlp.meta.nnzh] .= vals_
-  return rows, cols, vals
+  return vals
 end
 
-function NLPModels.hprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector{Float64}, hv :: Vector{Float64}; y :: Vector{Float64}=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
+function NLPModels.hess_coord!(nlp :: CUTEstModel, x :: AbstractVector, vals :: AbstractVector; obj_weight :: Float64=1.0)
+  hess_coord!(nlp, x, zeros(nlp.meta.ncon), vals; obj_weight=obj_weight)
+end
+
+function NLPModels.hprod!(nlp :: CUTEstModel, x :: Vector{Float64}, y :: Vector{Float64}, v :: Vector{Float64}, hv :: Vector{Float64}; obj_weight :: Float64=1.0)
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   io_err = Cint[0]
@@ -402,11 +406,11 @@ function NLPModels.hprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector{
 
   if ncon > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
-    obj_weight != 1.0 && (y /= obj_weight)
+    z = obj_weight == 1 ? y : y / obj_weight
 
     ccall(dlsym(cutest_lib, :cutest_chprod_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-                 io_err,     nvar,       ncon,       goth,       x,            y,            v,            hv)
+                 io_err,     nvar,       ncon,       goth,       x,            z,            v,            hv)
   else
     ccall(dlsym(cutest_lib, :cutest_uhprod_), Nothing,
                 (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
@@ -419,12 +423,22 @@ function NLPModels.hprod!(nlp :: CUTEstModel, x :: Vector{Float64}, v :: Vector{
   return hv
 end
 
-function NLPModels.hprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector, hv :: Vector{Float64}; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
-  hprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), hv, y=Vector{Float64}(y), obj_weight=obj_weight)
+function NLPModels.hprod!(nlp :: CUTEstModel, x :: AbstractVector, y :: AbstractVector, v :: AbstractVector, hv :: Vector{Float64}; obj_weight :: Float64=1.0)
+  hprod!(nlp, Vector{Float64}(x), Vector{Float64}(y), Vector{Float64}(v), hv, obj_weight=obj_weight)
 end
 
-function NLPModels.hprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector, hv :: AbstractVector; y :: AbstractVector=zeros(nlp.meta.ncon), obj_weight :: Float64=1.0)
+function NLPModels.hprod!(nlp :: CUTEstModel, x :: AbstractVector, y :: AbstractVector, v :: AbstractVector, hv :: AbstractVector; obj_weight :: Float64=1.0)
   hvc = zeros(nlp.meta.nvar)
-  hprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), hvc, y=Vector{Float64}(y), obj_weight=obj_weight)
+  hprod!(nlp, Vector{Float64}(x), Vector{Float64}(y), Vector{Float64}(v), hvc, obj_weight=obj_weight)
+  hv[1 : nlp.meta.nvar] .= hvc
+end
+
+function NLPModels.hprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector, hv :: Vector{Float64}; obj_weight :: Float64=1.0)
+  hprod!(nlp, Vector{Float64}(x), zeros(nlp.meta.ncon), Vector{Float64}(v), hv, obj_weight=obj_weight)
+end
+
+function NLPModels.hprod!(nlp :: CUTEstModel, x :: AbstractVector, v :: AbstractVector, hv :: AbstractVector; obj_weight :: Float64=1.0)
+  hvc = zeros(nlp.meta.nvar)
+  hprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), hvc, obj_weight=obj_weight)
   hv[1 : nlp.meta.nvar] .= hvc
 end
