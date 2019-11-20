@@ -777,7 +777,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api/#CUTEst.sifdecoder-Tuple{String,Vararg{Any,N} where N}",
+    "location": "api/#CUTEst.sifdecoder-Tuple{AbstractString,Vararg{Any,N} where N}",
     "page": "API",
     "title": "CUTEst.sifdecoder",
     "category": "method",
