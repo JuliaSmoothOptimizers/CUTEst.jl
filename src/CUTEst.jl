@@ -94,7 +94,7 @@ Optional arguments are passed directly to the SIF decoder.
 Example:
     `sifdecoder("DIXMAANJ", "-param", "M=30")`.
 """
-function sifdecoder(name :: String, args...; verbose :: Bool=false,
+function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
                     outsdif :: String="OUTSDIF_$(basename(name)).d",
                     automat :: String="AUTOMAT_$(basename(name)).d")
 
@@ -134,7 +134,7 @@ function sifdecoder(name :: String, args...; verbose :: Bool=false,
 end
 
 # Initialize problem.
-function CUTEstModel(name :: String, args...; decode :: Bool=true, verbose :: Bool=false,
+function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbose :: Bool=false,
                      efirst :: Bool=true, lfirst :: Bool=true, lvfirst :: Bool=true)
   if length(name) < 4 || name[end-3:end] != ".SIF"
     name = "$name.SIF"
