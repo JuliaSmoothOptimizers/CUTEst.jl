@@ -1,6 +1,6 @@
 name = "CUTEst"
 uuid = "1b53aba6-35b6-5f92-a507-53c67d53f819"
-version = "0.6.2"
+version = "0.7.0"
 
 [deps]
 BinDeps = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
@@ -13,11 +13,11 @@ NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
-Combinatorics = "≥ 0.2.1"
-Homebrew = "≥ 0.4.0"
-JSON = "≥ 0.8.0"
-Krylov = "≥ 0.2.0"
-NLPModels = "0.10.0, 1"
+Combinatorics = "1.0"
+Homebrew = "0.4, 0.5, 0.6, 0.7"
+JSON = "0.8, 0.9, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21"
+Krylov = "0.4"
+NLPModels = "0.10, 1"
 julia = "^1.0.0"
 
 [extras]
