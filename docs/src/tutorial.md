@@ -69,9 +69,6 @@ You can also use a
 [LinearOperator](https://github.com/JuliaSmoothOptimizers/LinearOperators.jl),
 
 ```@example ex1
-using LinearOperators
-n = nlp.meta.nvar
-
 H = hess_op(nlp, nlp.meta.x0)
 H * v
 ```
