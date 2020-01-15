@@ -5,6 +5,7 @@ __precompile__()
 
 module CUTEst
 
+using CUTEst_jll
 using Libdl
 
 using NLPModels
@@ -47,22 +48,46 @@ struct CUTEstException <: Exception
   end
 end
 
+global const cutest_problems_path = joinpath(dirname(@__FILE__), "../deps", "files")
+isdir(cutest_problems_path) || mkpath(cutest_problems_path)
+push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
+global cutest_lib = C_NULL
+
+global __sif_repo_cloned = false
+global const __sif_repo_url = "https://bitbucket.org/optrove/sif.git"
+global const __local_sif_repo_path = joinpath(@__DIR__, "..", "deps")
+
 function __init__()
-  global cutest_lib = C_NULL
-  deps = joinpath(dirname(@__FILE__), "../deps")
-  cutestenv = joinpath(deps, "cutestenv.jl")
-  if ispath(cutestenv)
-    include(cutestenv)
-  else
-    ENV["cutest-problems"] = joinpath(deps, "files")
+  ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "ARCHDefs-2.0.3x")
+  ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "SIFDecode-2.0.2")
+  ENV["CUTEST"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "CUTEst-2.0.3")
+
+  # set default MASTSIF location if the user hasn't set it already
+  if !("MASTSIF" ∈ keys(ENV))
+    ENV["MASTSIF"] = joinpath(ENV["CUTEST"], "sif")
   end
-  isdir(ENV["cutest-problems"]) || mkdir(ENV["cutest-problems"])
-  global sifdecoderbin = joinpath(ENV["SIFDECODE"], "bin/sifdecoder")
 
-  global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"],
-      "double/libcutest_double.$(Libdl.dlext)")
-
-  push!(Libdl.DL_LOAD_PATH, ENV["cutest-problems"])
+  # Set MYARCH
+  if Sys.isapple()
+    if Sys.WORD_SIZE == 64
+      ENV["MYARCH"] = "mac64.osx.gfo"
+    else
+      ENV["MYARCH"] = "mac.osx.gfo"
+    end
+  elseif Sys.iswindows()
+    if Sys.WORD_SIZE == 64
+      ENV["MYARCH"] = "pc64.mgw.gfo"
+    else
+      ENV["MYARCH"] = "pc.mgw.gfo"
+    end
+  else
+    if Sys.WORD_SIZE == 64
+      ENV["MYARCH"] = "pc64.lnx.gfo"
+    else
+      ENV["MYARCH"] = "pc.lnx.gfo"
+    end
+  end
+  global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"], "double")
 end
 
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info))
@@ -105,23 +130,29 @@ function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
     error("$name not found")
   end
 
-  # TODO: Accept options to pass to sifdecoder.
   pname, sif = splitext(basename(name))
   libname = "lib$pname"
 
-  # work around bogus "ERROR: failed process"
-  # should be more elegant after https://github.com/JuliaLang/julia/pull/12807
   outlog = tempname()
   errlog = tempname()
-  cd(ENV["cutest-problems"]) do
+  cd(cutest_problems_path) do
     delete_temp_files()
-    run(pipeline(ignorestatus(`$sifdecoderbin $args $name`), stdout=outlog, stderr=errlog))
+    # safeguard for macOS: see https://github.com/JuliaPackaging/Yggdrasil/pull/404#issuecomment-576958966
+    if Sys.isapple()
+      CUTEst_jll.sifdecoder() do decoder_exe
+        run(pipeline(ignorestatus(`bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $decoder_exe $(args...) $name"`), stdout=outlog, stderr=errlog))
+      end
+    else
+      CUTEst_jll.sifdecoder() do decoder_exe
+        run(pipeline(ignorestatus(`$decoder_exe $(args...) $name`), stdout=outlog, stderr=errlog))
+      end
+    end
     print(read(errlog, String))
     verbose && println(read(outlog, String))
 
     if isfile("ELFUN.f")
       run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`)
-      run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o $libpath $libgfortran`)
+      run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(dlext)")) $libgfortran`)
       run(`mv OUTSDIF.d $outsdif`)
       run(`mv AUTOMAT.d $automat`)
       delete_temp_files()
@@ -131,6 +162,7 @@ function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
   end
   rm(outlog)
   rm(errlog)
+  nothing
 end
 
 # Initialize problem.
@@ -148,7 +180,7 @@ function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbo
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0]
   global cutest_lib
-  cd(ENV["cutest-problems"]) do
+  cd(cutest_problems_path) do
     if !decode
       (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
       libname = "lib$name"
