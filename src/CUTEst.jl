@@ -86,11 +86,12 @@ function __init__()
       ENV["MYARCH"] = "pc.mgw.gfo"
     end
   else
-    if Sys.WORD_SIZE == 64
-      ENV["MYARCH"] = "pc64.lnx.gfo"
-    else
-      ENV["MYARCH"] = "pc.lnx.gfo"
-    end
+    ENV["MYARCH"] = "pc.lnx.gfo"
+    # if Sys.WORD_SIZE == 64
+    #   ENV["MYARCH"] = "pc64.lnx.gfo"
+    # else
+    #   ENV["MYARCH"] = "pc.lnx.gfo"
+    # end
   end
   global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"], "double")
 end
