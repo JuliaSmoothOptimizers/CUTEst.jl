@@ -14,7 +14,7 @@ import Libdl.dlsym
 # Only one problem can be interfaced at any given time.
 global cutest_instances = 0
 
-export CUTEstModel, sifdecoder
+export CUTEstModel, sifdecoder, fetch_sif_problems
 
 mutable struct CUTEstModel <: AbstractNLPModel
   meta    :: NLPModelMeta
@@ -64,8 +64,13 @@ function __init__()
 
   # set default MASTSIF location if the user hasn't set it already
   if !("MASTSIF" ∈ keys(ENV))
-    ENV["MASTSIF"] = joinpath(ENV["CUTEST"], "sif")
+    if ispath(joinpath(__local_sif_repo_path, "sif", ".git"))
+      ENV["MASTSIF"] = joinpath(__local_sif_repo_path, "sif")
+    else
+      ENV["MASTSIF"] = joinpath(ENV["CUTEST"], "sif")
+    end
   end
+  @info "using problem repository" ENV["MASTSIF"]
 
   # Set MYARCH
   if Sys.isapple()
@@ -99,6 +104,31 @@ end
 include("core_interface.jl")
 include("julia_interface.jl")
 include("classification.jl")
+
+"""
+    fetch_sif_problems()
+
+Clone the git repository of SIF problems and reset the MASTSIF environment variable to its location.
+"""
+function fetch_sif_problems()
+  global __sif_repo_cloned, __local_sif_repo_path
+  if isdir(joinpath(__local_sif_repo_path, "sif"))
+    @info "updating SIF repository"
+    cd(joinpath(__local_sif_repo_path, "sif")) do
+      run(`git pull`)
+    end
+  else
+    mkpath(__local_sif_repo_path)
+    @info "cloning SIF repository"
+    cd(__local_sif_repo_path) do
+      run(`git clone $__sif_repo_url`)
+    end
+    __sif_repo_cloned = true
+  end
+  ENV["MASTSIF"] = joinpath(__local_sif_repo_path, "sif")
+  @info "using problem repository" ENV["MASTSIF"]
+  nothing
+end
 
 function delete_temp_files()
   for f in ("ELFUN", "EXTER", "GROUP", "RANGE")
