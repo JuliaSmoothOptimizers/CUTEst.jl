@@ -1,5 +1,7 @@
 using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Printf
 
+fetch_sif_problems()
+
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
 problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
