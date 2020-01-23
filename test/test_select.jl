@@ -122,6 +122,7 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
     end
   end
 
+  #=
   @testset "Consistency" begin
     set1 = CUTEst.select(contype=["unc"])
     set2 = CUTEst.select(max_con=0, only_free_var=true)
@@ -145,6 +146,7 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
     println(setdiff(set2, set1))
     #@test sort(set1) == sort(set2)
   end
+  =#
 
   @testset "Canonicalization" begin
     set1 = CUTEst.select(objtype=1:4)
