@@ -171,11 +171,11 @@ function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
     # safeguard for macOS: see https://github.com/JuliaPackaging/Yggdrasil/pull/404#issuecomment-576958966
     if Sys.isapple()
       CUTEst_jll.sifdecoder() do decoder_exe
-        run(pipeline(ignorestatus(`bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $decoder_exe $(args...) $name"`), stdout=outlog, stderr=errlog))
+        run(pipeline(ignorestatus(`bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $decoder_exe $(join(args, " ")) $name"`), stdout=outlog, stderr=errlog))
       end
     else
       CUTEst_jll.sifdecoder() do decoder_exe
-        run(pipeline(ignorestatus(`$decoder_exe $(args...) $name`), stdout=outlog, stderr=errlog))
+        run(pipeline(ignorestatus(Cmd([decoder_exe, args..., name])), stdout=outlog, stderr=errlog))
       end
     end
     print(read(errlog, String))
