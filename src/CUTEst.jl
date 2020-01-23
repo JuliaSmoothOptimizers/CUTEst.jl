@@ -50,7 +50,6 @@ end
 
 global const cutest_problems_path = joinpath(dirname(@__FILE__), "../deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
-push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
 global cutest_lib = C_NULL
 
 global __sif_repo_cloned = false
@@ -94,6 +93,7 @@ function __init__()
     # end
   end
   global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"], "double")
+  push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
 end
 
 CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info))
@@ -183,7 +183,11 @@ function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
 
     if isfile("ELFUN.f")
       run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`)
-      run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(dlext)")) $libgfortran`)
+      if Sys.isapple()
+        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`)
+      else
+        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -rpath=$libpath -L$libpath -lcutest_double $libgfortran`)
+      end
       run(`mv OUTSDIF.d $outsdif`)
       run(`mv AUTOMAT.d $automat`)
       delete_temp_files()
