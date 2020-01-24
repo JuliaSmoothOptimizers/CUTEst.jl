@@ -32,9 +32,6 @@ before_install:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 
 jobs:
-  exclude:
-    - julia: nightly
-      arch: arm64
   include:
     - stage: Documentation
       julia: 1.3
