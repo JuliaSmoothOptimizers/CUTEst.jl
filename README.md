@@ -21,23 +21,22 @@ comparing optimization algorithms, derived from the abstract model on
 
 ## Installing
 
-This package should detect your existing CUTEst installation, and will install its private version of CUTEst otherwise.
-The gfortran compiler is required.
-We currently do not support other Fortran compilers.
+This package will install CUTEst binaries for your platform automatically.
+The gfortran compiler is still required to compile decoded SIF problems.
+No other Fortran compiler is supported.
 
-On OSX, Homebrew.jl will install gfortran if gfortran is not detected on your system.
-You may either use standard Homebrew to install gfortran yourself from precompiled bottled using `brew install gcc` or let Homebrew.jl install its private version.
-In the latter scenario, gcc and gfortran need to be compiled from source.
-
-On Linux, you'll need to install `wget` and `gfortran`, and also make `libgfortran.so` visible by `julia`. See [this
-page](https://github.com/abelsiqueira/linux-cutest#requirements) for how to
-install the requirements on some linux distributions.
-
-The following commands download CUTEst, change to the specific
-branch, and build CUTEst.
+The following command installs the CUTEst binaries and Julia interface:
 ````JULIA
-julia> Pkg.add("CUTEst")
+pkg> add CUTEst
 ````
+
+If you already have a collection of SIF problems that you wish to use, you can simply set the `MASTSIF` environment variable to point to their location.
+If not, the command
+```julia
+julia> fetch_sif_problems()
+```
+will download the most recent version of the standard SIF collection and set `MASTSIF` appropriately.
+Subsequent calls to the same function will pull any updates to the SIF problems.
 
 ## Usage
 
