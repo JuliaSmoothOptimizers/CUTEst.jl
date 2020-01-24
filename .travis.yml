@@ -40,8 +40,9 @@ jobs:
       julia: 1.3
       os: linux
       script:
+        - git clone https://bitbucket.org/optrove/sif.git deps/sif
         - julia --project=docs -e 'using Pkg; Pkg.instantiate(); Pkg.add(PackageSpec(path=pwd()))'
-        - julia --project=docs docs/make.jl
+        - export MASTSIF=$PWD/deps/sif; julia --project=docs docs/make.jl
       after_success: skip
 
 after_success:
