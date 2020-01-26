@@ -58,7 +58,7 @@ global const __local_sif_repo_path = joinpath(@__DIR__, "..", "deps")
 
 function __init__()
   ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "ARCHDefs-2.0.3x")
-  ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "SIFDecode-2.0.2")
+  ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "SIFDecode-2.0.3")
   ENV["CUTEST"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "CUTEst-2.0.3")
 
   # set default MASTSIF location if the user hasn't set it already
@@ -85,7 +85,7 @@ function __init__()
       ENV["MYARCH"] = "pc.mgw.gfo"
     end
   else
-    ENV["MYARCH"] = "pc.lnx.gfo"
+    ENV["MYARCH"] = "pc64.lnx.gfo"
     # if Sys.WORD_SIZE == 64
     #   ENV["MYARCH"] = "pc64.lnx.gfo"
     # else
