@@ -5,7 +5,7 @@ fetch_sif_problems()
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
 problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
-nlpmodels_path = joinpath(dirname(pathof(NLPModels)), "..", "test")
+nlpmodels_path = joinpath(dirname(pathof(NLPModels)), "..", "test", "problems")
 
 include("test_core.jl")
 include("test_julia.jl")
