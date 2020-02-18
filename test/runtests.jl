@@ -14,7 +14,7 @@ include("coverage.jl")
 for problem in problems
   println("Testing interfaces on problem $problem")
   problem_s = string(problem)
-  include(joinpath(nlpmodels_path, "$problem_s.jl"))
+  include(joinpath(nlpmodels_path, "problems", "$problem_s.jl"))
   nlp = CUTEstModel(uppercase(problem_s))
   adnlp = eval(Meta.parse("$(problem)_autodiff"))()
 
