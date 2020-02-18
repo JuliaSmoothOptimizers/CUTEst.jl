@@ -5,7 +5,7 @@ fetch_sif_problems()
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
 problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
-nlpmodels_path = joinpath(dirname(pathof(NLPModels)), "..", "test", "problems")
+nlpmodels_path = joinpath(dirname(pathof(NLPModels)), "..", "test")
 
 include("test_core.jl")
 include("test_julia.jl")
@@ -14,7 +14,7 @@ include("coverage.jl")
 for problem in problems
   println("Testing interfaces on problem $problem")
   problem_s = string(problem)
-  include(joinpath(nlpmodels_path, "$problem_s.jl"))
+  include(joinpath(nlpmodels_path, "problems", "$problem_s.jl"))
   nlp = CUTEstModel(uppercase(problem_s))
   adnlp = eval(Meta.parse("$(problem)_autodiff"))()
 
