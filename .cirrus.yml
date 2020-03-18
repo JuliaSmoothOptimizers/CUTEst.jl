@@ -8,6 +8,7 @@ task:
       - JULIA_VERSION: nightly
   allow_failures: $JULIA_VERSION == 'nightly'
   install_script:
+    - export IGNORE_OSVERSION=yes
     - echo "FETCH_RETRY = 6" >> /usr/local/etc/pkg.conf
     - pkg update
     - pkg install -y lang/gcc git bash
