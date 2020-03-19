@@ -28,7 +28,6 @@ end
 const funit   = convert(Int32, 42)
 @static Sys.isapple() ? (const linker = "gfortran") : (const linker = "ld")
 @static Sys.isapple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"])
-@static Sys.isapple() ? (const libgfortran = []) : (const libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
 
 struct CUTEstException <: Exception
   info :: Int32
@@ -57,6 +56,13 @@ global const __sif_repo_url = "https://bitbucket.org/optrove/sif.git"
 global const __local_sif_repo_path = joinpath(@__DIR__, "..", "deps")
 
 function __init__()
+  if success(`bash -c "type gfortran"`)
+    @static Sys.isapple() ? (global libgfortran = []) : (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
+  else
+    @error "gfortran is not installed. Please install it and try again."
+    return
+  end
+
   ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "ARCHDefs-2.0.3x")
   ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "SIFDecode-2.0.3")
   ENV["CUTEST"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "CUTEst-2.0.3")
