@@ -1,6 +1,8 @@
 using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Printf
 
-fetch_sif_problems()
+set_mastsif()
+@test ispath(ENV["MASTSIF"])
+@test isfile(joinpath(ENV["MASTSIF"], "CYCLOOCT.SIF"))
 
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113

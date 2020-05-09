@@ -6,6 +6,7 @@ __precompile__()
 module CUTEst
 
 using CUTEst_jll
+using Pkg.Artifacts
 using Libdl
 
 using NLPModels
@@ -14,7 +15,7 @@ import Libdl.dlsym
 # Only one problem can be interfaced at any given time.
 global cutest_instances = 0
 
-export CUTEstModel, sifdecoder, fetch_sif_problems
+export CUTEstModel, sifdecoder, set_mastsif
 
 mutable struct CUTEstModel <: AbstractNLPModel
   meta    :: NLPModelMeta
@@ -51,10 +52,6 @@ global const cutest_problems_path = joinpath(dirname(@__FILE__), "../deps", "fil
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 global cutest_lib = C_NULL
 
-global __sif_repo_cloned = false
-global const __sif_repo_url = "https://bitbucket.org/optrove/sif.git"
-global const __local_sif_repo_path = joinpath(@__DIR__, "..", "deps")
-
 function __init__()
   if success(`bash -c "type gfortran"`)
     @static Sys.isapple() ? (global libgfortran = []) : (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
@@ -69,11 +66,9 @@ function __init__()
 
   # set default MASTSIF location if the user hasn't set it already
   if !("MASTSIF" ∈ keys(ENV))
-    if ispath(joinpath(__local_sif_repo_path, "sif", ".git"))
-      ENV["MASTSIF"] = joinpath(__local_sif_repo_path, "sif")
-    else
-      ENV["MASTSIF"] = joinpath(ENV["CUTEST"], "sif")
-    end
+    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-99c5b38e7d03")
+  else
+    @info "call set_mastsif() to use the full SIF collection"
   end
   @info "using problem repository" ENV["MASTSIF"]
 
@@ -113,27 +108,13 @@ include("julia_interface.jl")
 include("classification.jl")
 
 """
-    fetch_sif_problems()
+    set_mastsif()
 
-Clone the git repository of SIF problems and reset the MASTSIF environment variable to its location.
+Set the MASTSIF environment variable to point to the main SIF collection.
 """
-function fetch_sif_problems()
-  global __sif_repo_cloned, __local_sif_repo_path
-  if isdir(joinpath(__local_sif_repo_path, "sif"))
-    @info "updating SIF repository"
-    cd(joinpath(__local_sif_repo_path, "sif")) do
-      run(`git pull`)
-    end
-  else
-    mkpath(__local_sif_repo_path)
-    @info "cloning SIF repository"
-    cd(__local_sif_repo_path) do
-      run(`git clone $__sif_repo_url`)
-    end
-    __sif_repo_cloned = true
-  end
-  ENV["MASTSIF"] = joinpath(__local_sif_repo_path, "sif")
-  @info "using problem repository" ENV["MASTSIF"]
+function set_mastsif()
+  ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-99c5b38e7d03")
+  @info "using full SIF collection located at" ENV["MASTSIF"]
   nothing
 end
 
