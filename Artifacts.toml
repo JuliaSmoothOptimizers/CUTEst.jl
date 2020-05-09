@@ -1,0 +1,6 @@
+[sifcollection]
+git-tree-sha1 = "a7ea0d0aaf29a39ca0fe75588fc077cdd5b5ed54"
+
+    [[sifcollection.download]]
+    url = "https://bitbucket.org/optrove/sif/get/99c5b38e7d03.tar.gz"
+    sha256 = "33b29e46288c6f019f4ee58e0df6b2797bc2642419b2c181edc574c8db8f6f34"
