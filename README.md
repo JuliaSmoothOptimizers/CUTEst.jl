@@ -90,18 +90,14 @@ fvals = pmap(evalmodel, probs)
 ## Related Packages
 
 - [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) provides an
-  AbstractModel from which CUTEst.jl derives, and other models deriving from it,
-  such as MathProgNLPModel, which uses
-  [MathProgBase.jl](https://github.com/JuliaOpt/MathProgBase.jl),
-  SimpleNLPModel, for user created functions, ADNLPModel with automatic
-  differentiation, and SlackModel, which creates an
-  equality constrained model with bounds on the variables from a given
-  AbstractModel.
+  AbstractModel from which CUTEstModel derives.
 - [AmplNLReader.jl](https://github.com/JuliaSmoothOptimizers/AmplNLReader.jl)
   provides an interface to [AMPL](http://www.ampl.com) models based on
   [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
+- [NLPModelsJuMP.jl](https://github.com/JuliaSmoothOptimizers/NLPModelsJuMP.jl.git)
+  provides conversion between [JuMP.jl](https://github.com/jump-dev/JuMP.jl) / [MathOptInterface.jl](https://github.com/jump-dev/MathOptInterface.jl) models and NLPModels.
 - [OptimizationProblems.jl](https://github.com/JuliaSmoothOptimizers/OptimizationProblems.jl)
   provides a collection of optimization problems in
-  [JuMP.jl](https://github.com/JuliaOpt/JuMP.jl) syntax.
+  [JuMP.jl](https://github.com/jump-dev/JuMP.jl) syntax.
 
 [![GPLv3](http://www.gnu.org/graphics/lgplv3-88x31.png)](http://www.gnu.org/licenses/lgpl.html "LGPLv3")
