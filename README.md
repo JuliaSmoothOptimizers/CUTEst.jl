@@ -95,7 +95,7 @@ fvals = pmap(evalmodel, probs)
   provides an interface to [AMPL](http://www.ampl.com) models based on
   [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
 - [NLPModelsJuMP.jl](https://github.com/JuliaSmoothOptimizers/NLPModelsJuMP.jl.git)
-  provides conversion between [JuMP.jl](https://github.com/jump-dev/JuMP.jl) / [MathOptInterface.jl](https://github.com/jump-dev/MathOptInterface.jl) models and NLPModels.
+  provides conversion from [JuMP.jl](https://github.com/jump-dev/JuMP.jl) / [MathOptInterface.jl](https://github.com/jump-dev/MathOptInterface.jl) models to NLPModels.
 - [OptimizationProblems.jl](https://github.com/JuliaSmoothOptimizers/OptimizationProblems.jl)
   provides a collection of optimization problems in
   [JuMP.jl](https://github.com/jump-dev/JuMP.jl) syntax.
