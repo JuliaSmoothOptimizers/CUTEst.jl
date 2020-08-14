@@ -8126,6 +8126,114 @@
     "regular": true,
     "contype": "general"
   },
+  "CYCLOOCF": {
+    "objtype": "none",
+    "constraints": {
+      "equality": 20000,
+      "ineq_both": 0,
+      "nonlinear": 20000,
+      "number": 20000,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 29996,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 29996
+    },
+    "regular": true,
+    "contype": "quadratic"
+  },
+  "CYCLOOCFLS": {
+    "objtype": "sum_of_squares",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 0,
+      "number": 0,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 29996,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 0,
+      "free": 29996
+    },
+    "regular": true,
+    "contype": "unc"
+  },
+  "CYCLOOCT": {
+    "objtype": "none",
+    "constraints": {
+      "equality": 20000,
+      "ineq_both": 0,
+      "nonlinear": 20000,
+      "number": 20000,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 30000,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 4,
+      "free": 29996
+    },
+    "regular": true,
+    "contype": "quadratic"
+  },
+  "CYCLOOCTLS": {
+    "objtype": "sum_of_squares",
+    "constraints": {
+      "equality": 0,
+      "ineq_both": 0,
+      "nonlinear": 0,
+      "number": 0,
+      "linear": 0,
+      "can_choose": false,
+      "ineq_below": 0,
+      "ineq_above": 0
+    },
+    "origin": "modelling",
+    "has_internal_var": false,
+    "derivative_order": 2,
+    "variables": {
+      "bounded_below": 0,
+      "number": 30000,
+      "bounded_both": 0,
+      "can_choose": false,
+      "bounded_above": 0,
+      "fixed": 4,
+      "free": 29996
+    },
+    "regular": true,
+    "contype": "bounds"
+  },
   "DALE": {
     "objtype": "quadratic",
     "constraints": {
