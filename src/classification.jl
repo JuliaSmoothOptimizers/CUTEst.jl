@@ -27,12 +27,13 @@ const classdb_origin = Dict("A"=>origins[1],
 
 include("create_class.jl")
 
-"""select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
-    objtype=*, contype=*,
-    only_free_var=false, only_bnd_var=false,
-    only_linear_con=false, only_nonlinear_con=false,
-    only_equ_con=false, only_ineq_con=false,
-    custom_filter=*)
+"""
+    select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
+            objtype=*, contype=*,
+            only_free_var=false, only_bnd_var=false,
+            only_linear_con=false, only_nonlinear_con=false,
+            only_equ_con=false, only_ineq_con=false,
+            custom_filter=*)
 
 Returns a subset of the CUTEst problems using the classification file
 `classf.json`. This file is export together with the package, so if you have an
