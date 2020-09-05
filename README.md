@@ -8,8 +8,6 @@ comparing optimization algorithms, derived from the abstract model on
 ### Stable release [![Github release](https://img.shields.io/github/release/JuliaSmoothOptimizers/CUTEst.jl.svg)](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest) [![DOI](https://zenodo.org/badge/30661559.svg)](https://zenodo.org/badge/latestdoi/30661559)
 
 - Documentation: [![Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/stable)
-- Package Evaluator: [![CUTEst.jl](https://pkg.julialang.org/badges/CUTEst_0.5.svg)](https://pkg.julialang.org/?pkg=CUTEst)
-[![CUTEst.jl](https://pkg.julialang.org/badges/CUTEst_0.6.svg)](https://pkg.julialang.org/?pkg=CUTEst)
 - Chat: [![Gitter](https://img.shields.io/gitter/room/JuliaSmoothOptimizers/JuliaSmoothOptimizers.svg)](https://gitter.im/JuliaSmoothOptimizers/JuliaSmoothOptimizers)
 
 ### Development version
