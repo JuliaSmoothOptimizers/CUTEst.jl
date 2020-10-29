@@ -33,12 +33,6 @@ pkg> add CUTEst
 ````
 
 If you already have a collection of SIF problems that you wish to use, you can simply set the `MASTSIF` environment variable to point to their location.
-If not, the command
-```julia
-julia> fetch_sif_problems()
-```
-will download the most recent version of the standard SIF collection and set `MASTSIF` appropriately.
-Subsequent calls to the same function will pull any updates to the SIF problems.
 
 ## Usage
 
