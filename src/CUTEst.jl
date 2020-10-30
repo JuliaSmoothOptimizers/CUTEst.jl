@@ -60,7 +60,7 @@ function __init__()
     return
   end
 
-  ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "ARCHDefs-2.0.3x")
+  ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "ARCHDefs-2.0.4x")
   ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "SIFDecode-2.0.3")
   ENV["CUTEST"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "CUTEst-2.0.3")
 
