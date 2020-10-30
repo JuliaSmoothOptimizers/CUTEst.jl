@@ -60,3 +60,17 @@ finalize(nlp)
 nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
 @assert nlp.meta.nvar == 90
 finalize(nlp)
+
+@testset "Test decoding separately (issue #239)" begin
+  problems = ["AKIVA", "ROSENBR", "ZANGWIL2"]
+  # Decoding
+  for p in problems
+    finalize(CUTEstModel(p))
+  end
+  # No decode
+  for p in problems
+    nlp = CUTEstModel(p, decode=false)
+    @test nlp.meta.nvar == 2
+    finalize(nlp)
+  end
+end

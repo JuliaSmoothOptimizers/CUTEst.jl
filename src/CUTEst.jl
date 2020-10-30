@@ -190,14 +190,16 @@ end
 # Initialize problem.
 function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbose :: Bool=false,
                      efirst :: Bool=true, lfirst :: Bool=true, lvfirst :: Bool=true)
-  if length(name) < 4 || name[end-3:end] != ".SIF"
-    name = "$name.SIF"
-  end
-  if !isfile(name) && !isfile(joinpath(ENV["MASTSIF"], name))
+  sifname = (length(name) < 4 || name[end-3:end] != ".SIF") ? "$name.SIF" : name
+  name = splitext(basename(sifname))[1]
+  if !isfile(sifname) && !isfile(joinpath(ENV["MASTSIF"], sifname))
     error("$name not found")
+  elseif isfile(sifname) && !isfile(joinpath(ENV["MASTSIF"], sifname))
+    # This file is local so make sure the full path is maintained for sifdecoder
+    sifname = joinpath(pwd(), basename(sifname))
   end
-  outsdif = "OUTSDIF_$(basename(name)).d"
-  automat = "AUTOMAT_$(basename(name)).d"
+  outsdif = "OUTSDIF_$name.d"
+  automat = "AUTOMAT_$name.d"
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0]
@@ -210,7 +212,7 @@ function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbo
       cutest_lib = Libdl.dlopen(libname,
         Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
-      sifdecoder(name, args..., verbose=verbose, outsdif=outsdif, automat=automat)
+      sifdecoder(sifname, args..., verbose=verbose, outsdif=outsdif, automat=automat)
     end
     ccall(dlsym(cutest_lib, :fortran_open_), Nothing,
           (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}), funit, outsdif, io_err)
