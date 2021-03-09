@@ -1,4 +1,4 @@
-using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Printf
+using Test, CUTEst, NLPModelsCore, NLPModelsTestUtils, LinearAlgebra, SparseArrays, Random, Printf
 
 set_mastsif()
 @test ispath(ENV["MASTSIF"])
@@ -6,22 +6,19 @@ set_mastsif()
 
 # :hs10 removed from the tests because of
 # https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
-problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
-nlpmodels_path = joinpath(dirname(pathof(NLPModels)), "..", "test")
+problems = [:BROWNDEN, :HS5, :HS6, :HS10, :HS11, :HS14]
 
 include("test_core.jl")
 include("test_julia.jl")
 include("coverage.jl")
 
 for problem in problems
-  println("Testing interfaces on problem $problem")
   problem_s = string(problem)
-  include(joinpath(nlpmodels_path, "problems", "$problem_s.jl"))
-  nlp = CUTEstModel(uppercase(problem_s))
-  adnlp = eval(Meta.parse("$(problem)_autodiff"))()
+  nlp = CUTEstModel(problem_s)
+  nlpman = eval(problem)()
 
-  test_nlpinterface(nlp, adnlp)
-  test_coreinterface(nlp, adnlp)
+  test_nlpinterface(nlp, nlpman)
+  test_coreinterface(nlp, nlpman)
   coverage_increase(nlp)
 
   println("Finalizing")

@@ -1,15 +1,13 @@
-include(joinpath(nlpmodels_path, "consistency.jl"))
-
-problems = [:brownden, :hs5, :hs6, :hs11, :hs14]
 for problem in problems
-  problem_s = string(problem)
+  @testset "Checking problem $problem" begin
+    problem_s = string(problem)
 
-  nlp_autodiff = eval(Meta.parse("$(problem)_autodiff"))()
-  nlp_cutest = CUTEstModel(uppercase(problem_s))
-  nlps = [nlp_cutest, nlp_autodiff]
+    nlp_man = eval(problem)()
+    nlp_cutest = CUTEstModel(uppercase(problem_s))
+    nlps = [nlp_cutest, nlp_man]
 
-  @printf("Checking problem %-15s%12s\t", problem_s, "")
-  consistent_nlps(nlps)
+    consistent_nlps(nlps)
 
-  finalize(nlp_cutest)
+    finalize(nlp_cutest)
+  end
 end

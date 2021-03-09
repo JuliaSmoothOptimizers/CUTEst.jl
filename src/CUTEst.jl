@@ -7,9 +7,9 @@ module CUTEst
 
 using CUTEst_jll
 using Pkg.Artifacts
-using Libdl
+using Libdl, SparseArrays
 
-using NLPModels
+using NLPModelsCore
 import Libdl.dlsym
 
 # Only one problem can be interfaced at any given time.
