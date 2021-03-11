@@ -1,13 +1,13 @@
-using Test, CUTEst, NLPModels, LinearAlgebra, SparseArrays, Random, Printf
+#stdlib
+using LinearAlgebra, SparseArrays, Random, Test
+# jso
+using CUTEst, NLPModels, NLPModelsTest
 
 set_mastsif()
 @test ispath(ENV["MASTSIF"])
 @test isfile(joinpath(ENV["MASTSIF"], "CYCLOOCT.SIF"))
 
-# :hs10 removed from the tests because of
-# https://github.com/JuliaSmoothOptimizers/CUTEst.jl/issues/113
-problems = [:brownden, :hs5, :hs6, :hs10, :hs11, :hs14]
-nlpmodels_path = joinpath(dirname(pathof(NLPModels)), "..", "test")
+problems = ["BROWNDEN", "HS5", "HS6", "HS10", "HS11", "HS14"]
 
 include("test_core.jl")
 include("test_julia.jl")
@@ -15,20 +15,18 @@ include("coverage.jl")
 
 for problem in problems
   println("Testing interfaces on problem $problem")
-  problem_s = string(problem)
-  include(joinpath(nlpmodels_path, "problems", "$problem_s.jl"))
-  nlp = CUTEstModel(uppercase(problem_s))
-  adnlp = eval(Meta.parse("$(problem)_autodiff"))()
+  nlp = CUTEstModel(problem)
+  nlp_man = eval(Symbol(problem))()
 
-  test_nlpinterface(nlp, adnlp)
-  test_coreinterface(nlp, adnlp)
+  test_nlpinterface(nlp, nlp_man)
+  test_coreinterface(nlp, nlp_man)
   coverage_increase(nlp)
 
   println("Finalizing")
   finalize(nlp)
 end
 
-include("consistency.jl")
+include("nlpmodelstest.jl")
 # include("test_select.jl") # Tests are removed because any update to MASTSIF breaks it
 
 problems = CUTEst.select(max_var=2, max_con=2)
@@ -62,5 +60,3 @@ finalize(nlp)
 nlp = CUTEstModel("DIXMAANJ", "-param", "M=30")
 @assert nlp.meta.nvar == 90
 finalize(nlp)
-include("test_view_subarray.jl")
-include("test_memory_of_coord.jl")
