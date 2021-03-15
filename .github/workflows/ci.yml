@@ -28,7 +28,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
         if: matrix.os == 'macOS-latest'
       - name: Install gcc
-        run: brew install gcc
+        run: brew reinstall gcc
         if: matrix.os == 'macOS-latest'
       - uses: julia-actions/setup-julia@v1
         with:
