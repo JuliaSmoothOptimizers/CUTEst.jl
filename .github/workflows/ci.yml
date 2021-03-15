@@ -5,6 +5,8 @@ on:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+  schedule:
+    - cron: '00 00 */7 * *'
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
