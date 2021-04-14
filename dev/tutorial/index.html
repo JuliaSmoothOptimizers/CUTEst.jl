@@ -23,13 +23,12 @@ println(&quot;Hx = $( hess(nlp, nlp.meta.x0) )&quot;)</code></pre><pre class="do
 fx = 24.199999999999996
 gx = [-215.59999999999997, -87.99999999999999]
 Hx =
-  [1, 1]  =  1330.0
-  [2, 1]  =  480.0
-  [2, 2]  =  200.0</pre><p>Remember to check the <a href="https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api/">API</a> in case of doubts about these functions.</p><p>Notice how <code>hess</code> returns a lower triangle matrix. For decompositions that should be enough. For iterative solvers, you may want <span>$\nabla^2 f(x) v$</span> instead, so only the lower triangle won&#39;t do. But you do have</p><pre><code class="language-julia">v = ones(nlp.meta.nvar)
-hprod(nlp, nlp.meta.x0, v)</code></pre><pre class="documenter-example-output">2-element Array{Float64,1}:
+ 1330.0     ⋅
+  480.0  200.0</pre><p>Remember to check the <a href="https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api/">API</a> in case of doubts about these functions.</p><p>Notice how <code>hess</code> returns a lower triangle matrix. For decompositions that should be enough. For iterative solvers, you may want <span>$\nabla^2 f(x) v$</span> instead, so only the lower triangle won&#39;t do. But you do have</p><pre><code class="language-julia">v = ones(nlp.meta.nvar)
+hprod(nlp, nlp.meta.x0, v)</code></pre><pre class="documenter-example-output">2-element Vector{Float64}:
  1810.0
   680.0</pre><p>You can also use a <a href="https://github.com/JuliaSmoothOptimizers/LinearOperators.jl">LinearOperator</a>,</p><pre><code class="language-julia">H = hess_op(nlp, nlp.meta.x0)
-H * v</code></pre><pre class="documenter-example-output">2-element Array{Float64,1}:
+H * v</code></pre><pre class="documenter-example-output">2-element Vector{Float64}:
  1810.0
   680.0</pre><p>This way, you can use a <a href="https://github.com/JuliaSmoothOptimizers/Krylov.jl">Krylov</a> method to solve the linear system with the Hessian as matrix. For instance, here is an example computation of a Newton trust-region step.</p><pre><code class="language-julia">using Krylov
 
@@ -60,11 +59,9 @@ nlp = CUTEstModel(&quot;HS35&quot;)</code></pre><pre class="documenter-example-o
 
 </pre><pre><code class="language-julia">x = nlp.meta.x0
 
-cons(nlp, x)</code></pre><pre class="documenter-example-output">1-element Array{Float64,1}:
- 1.0</pre><pre><code class="language-julia">jac(nlp, x)</code></pre><pre class="documenter-example-output">1×3 SparseArrays.SparseMatrixCSC{Float64,Int64} with 3 stored entries:
-  [1, 1]  =  -1.0
-  [1, 2]  =  -1.0
-  [1, 3]  =  -2.0</pre><p>To find out whether these constraints are equalities or inequalities we can check <code>nlp.meta</code></p><pre><code class="language-julia">print(nlp.meta)</code></pre><pre class="documenter-example-output">  Problem name: HS35
+cons(nlp, x)</code></pre><pre class="documenter-example-output">1-element Vector{Float64}:
+ 1.0</pre><pre><code class="language-julia">jac(nlp, x)</code></pre><pre class="documenter-example-output">1×3 SparseArrays.SparseMatrixCSC{Float64, Int64} with 3 stored entries:
+ -1.0  -1.0  -2.0</pre><p>To find out whether these constraints are equalities or inequalities we can check <code>nlp.meta</code></p><pre><code class="language-julia">print(nlp.meta)</code></pre><pre class="documenter-example-output">  Problem name: HS35
    All variables: ████████████████████ 3      All constraints: ████████████████████ 1
             free: ⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅ 0                 free: ⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅ 0
            lower: ████████████████████ 3                lower: ████████████████████ 1
@@ -82,4 +79,4 @@ length(problems)</code></pre><pre class="documenter-example-output">285</pre><pr
 length(problems)</code></pre><pre class="documenter-example-output">114</pre><h3 id="Size-range"><a class="docs-heading-anchor" href="#Size-range">Size range</a><a id="Size-range-1"></a><a class="docs-heading-anchor-permalink" href="#Size-range" title="Permalink"></a></h3><pre><code class="language-julia">problems = CUTEst.select(min_var=1000, max_var=2000, min_con=100, max_con=500)
 length(problems)</code></pre><pre class="documenter-example-output">3</pre><h3 id="Sum-of-squares-problems-with-bounds"><a class="docs-heading-anchor" href="#Sum-of-squares-problems-with-bounds">Sum-of-squares problems with bounds</a><a id="Sum-of-squares-problems-with-bounds-1"></a><a class="docs-heading-anchor-permalink" href="#Sum-of-squares-problems-with-bounds" title="Permalink"></a></h3><pre><code class="language-julia">problems = CUTEst.select(objtype=&quot;sum_of_squares&quot;, contype=&quot;bounds&quot;)
 length(problems)</code></pre><pre class="documenter-example-output">54</pre><h3 id="Quadratic-programming-with-linear-constraints."><a class="docs-heading-anchor" href="#Quadratic-programming-with-linear-constraints.">Quadratic programming with linear constraints.</a><a id="Quadratic-programming-with-linear-constraints.-1"></a><a class="docs-heading-anchor-permalink" href="#Quadratic-programming-with-linear-constraints." title="Permalink"></a></h3><pre><code class="language-julia">problems = CUTEst.select(objtype=&quot;quadratic&quot;, contype=&quot;linear&quot;)
-length(problems)</code></pre><pre class="documenter-example-output">252</pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 22 March 2021 18:37">Monday 22 March 2021</span>. Using Julia version 1.5.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+length(problems)</code></pre><pre class="documenter-example-output">252</pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 14 April 2021 18:57">Wednesday 14 April 2021</span>. Using Julia version 1.6.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
