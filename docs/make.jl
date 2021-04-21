@@ -12,7 +12,6 @@ makedocs(
   sitename = "CUTEst.jl",
   pages = Any["Home" => "index.md",
               "Tutorial" => "tutorial.md",
-              "API" => "api.md",
               "Core" => "core.md",
               "Reference" => "reference.md"]
 )
