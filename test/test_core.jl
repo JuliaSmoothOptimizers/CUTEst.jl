@@ -3,13 +3,11 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   y0 = [(-1.0)^i for i = 1:nlp.meta.ncon]
   f(x) = obj(comp_nlp, x)
   g(x) = grad(comp_nlp, x)
-  H(x; obj_weight=1.0) = tril(hess(comp_nlp, x, obj_weight=obj_weight),-1) +
-                          hess(comp_nlp, x, obj_weight=obj_weight)'
+  H(x; obj_weight=1.0) = hess(comp_nlp, x, obj_weight=obj_weight)
 
   c(x) = cons(comp_nlp, x)
   J(x) = jac(comp_nlp, x)
-  W(x, y; obj_weight=1.0) = tril(hess(comp_nlp, x, y, obj_weight=obj_weight),-1) +
-                            hess(comp_nlp, x, y, obj_weight=obj_weight)'
+  W(x, y; obj_weight=1.0) = hess(comp_nlp, x, y, obj_weight=obj_weight)
   rtol = 1e-8
 
 

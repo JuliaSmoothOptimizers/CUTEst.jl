@@ -2,12 +2,10 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   x0 = nlp.meta.x0
   f(x) = obj(comp_nlp, x)
   g(x) = grad(comp_nlp, x)
-  H(x; obj_weight=1.0) = tril(hess(comp_nlp, x, obj_weight=obj_weight),-1) +
-                          hess(comp_nlp, x, obj_weight=obj_weight)'
+  H(x; obj_weight=1.0) = hess(comp_nlp, x, obj_weight=obj_weight)
   c(x) = cons(comp_nlp, x)
   J(x) = jac(comp_nlp, x)
-  W(x, y; obj_weight=1.0) = tril(hess(comp_nlp, x, y, obj_weight=obj_weight),-1) +
-                            hess(comp_nlp, x, y, obj_weight=obj_weight)'
+  W(x, y; obj_weight=1.0) = hess(comp_nlp, x, y, obj_weight=obj_weight)
 
   v = ones(nlp.meta.nvar)
   u = ones(nlp.meta.ncon)
@@ -86,22 +84,23 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     obj_weights = [0.0, 1.0, 3.141592]
     for obj_weight in obj_weights
       Hx = hess(nlp, x0, obj_weight=obj_weight)
-      @test isapprox(Hx, tril(H(x0, obj_weight=obj_weight)), rtol=rtol)
+      @test isapprox(Hx, H(x0, obj_weight=obj_weight), rtol=rtol)
       hess_structure!(nlp)
       hrow, hcol = hess_structure(nlp)
       @test all(hrow .== nlp.hrows)
       @test all(hcol .== nlp.hcols)
       hval = hess_coord(nlp, x0, obj_weight=obj_weight)
-      @test isapprox(sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
-                     tril(H(x0, obj_weight=obj_weight)), rtol=rtol)
+      H2 = Symmetric(sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar), :L)
+      @test isapprox(H2,
+                     H(x0, obj_weight=obj_weight), rtol=rtol)
       if nlp.meta.ncon > 0
         Wx = hess(nlp, x0, ones(nlp.meta.ncon), obj_weight=obj_weight)
-        @test isapprox(Wx, tril(W(x0, ones(nlp.meta.ncon),
-                                  obj_weight=obj_weight)), rtol=rtol)
+        @test isapprox(Wx, W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)), rtol=rtol)
         hrow, hcol = hess_structure(nlp)
         hval = hess_coord(nlp, x0, ones(nlp.meta.ncon), obj_weight=obj_weight)
-        @test isapprox(sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
-                       tril(W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)), rtol=rtol)
+        W2 = Symmetric(sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar), :L)
+        @test isapprox(W2,
+                       W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight), rtol=rtol)
       end
 
       hv = hprod(nlp, x0, v, obj_weight=obj_weight)

@@ -54,7 +54,7 @@ Remember to check the
 [API](https://juliasmoothoptimizers.github.io/NLPModels.jl/latest/api/)
 in case of doubts about these functions.
 
-Notice how `hess` returns a lower triangle matrix.
+Notice how `hess` returns a symmetric matrix.
 For decompositions that should be enough.
 For iterative solvers, you may want $\nabla^2 f(x) v$ instead, so only the lower
 triangle won't do.
