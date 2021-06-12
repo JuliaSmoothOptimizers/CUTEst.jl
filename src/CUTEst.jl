@@ -17,8 +17,8 @@ global cutest_instances = 0
 
 export CUTEstModel, sifdecoder, set_mastsif
 
-mutable struct CUTEstModel <: AbstractNLPModel
-  meta    :: NLPModelMeta
+mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
+  meta    :: NLPModelMeta{Float64, Vector{Float64}}
   counters :: Counters
   hrows :: Vector{Int32}
   hcols :: Vector{Int32}
