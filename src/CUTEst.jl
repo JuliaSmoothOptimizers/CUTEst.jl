@@ -48,7 +48,7 @@ struct CUTEstException <: Exception
   end
 end
 
-global const cutest_problems_path = joinpath(dirname(@__FILE__), "../deps", "files")
+const cutest_problems_path = joinpath(dirname(@__FILE__), "../deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 global cutest_lib = C_NULL
 
