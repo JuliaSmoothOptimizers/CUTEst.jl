@@ -2,7 +2,7 @@
 
 io_err = Cint[0]
 
-function coverage_increase(nlp :: CUTEstModel)
+function coverage_increase(nlp::CUTEstModel)
   n, m = nlp.meta.nvar, nlp.meta.ncon
   pname = Array{UInt8, 1}(undef, 10)
   probname(io_err, pname)
@@ -23,7 +23,7 @@ function coverage_increase(nlp :: CUTEstModel)
 
     lchp = Cint[0]
     cdimchp(io_err, lchp)
-    chp_ind, chp_ptr = Array{Cint}(undef, lchp[1]), Array{Cint}(undef, m+1)
+    chp_ind, chp_ptr = Array{Cint}(undef, lchp[1]), Array{Cint}(undef, m + 1)
     cchprodsp(io_err, Cint[m], lchp, chp_ind, chp_ptr)
     lj, nnzj = Cint[0], Cint[0]
     cdimsj(io_err, lj)

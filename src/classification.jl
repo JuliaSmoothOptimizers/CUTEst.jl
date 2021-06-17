@@ -4,26 +4,28 @@ import JSON
 # Dict comprehension isn't defined in 0.4 and isn't handled by Compat
 # See https://github.com/JuliaLang/Compat.jl/issues/231
 const objtypes = ["none", "constant", "linear", "quadratic", "sum_of_squares", "other"]
-const classdb_objtype = Dict("N"=>objtypes[1],
-                             "C"=>objtypes[2],
-                             "L"=>objtypes[3],
-                             "Q"=>objtypes[4],
-                             "S"=>objtypes[5],
-                             "O"=>objtypes[6])
+const classdb_objtype = Dict(
+  "N" => objtypes[1],
+  "C" => objtypes[2],
+  "L" => objtypes[3],
+  "Q" => objtypes[4],
+  "S" => objtypes[5],
+  "O" => objtypes[6],
+)
 
 const contypes = ["unc", "fixed_vars", "bounds", "network", "linear", "quadratic", "general"]
-const classdb_contype = Dict("U"=>contypes[1],
-                             "X"=>contypes[2],
-                             "B"=>contypes[3],
-                             "N"=>contypes[4],
-                             "L"=>contypes[5],
-                             "Q"=>contypes[6],
-                             "O"=>contypes[7])
+const classdb_contype = Dict(
+  "U" => contypes[1],
+  "X" => contypes[2],
+  "B" => contypes[3],
+  "N" => contypes[4],
+  "L" => contypes[5],
+  "Q" => contypes[6],
+  "O" => contypes[7],
+)
 
 const origins = ["academic", "modelling", "real"]
-const classdb_origin = Dict("A"=>origins[1],
-                            "M"=>origins[2],
-                            "R"=>origins[3])
+const classdb_origin = Dict("A" => origins[1], "M" => origins[2], "R" => origins[3])
 
 include("create_class.jl")
 
@@ -98,12 +100,21 @@ For instance, if you'd like to choose only problems with fixed number of
 
     custom_filter=x->x["variables"]["can_choose"]==false
 """
-function select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
-    objtype=objtypes, contype=contypes,
-    only_free_var=false, only_bnd_var=false,
-    only_linear_con=false, only_nonlinear_con=false,
-    only_equ_con=false, only_ineq_con=false,
-    custom_filter::Function=x->true)
+function select(;
+  min_var = 1,
+  max_var = Inf,
+  min_con = 0,
+  max_con = Inf,
+  objtype = objtypes,
+  contype = contypes,
+  only_free_var = false,
+  only_bnd_var = false,
+  only_linear_con = false,
+  only_nonlinear_con = false,
+  only_equ_con = false,
+  only_ineq_con = false,
+  custom_filter::Function = x -> true,
+)
   # Checks for conflicting option
   @assert !only_free_var || !only_bnd_var
   @assert !only_linear_con || !only_nonlinear_con
@@ -121,22 +132,24 @@ function select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
 
   data = JSON.parsefile(joinpath(dirname(@__FILE__), "classf.json"))
   problems = keys(data)
-  selection = Array{String,1}()
+  selection = Array{String, 1}()
   for p in problems
     pv = data[p]["variables"]
     pc = data[p]["constraints"]
     nvar, ncon = pv["number"], pc["number"]
-    if nvar < min_var || nvar > max_var ||
-      ncon < min_con || ncon > max_con ||
-      (only_free_var && pv["free"] < nvar) ||
-      (only_bnd_var && pv["free"] > 0) ||
-      (only_linear_con && pc["linear"] < ncon) ||
-      (only_nonlinear_con && pc["linear"] > 0) ||
-      (only_equ_con && pc["equality"] < ncon) ||
-      (only_ineq_con && pc["equality"] > 0) ||
-      !(data[p]["objtype"] in objtype) ||
-      !(data[p]["contype"] in contype) ||
-      !(custom_filter(data[p]))
+    if nvar < min_var ||
+       nvar > max_var ||
+       ncon < min_con ||
+       ncon > max_con ||
+       (only_free_var && pv["free"] < nvar) ||
+       (only_bnd_var && pv["free"] > 0) ||
+       (only_linear_con && pc["linear"] < ncon) ||
+       (only_nonlinear_con && pc["linear"] > 0) ||
+       (only_equ_con && pc["equality"] < ncon) ||
+       (only_ineq_con && pc["equality"] > 0) ||
+       !(data[p]["objtype"] in objtype) ||
+       !(data[p]["contype"] in contype) ||
+       !(custom_filter(data[p]))
       continue
     end
     push!(selection, p)
@@ -147,7 +160,7 @@ end
 canonicalize_ftype(reqtype::Integer, allowedtypes) = [allowedtypes[reqtype]]
 canonicalize_ftype(reqtype::Symbol, allowedtypes) = [string(reqtype)]
 canonicalize_ftype(reqtype::AbstractString, allowedtypes) = [reqtype]
-canonicalize_ftype(reqtype::AbstractVector{T}, allowedtypes) where T <: Integer =
-    allowedtypes[reqtype]
+canonicalize_ftype(reqtype::AbstractVector{T}, allowedtypes) where {T <: Integer} =
+  allowedtypes[reqtype]
 canonicalize_ftype(reqtype::AbstractVector{Symbol}, allowedtypes) = map(string, reqtype)
 canonicalize_ftype(reqtype, allowedtypes) = reqtype
