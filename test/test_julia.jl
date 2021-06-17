@@ -2,12 +2,14 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   x0 = nlp.meta.x0
   f(x) = obj(comp_nlp, x)
   g(x) = grad(comp_nlp, x)
-  H(x; obj_weight=1.0) = tril(hess(comp_nlp, x, obj_weight=obj_weight),-1) +
-                          hess(comp_nlp, x, obj_weight=obj_weight)'
+  H(x; obj_weight = 1.0) =
+    tril(hess(comp_nlp, x, obj_weight = obj_weight), -1) +
+    hess(comp_nlp, x, obj_weight = obj_weight)'
   c(x) = cons(comp_nlp, x)
   J(x) = jac(comp_nlp, x)
-  W(x, y; obj_weight=1.0) = tril(hess(comp_nlp, x, y, obj_weight=obj_weight),-1) +
-                            hess(comp_nlp, x, y, obj_weight=obj_weight)'
+  W(x, y; obj_weight = 1.0) =
+    tril(hess(comp_nlp, x, y, obj_weight = obj_weight), -1) +
+    hess(comp_nlp, x, y, obj_weight = obj_weight)'
 
   v = ones(nlp.meta.nvar)
   u = ones(nlp.meta.ncon)
@@ -16,28 +18,28 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
 
   @testset "Julia interface" begin
     fx = obj(nlp, x0)
-    @test isapprox(fx, f(x0), rtol=rtol)
+    @test isapprox(fx, f(x0), rtol = rtol)
 
     (fx, gx) = objgrad(nlp, x0)
-    @test isapprox(fx, f(x0), rtol=rtol)
-    @test isapprox(gx, g(x0), rtol=rtol)
+    @test isapprox(fx, f(x0), rtol = rtol)
+    @test isapprox(gx, g(x0), rtol = rtol)
 
     gx = grad(nlp, x0)
-    @test isapprox(gx, g(x0), rtol=rtol)
+    @test isapprox(gx, g(x0), rtol = rtol)
 
     fill!(gx, 0.0)
     grad!(nlp, x0, gx)
-    @test isapprox(gx, g(x0), rtol=rtol)
+    @test isapprox(gx, g(x0), rtol = rtol)
 
     if nlp.meta.ncon > 0
       (fx, cx) = objcons(nlp, x0)
-      @test isapprox(fx, f(x0), rtol=rtol)
-      @test isapprox(cx, c(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol = rtol)
+      @test isapprox(cx, c(x0), rtol = rtol)
 
       (cx, jrow, jcol, jval) = cons_coord(nlp, x0)
       Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
-      @test isapprox(cx, c(x0), rtol=rtol)
-      @test isapprox(Jx, J(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol = rtol)
+      @test isapprox(Jx, J(x0), rtol = rtol)
 
       jac_structure!(nlp)
       jrow0, jcol0 = jac_structure(nlp)
@@ -50,76 +52,79 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       x[1:2:end] .= x0
       (cx, jrow, jcol, jval) = cons_coord(nlp, @view x[1:2:end])
       Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
-      @test isapprox(cx, c(x0), rtol=rtol)
-      @test isapprox(Jx, J(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol = rtol)
+      @test isapprox(Jx, J(x0), rtol = rtol)
 
       (cx, Jx) = consjac(nlp, x0)
-      @test isapprox(cx, c(x0), rtol=rtol)
-      @test isapprox(Jx, J(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol = rtol)
+      @test isapprox(Jx, J(x0), rtol = rtol)
 
       cx = cons(nlp, x0) # This is here to improve coverage
-      @test isapprox(cx, c(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol = rtol)
 
       fill!(cx, 0.0)
       cons!(nlp, x0, cx)
-      @test isapprox(cx, c(x0), rtol=rtol)
+      @test isapprox(cx, c(x0), rtol = rtol)
 
       jval = jac_coord(nlp, x0)
       Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
-      @test isapprox(Jx, J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol = rtol)
 
       Jx = jac(nlp, x0)
-      @test isapprox(Jx, J(x0), rtol=rtol)
+      @test isapprox(Jx, J(x0), rtol = rtol)
 
       Jv = jprod(nlp, x0, v)
-      @test isapprox(Jv, J(x0)*v, rtol=rtol)
+      @test isapprox(Jv, J(x0) * v, rtol = rtol)
 
       Jtu = jtprod(nlp, x0, u)
-      @test isapprox(Jtu, J(x0)'*u, rtol=rtol)
+      @test isapprox(Jtu, J(x0)' * u, rtol = rtol)
     else
       (fx, cx) = objcons(nlp, x0)
-      @test isapprox(fx, f(x0), rtol=rtol)
+      @test isapprox(fx, f(x0), rtol = rtol)
       @test length(cx) == 0
     end
 
     v = rand(nlp.meta.nvar)
     obj_weights = [0.0, 1.0, 3.141592]
     for obj_weight in obj_weights
-      Hx = hess(nlp, x0, obj_weight=obj_weight)
-      @test isapprox(Hx, tril(H(x0, obj_weight=obj_weight)), rtol=rtol)
+      Hx = hess(nlp, x0, obj_weight = obj_weight)
+      @test isapprox(Hx, tril(H(x0, obj_weight = obj_weight)), rtol = rtol)
       hess_structure!(nlp)
       hrow, hcol = hess_structure(nlp)
       @test all(hrow .== nlp.hrows)
       @test all(hcol .== nlp.hcols)
-      hval = hess_coord(nlp, x0, obj_weight=obj_weight)
-      @test isapprox(sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
-                     tril(H(x0, obj_weight=obj_weight)), rtol=rtol)
+      hval = hess_coord(nlp, x0, obj_weight = obj_weight)
+      @test isapprox(
+        sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
+        tril(H(x0, obj_weight = obj_weight)),
+        rtol = rtol,
+      )
       if nlp.meta.ncon > 0
-        Wx = hess(nlp, x0, ones(nlp.meta.ncon), obj_weight=obj_weight)
-        @test isapprox(Wx, tril(W(x0, ones(nlp.meta.ncon),
-                                  obj_weight=obj_weight)), rtol=rtol)
+        Wx = hess(nlp, x0, ones(nlp.meta.ncon), obj_weight = obj_weight)
+        @test isapprox(Wx, tril(W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight)), rtol = rtol)
         hrow, hcol = hess_structure(nlp)
-        hval = hess_coord(nlp, x0, ones(nlp.meta.ncon), obj_weight=obj_weight)
-        @test isapprox(sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
-                       tril(W(x0, ones(nlp.meta.ncon), obj_weight=obj_weight)), rtol=rtol)
+        hval = hess_coord(nlp, x0, ones(nlp.meta.ncon), obj_weight = obj_weight)
+        @test isapprox(
+          sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
+          tril(W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight)),
+          rtol = rtol,
+        )
       end
 
-      hv = hprod(nlp, x0, v, obj_weight=obj_weight)
-      @test isapprox(hv, H(x0, obj_weight=obj_weight)*v, rtol=rtol)
+      hv = hprod(nlp, x0, v, obj_weight = obj_weight)
+      @test isapprox(hv, H(x0, obj_weight = obj_weight) * v, rtol = rtol)
 
       fill!(hv, 0.0)
-      hprod!(nlp, x0, v, hv, obj_weight=obj_weight)
-      @test isapprox(hv, H(x0, obj_weight=obj_weight)*v, rtol=rtol)
+      hprod!(nlp, x0, v, hv, obj_weight = obj_weight)
+      @test isapprox(hv, H(x0, obj_weight = obj_weight) * v, rtol = rtol)
 
       if nlp.meta.ncon > 0
-        hv = hprod(nlp, x0, ones(nlp.meta.ncon), v, obj_weight=obj_weight)
-        @test isapprox(hv, W(x0, ones(nlp.meta.ncon),
-                             obj_weight=obj_weight)*v, rtol=rtol)
+        hv = hprod(nlp, x0, ones(nlp.meta.ncon), v, obj_weight = obj_weight)
+        @test isapprox(hv, W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight) * v, rtol = rtol)
 
         fill!(hv, 0.0)
-        hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv, obj_weight=obj_weight)
-        @test isapprox(hv, W(x0, ones(nlp.meta.ncon),
-                             obj_weight=obj_weight)*v, rtol=rtol)
+        hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv, obj_weight = obj_weight)
+        @test isapprox(hv, W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight) * v, rtol = rtol)
       end
     end
 

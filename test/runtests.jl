@@ -29,7 +29,7 @@ end
 include("nlpmodelstest.jl")
 # include("test_select.jl") # Tests are removed because any update to MASTSIF breaks it
 
-problems = CUTEst.select(max_var=2, max_con=2)
+problems = CUTEst.select(max_var = 2, max_con = 2)
 problems = randsubseq(problems, 0.1)
 
 for p in problems
@@ -69,7 +69,7 @@ finalize(nlp)
   end
   # No decode
   for p in problems
-    nlp = CUTEstModel(p, decode=false)
+    nlp = CUTEstModel(p, decode = false)
     @test nlp.meta.nvar == 2
     finalize(nlp)
   end

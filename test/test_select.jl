@@ -15,22 +15,22 @@ objtypes_problems = ["CHANDHEQ", "HS8", "TRO5X5", "BT8", "HIMMELBF", "JIMACK"]
 contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HANGING", "SYNTHES1"]
 
 @testset "CUTEst selection tool" begin
-  problems = filter(x->occursin(r"SIF$",x), readdir(ENV["MASTSIF"]))
+  problems = filter(x -> occursin(r"SIF$", x), readdir(ENV["MASTSIF"]))
   np = length(problems)
   @test np == length(CUTEst.select())
   @testset "Variables" begin
-    selection = CUTEst.select(max_var=10)
+    selection = CUTEst.select(max_var = 10)
     n = length(selection)
     @test small_problem in selection
     @test !(large_problem in selection)
-    selection = CUTEst.select(min_var=11)
+    selection = CUTEst.select(min_var = 11)
     @test !(small_problem in selection)
     @test large_problem in selection
     @test np == n + length(selection)
-    selection = CUTEst.select(only_free_var=true)
+    selection = CUTEst.select(only_free_var = true)
     @test free_problem in selection
     @test !(bnd_problem in selection)
-    selection = CUTEst.select(only_bnd_var=true)
+    selection = CUTEst.select(only_bnd_var = true)
     @test !(free_problem in selection)
     @test bnd_problem in selection
   end
@@ -49,17 +49,17 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
     @test ineq_problem in selection
     @test np == n + length(selection)
 
-    selection = CUTEst.select(only_equ_con=true)
+    selection = CUTEst.select(only_equ_con = true)
     @test equ_problem in selection
     @test !(ineq_problem in selection)
-    selection = CUTEst.select(only_ineq_con=true)
+    selection = CUTEst.select(only_ineq_con = true)
     @test !(equ_problem in selection)
     @test ineq_problem in selection
 
-    selection = CUTEst.select(only_linear_con=true)
+    selection = CUTEst.select(only_linear_con = true)
     @test lin_problem in selection
     @test !(nln_problem in selection)
-    selection = CUTEst.select(only_nonlinear_con=true)
+    selection = CUTEst.select(only_nonlinear_con = true)
     @test !(lin_problem in selection)
     @test nln_problem in selection
   end
@@ -68,21 +68,21 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
     n = length(CUTEst.objtypes)
     npi = 0
     for i = 1:n
-      selection = CUTEst.select(objtype=i)
+      selection = CUTEst.select(objtype = i)
       npi += length(selection)
       @test objtypes_problems[i] in selection
-      for j = setdiff(1:n, i)
+      for j in setdiff(1:n, i)
         @test !(objtypes_problems[j] in selection)
       end
-      selection_alt = CUTEst.select(objtype=CUTEst.objtypes[i])
+      selection_alt = CUTEst.select(objtype = CUTEst.objtypes[i])
       @test sort(selection_alt) == sort(selection)
-      selection_alt = CUTEst.select(objtype=Symbol(CUTEst.objtypes[i]))
+      selection_alt = CUTEst.select(objtype = Symbol(CUTEst.objtypes[i]))
       @test sort(selection_alt) == sort(selection)
     end
     @test npi == np
-    for i = 1:n-1
+    for i = 1:(n - 1)
       for subset in combinations(1:n, i)
-        selection = CUTEst.select(objtype=subset)
+        selection = CUTEst.select(objtype = subset)
         for j in subset
           @test objtypes_problems[j] in selection
         end
@@ -97,21 +97,21 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
     n = length(CUTEst.contypes)
     npi = 0
     for i = 1:n
-      selection = CUTEst.select(contype=i)
+      selection = CUTEst.select(contype = i)
       npi += length(selection)
       @test contypes_problems[i] in selection
-      for j = setdiff(1:n, i)
+      for j in setdiff(1:n, i)
         @test !(contypes_problems[j] in selection)
       end
-      selection_alt = CUTEst.select(contype=CUTEst.contypes[i])
+      selection_alt = CUTEst.select(contype = CUTEst.contypes[i])
       @test sort(selection_alt) == sort(selection)
-      selection_alt = CUTEst.select(contype=Symbol(CUTEst.contypes[i]))
+      selection_alt = CUTEst.select(contype = Symbol(CUTEst.contypes[i]))
       @test sort(selection_alt) == sort(selection)
     end
     @test npi == np
-    for i = 1:n-1
+    for i = 1:(n - 1)
       for subset in combinations(1:n, i)
-        selection = CUTEst.select(contype=subset)
+        selection = CUTEst.select(contype = subset)
         for j in subset
           @test contypes_problems[j] in selection
         end
@@ -149,8 +149,7 @@ contypes_problems = ["DIXMAANI", "AIRCRFTB", "BQPGAUSS", "DALLASM", "HS54", "HAN
   =#
 
   @testset "Canonicalization" begin
-    set1 = CUTEst.select(objtype=1:4)
+    set1 = CUTEst.select(objtype = 1:4)
     @test !(isempty(set1))
   end
-
 end

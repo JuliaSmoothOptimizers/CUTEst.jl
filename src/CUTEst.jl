@@ -18,23 +18,24 @@ global cutest_instances = 0
 export CUTEstModel, sifdecoder, set_mastsif
 
 mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
-  meta    :: NLPModelMeta{Float64, Vector{Float64}}
-  counters :: Counters
-  hrows :: Vector{Int32}
-  hcols :: Vector{Int32}
-  jrows :: Vector{Int32}
-  jcols :: Vector{Int32}
+  meta::NLPModelMeta{Float64, Vector{Float64}}
+  counters::Counters
+  hrows::Vector{Int32}
+  hcols::Vector{Int32}
+  jrows::Vector{Int32}
+  jcols::Vector{Int32}
 end
 
-const funit   = convert(Int32, 42)
+const funit = convert(Int32, 42)
 @static Sys.isapple() ? (const linker = "gfortran") : (const linker = "ld")
-@static Sys.isapple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) : (const sh_flags = ["-shared"])
+@static Sys.isapple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) :
+        (const sh_flags = ["-shared"])
 
 struct CUTEstException <: Exception
-  info :: Int32
-  msg  :: String
+  info::Int32
+  msg::String
 
-  function CUTEstException(info :: Int32)
+  function CUTEstException(info::Int32)
     if info == 1
       msg = "memory allocation error"
     elseif info == 2
@@ -54,7 +55,8 @@ global cutest_lib = C_NULL
 
 function __init__()
   if success(`bash -c "type gfortran"`)
-    @static Sys.isapple() ? (global libgfortran = []) : (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
+    @static Sys.isapple() ? (global libgfortran = []) :
+            (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
   else
     @error "gfortran is not installed. Please install it and try again."
     return
@@ -97,7 +99,7 @@ function __init__()
   push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
 end
 
-CUTEstException(info :: Integer) = CUTEstException(convert(Int32, info))
+CUTEstException(info::Integer) = CUTEstException(convert(Int32, info))
 
 macro cutest_error()  # Handle nonzero exit codes.
   esc(:(io_err[1] > 0 && throw(CUTEstException(io_err[1]))))
@@ -122,11 +124,11 @@ function delete_temp_files()
   for f in ("ELFUN", "EXTER", "GROUP", "RANGE")
     for ext in ("f", "o")
       fname = "$f.$ext"
-      isfile(fname) && rm(fname, force=true)
+      isfile(fname) && rm(fname, force = true)
     end
   end
   for f in ("OUTSDIF.d", "AUTOMAT.d")
-    isfile(f) && rm(f, force=true)
+    isfile(f) && rm(f, force = true)
   end
   nothing
 end
@@ -137,11 +139,14 @@ Optional arguments are passed directly to the SIF decoder.
 Example:
     `sifdecoder("DIXMAANJ", "-param", "M=30")`.
 """
-function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
-                    outsdif :: String="OUTSDIF_$(basename(name)).d",
-                    automat :: String="AUTOMAT_$(basename(name)).d")
-
-  if length(name) < 4 || name[end-3:end] != ".SIF"
+function sifdecoder(
+  name::AbstractString,
+  args...;
+  verbose::Bool = false,
+  outsdif::String = "OUTSDIF_$(basename(name)).d",
+  automat::String = "AUTOMAT_$(basename(name)).d",
+)
+  if length(name) < 4 || name[(end - 3):end] != ".SIF"
     name = "$name.SIF"
   end
   if !isfile(name) && !isfile(joinpath(ENV["MASTSIF"], name))
@@ -158,11 +163,25 @@ function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
     # safeguard for macOS: see https://github.com/JuliaPackaging/Yggdrasil/pull/404#issuecomment-576958966
     if Sys.isapple()
       CUTEst_jll.sifdecoder() do decoder_exe
-        run(pipeline(ignorestatus(`bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $decoder_exe $(join(args, " ")) $name"`), stdout=outlog, stderr=errlog))
+        run(
+          pipeline(
+            ignorestatus(
+              `bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $decoder_exe $(join(args, " ")) $name"`,
+            ),
+            stdout = outlog,
+            stderr = errlog,
+          ),
+        )
       end
     else
       CUTEst_jll.sifdecoder() do decoder_exe
-        run(pipeline(ignorestatus(Cmd([decoder_exe, args..., name])), stdout=outlog, stderr=errlog))
+        run(
+          pipeline(
+            ignorestatus(Cmd([decoder_exe, args..., name])),
+            stdout = outlog,
+            stderr = errlog,
+          ),
+        )
       end
     end
     print(read(errlog, String))
@@ -171,15 +190,19 @@ function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
     if isfile("ELFUN.f")
       run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`)
       if Sys.isapple()
-        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`)
+        run(
+          `$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
+        )
       else
-        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -rpath=$libpath -L$libpath -lcutest_double $libgfortran`)
+        run(
+          `$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
+        )
       end
       run(`mv OUTSDIF.d $outsdif`)
       run(`mv AUTOMAT.d $automat`)
       delete_temp_files()
-      global cutest_lib = Libdl.dlopen(libname,
-        Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      global cutest_lib =
+        Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     end
   end
   rm(outlog)
@@ -188,9 +211,16 @@ function sifdecoder(name :: AbstractString, args...; verbose :: Bool=false,
 end
 
 # Initialize problem.
-function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbose :: Bool=false,
-                     efirst :: Bool=true, lfirst :: Bool=true, lvfirst :: Bool=true)
-  sifname = (length(name) < 4 || name[end-3:end] != ".SIF") ? "$name.SIF" : name
+function CUTEstModel(
+  name::AbstractString,
+  args...;
+  decode::Bool = true,
+  verbose::Bool = false,
+  efirst::Bool = true,
+  lfirst::Bool = true,
+  lvfirst::Bool = true,
+)
+  sifname = (length(name) < 4 || name[(end - 3):end] != ".SIF") ? "$name.SIF" : name
   name = splitext(basename(sifname))[1]
   if !isfile(sifname) && !isfile(joinpath(ENV["MASTSIF"], sifname))
     error("$name not found")
@@ -209,13 +239,18 @@ function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbo
       (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
       libname = "lib$name"
       isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
-      cutest_lib = Libdl.dlopen(libname,
-        Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      cutest_lib = Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
-      sifdecoder(sifname, args..., verbose=verbose, outsdif=outsdif, automat=automat)
+      sifdecoder(sifname, args..., verbose = verbose, outsdif = outsdif, automat = automat)
     end
-    ccall(dlsym(cutest_lib, :fortran_open_), Nothing,
-          (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}), funit, outsdif, io_err)
+    ccall(
+      dlsym(cutest_lib, :fortran_open_),
+      Nothing,
+      (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}),
+      funit,
+      outsdif,
+      io_err,
+    )
     @cutest_error
   end
 
@@ -228,10 +263,10 @@ function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbo
   nvar = nvar[1]
   ncon = ncon[1]
 
-  x  = Vector{Float64}(undef, nvar)
+  x = Vector{Float64}(undef, nvar)
   bl = Vector{Float64}(undef, nvar)
   bu = Vector{Float64}(undef, nvar)
-  v  = Vector{Float64}(undef, ncon)
+  v = Vector{Float64}(undef, ncon)
   cl = Vector{Float64}(undef, ncon)
   cu = Vector{Float64}(undef, ncon)
   equatn = Vector{Int32}(undef, ncon)
@@ -242,8 +277,25 @@ function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbo
     l_order = lfirst ? Cint[1] : Cint[0]
     v_order = lvfirst ? Cint[1] : Cint[0]
     # Equality constraints first, linear constraints first, nonlinear variables first.
-    csetup(io_err, [funit], Cint[0], Cint[6], [nvar], [ncon], x, bl, bu, v, cl, cu,
-      equatn, linear, e_order, l_order, v_order)
+    csetup(
+      io_err,
+      [funit],
+      Cint[0],
+      Cint[6],
+      [nvar],
+      [ncon],
+      x,
+      bl,
+      bu,
+      v,
+      cl,
+      cu,
+      equatn,
+      linear,
+      e_order,
+      l_order,
+      v_order,
+    )
   else
     usetup(io_err, [funit], Cint[0], Cint[6], [nvar], x, bl, bu)
   end
@@ -274,16 +326,26 @@ function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbo
   nnzh = Int(nnzh[1])
   nnzj = Int(nnzj[1])
 
-  ccall(dlsym(cutest_lib, :fortran_close_), Nothing,
-      (Ref{Int32}, Ptr{Int32}), funit, io_err)
+  ccall(dlsym(cutest_lib, :fortran_close_), Nothing, (Ref{Int32}, Ptr{Int32}), funit, io_err)
   @cutest_error
 
-  meta = NLPModelMeta(Int(nvar), x0=x, lvar=bl, uvar=bu,
-                      ncon=Int(ncon), y0=v, lcon=cl, ucon=cu,
-                      nnzj=nnzj, nnzh=nnzh,
-                      lin=lin, nln=nln,
-                      nlin=nlin, nnln=nnln,
-                      name=splitext(name)[1])
+  meta = NLPModelMeta(
+    Int(nvar),
+    x0 = x,
+    lvar = bl,
+    uvar = bu,
+    ncon = Int(ncon),
+    y0 = v,
+    lcon = cl,
+    ucon = cu,
+    nnzj = nnzj,
+    nnzh = nnzh,
+    lin = lin,
+    nln = nln,
+    nlin = nlin,
+    nnln = nnln,
+    name = splitext(name)[1],
+  )
 
   hrows = Vector{Int32}(undef, nnzh)
   hcols = Vector{Int32}(undef, nnzh)
@@ -297,8 +359,7 @@ function CUTEstModel(name :: AbstractString, args...; decode :: Bool=true, verbo
   return nlp
 end
 
-
-function cutest_finalize(nlp :: CUTEstModel)
+function cutest_finalize(nlp::CUTEstModel)
   global cutest_instances
   cutest_instances == 0 && return
   global cutest_lib
@@ -315,15 +376,14 @@ function cutest_finalize(nlp :: CUTEstModel)
   return
 end
 
-
 # Displaying CUTEstModel instances.
 
 import Base.show, Base.print
-function show(io :: IO, nlp :: CUTEstModel)
+function show(io::IO, nlp::CUTEstModel)
   show(io, nlp.meta)
 end
 
-function print(io :: IO, nlp :: CUTEstModel)
+function print(io::IO, nlp::CUTEstModel)
   print(io, nlp.meta)
 end
 
