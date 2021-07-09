@@ -14,12 +14,12 @@ comparing optimization algorithms, derived from the abstract model on
 
 - Documentation: [![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaSmoothOptimizers.github.io/CUTEst.jl/latest)
 - Tests:
-[![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=master)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
-[![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=master)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=master)
+[![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=main)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
+[![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=main)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=main)
 
 ## How to Cite
 
-If you use CUTEst.jl in your work, please cite using the format given in [CITATION.bib](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/blob/master/CITATION.bib).
+If you use CUTEst.jl in your work, please cite using the format given in [CITATION.bib](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/blob/main/CITATION.bib).
 
 ## Installing
 
