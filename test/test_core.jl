@@ -1,4 +1,4 @@
-function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
+function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_view = false)
   x0 = nlp.meta.x0
   y0 = [(-1.0)^i for i = 1:(nlp.meta.ncon)]
   f(x) = obj(comp_nlp, x)
@@ -10,36 +10,69 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   W(x, y; obj_weight = 1.0) = hess(comp_nlp, x, y, obj_weight = obj_weight)
   rtol = 1e-8
 
-  st = Cint[0]
-  nvar = Cint[nlp.meta.nvar]
-  ncon = Cint[nlp.meta.ncon]
-  fx = [0.0]
-  lx = [0.0]
-  ci = [0.0]
-  cx = Array{Cdouble}(undef, ncon[1])
-  gx = Array{Cdouble}(undef, nvar[1])
-  gci = Array{Cdouble}(undef, nvar[1])
-  glx = Array{Cdouble}(undef, nvar[1])
-  gval = Array{Cdouble}(undef, nvar[1])
-  gvar = Array{Cint}(undef, nvar[1])
-  lj = Cint[nlp.meta.nnzj + nlp.meta.nvar]
-  lh = Cint[nlp.meta.nnzh]
-  nnzg = Cint[0]
-  nnzj = Cint[0]
-  nnzh = Cint[0]
-  True = Cint[true]
-  False = Cint[false]
-  Jx = Array{Cdouble}(undef, ncon[1], nvar[1])
-  Jtx = Array{Cdouble}(undef, nvar[1], ncon[1])
-  Jval = Array{Cdouble}(undef, nlp.meta.nnzj + nlp.meta.nvar)
-  Jvar = Array{Cint}(undef, nlp.meta.nnzj + nlp.meta.nvar)
-  Jfun = Array{Cint}(undef, nlp.meta.nnzj + nlp.meta.nvar)
-  Hx = Array{Cdouble}(undef, nvar[1], nvar[1])
-  Wx = Array{Cdouble}(undef, nvar[1], nvar[1])
-  Cx = Array{Cdouble}(undef, nvar[1], nvar[1])
-  Hval = Array{Cdouble}(undef, nlp.meta.nnzh)
-  Hrow = Array{Cint}(undef, nlp.meta.nnzh)
-  Hcol = Array{Cint}(undef, nlp.meta.nnzh)
+  if !test_view
+    st = Cint[0]
+    nvar = Cint[nlp.meta.nvar]
+    ncon = Cint[nlp.meta.ncon]
+    fx = [0.0]
+    lx = [0.0]
+    ci = [0.0]
+    cx = Array{Cdouble}(undef, ncon[1])
+    gx = Array{Cdouble}(undef, nvar[1])
+    gci = Array{Cdouble}(undef, nvar[1])
+    glx = Array{Cdouble}(undef, nvar[1])
+    gval = Array{Cdouble}(undef, nvar[1])
+    gvar = Array{Cint}(undef, nvar[1])
+    lj = Cint[nlp.meta.nnzj + nlp.meta.nvar]
+    lh = Cint[nlp.meta.nnzh]
+    nnzg = Cint[0]
+    nnzj = Cint[0]
+    nnzh = Cint[0]
+    True = Cint[true]
+    False = Cint[false]
+    Jx = Array{Cdouble}(undef, ncon[1], nvar[1])
+    Jtx = Array{Cdouble}(undef, nvar[1], ncon[1])
+    Jval = Array{Cdouble}(undef, nlp.meta.nnzj + nlp.meta.nvar)
+    Jvar = Array{Cint}(undef, nlp.meta.nnzj + nlp.meta.nvar)
+    Jfun = Array{Cint}(undef, nlp.meta.nnzj + nlp.meta.nvar)
+    Hx = Array{Cdouble}(undef, nvar[1], nvar[1])
+    Wx = Array{Cdouble}(undef, nvar[1], nvar[1])
+    Cx = Array{Cdouble}(undef, nvar[1], nvar[1])
+    Hval = Array{Cdouble}(undef, nlp.meta.nnzh)
+    Hrow = Array{Cint}(undef, nlp.meta.nnzh)
+    Hcol = Array{Cint}(undef, nlp.meta.nnzh)
+  else
+    st = view(Cint[0;0],1:1)
+    nvar = view(Cint[nlp.meta.nvar],1:1)
+    ncon = view(Cint[nlp.meta.ncon],1:1)
+    fx = view([0.0],1:1)
+    lx = view([0.0],1:1)
+    ci = view([0.0],1:1)
+    cx = @view(Array{Cdouble}(undef, ncon[1]+1)[2:end])
+    gx = @view(Array{Cdouble}(undef, nvar[1]+1)[2:end])
+    gci = @view(Array{Cdouble}(undef, nvar[1]+1)[2:end])
+    glx = @view(Array{Cdouble}(undef, nvar[1]+1)[2:end])
+    gval = @view(Array{Cdouble}(undef, nvar[1]+1)[2:end])
+    gvar = @view(Array{Cint}(undef, nvar[1]+1)[2:end])
+    lj = view(Cint[nlp.meta.nnzj + nlp.meta.nvar],1:1)
+    lh = view(Cint[nlp.meta.nnzh],1:1)
+    nnzg = view(Cint[0],1:1)
+    nnzj = view(Cint[0],1:1)
+    nnzh = view(Cint[0],1:1)
+    True = view(Cint[true],1:1)
+    False = view(Cint[false],1:1)
+    Jx = Array{Cdouble}(undef, ncon[1], nvar[1])
+    Jtx = Array{Cdouble}(undef, nvar[1], ncon[1])
+    Jval = @view(Array{Cdouble}(undef, nlp.meta.nnzj + nlp.meta.nvar+1)[2:end])
+    Jvar = @view(Array{Cint}(undef, nlp.meta.nnzj + nlp.meta.nvar+1)[2:end])
+    Jfun = @view(Array{Cint}(undef, nlp.meta.nnzj + nlp.meta.nvar+1)[2:end])
+    Hx = Array{Cdouble}(undef, nvar[1], nvar[1])
+    Wx = Array{Cdouble}(undef, nvar[1], nvar[1])
+    Cx = Array{Cdouble}(undef, nvar[1], nvar[1])
+    Hval = @view(Array{Cdouble}(undef, nlp.meta.nnzh+1)[2:end])
+    Hrow = @view(Array{Cint}(undef, nlp.meta.nnzh+1)[2:end])
+    Hcol = @view(Array{Cint}(undef, nlp.meta.nnzh+1)[2:end])    
+  end
 
   @testset "Core interface" begin
     if (ncon[1] > 0)

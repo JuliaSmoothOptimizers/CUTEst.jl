@@ -105,6 +105,12 @@ macro cutest_error()  # Handle nonzero exit codes.
   esc(:(io_err[1] > 0 && throw(CUTEstException(io_err[1]))))
 end
 
+# to allow view inputs with stride one
+StrideOneVector{T}=Union{
+    Vector{T},
+    SubArray{T,1,Array{T,1},Tuple{UnitRange{U}},true} where {U<:Integer}
+}
+
 include("core_interface.jl")
 include("julia_interface.jl")
 include("classification.jl")
