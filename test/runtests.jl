@@ -20,6 +20,7 @@ for problem in problems
 
   test_nlpinterface(nlp, nlp_man)
   test_coreinterface(nlp, nlp_man)
+  test_coreinterface(nlp, nlp_man; test_view = true)
   coverage_increase(nlp)
 
   println("Finalizing")

@@ -7,7 +7,7 @@ function NLPModels.objcons(nlp::CUTEstModel, x::AbstractVector)
   objcons!(nlp, Vector{Float64}(x), c)
 end
 
-function NLPModels.objcons!(nlp::CUTEstModel, x::Vector{Float64}, c::Vector{Float64})
+function NLPModels.objcons!(nlp::CUTEstModel, x::StrideOneVector{Float64}, c::StrideOneVector{Float64})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   io_err = Cint[0]
@@ -42,7 +42,7 @@ function NLPModels.objcons!(nlp::CUTEstModel, x::Vector{Float64}, c::Vector{Floa
   return f[1], c
 end
 
-function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::Vector{Float64})
+function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector{Float64})
   objcons!(nlp, Vector{Float64}(x), c)
 end
 
@@ -63,7 +63,7 @@ function NLPModels.objgrad(nlp::CUTEstModel, x::AbstractVector)
   objgrad!(nlp, Vector{Float64}(x), g)
 end
 
-function NLPModels.objgrad!(nlp::CUTEstModel, x::Vector{Float64}, g::Vector{Float64})
+function NLPModels.objgrad!(nlp::CUTEstModel, x::StrideOneVector{Float64}, g::StrideOneVector{Float64})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   f = Cdouble[0]
@@ -101,7 +101,7 @@ function NLPModels.objgrad!(nlp::CUTEstModel, x::Vector{Float64}, g::Vector{Floa
   return f[1], g
 end
 
-function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::Vector{Float64})
+function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::StrideOneVector{Float64})
   objgrad!(nlp, Vector{Float64}(x), g)
 end
 
@@ -144,11 +144,11 @@ Usage:
 """
 function cons_coord!(
   nlp::CUTEstModel,
-  x::Vector{Float64},
-  c::Vector{Float64},
-  rows::Vector{Int32},
-  cols::Vector{Int32},
-  vals::Vector{Float64},
+  x::StrideOneVector{Float64},
+  c::StrideOneVector{Float64},
+  rows::StrideOneVector{Int32},
+  cols::StrideOneVector{Int32},
+  vals::StrideOneVector{Float64},
 )
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
@@ -227,7 +227,7 @@ Usage:
   - jcol: [OUT] Vector{Int32}
   - jval: [OUT] Vector{Float64}
 """
-function cons_coord(nlp::CUTEstModel, x::Vector{Float64})
+function cons_coord(nlp::CUTEstModel, x::StrideOneVector{Float64})
   c = Vector{Float64}(undef, nlp.meta.ncon)
   rows = Vector{Int32}(undef, nlp.meta.nnzj)
   cols = Vector{Int32}(undef, nlp.meta.nnzj)
@@ -264,7 +264,7 @@ function NLPModels.cons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
   return c
 end
 
-function NLPModels.jac_structure!(nlp::CUTEstModel, rows::Vector{Int32}, cols::Vector{Int32})
+function NLPModels.jac_structure!(nlp::CUTEstModel, rows::StrideOneVector{Int32}, cols::StrideOneVector{Int32})
   nnzj = nlp.meta.nnzj
   io_err = Cint[0]
   this_nnzj = Cint[0]
@@ -329,9 +329,9 @@ end
 
 function NLPModels.jprod!(
   nlp::CUTEstModel,
-  x::Vector{Float64},
-  v::Vector{Float64},
-  jv::Vector{Float64},
+  x::StrideOneVector{Float64},
+  v::StrideOneVector{Float64},
+  jv::StrideOneVector{Float64},
 )
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
@@ -373,7 +373,7 @@ function NLPModels.jprod!(
   nlp::CUTEstModel,
   x::AbstractVector,
   v::AbstractVector,
-  jv::Vector{Float64},
+  jv::StrideOneVector{Float64},
 )
   jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jv)
 end
@@ -391,9 +391,9 @@ end
 
 function NLPModels.jtprod!(
   nlp::CUTEstModel,
-  x::Vector{Float64},
-  v::Vector{Float64},
-  jtv::Vector{Float64},
+  x::StrideOneVector{Float64},
+  v::StrideOneVector{Float64},
+  jtv::StrideOneVector{Float64},
 )
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
@@ -435,7 +435,7 @@ function NLPModels.jtprod!(
   nlp::CUTEstModel,
   x::AbstractVector,
   v::AbstractVector,
-  jtv::Vector{Float64},
+  jtv::StrideOneVector{Float64},
 )
   jtprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jtv)
 end
@@ -451,7 +451,7 @@ function NLPModels.jtprod!(
   jtv[1:(nlp.meta.nvar)] .= jtvc
 end
 
-function NLPModels.hess_structure!(nlp::CUTEstModel, rows::Vector{Int32}, cols::Vector{Int32})
+function NLPModels.hess_structure!(nlp::CUTEstModel, rows::StrideOneVector{Int32}, cols::StrideOneVector{Int32})
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh
@@ -545,9 +545,9 @@ end
 
 function NLPModels.hess_coord!(
   nlp::CUTEstModel,
-  x::Vector{Float64},
-  y::Vector{Float64},
-  vals::Vector{Float64};
+  x::StrideOneVector{Float64},
+  y::StrideOneVector{Float64},
+  vals::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
   nvar = nlp.meta.nvar
@@ -673,10 +673,10 @@ end
 
 function NLPModels.hprod!(
   nlp::CUTEstModel,
-  x::Vector{Float64},
-  y::Vector{Float64},
-  v::Vector{Float64},
-  hv::Vector{Float64};
+  x::StrideOneVector{Float64},
+  y::StrideOneVector{Float64},
+  v::StrideOneVector{Float64},
+  hv::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
   nvar = nlp.meta.nvar
@@ -762,7 +762,7 @@ function NLPModels.hprod!(
   x::AbstractVector,
   y::AbstractVector,
   v::AbstractVector,
-  hv::Vector{Float64};
+  hv::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
   hprod!(
@@ -799,7 +799,7 @@ function NLPModels.hprod!(
   nlp::CUTEstModel,
   x::AbstractVector,
   v::AbstractVector,
-  hv::Vector{Float64};
+  hv::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
   hprod!(
