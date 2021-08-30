@@ -24,6 +24,7 @@ mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
   hcols::Vector{Int32}
   jrows::Vector{Int32}
   jcols::Vector{Int32}
+  work::Vector{Float64}  
 end
 
 const funit = convert(Int32, 42)
@@ -351,7 +352,8 @@ function CUTEstModel(
   hcols = Vector{Int32}(undef, nnzh)
   jrows = Vector{Int32}(undef, nnzj)
   jcols = Vector{Int32}(undef, nnzj)
-  nlp = CUTEstModel(meta, Counters(), hrows, hcols, jrows, jcols)
+  work  = Vector{Int32}(undef, ncon)
+  nlp = CUTEstModel(meta, Counters(), hrows, hcols, jrows, jcols, work)
 
   cutest_instances += 1
   finalizer(cutest_finalize, nlp)
