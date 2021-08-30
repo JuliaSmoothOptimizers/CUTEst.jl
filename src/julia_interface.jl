@@ -113,7 +113,7 @@ function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::AbstractVect
 end
 
 function NLPModels.obj(nlp::CUTEstModel, x::AbstractVector)
-  f = objcons(nlp, x)[1]
+  f = objcons!(nlp, x, nlp.work)[1]
   if nlp.meta.ncon > 0
     nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   end
@@ -321,8 +321,7 @@ function NLPModels.jac_structure!(
 end
 
 function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
-  c = Vector{Float64}(undef, nlp.meta.ncon)
-  cons_coord!(nlp, x, c, nlp.jrows, nlp.jcols, vals)
+  cons_coord!(nlp, x, nlp.work, nlp.jrows, nlp.jcols, vals)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return vals
 end
