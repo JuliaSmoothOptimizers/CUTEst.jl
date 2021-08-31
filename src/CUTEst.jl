@@ -108,7 +108,7 @@ end
 # to allow view inputs with stride one
 StrideOneVector{T} = Union{
   Vector{T},
-    SubArray{T,1,Array{T,1},Tuple{UnitRange{U}},true} where {U<:Integer}
+  SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer}
 }
 
 include("core_interface.jl")
