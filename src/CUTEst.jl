@@ -107,7 +107,7 @@ end
 
 # to allow view inputs with stride one
 StrideOneVector{T} = Union{
-    Vector{T},
+  Vector{T},
     SubArray{T,1,Array{T,1},Tuple{UnitRange{U}},true} where {U<:Integer}
 }
 
