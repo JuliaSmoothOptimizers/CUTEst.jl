@@ -24,7 +24,7 @@ mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
   hcols::Vector{Int32}
   jrows::Vector{Int32}
   jcols::Vector{Int32}
-  work::Vector{Float64}  
+  work::Vector{Float64}
 end
 
 const funit = convert(Int32, 42)
@@ -107,10 +107,8 @@ macro cutest_error()  # Handle nonzero exit codes.
 end
 
 # to allow view inputs with stride one
-StrideOneVector{T} = Union{
-  Vector{T},
-  SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer}
-}
+StrideOneVector{T} =
+  Union{Vector{T}, SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer}}
 
 include("core_interface.jl")
 include("julia_interface.jl")
@@ -358,7 +356,7 @@ function CUTEstModel(
   hcols = Vector{Int32}(undef, nnzh)
   jrows = Vector{Int32}(undef, nnzj)
   jcols = Vector{Int32}(undef, nnzj)
-  work  = Vector{Int32}(undef, ncon)
+  work = Vector{Int32}(undef, ncon)
   nlp = CUTEstModel(meta, Counters(), hrows, hcols, jrows, jcols, work)
 
   cutest_instances += 1
