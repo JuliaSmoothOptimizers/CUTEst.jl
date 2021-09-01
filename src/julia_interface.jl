@@ -7,7 +7,11 @@ function NLPModels.objcons(nlp::CUTEstModel, x::AbstractVector)
   objcons!(nlp, Vector{Float64}(x), c)
 end
 
-function NLPModels.objcons!(nlp::CUTEstModel, x::StrideOneVector{Float64}, c::StrideOneVector{Float64})
+function NLPModels.objcons!(
+  nlp::CUTEstModel,
+  x::StrideOneVector{Float64},
+  c::StrideOneVector{Float64},
+)
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   io_err = Cint[0]
@@ -63,7 +67,11 @@ function NLPModels.objgrad(nlp::CUTEstModel, x::AbstractVector)
   objgrad!(nlp, Vector{Float64}(x), g)
 end
 
-function NLPModels.objgrad!(nlp::CUTEstModel, x::StrideOneVector{Float64}, g::StrideOneVector{Float64})
+function NLPModels.objgrad!(
+  nlp::CUTEstModel,
+  x::StrideOneVector{Float64},
+  g::StrideOneVector{Float64},
+)
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   f = Cdouble[0]
@@ -264,7 +272,11 @@ function NLPModels.cons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
   return c
 end
 
-function NLPModels.jac_structure!(nlp::CUTEstModel, rows::StrideOneVector{Int32}, cols::StrideOneVector{Int32})
+function NLPModels.jac_structure!(
+  nlp::CUTEstModel,
+  rows::StrideOneVector{Int32},
+  cols::StrideOneVector{Int32},
+)
   nnzj = nlp.meta.nnzj
   io_err = Cint[0]
   this_nnzj = Cint[0]
@@ -450,7 +462,11 @@ function NLPModels.jtprod!(
   jtv[1:(nlp.meta.nvar)] .= jtvc
 end
 
-function NLPModels.hess_structure!(nlp::CUTEstModel, rows::StrideOneVector{Int32}, cols::StrideOneVector{Int32})
+function NLPModels.hess_structure!(
+  nlp::CUTEstModel,
+  rows::StrideOneVector{Int32},
+  cols::StrideOneVector{Int32},
+)
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh

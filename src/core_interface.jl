@@ -245,7 +245,11 @@ Usage:
   - input:   [IN] Vector{Cint}
   - n:       [OUT] Vector{Cint}
 """
-function udimen(io_err::StrideOneVector{Cint}, input::StrideOneVector{Cint}, n::StrideOneVector{Cint})
+function udimen(
+  io_err::StrideOneVector{Cint},
+  input::StrideOneVector{Cint},
+  n::StrideOneVector{Cint},
+)
   ccall(
     dlsym(cutest_lib, "cutest_udimen_"),
     Nothing,
@@ -341,7 +345,11 @@ Usage:
   - n:       [IN] Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
-function uvartype(io_err::StrideOneVector{Cint}, n::StrideOneVector{Cint}, x_type::StrideOneVector{Cint})
+function uvartype(
+  io_err::StrideOneVector{Cint},
+  n::StrideOneVector{Cint},
+  x_type::StrideOneVector{Cint},
+)
   ccall(
     dlsym(cutest_lib, "cutest_uvartype_"),
     Nothing,
@@ -373,7 +381,12 @@ Usage:
 
 To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
-function unames(io_err::StrideOneVector{Cint}, n::StrideOneVector{Cint}, pname::StrideOneVector{UInt8}, vname::Array{UInt8, 2})
+function unames(
+  io_err::StrideOneVector{Cint},
+  n::StrideOneVector{Cint},
+  pname::StrideOneVector{UInt8},
+  vname::Array{UInt8, 2},
+)
   ccall(
     dlsym(cutest_lib, "cutest_unames_"),
     Nothing,
@@ -405,7 +418,11 @@ Usage:
   - calls:   [OUT] Vector{Cdouble}
   - time:    [OUT] Vector{Cdouble}
 """
-function ureport(io_err::StrideOneVector{Cint}, calls::StrideOneVector{Cdouble}, time::StrideOneVector{Cdouble})
+function ureport(
+  io_err::StrideOneVector{Cint},
+  calls::StrideOneVector{Cdouble},
+  time::StrideOneVector{Cdouble},
+)
   ccall(
     dlsym(cutest_lib, "cutest_ureport_"),
     Nothing,
@@ -439,7 +456,12 @@ Usage:
   - n:       [OUT] Vector{Cint}
   - m:       [OUT] Vector{Cint}
 """
-function cdimen(io_err::StrideOneVector{Cint}, input::StrideOneVector{Cint}, n::StrideOneVector{Cint}, m::StrideOneVector{Cint})
+function cdimen(
+  io_err::StrideOneVector{Cint},
+  input::StrideOneVector{Cint},
+  n::StrideOneVector{Cint},
+  m::StrideOneVector{Cint},
+)
   ccall(
     dlsym(cutest_lib, "cutest_cdimen_"),
     Nothing,
@@ -625,7 +647,11 @@ Usage:
   - n:       [IN] Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
-function cvartype(io_err::StrideOneVector{Cint}, n::StrideOneVector{Cint}, x_type::StrideOneVector{Cint})
+function cvartype(
+  io_err::StrideOneVector{Cint},
+  n::StrideOneVector{Cint},
+  x_type::StrideOneVector{Cint},
+)
   ccall(
     dlsym(cutest_lib, "cutest_cvartype_"),
     Nothing,
@@ -706,7 +732,11 @@ Usage:
   - calls:   [OUT] Vector{Cdouble}
   - time:    [OUT] Vector{Cdouble}
 """
-function creport(io_err::StrideOneVector{Cint}, calls::StrideOneVector{Cdouble}, time::StrideOneVector{Cdouble})
+function creport(
+  io_err::StrideOneVector{Cint},
+  calls::StrideOneVector{Cdouble},
+  time::StrideOneVector{Cdouble},
+)
   ccall(
     dlsym(cutest_lib, "cutest_creport_"),
     Nothing,
@@ -773,7 +803,11 @@ Usage:
   - input:   [IN] Vector{Cint}
   - pname:   [OUT] Vector{UInt8}
 """
-function pname(io_err::StrideOneVector{Cint}, input::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
+function pname(
+  io_err::StrideOneVector{Cint},
+  input::StrideOneVector{Cint},
+  pname::StrideOneVector{UInt8},
+)
   ccall(
     dlsym(cutest_lib, "cutest_pname_"),
     Nothing,
@@ -863,7 +897,12 @@ Usage:
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
 """
-function ufn(io_err::StrideOneVector{Cint}, n::StrideOneVector{Cint}, x::StrideOneVector{Cdouble}, f::StrideOneVector{Cdouble})
+function ufn(
+  io_err::StrideOneVector{Cint},
+  n::StrideOneVector{Cint},
+  x::StrideOneVector{Cdouble},
+  f::StrideOneVector{Cdouble},
+)
   ccall(
     dlsym(cutest_lib, "cutest_ufn_"),
     Nothing,
@@ -895,7 +934,12 @@ Usage:
   - x:       [IN] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
 """
-function ugr(io_err::StrideOneVector{Cint}, n::StrideOneVector{Cint}, x::StrideOneVector{Cdouble}, g::StrideOneVector{Cdouble})
+function ugr(
+  io_err::StrideOneVector{Cint},
+  n::StrideOneVector{Cint},
+  x::StrideOneVector{Cdouble},
+  g::StrideOneVector{Cdouble},
+)
   ccall(
     dlsym(cutest_lib, "cutest_ugr_"),
     Nothing,
