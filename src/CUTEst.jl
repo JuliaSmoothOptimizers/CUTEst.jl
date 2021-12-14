@@ -312,9 +312,6 @@ function CUTEstModel(
   end
 
   lin = findall(linear .!= 0)
-  nln = setdiff(1:ncon, lin)
-  nlin = sum(linear)
-  nnln = ncon - nlin
 
   nnzh = Cint[0]
   nnzj = Cint[0]
@@ -346,9 +343,6 @@ function CUTEstModel(
     nnzj = nnzj,
     nnzh = nnzh,
     lin = lin,
-    nln = nln,
-    nlin = nlin,
-    nnln = nnln,
     name = splitext(name)[1],
   )
 
