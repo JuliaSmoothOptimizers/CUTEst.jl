@@ -7,7 +7,7 @@ set_mastsif()
 @test ispath(ENV["MASTSIF"])
 @test isfile(joinpath(ENV["MASTSIF"], "CYCLOOCT.SIF"))
 
-problems = ["BROWNDEN", "HS5", "HS6", "HS10", "HS11", "HS14"]
+problems = ["BROWNDEN", "HS5", "HS6", "HS10", "HS11", "HS13", "HS14"]
 
 include("test_core.jl")
 include("test_julia.jl")
