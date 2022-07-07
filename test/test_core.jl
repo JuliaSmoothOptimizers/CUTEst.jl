@@ -78,13 +78,15 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
     if (ncon[1] > 0)
       cfn(st, nvar, ncon, x0, fx, cx)
       @test isapprox(fx[1], f(x0), rtol = rtol)
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
 
       cifn(st, nvar, Cint[0], x0, fx)
       @test isapprox(fx[1], f(x0), rtol = rtol)
       for i = 1:ncon[1]
         cifn(st, nvar, Cint[i], x0, cx)
-        @test isapprox(cx[1], c(x0)[i], rtol = rtol)
+        #@test isapprox(cx[1], c(x0)[i], rtol = rtol)
+        @test isapprox(cx[1] - nlp.meta.ucon[i], c(x0)[i] - comp_nlp.meta.ucon[i], rtol = rtol)
+        @test isapprox(cx[1] - nlp.meta.lcon[i], c(x0)[i] - comp_nlp.meta.lcon[i], rtol = rtol)
       end
 
       cofg(st, nvar, x0, fx, gx, True)
@@ -166,7 +168,7 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
       for k = 1:nnzj[1]
         Jx[Jfun[k], Jvar[k]] = Jval[k]
       end
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
       for j = 1:ncon[1]
@@ -174,7 +176,7 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
         cx[j] = ci[1]
         Jx[j, :] = gci'
       end
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
       Jx = zeros(ncon[1], nvar[1])
@@ -185,7 +187,7 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
           Jx[j, Jvar[k]] = Jval[k]
         end
       end
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
       cgrdh(st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar, Wx)
