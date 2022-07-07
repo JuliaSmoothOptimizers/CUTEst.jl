@@ -272,6 +272,44 @@ function NLPModels.cons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
   return c
 end
 
+function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
+  _cx = Vector{Float64}(undef, nlp.meta.nlin)
+  cons_lin!(nlp, x, _cx)
+  c .= _cx
+  return c
+end
+
+function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
+  st = view(Cint[0; 0], 1:1)
+  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  k = 1
+  for j in nlp.meta.lin
+    cifn(st, nvar, Cint[j], x, view(c, k:k))
+    k += 1
+  end
+  nlp.counters.neval_cons_lin += 1
+  return c
+end
+
+function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
+  _cx = Vector{Float64}(undef, nlp.meta.nnln)
+  cons_nln!(nlp, x, _cx)
+  c .= _cx
+  return c
+end
+
+function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
+  st = view(Cint[0; 0], 1:1)
+  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  k = 1
+  for j in nlp.meta.nln
+    cifn(st, nvar, Cint[j], x, view(c, k:k))
+    k += 1
+  end
+  nlp.counters.neval_cons_nln += 1
+  return c
+end
+
 function NLPModels.jac_structure!(
   nlp::CUTEstModel,
   rows::StrideOneVector{Int32},
@@ -332,9 +370,107 @@ function NLPModels.jac_structure!(
   return rows, cols
 end
 
+function NLPModels.jac_lin_structure!(
+  nlp::CUTEstModel,
+  rows::AbstractVector{<:Integer},
+  cols::AbstractVector{<:Integer},
+)
+  st = view(Cint[0; 0], 1:1)
+  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  ci = view([0.0], 1:1)
+  nnzj = view(Cint[0], 1:1)
+  lj = view(Cint[nlp.meta.nvar], 1:1)
+  Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
+  Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
+  True = view(Cint[true], 1:1)
+  i = 1
+  for j in nlp.meta.lin
+    ccifsg(st, nvar, Cint[j], nlp.meta.x0, ci, nnzj, lj, Jval, Jvar, True)
+    for k = 1:nnzj[1]
+      rows[i] = findfirst(x -> x == j, nlp.meta.lin) # j
+      cols[i] = Jvar[k]
+      i += 1
+    end
+  end
+  rows[i:end] .= one(eltype(rows))
+  cols[i:end] .= one(eltype(rows))
+  return rows, cols
+end
+
+function NLPModels.jac_nln_structure!(
+  nlp::CUTEstModel,
+  rows::AbstractVector{<:Integer},
+  cols::AbstractVector{<:Integer},
+)
+  st = view(Cint[0; 0], 1:1)
+  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  ci = view([0.0], 1:1)
+  nnzj = view(Cint[0], 1:1)
+  lj = view(Cint[nlp.meta.nvar], 1:1)
+  Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
+  Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
+  True = view(Cint[true], 1:1)
+  i = 1
+  for j in nlp.meta.nln
+    ccifsg(st, nvar, Cint[j], nlp.meta.x0, ci, nnzj, lj, Jval, Jvar, True)
+    for k = 1:nnzj[1]
+      rows[i] = findfirst(x -> x == j, nlp.meta.nln)
+      cols[i] = Jvar[k]
+      i += 1
+    end
+  end
+  rows[i:end] .= one(eltype(rows))
+  cols[i:end] .= one(eltype(rows))
+  return rows, cols
+end
+
 function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
   cons_coord!(nlp, x, nlp.work, nlp.jrows, nlp.jcols, vals)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
+  return vals
+end
+
+function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
+  st = view(Cint[0; 0], 1:1)
+  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  ci = view([0.0], 1:1)
+  nnzj = view(Cint[0], 1:1)
+  lj = view(Cint[nlp.meta.nvar], 1:1)
+  Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
+  Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
+  True = view(Cint[true], 1:1)
+  i = 1
+  for j in nlp.meta.lin
+    ccifsg(st, nvar, Cint[j], x, ci, nnzj, lj, Jval, Jvar, True)
+    for k = 1:nnzj[1]
+      vals[i] = Jval[k]
+      i += 1
+    end
+  end
+  vals[i:end] .= zero(eltype(vals))
+  nlp.counters.neval_jac_lin += 1
+  return vals
+end
+
+function NLPModels.jac_nln_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
+  st = view(Cint[0; 0], 1:1)
+  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  ci = view([0.0], 1:1)
+  nnzj = view(Cint[0], 1:1)
+  lj = view(Cint[nlp.meta.nvar], 1:1)
+  Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
+  Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
+  True = view(Cint[true], 1:1)
+  i = 1
+  for j in nlp.meta.nln
+    ccifsg(st, nvar, Cint[j], x, ci, nnzj, lj, Jval, Jvar, True)
+    for k = 1:nnzj[1]
+      vals[i] = Jval[k]
+      i += 1
+    end
+  end
+  vals[i:end] .= zero(eltype(vals))
+  nlp.counters.neval_jac_nln += 1
   return vals
 end
 
@@ -400,6 +536,32 @@ function NLPModels.jprod!(
   jv[1:(nlp.meta.ncon)] .= jvc
 end
 
+function NLPModels.jprod_nln!(
+  nlp::CUTEstModel,
+  x::AbstractVector,
+  v::AbstractVector,
+  jv::AbstractVector,
+)
+  jvc = zeros(nlp.meta.ncon)
+  jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jvc)
+  nlp.counters.neval_jprod -= 1
+  nlp.counters.neval_jprod_nln += 1
+  jv[1:(nlp.meta.nnln)] .= jvc[nlp.meta.nln]
+end
+
+function NLPModels.jprod_lin!(
+  nlp::CUTEstModel,
+  x::AbstractVector,
+  v::AbstractVector,
+  jv::AbstractVector,
+)
+  jvc = zeros(nlp.meta.ncon)
+  jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jvc)
+  nlp.counters.neval_jprod -= 1
+  nlp.counters.neval_jprod_lin += 1
+  jv[1:(nlp.meta.nlin)] .= jvc[nlp.meta.lin]
+end
+
 function NLPModels.jtprod!(
   nlp::CUTEstModel,
   x::StrideOneVector{Float64},
@@ -459,6 +621,38 @@ function NLPModels.jtprod!(
 )
   jtvc = zeros(nlp.meta.nvar)
   jtprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jtvc)
+  jtv[1:(nlp.meta.nvar)] .= jtvc
+end
+
+function NLPModels.jtprod_nln!(
+  nlp::CUTEstModel,
+  x::AbstractVector,
+  v::AbstractVector{T},
+  jtv::AbstractVector,
+) where {T}
+  jtvc = zeros(nlp.meta.nvar)
+  _v = Vector{Float64}(undef, nlp.meta.ncon)
+  _v[nlp.meta.lin] .= zero(T)
+  _v[nlp.meta.nln] = v
+  jtprod!(nlp, Vector{Float64}(x), _v, jtvc)
+  nlp.counters.neval_jtprod -= 1
+  nlp.counters.neval_jtprod_nln += 1
+  jtv[1:(nlp.meta.nvar)] .= jtvc
+end
+
+function NLPModels.jtprod_lin!(
+  nlp::CUTEstModel,
+  x::AbstractVector,
+  v::AbstractVector{T},
+  jtv::AbstractVector,
+) where {T}
+  jtvc = zeros(nlp.meta.nvar)
+  _v = Vector{Float64}(undef, nlp.meta.ncon)
+  _v[nlp.meta.nln] .= zero(T)
+  _v[nlp.meta.lin] = v
+  jtprod!(nlp, Vector{Float64}(x), _v, jtvc)
+  nlp.counters.neval_jtprod -= 1
+  nlp.counters.neval_jtprod_lin += 1
   jtv[1:(nlp.meta.nvar)] .= jtvc
 end
 
