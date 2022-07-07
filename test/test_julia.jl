@@ -1,3 +1,8 @@
+function compare_cons(nlp1, cx1, nlp2, cx2, rtol)
+  @test isapprox(cx1 - nlp1.meta.ucon, cx2 - nlp2.meta.ucon, rtol = rtol)
+  @test isapprox(cx1 - nlp1.meta.lcon, cx2 - nlp2.meta.lcon, rtol = rtol)
+end
+
 function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
   x0 = nlp.meta.x0
   f(x) = obj(comp_nlp, x)
@@ -30,11 +35,11 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     if nlp.meta.ncon > 0
       (fx, cx) = objcons(nlp, x0)
       @test isapprox(fx, f(x0), rtol = rtol)
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
 
       (cx, jrow, jcol, jval) = cons_coord(nlp, x0)
       Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
       jac_structure!(nlp)
@@ -48,19 +53,19 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       x[1:2:end] .= x0
       (cx, jrow, jcol, jval) = cons_coord(nlp, @view x[1:2:end])
       Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
       (cx, Jx) = consjac(nlp, x0)
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
       cx = cons(nlp, x0) # This is here to improve coverage
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
 
       fill!(cx, 0.0)
       cons!(nlp, x0, cx)
-      @test isapprox(cx, c(x0), rtol = rtol)
+      compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
 
       jval = jac_coord(nlp, x0)
       Jx = sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
