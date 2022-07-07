@@ -312,6 +312,7 @@ function CUTEstModel(
   end
 
   lin = findall(linear .!= 0)
+  nlin = length(lin)
 
   nnzh = Cint[0]
   nnzj = Cint[0]
@@ -331,18 +332,23 @@ function CUTEstModel(
   ccall(dlsym(cutest_lib, :fortran_close_), Nothing, (Ref{Int32}, Ptr{Int32}), funit, io_err)
   @cutest_error
 
+  ncon = Int(ncon)
+  nvar = Int(nvar)
+
   meta = NLPModelMeta(
-    Int(nvar),
+    nvar,
     x0 = x,
     lvar = bl,
     uvar = bu,
-    ncon = Int(ncon),
+    ncon = ncon,
     y0 = v,
     lcon = cl,
     ucon = cu,
     nnzj = nnzj,
     nnzh = nnzh,
     lin = lin,
+    lin_nnzj = min(nvar * nlin, nnzj),
+    nln_nnzj = min(nvar * (ncon - nlin), nnzj),
     name = splitext(name)[1],
   )
 
