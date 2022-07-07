@@ -22,4 +22,5 @@ deploydocs(
   repo = "github.com/JuliaSmoothOptimizers/CUTEst.jl.git",
   target = "build",
   devbranch = "main",
+  push_preview = true,
 )
