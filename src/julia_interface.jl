@@ -627,32 +627,52 @@ end
 function NLPModels.jtprod_nln!(
   nlp::CUTEstModel,
   x::AbstractVector,
-  v::AbstractVector{T},
-  jtv::AbstractVector,
-) where {T}
-  jtvc = zeros(nlp.meta.nvar)
+  v::AbstractVector,
+  jtv::StrideOneVector{Float64},
+)
   _v = Vector{Float64}(undef, nlp.meta.ncon)
-  _v[nlp.meta.lin] .= zero(T)
+  _v[nlp.meta.lin] .= 0.0
   _v[nlp.meta.nln] = v
-  jtprod!(nlp, Vector{Float64}(x), _v, jtvc)
+  jtprod!(nlp, Vector{Float64}(x), _v, jtv)
   nlp.counters.neval_jtprod -= 1
   nlp.counters.neval_jtprod_nln += 1
+  return jtv
+end
+
+function NLPModels.jtprod_nln!(
+  nlp::CUTEstModel,
+  x::AbstractVector,
+  v::AbstractVector,
+  jtv::AbstractVector,
+)
+  jtvc = zeros(nlp.meta.nvar)
+  jtprod_nln!(nlp, x, _v, jtvc)
   jtv[1:(nlp.meta.nvar)] .= jtvc
 end
 
 function NLPModels.jtprod_lin!(
   nlp::CUTEstModel,
   x::AbstractVector,
-  v::AbstractVector{T},
-  jtv::AbstractVector,
-) where {T}
-  jtvc = zeros(nlp.meta.nvar)
+  v::AbstractVector,
+  jtv::StrideOneVector{Float64},
+)
   _v = Vector{Float64}(undef, nlp.meta.ncon)
-  _v[nlp.meta.nln] .= zero(T)
+  _v[nlp.meta.nln] .= 0.0
   _v[nlp.meta.lin] = v
-  jtprod!(nlp, Vector{Float64}(x), _v, jtvc)
+  jtprod!(nlp, Vector{Float64}(x), _v, jtv)
   nlp.counters.neval_jtprod -= 1
   nlp.counters.neval_jtprod_lin += 1
+  return jtv
+end
+
+function NLPModels.jtprod_lin!(
+  nlp::CUTEstModel,
+  x::AbstractVector,
+  v::AbstractVector,
+  jtv::AbstractVector,
+)
+  jtvc = zeros(nlp.meta.nvar)
+  jtprod_lin!(nlp, x, v, jtvc)
   jtv[1:(nlp.meta.nvar)] .= jtvc
 end
 
