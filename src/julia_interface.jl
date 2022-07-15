@@ -370,11 +370,7 @@ function NLPModels.jac_structure!(
   return rows, cols
 end
 
-function NLPModels.jac_lin_structure!(
-  nlp::CUTEstModel,
-  rows::AbstractVector{<:Integer},
-  cols::AbstractVector{<:Integer},
-)
+function eval_lin_structure!(nlp)
   st = Cint[0]
   nvar = Cint[nlp.meta.nvar]
   ci = view([0.0], 1:1)
@@ -387,13 +383,29 @@ function NLPModels.jac_lin_structure!(
   for j in nlp.meta.lin
     ccifsg(st, nvar, Cint[j], nlp.meta.x0, ci, nnzj, lj, Jval, Jvar, True)
     for k = 1:nnzj[1]
-      rows[i] = findfirst(x -> x == j, nlp.meta.lin) # j
-      cols[i] = Jvar[k]
+      nlp.clinrows[i] = findfirst(x -> x == j, nlp.meta.lin) # j
+      nlp.clincols[i] = Jvar[k]
+      nlp.clinvals[i] = Jval[k]
       i += 1
     end
   end
-  rows[i:end] .= one(eltype(rows))
-  cols[i:end] .= one(eltype(rows))
+  nlp.clinrows[i:end] .= Int32(1)
+  nlp.clincols[i:end] .= Int32(1)
+  nlp.clinvals[i:end] .= 0.0
+  nlp.lin_structure_reliable = true
+  return nlp
+end
+
+function NLPModels.jac_lin_structure!(
+  nlp::CUTEstModel,
+  rows::AbstractVector{<:Integer},
+  cols::AbstractVector{<:Integer},
+)
+  if !nlp.lin_structure_reliable
+    eval_lin_structure!(nlp)
+  end
+  rows .= nlp.clinrows
+  cols .= nlp.clincols
   return rows, cols
 end
 
@@ -402,25 +414,30 @@ function NLPModels.jac_nln_structure!(
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
-  st = Cint[0]
-  nvar = Cint[nlp.meta.nvar]
-  ci = view([0.0], 1:1)
-  nnzj = view(Cint[0], 1:1)
-  lj = view(Cint[nlp.meta.nvar], 1:1)
-  Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
-  Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
-  True = view(Cint[true], 1:1)
-  i = 1
-  for j in nlp.meta.nln
-    ccifsg(st, nvar, Cint[j], nlp.meta.x0, ci, nnzj, lj, Jval, Jvar, True)
-    for k = 1:nnzj[1]
-      rows[i] = findfirst(x -> x == j, nlp.meta.nln)
-      cols[i] = Jvar[k]
-      i += 1
+  if !nlp.nln_structure_reliable
+    st = Cint[0]
+    nvar = Cint[nlp.meta.nvar]
+    ci = view([0.0], 1:1)
+    nnzj = view(Cint[0], 1:1)
+    lj = view(Cint[nlp.meta.nvar], 1:1)
+    Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
+    Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
+    True = view(Cint[true], 1:1)
+    i = 1
+    for j in nlp.meta.nln
+      ccifsg(st, nvar, Cint[j], nlp.meta.x0, ci, nnzj, lj, Jval, Jvar, True)
+      for k = 1:nnzj[1]
+        nlp.cnlnrows[i] = findfirst(x -> x == j, nlp.meta.nln)
+        nlp.cnlncols[i] = Jvar[k]
+        i += 1
+      end
     end
+    nlp.cnlnrows[i:end] .= one(eltype(rows))
+    nlp.cnlncols[i:end] .= one(eltype(rows))
+    nlp.nln_structure_reliable = true
   end
-  rows[i:end] .= one(eltype(rows))
-  cols[i:end] .= one(eltype(rows))
+  rows .= nlp.cnlnrows
+  cols .= nlp.cnlncols
   return rows, cols
 end
 
@@ -431,24 +448,10 @@ function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abstrac
 end
 
 function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
-  st = Cint[0]
-  nvar = Cint[nlp.meta.nvar]
-  ci = view([0.0], 1:1)
-  nnzj = view(Cint[0], 1:1)
-  lj = view(Cint[nlp.meta.nvar], 1:1)
-  Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
-  Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
-  True = view(Cint[true], 1:1)
-  i = 1
-  for j in nlp.meta.lin
-    ccifsg(st, nvar, Cint[j], x, ci, nnzj, lj, Jval, Jvar, True)
-    for k = 1:nnzj[1]
-      vals[i] = Jval[k]
-      i += 1
-    end
+  if !nlp.lin_structure_reliable
+    eval_lin_structure!(nlp)
   end
-  vals[i:end] .= zero(eltype(vals))
-  nlp.counters.neval_jac_lin += 1
+  vals .= nlp.clinvals
   return vals
 end
 
@@ -555,11 +558,12 @@ function NLPModels.jprod_lin!(
   v::AbstractVector,
   jv::AbstractVector,
 )
-  jvc = zeros(nlp.meta.ncon)
-  jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jvc)
-  nlp.counters.neval_jprod -= 1
   nlp.counters.neval_jprod_lin += 1
-  jv[1:(nlp.meta.nlin)] .= jvc[nlp.meta.lin]
+  if !nlp.lin_structure_reliable
+    eval_lin_structure!(nlp)
+  end
+  jprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jv)
+  return jv
 end
 
 function NLPModels.jtprod!(
@@ -656,12 +660,11 @@ function NLPModels.jtprod_lin!(
   v::AbstractVector,
   jtv::StrideOneVector{Float64},
 )
-  _v = Vector{Float64}(undef, nlp.meta.ncon)
-  _v[nlp.meta.nln] .= 0.0
-  _v[nlp.meta.lin] = v
-  jtprod!(nlp, Vector{Float64}(x), _v, jtv)
-  nlp.counters.neval_jtprod -= 1
   nlp.counters.neval_jtprod_lin += 1
+  if !nlp.lin_structure_reliable
+    eval_lin_structure!(nlp)
+  end
+  jtprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jtv)
   return jtv
 end
 
