@@ -280,8 +280,8 @@ function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
 end
 
 function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
-  st = view(Cint[0; 0], 1:1)
-  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  st = Cint[0]
+  nvar = Cint[nlp.meta.nvar]
   k = 1
   for j in nlp.meta.lin
     cifn(st, nvar, Cint[j], x, view(c, k:k))
@@ -299,8 +299,8 @@ function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
 end
 
 function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
-  st = view(Cint[0; 0], 1:1)
-  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  st = Cint[0]
+  nvar = Cint[nlp.meta.nvar]
   k = 1
   for j in nlp.meta.nln
     cifn(st, nvar, Cint[j], x, view(c, k:k))
@@ -375,8 +375,8 @@ function NLPModels.jac_lin_structure!(
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
-  st = view(Cint[0; 0], 1:1)
-  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  st = Cint[0]
+  nvar = Cint[nlp.meta.nvar]
   ci = view([0.0], 1:1)
   nnzj = view(Cint[0], 1:1)
   lj = view(Cint[nlp.meta.nvar], 1:1)
@@ -402,8 +402,8 @@ function NLPModels.jac_nln_structure!(
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
-  st = view(Cint[0; 0], 1:1)
-  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  st = Cint[0]
+  nvar = Cint[nlp.meta.nvar]
   ci = view([0.0], 1:1)
   nnzj = view(Cint[0], 1:1)
   lj = view(Cint[nlp.meta.nvar], 1:1)
@@ -431,8 +431,8 @@ function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abstrac
 end
 
 function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
-  st = view(Cint[0; 0], 1:1)
-  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  st = Cint[0]
+  nvar = Cint[nlp.meta.nvar]
   ci = view([0.0], 1:1)
   nnzj = view(Cint[0], 1:1)
   lj = view(Cint[nlp.meta.nvar], 1:1)
@@ -453,8 +453,8 @@ function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abs
 end
 
 function NLPModels.jac_nln_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
-  st = view(Cint[0; 0], 1:1)
-  nvar = view(Cint[nlp.meta.nvar], 1:1)
+  st = Cint[0]
+  nvar = Cint[nlp.meta.nvar]
   ci = view([0.0], 1:1)
   nnzj = view(Cint[0], 1:1)
   lj = view(Cint[nlp.meta.nvar], 1:1)
