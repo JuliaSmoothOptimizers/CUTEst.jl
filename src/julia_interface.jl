@@ -280,11 +280,9 @@ function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
 end
 
 function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
-  st = Cint[0]
-  nvar = Cint[nlp.meta.nvar]
   k = 1
   for j in nlp.meta.lin
-    cifn(st, nvar, Cint[j], x, view(c, k:k))
+    cifn(Cint[0], Cint[nlp.meta.nvar], Cint[j], x, view(c, k:k))
     k += 1
   end
   nlp.counters.neval_cons_lin += 1
@@ -299,11 +297,9 @@ function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
 end
 
 function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
-  st = Cint[0]
-  nvar = Cint[nlp.meta.nvar]
   k = 1
   for j in nlp.meta.nln
-    cifn(st, nvar, Cint[j], x, view(c, k:k))
+    cifn(Cint[0], Cint[nlp.meta.nvar], Cint[j], x, view(c, k:k))
     k += 1
   end
   nlp.counters.neval_cons_nln += 1
@@ -370,20 +366,17 @@ function NLPModels.jac_structure!(
   return rows, cols
 end
 
-function eval_lin_structure!(nlp)
-  st = Cint[0]
+function eval_lin_structure!(nlp::CUTEstModel)
   nvar = Cint[nlp.meta.nvar]
-  ci = view([0.0], 1:1)
-  nnzj = view(Cint[0], 1:1)
-  lj = view(Cint[nlp.meta.nvar], 1:1)
+  ci = [0.0]
+  nnzj = Cint[0]
   Jval = @view(Array{Cdouble}(undef, nlp.meta.nvar + 1)[2:end])
   Jvar = @view(Array{Cint}(undef, nlp.meta.nvar + 1)[2:end])
-  True = view(Cint[true], 1:1)
   i = 1
   for j in nlp.meta.lin
-    ccifsg(st, nvar, Cint[j], nlp.meta.x0, ci, nnzj, lj, Jval, Jvar, True)
+    ccifsg(Cint[0], nvar, Cint[j], nlp.meta.x0, ci, nnzj, nvar, Jval, Jvar, Cint[true])
     for k = 1:nnzj[1]
-      nlp.clinrows[i] = findfirst(x -> x == j, nlp.meta.lin) # j
+      nlp.clinrows[i] = findfirst(x -> x == j, nlp.meta.lin)
       nlp.clincols[i] = Jvar[k]
       nlp.clinvals[i] = Jval[k]
       i += 1
@@ -448,6 +441,7 @@ function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abstrac
 end
 
 function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
+  nlp.counters.neval_jac_lin += 1
   if !nlp.lin_structure_reliable
     eval_lin_structure!(nlp)
   end
