@@ -4,7 +4,7 @@ using NLPModels, SparseArrays
 
 function NLPModels.objcons(nlp::CUTEstModel, x::AbstractVector)
   c = Vector{Float64}(undef, nlp.meta.ncon)
-  objcons!(nlp, Vector{Float64}(x), c)
+  objcons!(nlp, convert(Vector{Float64}, x), c)
 end
 
 function NLPModels.objcons!(
@@ -47,24 +47,24 @@ function NLPModels.objcons!(
 end
 
 function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector{Float64})
-  objcons!(nlp, Vector{Float64}(x), c)
+  objcons!(nlp, convert(Vector{Float64}, x), c)
 end
 
 function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
   m = nlp.meta.ncon
   if m > 0
     cc = zeros(m)
-    f, _ = objcons!(nlp, Vector{Float64}(x), cc)
+    f, _ = objcons!(nlp, convert(Vector{Float64}, x), cc)
     c .= cc
     return f, c
   else
-    return objcons!(nlp, Vector{Float64}(x), zeros(0))
+    return objcons!(nlp, convert(Vector{Float64}, x), zeros(0))
   end
 end
 
 function NLPModels.objgrad(nlp::CUTEstModel, x::AbstractVector)
   g = Vector{Float64}(undef, nlp.meta.nvar)
-  objgrad!(nlp, Vector{Float64}(x), g)
+  objgrad!(nlp, convert(Vector{Float64}, x), g)
 end
 
 function NLPModels.objgrad!(
@@ -110,12 +110,12 @@ function NLPModels.objgrad!(
 end
 
 function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::StrideOneVector{Float64})
-  objgrad!(nlp, Vector{Float64}(x), g)
+  objgrad!(nlp, convert(Vector{Float64}, x), g)
 end
 
 function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::AbstractVector)
-  gc = zeros(nlp.meta.nvar)
-  f, _ = objgrad!(nlp, Vector{Float64}(x), gc)
+  gc = Vector{Float64}(undef, nlp.meta.nvar)
+  f, _ = objgrad!(nlp, convert(Vector{Float64}, x), gc)
   g[1:(nlp.meta.nvar)] .= gc
   return f, g
 end
@@ -211,7 +211,7 @@ function cons_coord!(
   cols_ = Vector{Int32}(undef, nlp.meta.nnzj)
   vals_ = Vector{Float64}(undef, nlp.meta.nnzj)
   c_ = Vector{Float64}(undef, nlp.meta.ncon)
-  cons_coord!(nlp, Vector{Float64}(x), c_, rows_, cols_, vals_)
+  cons_coord!(nlp, convert(Vector{Float64}, x), c_, rows_, cols_, vals_)
   rows[1:(nlp.meta.nnzj)] .= rows_
   cols[1:(nlp.meta.nnzj)] .= cols_
   vals[1:(nlp.meta.nnzj)] .= vals_
@@ -244,7 +244,7 @@ function cons_coord(nlp::CUTEstModel, x::StrideOneVector{Float64})
 end
 
 function cons_coord(nlp::CUTEstModel, x::AbstractVector)
-  cons_coord(nlp, Vector{Float64}(x))
+  cons_coord(nlp, convert(Vector{Float64}, x))
 end
 
 """
@@ -499,7 +499,7 @@ function NLPModels.jprod!(
   v::AbstractVector,
   jv::StrideOneVector{Float64},
 )
-  jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jv)
+  jprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jv)
 end
 
 function NLPModels.jprod!(
@@ -509,7 +509,7 @@ function NLPModels.jprod!(
   jv::AbstractVector,
 )
   jvc = nlp.work
-  jprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jvc)
+  jprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jvc)
   jv[1:(nlp.meta.ncon)] .= jvc
 end
 
@@ -586,7 +586,7 @@ function NLPModels.jtprod!(
   v::AbstractVector,
   jtv::StrideOneVector{Float64},
 )
-  jtprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jtv)
+  jtprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jtv)
 end
 
 function NLPModels.jtprod!(
@@ -596,7 +596,7 @@ function NLPModels.jtprod!(
   jtv::AbstractVector,
 )
   jtvc = zeros(nlp.meta.nvar)
-  jtprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), jtvc)
+  jtprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jtvc)
   jtv[1:(nlp.meta.nvar)] .= jtvc
 end
 
@@ -837,7 +837,7 @@ function NLPModels.hess_coord!(
   obj_weight::Float64 = 1.0,
 )
   vals_ = Vector{Float64}(undef, nlp.meta.nnzh)
-  NLPModels.hess_coord!(nlp, Vector{Float64}(x), Vector{Float64}(y), vals_, obj_weight = obj_weight)
+  NLPModels.hess_coord!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, y), vals_, obj_weight = obj_weight)
   vals[1:(nlp.meta.nnzh)] .= vals_
   return vals
 end
@@ -947,9 +947,9 @@ function NLPModels.hprod!(
 )
   hprod!(
     nlp,
-    Vector{Float64}(x),
-    Vector{Float64}(y),
-    Vector{Float64}(v),
+    convert(Vector{Float64}, x),
+    convert(Vector{Float64}, y),
+    convert(Vector{Float64}, v),
     hv,
     obj_weight = obj_weight,
   )
@@ -966,9 +966,9 @@ function NLPModels.hprod!(
   hvc = zeros(nlp.meta.nvar)
   hprod!(
     nlp,
-    Vector{Float64}(x),
-    Vector{Float64}(y),
-    Vector{Float64}(v),
+    convert(Vector{Float64}, x),
+    convert(Vector{Float64}, y),
+    convert(Vector{Float64}, v),
     hvc,
     obj_weight = obj_weight,
   )
@@ -984,9 +984,9 @@ function NLPModels.hprod!(
 )
   hprod!(
     nlp,
-    Vector{Float64}(x),
+    convert(Vector{Float64}, x),
     zeros(nlp.meta.ncon),
-    Vector{Float64}(v),
+    convert(Vector{Float64}, v),
     hv,
     obj_weight = obj_weight,
   )
@@ -1000,6 +1000,6 @@ function NLPModels.hprod!(
   obj_weight::Float64 = 1.0,
 )
   hvc = zeros(nlp.meta.nvar)
-  hprod!(nlp, Vector{Float64}(x), Vector{Float64}(v), hvc, obj_weight = obj_weight)
+  hprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), hvc, obj_weight = obj_weight)
   hv[1:(nlp.meta.nvar)] .= hvc
 end
