@@ -28,6 +28,7 @@ mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
   jcols::Vector{Int32}
 
   lin_structure_reliable::Bool
+  blin::Vector{Float64}
   clinrows::Vector{Int32}
   clincols::Vector{Int32}
   clinvals::Vector{Float64}
@@ -374,6 +375,7 @@ function CUTEstModel(
   work = Vector{Int32}(undef, ncon)
 
   lin_structure_reliable = false
+  blin = Vector{Float64}(undef, nlin)
   clinrows = Vector{Int32}(undef, lin_nnzj)
   clincols = Vector{Int32}(undef, lin_nnzj)
   clinvals = Vector{Float64}(undef, lin_nnzj)
@@ -381,22 +383,7 @@ function CUTEstModel(
   Jval = Array{Cdouble}(undef, nvar)
   Jvar = Array{Cint}(undef, nvar)
 
-  nlp = CUTEstModel(
-    meta,
-    Counters(),
-    hrows,
-    hcols,
-    jac_structure_reliable,
-    jrows,
-    jcols,
-    lin_structure_reliable,
-    clinrows,
-    clincols,
-    clinvals,
-    work,
-    Jval,
-    Jvar,
-  )
+  nlp = CUTEstModel(meta, Counters(), hrows, hcols, jac_structure_reliable, jrows, jcols, lin_structure_reliable, blin, clinrows, clincols, clinvals, work, Jval, Jvar)
 
   cutest_instances += 1
   finalizer(cutest_finalize, nlp)
