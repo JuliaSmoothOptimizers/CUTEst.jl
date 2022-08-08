@@ -367,7 +367,18 @@ function eval_lin_structure!(nlp::CUTEstModel)
     i = 1
     for j in nlp.meta.lin
       x0 = zeros(nlp.meta.nvar)
-      ccifsg(Cint[0], nvar, Cint[j], x0, view(nlp.blin, j:j), nnzj, nvar, nlp.Jval, nlp.Jvar, Cint[true])
+      ccifsg(
+        Cint[0],
+        nvar,
+        Cint[j],
+        x0,
+        view(nlp.blin, j:j),
+        nnzj,
+        nvar,
+        nlp.Jval,
+        nlp.Jvar,
+        Cint[true],
+      )
       for k = 1:nnzj[1]
         nlp.clinrows[i] = findfirst(x -> x == j, nlp.meta.lin)
         nlp.clincols[i] = nlp.Jvar[k]
@@ -828,7 +839,13 @@ function NLPModels.hess_coord!(
   obj_weight::Float64 = 1.0,
 )
   vals_ = Vector{Float64}(undef, nlp.meta.nnzh)
-  NLPModels.hess_coord!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, y), vals_, obj_weight = obj_weight)
+  NLPModels.hess_coord!(
+    nlp,
+    convert(Vector{Float64}, x),
+    convert(Vector{Float64}, y),
+    vals_,
+    obj_weight = obj_weight,
+  )
   vals[1:(nlp.meta.nnzh)] .= vals_
   return vals
 end
@@ -991,6 +1008,12 @@ function NLPModels.hprod!(
   obj_weight::Float64 = 1.0,
 )
   hvc = zeros(nlp.meta.nvar)
-  hprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), hvc, obj_weight = obj_weight)
+  hprod!(
+    nlp,
+    convert(Vector{Float64}, x),
+    convert(Vector{Float64}, v),
+    hvc,
+    obj_weight = obj_weight,
+  )
   hv[1:(nlp.meta.nvar)] .= hvc
 end
