@@ -377,11 +377,26 @@ function CUTEstModel(
   clinrows = Vector{Int32}(undef, lin_nnzj)
   clincols = Vector{Int32}(undef, lin_nnzj)
   clinvals = Vector{Float64}(undef, lin_nnzj)
-  
+
   Jval = Array{Cdouble}(undef, nvar)
   Jvar = Array{Cint}(undef, nvar)
 
-  nlp = CUTEstModel(meta, Counters(), hrows, hcols, jac_structure_reliable, jrows, jcols, lin_structure_reliable, clinrows, clincols, clinvals, work, Jval, Jvar)
+  nlp = CUTEstModel(
+    meta,
+    Counters(),
+    hrows,
+    hcols,
+    jac_structure_reliable,
+    jrows,
+    jcols,
+    lin_structure_reliable,
+    clinrows,
+    clincols,
+    clinvals,
+    work,
+    Jval,
+    Jvar,
+  )
 
   cutest_instances += 1
   finalizer(cutest_finalize, nlp)
