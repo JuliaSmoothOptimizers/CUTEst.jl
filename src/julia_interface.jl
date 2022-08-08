@@ -273,18 +273,9 @@ function NLPModels.cons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
 end
 
 function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
-  _cx = Vector{Float64}(undef, nlp.meta.nlin)
-  cons_lin!(nlp, x, _cx)
-  c .= _cx
-  return c
-end
-
-function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
-  k = 1
-  for j in nlp.meta.lin
-    cifn(Cint[0], Cint[nlp.meta.nvar], Cint[j], x, view(c, k:k))
-    k += 1
-  end
+  eval_lin_structure!(nlp)
+  coo_prod!(nlp.clinrows, nlp.clincols, nlp.clinvals, x, c)
+  c .+= nlp.blin
   nlp.counters.neval_cons_lin += 1
   return c
 end
@@ -372,11 +363,11 @@ end
 function eval_lin_structure!(nlp::CUTEstModel)
   if !nlp.lin_structure_reliable
     nvar = Cint[nlp.meta.nvar]
-    ci = [0.0]
     nnzj = Cint[0]
     i = 1
     for j in nlp.meta.lin
-      ccifsg(Cint[0], nvar, Cint[j], nlp.meta.x0, ci, nnzj, nvar, nlp.Jval, nlp.Jvar, Cint[true])
+      x0 = zeros(nlp.meta.nvar)
+      ccifsg(Cint[0], nvar, Cint[j], x0, view(nlp.blin, j:j), nnzj, nvar, nlp.Jval, nlp.Jvar, Cint[true])
       for k = 1:nnzj[1]
         nlp.clinrows[i] = findfirst(x -> x == j, nlp.meta.lin)
         nlp.clincols[i] = nlp.Jvar[k]
