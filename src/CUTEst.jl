@@ -22,9 +22,19 @@ mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
   counters::Counters
   hrows::Vector{Int32}
   hcols::Vector{Int32}
+
+  jac_structure_reliable::Bool
   jrows::Vector{Int32}
   jcols::Vector{Int32}
+
+  lin_structure_reliable::Bool
+  clinrows::Vector{Int32}
+  clincols::Vector{Int32}
+  clinvals::Vector{Float64}
+
   work::Vector{Float64}
+  Jval::Vector{Cdouble}
+  Jvar::Vector{Cint}
 end
 
 const funit = convert(Int32, 42)
@@ -335,6 +345,9 @@ function CUTEstModel(
   ncon = Int(ncon)
   nvar = Int(nvar)
 
+  lin_nnzj = min(nvar * nlin, nnzj)
+  nln_nnzj = min(nvar * (ncon - nlin), nnzj)
+
   meta = NLPModelMeta(
     nvar,
     x0 = x,
@@ -347,17 +360,28 @@ function CUTEstModel(
     nnzj = nnzj,
     nnzh = nnzh,
     lin = lin,
-    lin_nnzj = min(nvar * nlin, nnzj),
-    nln_nnzj = min(nvar * (ncon - nlin), nnzj),
+    lin_nnzj = lin_nnzj,
+    nln_nnzj = nln_nnzj,
     name = splitext(name)[1],
   )
 
   hrows = Vector{Int32}(undef, nnzh)
   hcols = Vector{Int32}(undef, nnzh)
+
+  jac_structure_reliable = false
   jrows = Vector{Int32}(undef, nnzj)
   jcols = Vector{Int32}(undef, nnzj)
   work = Vector{Int32}(undef, ncon)
-  nlp = CUTEstModel(meta, Counters(), hrows, hcols, jrows, jcols, work)
+
+  lin_structure_reliable = false
+  clinrows = Vector{Int32}(undef, lin_nnzj)
+  clincols = Vector{Int32}(undef, lin_nnzj)
+  clinvals = Vector{Float64}(undef, lin_nnzj)
+  
+  Jval = Array{Cdouble}(undef, nvar)
+  Jvar = Array{Cint}(undef, nvar)
+
+  nlp = CUTEstModel(meta, Counters(), hrows, hcols, jac_structure_reliable, jrows, jcols, lin_structure_reliable, clinrows, clincols, clinvals, work, Jval, Jvar)
 
   cutest_instances += 1
   finalizer(cutest_finalize, nlp)
