@@ -3,6 +3,7 @@ export cons_coord, cons_coord!, consjac
 using NLPModels, SparseArrays
 
 function NLPModels.objcons(nlp::CUTEstModel, x::AbstractVector)
+  @lencheck nlp.meta.nvar x
   c = Vector{Float64}(undef, nlp.meta.ncon)
   objcons!(nlp, convert(Vector{Float64}, x), c)
 end
@@ -14,6 +15,8 @@ function NLPModels.objcons!(
 )
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
+  @lencheck nvar x
+  @lencheck ncon c
   io_err = Cint[0]
   f = Cdouble[0]
   if ncon > 0
@@ -47,13 +50,17 @@ function NLPModels.objcons!(
 end
 
 function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector{Float64})
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon c
   objcons!(nlp, convert(Vector{Float64}, x), c)
 end
 
 function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
-  m = nlp.meta.ncon
-  if m > 0
-    cc = zeros(m)
+  ncon = nlp.meta.ncon
+  @lencheck nlp.meta.nvar x
+  @lencheck ncon c
+  if ncon > 0
+    cc = zeros(ncon)
     f, _ = objcons!(nlp, convert(Vector{Float64}, x), cc)
     c .= cc
     return f, c
@@ -63,6 +70,7 @@ function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVect
 end
 
 function NLPModels.objgrad(nlp::CUTEstModel, x::AbstractVector)
+  @lencheck nlp.meta.nvar x
   g = Vector{Float64}(undef, nlp.meta.nvar)
   objgrad!(nlp, convert(Vector{Float64}, x), g)
 end
@@ -73,11 +81,11 @@ function NLPModels.objgrad!(
   g::StrideOneVector{Float64},
 )
   nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
+  @lencheck nvar x g
   f = Cdouble[0]
   io_err = Cint[0]
   get_grad = 1
-  if ncon > 0
+  if nlp.meta.ncon > 0
     ccall(
       dlsym(cutest_lib, "cutest_cofg_"),
       Nothing,
@@ -110,17 +118,20 @@ function NLPModels.objgrad!(
 end
 
 function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::StrideOneVector{Float64})
+  @lencheck nlp.meta.nvar x g
   objgrad!(nlp, convert(Vector{Float64}, x), g)
 end
 
 function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::AbstractVector)
+  @lencheck nlp.meta.nvar x g
   gc = Vector{Float64}(undef, nlp.meta.nvar)
   f, _ = objgrad!(nlp, convert(Vector{Float64}, x), gc)
-  g[1:(nlp.meta.nvar)] .= gc
+  g .= gc
   return f, g
 end
 
 function NLPModels.obj(nlp::CUTEstModel, x::AbstractVector)
+  @lencheck nlp.meta.nvar x
   f = objcons!(nlp, x, nlp.work)[1]
   if nlp.meta.ncon > 0
     nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
@@ -129,6 +140,7 @@ function NLPModels.obj(nlp::CUTEstModel, x::AbstractVector)
 end
 
 function NLPModels.grad!(nlp::CUTEstModel, x::AbstractVector, g::AbstractVector)
+  @lencheck nlp.meta.nvar x g
   objgrad!(nlp, x, g)
   nlp.counters.neval_obj -= 1  # does not really count as a objective eval
   return g
@@ -161,6 +173,9 @@ function cons_coord!(
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzj = nlp.meta.nnzj
+  @lencheck nvar x
+  @lencheck ncon c
+  @lencheck nnzj rows cols vals
   io_err = Cint[0]
   jsize = nlp.meta.nnzj
   get_j = 1
@@ -207,15 +222,18 @@ function cons_coord!(
   cols::AbstractVector{<:Integer},
   vals::AbstractVector,
 )
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon c
+  @lencheck nlp.meta.nnzj rows cols vals
   rows_ = Vector{Int32}(undef, nlp.meta.nnzj)
   cols_ = Vector{Int32}(undef, nlp.meta.nnzj)
   vals_ = Vector{Float64}(undef, nlp.meta.nnzj)
   c_ = Vector{Float64}(undef, nlp.meta.ncon)
   cons_coord!(nlp, convert(Vector{Float64}, x), c_, rows_, cols_, vals_)
-  rows[1:(nlp.meta.nnzj)] .= rows_
-  cols[1:(nlp.meta.nnzj)] .= cols_
-  vals[1:(nlp.meta.nnzj)] .= vals_
-  c[1:(nlp.meta.ncon)] .= c_
+  rows .= rows_
+  cols .= cols_
+  vals .= vals_
+  c .= c_
   return c, rows, cols, vals
 end
 
@@ -236,6 +254,7 @@ Usage:
   - jval: [OUT] Vector{Float64}
 """
 function cons_coord(nlp::CUTEstModel, x::StrideOneVector{Float64})
+  @lencheck nlp.meta.nvar x
   c = Vector{Float64}(undef, nlp.meta.ncon)
   rows = Vector{Int32}(undef, nlp.meta.nnzj)
   cols = Vector{Int32}(undef, nlp.meta.nnzj)
@@ -244,6 +263,7 @@ function cons_coord(nlp::CUTEstModel, x::StrideOneVector{Float64})
 end
 
 function cons_coord(nlp::CUTEstModel, x::AbstractVector)
+  @lencheck nlp.meta.nvar x
   cons_coord(nlp, convert(Vector{Float64}, x))
 end
 
@@ -262,17 +282,22 @@ Usage:
   - J:    [OUT] Base.SparseMatrix.SparseMatrixCSC{Float64,Int32}
 """
 function consjac(nlp::CUTEstModel, x::AbstractVector)
+  @lencheck nlp.meta.nvar x
   c, jrow, jcol, jval = cons_coord(nlp, x)
   return c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
 end
 
 function NLPModels.cons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon c
   objcons!(nlp, x, c)
   nlp.counters.neval_obj -= 1  # does not really count as a objective eval
   return c
 end
 
 function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.nlin c
   eval_lin_structure!(nlp)
   coo_prod!(nlp.clinrows, nlp.clincols, nlp.clinvals, x, c)
   c .+= nlp.blin
@@ -281,6 +306,8 @@ function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
 end
 
 function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.nnln c
   _cx = Vector{Float64}(undef, nlp.meta.nnln)
   cons_nln!(nlp, x, _cx)
   c .= _cx
@@ -288,6 +315,8 @@ function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
 end
 
 function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.nnln c
   k = 1
   for j in nlp.meta.nln
     cifn(Cint[0], Cint[nlp.meta.nvar], Cint[j], x, view(c, k:k))
@@ -302,6 +331,7 @@ function NLPModels.jac_structure!(
   rows::StrideOneVector{Int32},
   cols::StrideOneVector{Int32},
 )
+  @lencheck nlp.meta.nnzj rows cols
   nnzj = nlp.meta.nnzj
   io_err = Cint[0]
   this_nnzj = Cint[0]
@@ -352,11 +382,12 @@ function NLPModels.jac_structure!(
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
+  @lencheck nlp.meta.nnzj rows cols
   jrows = Vector{Int32}(undef, nlp.meta.nnzj)
   jcols = Vector{Int32}(undef, nlp.meta.nnzj)
   jac_structure!(nlp, jrows, jcols)
-  rows[1:(nlp.meta.nnzj)] .= jrows
-  cols[1:(nlp.meta.nnzj)] .= jcols
+  rows .= jrows
+  cols .= jcols
   return rows, cols
 end
 
@@ -399,6 +430,7 @@ function NLPModels.jac_lin_structure!(
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
+  @lencheck nlp.meta.lin_nnzj rows cols
   eval_lin_structure!(nlp)
   rows .= nlp.clinrows
   cols .= nlp.clincols
@@ -410,6 +442,7 @@ function NLPModels.jac_nln_structure!(
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
+  @lencheck nlp.meta.nln_nnzj rows cols
   jac_structure!(nlp)
   k = 1
   for i in findall(j -> j in nlp.meta.nln, nlp.jrows)
@@ -424,12 +457,16 @@ function NLPModels.jac_nln_structure!(
 end
 
 function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.nnzj vals
   cons_coord!(nlp, x, nlp.work, nlp.jrows, nlp.jcols, vals)
   nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
   return vals
 end
 
 function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.lin_nnzj vals
   nlp.counters.neval_jac_lin += 1
   eval_lin_structure!(nlp)
   vals .= nlp.clinvals
@@ -438,6 +475,8 @@ end
 
 function NLPModels.jac_nln_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
   nvar = Cint[nlp.meta.nvar]
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.nln_nnzj vals
   ci = [0.0]
   nnzj = Cint[0]
   i = 1
@@ -461,6 +500,8 @@ function NLPModels.jprod!(
 )
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
+  @lencheck nvar x v
+  @lencheck ncon jv
   got_j = 0
   jtrans = 0
   io_err = Cint[0]
@@ -501,6 +542,8 @@ function NLPModels.jprod!(
   v::AbstractVector,
   jv::StrideOneVector{Float64},
 )
+  @lencheck nlp.meta.nvar x v
+  @lencheck nlp.meta.ncon jv
   jprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jv)
 end
 
@@ -510,9 +553,11 @@ function NLPModels.jprod!(
   v::AbstractVector,
   jv::AbstractVector,
 )
+  @lencheck nlp.meta.nvar x v
+  @lencheck nlp.meta.ncon jv
   jvc = nlp.work
   jprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jvc)
-  jv[1:(nlp.meta.ncon)] .= jvc
+  jv .= jvc
 end
 
 function NLPModels.jprod_nln!(
@@ -521,11 +566,13 @@ function NLPModels.jprod_nln!(
   v::AbstractVector,
   jv::AbstractVector,
 )
+  @lencheck nlp.meta.nvar x v
+  @lencheck nlp.meta.nnln jv
   jvc = nlp.work
   jprod!(nlp, x, v, jvc)
   nlp.counters.neval_jprod -= 1
   nlp.counters.neval_jprod_nln += 1
-  jv[1:(nlp.meta.nnln)] .= jvc[nlp.meta.nln]
+  jv .= jvc[nlp.meta.nln]
 end
 
 function NLPModels.jprod_lin!(
@@ -534,6 +581,8 @@ function NLPModels.jprod_lin!(
   v::AbstractVector,
   jv::AbstractVector,
 )
+  @lencheck nlp.meta.nvar x v
+  @lencheck nlp.meta.nlin jv
   nlp.counters.neval_jprod_lin += 1
   eval_lin_structure!(nlp)
   jprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jv)
@@ -548,6 +597,8 @@ function NLPModels.jtprod!(
 )
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
+  @lencheck nlp.meta.nvar x jtv
+  @lencheck nlp.meta.ncon v
   got_j = 0
   jtrans = 1
   io_err = Cint[0]
@@ -588,6 +639,8 @@ function NLPModels.jtprod!(
   v::AbstractVector,
   jtv::StrideOneVector{Float64},
 )
+  @lencheck nlp.meta.nvar x jtv
+  @lencheck nlp.meta.ncon v
   jtprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jtv)
 end
 
@@ -597,9 +650,11 @@ function NLPModels.jtprod!(
   v::AbstractVector,
   jtv::AbstractVector,
 )
+  @lencheck nlp.meta.nvar x jtv
+  @lencheck nlp.meta.ncon v
   jtvc = zeros(nlp.meta.nvar)
   jtprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jtvc)
-  jtv[1:(nlp.meta.nvar)] .= jtvc
+  jtv .= jtvc
 end
 
 function NLPModels.jtprod_nln!(
@@ -608,6 +663,8 @@ function NLPModels.jtprod_nln!(
   v::AbstractVector,
   jtv::AbstractVector,
 )
+  @lencheck nlp.meta.nvar x jtv
+  @lencheck nlp.meta.nnln v
   _v = nlp.work
   _v[nlp.meta.lin] .= 0.0
   _v[nlp.meta.nln] = v
@@ -623,6 +680,8 @@ function NLPModels.jtprod_lin!(
   v::AbstractVector,
   jtv::AbstractVector,
 )
+  @lencheck nlp.meta.nvar x jtv
+  @lencheck nlp.meta.nlin v
   nlp.counters.neval_jtprod_lin += 1
   eval_lin_structure!(nlp)
   jtprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jtv)
@@ -637,6 +696,7 @@ function NLPModels.hess_structure!(
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh
+  @lencheck nnzh rows cols
   io_err = Cint[0]
   this_nnzh = Cint[0]
 
@@ -668,8 +728,8 @@ function NLPModels.hess_structure!(
     @cutest_error
   end
 
-  nlp.hrows .= rows[1:nnzh]
-  nlp.hcols .= cols[1:nnzh]
+  nlp.hrows .= rows
+  nlp.hcols .= cols
 
   return rows, cols
 end
@@ -717,11 +777,12 @@ function NLPModels.hess_structure!(
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
+  @lencheck nlp.meta.nnzh rows cols
   hrows = Vector{Int32}(undef, nlp.meta.nnzh)
   hcols = Vector{Int32}(undef, nlp.meta.nnzh)
   hess_structure!(nlp, hrows, hcols)
-  rows[1:(nlp.meta.nnzh)] .= hrows
-  cols[1:(nlp.meta.nnzh)] .= hcols
+  rows .= hrows
+  cols .= hcols
   return rows, cols
 end
 
@@ -732,6 +793,9 @@ function NLPModels.hess_coord!(
   vals::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon y
+  @lencheck nlp.meta.nnzh vals
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
   nnzh = nlp.meta.nnzh
@@ -838,6 +902,9 @@ function NLPModels.hess_coord!(
   vals::AbstractVector;
   obj_weight::Float64 = 1.0,
 )
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon y
+  @lencheck nlp.meta.nnzh vals
   vals_ = Vector{Float64}(undef, nlp.meta.nnzh)
   NLPModels.hess_coord!(
     nlp,
@@ -846,7 +913,7 @@ function NLPModels.hess_coord!(
     vals_,
     obj_weight = obj_weight,
   )
-  vals[1:(nlp.meta.nnzh)] .= vals_
+  vals .= vals_
   return vals
 end
 
@@ -856,6 +923,8 @@ function NLPModels.hess_coord!(
   vals::AbstractVector;
   obj_weight::Float64 = 1.0,
 )
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.nnzh vals
   hess_coord!(nlp, x, zeros(nlp.meta.ncon), vals; obj_weight = obj_weight)
 end
 
@@ -869,6 +938,8 @@ function NLPModels.hprod!(
 )
   nvar = nlp.meta.nvar
   ncon = nlp.meta.ncon
+  @lencheck nvar x v hv
+  @lencheck ncon y
   io_err = Cint[0]
   goth = Cint[0]
   if obj_weight == 0.0 && ncon > 0
@@ -953,6 +1024,8 @@ function NLPModels.hprod!(
   hv::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
+  @lencheck nlp.meta.nvar x v hv
+  @lencheck nlp.meta.ncon y
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
@@ -971,6 +1044,8 @@ function NLPModels.hprod!(
   hv::AbstractVector;
   obj_weight::Float64 = 1.0,
 )
+  @lencheck nlp.meta.nvar x v hv
+  @lencheck nlp.meta.ncon y
   hvc = zeros(nlp.meta.nvar)
   hprod!(
     nlp,
@@ -980,7 +1055,7 @@ function NLPModels.hprod!(
     hvc,
     obj_weight = obj_weight,
   )
-  hv[1:(nlp.meta.nvar)] .= hvc
+  hv .= hvc
 end
 
 function NLPModels.hprod!(
@@ -990,6 +1065,7 @@ function NLPModels.hprod!(
   hv::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
+  @lencheck nlp.meta.nvar x v hv
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
@@ -1007,6 +1083,7 @@ function NLPModels.hprod!(
   hv::AbstractVector;
   obj_weight::Float64 = 1.0,
 )
+  @lencheck nlp.meta.nvar x v hv
   hvc = zeros(nlp.meta.nvar)
   hprod!(
     nlp,
@@ -1015,5 +1092,5 @@ function NLPModels.hprod!(
     hvc,
     obj_weight = obj_weight,
   )
-  hv[1:(nlp.meta.nvar)] .= hvc
+  hv .= hvc
 end
