@@ -6,5 +6,5 @@ NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
 
 [compat]
 Documenter = "~0.26"
-Krylov = "0.7.0"
-NLPModels = "0.18"
+Krylov = "0.8"
+NLPModels = "0.19"
