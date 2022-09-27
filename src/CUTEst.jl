@@ -74,9 +74,9 @@ function __init__()
     return
   end
 
-  ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "ARCHDefs-2.0.4x")
-  ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "SIFDecode-2.0.3")
-  ENV["CUTEST"] = joinpath(CUTEst_jll.artifact_dir, "libexec", "CUTEst-2.0.3")
+  ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "ARCHDefs")
+  ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "SIFDecode")
+  ENV["CUTEST"] = joinpath(CUTEst_jll.artifact_dir, "CUTEst")
 
   # set default MASTSIF location if the user hasn't set it already
   if !("MASTSIF" ∈ keys(ENV))
@@ -107,7 +107,7 @@ function __init__()
     #   ENV["MYARCH"] = "pc.lnx.gfo"
     # end
   end
-  global libpath = joinpath(ENV["CUTEST"], "objects", ENV["MYARCH"], "double")
+  global libpath = joinpath(CUTEst_jll.artifact_dir, "lib")
   push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
 end
 
