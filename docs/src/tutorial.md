@@ -1,1 +1,1 @@
-You can check an [Introduction to CUTEst.jl](https://jso-docs.github.io/introduction-to-cutest/) on our site, [jso-docs](https://jso-docs.github.io).
+You can check an [Introduction to CUTEst.jl](https://juliasmoothoptimizers.github.io/tutorials/introduction-to-cutest/) on our [site](https://juliasmoothoptimizers.github.io/).

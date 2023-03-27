@@ -5,10 +5,11 @@ makedocs(
   doctest = true,
   linkcheck = true,
   strict = true,
-  assets = ["assets/style.css"],
-  format = Documenter.HTML(prettyurls = get(ENV, "CI", nothing) == "true"),
+  format = Documenter.HTML(assets = ["assets/style.css"],
+                           ansicolor = true,
+                           prettyurls = get(ENV, "CI", nothing) == "true"),
   sitename = "CUTEst.jl",
-  pages = Any[
+  pages = [
     "Home" => "index.md",
     "Tutorial" => "tutorial.md",
     "Core" => "core.md",
@@ -17,10 +18,7 @@ makedocs(
 )
 
 deploydocs(
-  deps = nothing,
-  make = nothing,
   repo = "github.com/JuliaSmoothOptimizers/CUTEst.jl.git",
-  target = "build",
   devbranch = "main",
   push_preview = true,
 )
