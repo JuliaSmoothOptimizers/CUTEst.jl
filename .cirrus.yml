@@ -34,7 +34,7 @@ task:
     if [ "$(uname -s)" = "Linux" ] && command -v apt; then
         apt update
         apt install -y curl
-        apt install -y gcc
+        apt install -y gfortran
     fi
     if command -v curl; then
         sh -c "$(curl ${URL})"
