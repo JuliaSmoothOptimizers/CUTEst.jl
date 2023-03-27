@@ -23,11 +23,18 @@ task:
       env:
         - JULIA_VERSION: 1
   install_script: |
+    if [ "$(uname -s)" = "FreeBSD" ]; then
+        export IGNORE_OSVERSION=yes
+        echo "FETCH_RETRY = 6" >> /usr/local/etc/pkg.conf
+        pkg update
+        pkg install -y lang/gcc git bash
+    fi
     URL="https://raw.githubusercontent.com/ararslan/CirrusCI.jl/master/bin/install.sh"
     set -x
     if [ "$(uname -s)" = "Linux" ] && command -v apt; then
         apt update
         apt install -y curl
+        apt install -y gcc
     fi
     if command -v curl; then
         sh -c "$(curl ${URL})"
