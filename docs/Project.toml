@@ -1,10 +1,8 @@
 [deps]
 CUTEst = "1b53aba6-35b6-5f92-a507-53c67d53f819"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-Krylov = "ba0b0d4f-ebba-5204-a429-3ac8c609bfb7"
 NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
 
 [compat]
-Documenter = "~0.26"
-Krylov = "0.8"
-NLPModels = "0.19"
+Documenter = "0.27"
+NLPModels = "0.20"
