@@ -44,6 +44,18 @@ On Archlinux, do
 ```
 sudo pacman -S wget gfortran
 ```
+On Windows:
+
+CUTEst does not work on Windows. To use CUTEst from Windows:
+- Install Windows Subsystem for Linux (WSL);
+
+then _in WSL_:
+- Install gfortran;
+- Install Julia _for Linux_.
+
+Note, Julia for Linux can be started from VSCode for Windows. In VSCode:
+- Open a terminal and type `WSL`;
+- Start Julia.
 
 The following command should automatically download and install CUTEst and its
 dependencies (Use `]` to enter `pkg>` mode).
