@@ -83,6 +83,19 @@ finalize(nlp)
 Check the [NLPModels
 API](https://JuliaSmoothOptimizers.github.io/NLPModels.jl/stable/api/) for details.
 
+You can pass parameters to sifdecoder by giving additional arguments to `CUTEstModel`.
+For instance, to change `NH` from model `CHAIN`, use
+
+```@example
+using CUTEst
+
+for nh = 50:50:200
+  nlp = CUTEstModel("CHAIN", "-param", "NH=$nh")
+  println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
+  finalize(nlp)
+end
+```
+
 ## Working with CUTEst directly
 
 We also have implemented function to allow access to the CUTEst functions directly:

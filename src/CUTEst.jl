@@ -226,7 +226,41 @@ function sifdecoder(
   nothing
 end
 
-# Initialize problem.
+"""
+    nlp = CUTEstModel(name, args...; kwargs...)
+
+Creates a CUTEst model following the NLPModels API.
+This model needs to be finalized before a new one is created (e.g., calling `finalize(nlp)`).
+
+## Optional arguments
+
+Any extra arguments will be passed to `sifdecoder`.
+You can, for instance, change parameters of the model:
+
+```jldoctest
+using CUTEst
+
+nlp = CUTEstModel("CHAIN", "-param", "NH=50")
+println(nlp.meta.nnzh)
+finalize(nlp)
+nlp = CUTEstModel("CHAIN", "-param", "NH=100")
+println(nlp.meta.nnzh)
+finalize(nlp)
+
+# output
+
+153
+303
+```
+
+## Keyword arguments
+
+- `decode::Bool = true`: Whether to call sifdecoder.
+- `verbose::Bool = false`: Passed to sifdecoder.
+- `efirst`::Bool = true`: Equalities first?
+- `lfirst`::Bool = true`: Linear (or affine) constraints first?
+- `lvfirst::Bool = true`: Nonlinear variables should appear first?
+"""
 function CUTEstModel(
   name::AbstractString,
   args...;
