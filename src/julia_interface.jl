@@ -2,6 +2,15 @@ export cons_coord, cons_coord!, consjac
 
 using NLPModels, SparseArrays
 
+function increment!(x::Number, n::Number)
+  x += n
+  return x
+end
+function decrement!(x::Number, n::Number)
+  x -= n
+  return x
+end
+
 function NLPModels.objcons(nlp::CUTEstModel, x::AbstractVector)
   @lencheck nlp.meta.nvar x
   c = Vector{Float64}(undef, nlp.meta.ncon)
@@ -31,7 +40,7 @@ function NLPModels.objcons!(
       f,
       c,
     )
-    nlp.counters.neval_cons += 1
+    nlp.counters.neval_cons = increment!(nlp.counters.neval_cons, 1)
   else
     ccall(
       dlsym(cutest_lib, :cutest_ufn_),
@@ -43,7 +52,7 @@ function NLPModels.objcons!(
       f,
     )
   end
-  nlp.counters.neval_obj += 1
+  nlp.counters.neval_obj = increment!(nlp.counters.neval_obj, 1)
   @cutest_error
 
   return f[1], c
@@ -110,8 +119,8 @@ function NLPModels.objgrad!(
       get_grad,
     )
   end
-  nlp.counters.neval_obj += 1
-  nlp.counters.neval_grad += 1
+  nlp.counters.neval_obj = increment!(nlp.counters.neval_obj, 1)
+  nlp.counters.neval_grad = increment!(nlp.counters.neval_grad, 1)
   @cutest_error
 
   return f[1], g
@@ -134,7 +143,7 @@ function NLPModels.obj(nlp::CUTEstModel, x::AbstractVector)
   @lencheck nlp.meta.nvar x
   f = objcons!(nlp, x, nlp.work)[1]
   if nlp.meta.ncon > 0
-    nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
+    nlp.counters.neval_cons = decrement!(nlp.counters.neval_cons, 1) # does not really count as a constraint eval
   end
   return f
 end
@@ -142,7 +151,7 @@ end
 function NLPModels.grad!(nlp::CUTEstModel, x::AbstractVector, g::AbstractVector)
   @lencheck nlp.meta.nvar x g
   objgrad!(nlp, x, g)
-  nlp.counters.neval_obj -= 1  # does not really count as a objective eval
+  nlp.counters.neval_obj = decrement!(nlp.counters.neval_obj, 1) # does not really count as a objective eval
   return g
 end
 
@@ -209,8 +218,8 @@ function cons_coord!(
     get_j,
   )
   @cutest_error
-  nlp.counters.neval_cons += 1
-  nlp.counters.neval_jac += 1
+  nlp.counters.neval_cons = increment!(nlp.counters.neval_cons, 1)
+  nlp.counters.neval_jac = increment!(nlp.counters.neval_jac, 1)
   return c, rows, cols, vals
 end
 
@@ -291,7 +300,7 @@ function NLPModels.cons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
   objcons!(nlp, x, c)
-  nlp.counters.neval_obj -= 1  # does not really count as a objective eval
+  nlp.counters.neval_obj = decrement!(nlp.counters.neval_obj, 1)  # does not really count as a objective eval
   return c
 end
 
@@ -301,7 +310,7 @@ function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
   eval_lin_structure!(nlp)
   coo_prod!(nlp.clinrows, nlp.clincols, nlp.clinvals, x, c)
   c .+= nlp.blin
-  nlp.counters.neval_cons_lin += 1
+  nlp.counters.neval_cons_lin = increment!(nlp.counters.neval_cons_lin, 1)
   return c
 end
 
@@ -322,7 +331,7 @@ function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVe
     cifn(Cint[0], Cint[nlp.meta.nvar], Cint[j], x, view(c, k:k))
     k += 1
   end
-  nlp.counters.neval_cons_nln += 1
+  nlp.counters.neval_cons_nln = increment!(nlp.counters.neval_cons_nln, 1)
   return c
 end
 
@@ -460,14 +469,14 @@ function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abstrac
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzj vals
   cons_coord!(nlp, x, nlp.work, nlp.jrows, nlp.jcols, vals)
-  nlp.counters.neval_cons -= 1  # does not really count as a constraint eval
+  nlp.counters.neval_cons = decrement!(nlp.counters.neval_cons, 1)  # does not really count as a constraint eval
   return vals
 end
 
 function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.lin_nnzj vals
-  nlp.counters.neval_jac_lin += 1
+  nlp.counters.neval_jac_lin = increment!(nlp.counters.neval_jac_lin, 1)
   eval_lin_structure!(nlp)
   vals .= nlp.clinvals
   return vals
@@ -488,7 +497,7 @@ function NLPModels.jac_nln_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abs
     end
   end
   vals[i:end] .= 0.0
-  nlp.counters.neval_jac_nln += 1
+  nlp.counters.neval_jac_nln = increment!(nlp.counters.neval_jac_nln, 1)
   return vals
 end
 
@@ -532,7 +541,7 @@ function NLPModels.jprod!(
     ncon,
   )
   @cutest_error
-  nlp.counters.neval_jprod += 1
+  nlp.counters.neval_jprod = increment!(nlp.counters.neval_jprod, 1)
   return jv
 end
 
@@ -570,8 +579,8 @@ function NLPModels.jprod_nln!(
   @lencheck nlp.meta.nnln jv
   jvc = nlp.work
   jprod!(nlp, x, v, jvc)
-  nlp.counters.neval_jprod -= 1
-  nlp.counters.neval_jprod_nln += 1
+  nlp.counters.neval_jprod = decrement!(nlp.counters.neval_jprod, 1)
+  nlp.counters.neval_jprod_nln = increment!(nlp.counters.neval_jprod_nln, 1)
   jv .= jvc[nlp.meta.nln]
 end
 
@@ -583,7 +592,7 @@ function NLPModels.jprod_lin!(
 )
   @lencheck nlp.meta.nvar x v
   @lencheck nlp.meta.nlin jv
-  nlp.counters.neval_jprod_lin += 1
+  nlp.counters.neval_jprod_lin = increment!(nlp.counters.neval_jprod_lin, 1)
   eval_lin_structure!(nlp)
   jprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jv)
   return jv
@@ -629,7 +638,7 @@ function NLPModels.jtprod!(
     nvar,
   )
   @cutest_error
-  nlp.counters.neval_jtprod += 1
+  nlp.counters.neval_jtprod = increment!(nlp.counters.neval_jtprod ,1)
   return jtv
 end
 
@@ -669,8 +678,8 @@ function NLPModels.jtprod_nln!(
   _v[nlp.meta.lin] .= 0.0
   _v[nlp.meta.nln] = v
   jtprod!(nlp, x, _v, jtv)
-  nlp.counters.neval_jtprod -= 1
-  nlp.counters.neval_jtprod_nln += 1
+  nlp.counters.neval_jtprod = decrement!(nlp.counters.neval_jtprod, 1)
+  nlp.counters.neval_jtprod_nln = increment!(nlp.counters.neval_jtprod_nln, 1)
   return jtv
 end
 
@@ -682,7 +691,7 @@ function NLPModels.jtprod_lin!(
 )
   @lencheck nlp.meta.nvar x jtv
   @lencheck nlp.meta.nlin v
-  nlp.counters.neval_jtprod_lin += 1
+  nlp.counters.neval_jtprod_lin = increment!(nlp.counters.neval_jtprod_lin, 1)
   eval_lin_structure!(nlp)
   jtprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jtv)
   return jtv
@@ -830,7 +839,7 @@ function NLPModels.hess_coord!(
       nlp.hrows,
     )
     @cutest_error
-    nlp.counters.neval_hess += 1
+    nlp.counters.neval_hess = increment!(nlp.counters.neval_hess, 1)
     return vals
   end
 
@@ -891,7 +900,7 @@ function NLPModels.hess_coord!(
   @cutest_error
 
   obj_weight != 1.0 && (vals[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
-  nlp.counters.neval_hess += 1
+  nlp.counters.neval_hess = increment!(nlp.counters.neval_hess, 1)
   return vals
 end
 
@@ -966,7 +975,7 @@ function NLPModels.hprod!(
       hv,
     )
     @cutest_error
-    nlp.counters.neval_hprod += 1
+    nlp.counters.neval_hprod = increment!(nlp.counters.neval_hprod, 1)
     return hv
   end
 
@@ -1012,7 +1021,7 @@ function NLPModels.hprod!(
   @cutest_error
 
   obj_weight != 1.0 && (hv[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
-  nlp.counters.neval_hprod += 1
+  nlp.counters.neval_hprod = increment!(nlp.counters.neval_hprod, 1)
   return hv
 end
 
