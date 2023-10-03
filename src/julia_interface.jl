@@ -301,7 +301,7 @@ function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVec
   eval_lin_structure!(nlp)
   coo_prod!(nlp.clinrows, nlp.clincols, nlp.clinvals, x, c)
   c .+= nlp.blin
-  increment!(nlp, :neval_cons_lin) 
+  increment!(nlp, :neval_cons_lin)
   return c
 end
 
