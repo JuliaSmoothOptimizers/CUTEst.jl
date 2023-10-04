@@ -15,7 +15,7 @@ import Libdl.dlsym
 # Only one problem can be interfaced at any given time.
 global cutest_instances = 0
 
-export CUTEstModel, sifdecoder, set_mastsif
+export CUTEstModel, sifdecoder, set_mastsif, export_cutest_env
 
 mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
   meta::NLPModelMeta{Float64, Vector{Float64}}
@@ -124,6 +124,24 @@ StrideOneVector{T} =
 include("core_interface.jl")
 include("julia_interface.jl")
 include("classification.jl")
+
+"""
+    export_cutest_env()
+
+Print environment variables to add to the user's `~/.bashrc`
+in order to use CUTEst as installed by CUTEst.jl from outside
+Julia.
+"""
+function export_cutest_env(io::IO=stdout)
+  print(io, "# CUTEst settings: copy and paste the following into your ~/.bashrc\n#\n")
+  for var ∈ ("ARCHDEFS", "SIFDECODE", "CUTEST", "MYARCH", "MASTSIF")
+    print(io, "export $var=$(ENV["$var"])\n")
+  end
+  print(io, "export PATH=\${SIFDECODE}/bin:\${CUTEST}/bin:\${PATH}\n")
+  print(io, "run_sifdecoder() { bash -c \"export $(CUTEst_jll.LIBPATH_env)=$(CUTEst_jll.LIBPATH); source \$SIFDECODE/bin/sifdecoder \$@\"; }\n")
+  print(io, "#\n# to decode a problem, use run_sifdecoder followed by any options accepted by the decoder")
+  nothing
+end
 
 """
     set_mastsif()
