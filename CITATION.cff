@@ -1,0 +1,35 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'CUTEst.jl: Julia''s CUTEst interface'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Dominique
+    family-names: Orban
+    email: dominique.orban@gerad.ca
+    affiliation: >-
+      GERAD and Department of Mathematics and            
+      Industrial Engineering, Polytechnique
+      Montréal,             QC, Canada
+    orcid: 'https://orcid.org/0000-0002-8017-7687'
+  - given-names: Abel Soares
+    family-names: Siqueira
+    orcid: 'https://orcid.org/0000-0003-4451-281X'
+    affiliation: 'Netherlands eScience Center, Amsterdam, NL'
+    email: abel.s.siqueira@gmail.com
+  - given-names: contributors
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.1188851
+repository-code: 'https://github.com/JuliaSmoothOptimizers/CUTEst.jl'
+keywords:
+  - CUTEst
+  - Optimization
+  - Julia
+commit: cf290bc63dd5b2a456ad84a3f7bf8dd089fc4074
+version: 0.13.2
+date-released: '2023-03-27'
