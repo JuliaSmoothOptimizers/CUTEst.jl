@@ -14,10 +14,10 @@ authors:
     affiliation: >-
       GERAD and Department of Mathematics and            
       Industrial Engineering, Polytechnique
-      Montréal,             QC, Canada
+      Montréal, QC, Canada
     orcid: 'https://orcid.org/0000-0002-8017-7687'
-  - given-names: Abel Soares
-    family-names: Siqueira
+  - given-names: Abel
+    family-names: Soares Siqueira
     orcid: 'https://orcid.org/0000-0003-4451-281X'
     affiliation: 'Netherlands eScience Center, Amsterdam, NL'
     email: abel.s.siqueira@gmail.com
@@ -30,6 +30,5 @@ keywords:
   - CUTEst
   - Optimization
   - Julia
-commit: cf290bc63dd5b2a456ad84a3f7bf8dd089fc4074
 version: 0.13.2
 date-released: '2023-03-27'
