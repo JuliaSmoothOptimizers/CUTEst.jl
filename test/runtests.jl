@@ -3,6 +3,8 @@ using LinearAlgebra, SparseArrays, Random, Test
 # jso
 using CUTEst, NLPModels, NLPModelsTest
 
+@info("CUTEST_INSTALLATION : $(CUTEst.CUTEST_INSTALLATION)")
+
 set_mastsif()
 @test ispath(ENV["MASTSIF"])
 @test isfile(joinpath(ENV["MASTSIF"], "CYCLOOCT.SIF"))
