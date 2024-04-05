@@ -19,6 +19,9 @@ task:
         apt update
         apt install -y curl
     fi
+    if [ "$(uname -s)" = "FreeBSD" ]; then
+      install -y lang/gcc git bash
+    fi
     if command -v curl; then
         sh -c "$(curl ${URL})"
     elif command -v wget; then
@@ -26,8 +29,6 @@ task:
     elif command -v fetch; then
         sh -c "$(fetch ${URL} -o -)"
     fi
-    echo "OMP_CANCELLATION=TRUE" >> $CIRRUS_ENV
-    echo "OMP_PROC_BIND=TRUE" >> $CIRRUS_ENV
   build_script:
     - cirrusjl build
   test_script:
