@@ -20,7 +20,7 @@ task:
         apt install -y curl
     fi
     if [ "$(uname -s)" = "FreeBSD" ]; then
-      install -y lang/gcc git bash
+      pkg install -y lang/gcc git bash
     fi
     if command -v curl; then
         sh -c "$(curl ${URL})"
