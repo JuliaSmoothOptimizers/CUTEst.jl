@@ -61,7 +61,7 @@ struct CUTEstException <: Exception
   end
 end
 
-const cutest_problems_path = joinpath(dirname(@__FILE__), "../deps", "files")
+const cutest_problems_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 global cutest_lib = C_NULL
 
@@ -74,10 +74,6 @@ function __init__()
     return
   end
 
-  ENV["ARCHDEFS"] = joinpath(CUTEst_jll.artifact_dir, "ARCHDefs")
-  ENV["SIFDECODE"] = joinpath(CUTEst_jll.artifact_dir, "SIFDecode")
-  ENV["CUTEST"] = joinpath(CUTEst_jll.artifact_dir, "CUTEst")
-
   # set default MASTSIF location if the user hasn't set it already
   if !("MASTSIF" ∈ keys(ENV))
     ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-99c5b38e7d03")
@@ -86,27 +82,6 @@ function __init__()
   end
   @info "using problem repository" ENV["MASTSIF"]
 
-  # Set MYARCH
-  if Sys.isapple()
-    if Sys.WORD_SIZE == 64
-      ENV["MYARCH"] = "mac64.osx.gfo"
-    else
-      ENV["MYARCH"] = "mac.osx.gfo"
-    end
-  elseif Sys.iswindows()
-    if Sys.WORD_SIZE == 64
-      ENV["MYARCH"] = "pc64.mgw.gfo"
-    else
-      ENV["MYARCH"] = "pc.mgw.gfo"
-    end
-  else
-    ENV["MYARCH"] = "pc64.lnx.gfo"
-    # if Sys.WORD_SIZE == 64
-    #   ENV["MYARCH"] = "pc64.lnx.gfo"
-    # else
-    #   ENV["MYARCH"] = "pc.lnx.gfo"
-    # end
-  end
   global libpath = joinpath(CUTEst_jll.artifact_dir, "lib")
   push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
 end
@@ -178,27 +153,23 @@ function sifdecoder(
     delete_temp_files()
     # safeguard for macOS: see https://github.com/JuliaPackaging/Yggdrasil/pull/404#issuecomment-576958966
     if Sys.isapple()
-      CUTEst_jll.sifdecoder() do decoder_exe
-        run(
-          pipeline(
-            ignorestatus(
-              `bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $decoder_exe $(join(args, " ")) $name"`,
-            ),
-            stdout = outlog,
-            stderr = errlog,
+      run(
+        pipeline(
+          ignorestatus(
+            `bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $(CUTEst_jll.sifdecoder) $(join(args, " ")) $name"`,
           ),
-        )
-      end
+          stdout = outlog,
+          stderr = errlog,
+        ),
+      )
     else
-      CUTEst_jll.sifdecoder() do decoder_exe
-        run(
-          pipeline(
-            ignorestatus(Cmd([decoder_exe, args..., name])),
-            stdout = outlog,
-            stderr = errlog,
-          ),
-        )
-      end
+      run(
+        pipeline(
+          ignorestatus(Cmd([CUTEst_jll.sifdecoder, args..., name])),
+          stdout = outlog,
+          stderr = errlog,
+        ),
+      )
     end
     print(read(errlog, String))
     verbose && println(read(outlog, String))
