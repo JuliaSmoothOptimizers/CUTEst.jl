@@ -5,12 +5,24 @@ __precompile__()
 
 module CUTEst
 
-using CUTEst_jll
 using Pkg.Artifacts
+using NLPModels
 using Libdl
 
-using NLPModels
 import Libdl.dlsym
+
+if haskey(ENV, "JULIA_CUTEST_LIBRARY_PATH")
+  const libpath = ENV["JULIA_CUTEST_LIBRARY_PATH"]
+  const libcutest_single = joinpath(libpath, "libcutest_single.$dlext")
+  const libcutest_double = joinpath(libpath, "libcutest_double.$dlext")
+  const CUTEST_INSTALLATION = "CUSTOM"
+else
+  using CUTEst_jll
+  const libpath = joinpath(CUTEst_jll.artifact_dir, "lib")
+  const libcutest_single = joinpath(libpath, "libcutest_single.$dlext")
+  const libcutest_double = joinpath(libpath, "libcutest_double.$dlext")
+  const CUTEST_INSTALLATION = "ARTIFACT"
+end
 
 # Only one problem can be interfaced at any given time.
 global cutest_instances = 0
@@ -107,7 +119,6 @@ function __init__()
     #   ENV["MYARCH"] = "pc.lnx.gfo"
     # end
   end
-  global libpath = joinpath(CUTEst_jll.artifact_dir, "lib")
   push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
 end
 
@@ -207,11 +218,11 @@ function sifdecoder(
       run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`)
       if Sys.isapple()
         run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
+          `$linker $sh_flags -o $libname.$dlext ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(libcutest_double) $libgfortran`,
         )
       else
         run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
+          `$linker $sh_flags -o $libname.$dlext ELFUN.o EXTER.o GROUP.o RANGE.o -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
         )
       end
       run(`mv OUTSDIF.d $outsdif`)
