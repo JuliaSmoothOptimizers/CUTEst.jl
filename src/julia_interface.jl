@@ -31,7 +31,6 @@ function NLPModels.objcons!(
       f,
       c,
     )
-    increment!(nlp, :neval_cons)
   else
     ccall(
       dlsym(cutest_lib, :cutest_ufn_),
@@ -44,6 +43,7 @@ function NLPModels.objcons!(
     )
   end
   increment!(nlp, :neval_obj)
+  increment!(nlp, :neval_cons)
   @cutest_error
 
   return f[1], c
@@ -133,9 +133,7 @@ end
 function NLPModels.obj(nlp::CUTEstModel, x::AbstractVector)
   @lencheck nlp.meta.nvar x
   f = objcons!(nlp, x, nlp.work)[1]
-  if nlp.meta.ncon > 0
-    decrement!(nlp, :neval_cons) # does not really count as a constraint eval
-  end
+  decrement!(nlp, :neval_cons) # does not really count as a constraint eval
   return f
 end
 
