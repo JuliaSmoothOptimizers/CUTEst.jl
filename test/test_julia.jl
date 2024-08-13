@@ -141,7 +141,7 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     else
       @assert nlp.counters.neval_obj == 3
       @assert nlp.counters.neval_grad == 3
-      @assert nlp.counters.neval_cons == 0
+      @assert nlp.counters.neval_cons == 1
       @assert nlp.counters.neval_jac == 0
       @assert nlp.counters.neval_jprod == 0
       @assert nlp.counters.neval_jtprod == 0
