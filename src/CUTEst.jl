@@ -13,6 +13,10 @@ using Libdl
 using NLPModels
 import Libdl.dlsym
 
+global cutest_lib_path = ""
+global cutest_lib = C_NULL
+include("libcutest.jl")
+
 # Only one problem can be interfaced at any given time.
 global cutest_instances = 0
 
@@ -64,7 +68,6 @@ end
 
 const cutest_problems_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
-global cutest_lib = C_NULL
 
 function __init__()
   if success(`bash -c "type gfortran"`)
@@ -215,8 +218,8 @@ function sifdecoder(
       end
       run(`mv OUTSDIF.d $outsdif`)
       delete_temp_files(suffix)
-      global cutest_lib =
-        Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      global cutest_lib = Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      global cutest_lib_path = joinpath(cutest_problems_path, "$libname.$(Libdl.dlext)")
     end
   end
   rm(outlog)
@@ -298,7 +301,7 @@ function CUTEstModel(
       dlsym(cutest_lib, :fortran_open_),
       Nothing,
       (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}),
-      funit,
+      [funit],
       outsdif,
       io_err,
     )

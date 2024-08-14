@@ -8,4 +8,7 @@ deps/*
 
 docs/build
 docs/site
-dos/Manifest.toml
+docs/Manifest.toml
+
+gen/Manifest.toml
+
