@@ -4,11 +4,11 @@ makedocs(
   modules = [CUTEst],
   doctest = true,
   linkcheck = true,
-  strict = true,
   format = Documenter.HTML(
     assets = ["assets/style.css"],
     ansicolor = true,
     prettyurls = get(ENV, "CI", nothing) == "true",
+    size_threshold_ignore = ["reference.md"],
   ),
   sitename = "CUTEst.jl",
   pages = [

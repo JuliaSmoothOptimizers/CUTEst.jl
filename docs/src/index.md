@@ -81,7 +81,7 @@ finalize(nlp)
 ```
 
 Check the [NLPModels
-API](https://JuliaSmoothOptimizers.github.io/NLPModels.jl/stable/api/) for details.
+API](https://jso.dev/NLPModels.jl/stable/api/) for details.
 
 You can pass parameters to sifdecoder by giving additional arguments to `CUTEstModel`.
 For instance, to change `NH` from model `CHAIN`, use
