@@ -1,4 +1,4 @@
-# Script to parse qr_mumps headers and generate Julia wrappers.
+# Script to parse CUTEst headers and generate Julia wrappers.
 using CUTEst_jll
 using Clang
 using Clang.Generators
