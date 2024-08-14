@@ -5,14 +5,14 @@ using Clang.Generators
 using JuliaFormatter
 
 function main()
-
   cd(@__DIR__)
   include_dir = joinpath(CUTEst_jll.artifact_dir, "include")
   headers = map(header -> joinpath(include_dir, header), ["cutest.h"])
 
   options = load_options(joinpath(@__DIR__, "cutest.toml"))
   options["general"]["output_file_path"] = joinpath("..", "src", "libcutest.jl")
-  options["general"]["output_ignorelist"] = ["integer", "real", "doublereal", "logical", "rp_", "rpc_", "ip_", "ipc_"]
+  options["general"]["output_ignorelist"] =
+    ["integer", "real", "doublereal", "logical", "rp_", "rpc_", "ip_", "ipc_"]
 
   args = get_default_args()
   push!(args, "-I$include_dir")

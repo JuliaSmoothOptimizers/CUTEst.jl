@@ -218,7 +218,8 @@ function sifdecoder(
       end
       run(`mv OUTSDIF.d $outsdif`)
       delete_temp_files(suffix)
-      global cutest_lib = Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      global cutest_lib =
+        Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
       global cutest_lib_path = joinpath(cutest_problems_path, "$libname.$(Libdl.dlext)")
     end
   end
