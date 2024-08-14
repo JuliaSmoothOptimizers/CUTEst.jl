@@ -1,8 +1,11 @@
 *.[df]
 *.so
 
+Manifest.toml
+
 deps/*
 !deps/build.jl
 
 docs/build
 docs/site
+dos/Manifest.toml

@@ -6,6 +6,7 @@ __precompile__()
 module CUTEst
 
 using CUTEst_jll
+import SIFDecode_jll
 using Pkg.Artifacts
 using Libdl
 
@@ -136,16 +137,14 @@ function set_mastsif()
   nothing
 end
 
-function delete_temp_files()
-  for f in ("ELFUN", "EXTER", "GROUP", "RANGE")
+function delete_temp_files(suffix::String)
+  for f in ("ELFUN", "ELFUNF", "ELFUND", "RANGE", "GROUP", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
     for ext in ("f", "o")
-      fname = "$f.$ext"
+      fname = "$f$suffix.$ext"
       isfile(fname) && rm(fname, force = true)
     end
   end
-  for f in ("OUTSDIF.d", "AUTOMAT.d")
-    isfile(f) && rm(f, force = true)
-  end
+  isfile("OUTSDIF.d") && rm("OUTSDIF.d", force = true)
   nothing
 end
 
@@ -160,63 +159,68 @@ function sifdecoder(
   args...;
   verbose::Bool = false,
   outsdif::String = "OUTSDIF_$(basename(name)).d",
-  automat::String = "AUTOMAT_$(basename(name)).d",
+  precision::Symbol = :double
 )
+  if precision == :single
+    prec = "-sp"
+    suffix = "_s"
+  elseif precision == :double
+    prec = "-dp"
+    suffix = ""
+  elseif precision == :quadruple
+    prec = "-qp"
+    suffix ="_q"
+  else
+    error("The $precision precision is not supported.")
+  end
+
   if length(name) < 4 || name[(end - 3):end] != ".SIF"
     name = "$name.SIF"
   end
-  if !isfile(name) && !isfile(joinpath(ENV["MASTSIF"], name))
-    error("$name not found")
+  if isfile(name)
+    path_sifname = abspath(name)
+  else
+    path_sifname = joinpath(ENV["MASTSIF"], name)
+    if !isfile(path_sifname)
+      error("$name not found")
+    end
   end
 
-  pname, sif = splitext(basename(name))
+  pname, sif = basename(name) |> splitext
   libname = "lib$pname"
 
   outlog = tempname()
   errlog = tempname()
   cd(cutest_problems_path) do
-    delete_temp_files()
-    # safeguard for macOS: see https://github.com/JuliaPackaging/Yggdrasil/pull/404#issuecomment-576958966
-    if Sys.isapple()
-      CUTEst_jll.sifdecoder() do decoder_exe
-        run(
-          pipeline(
-            ignorestatus(
-              `bash -c "export DYLD_FALLBACK_LIBRARY_PATH=$(ENV["DYLD_FALLBACK_LIBRARY_PATH"]); source $decoder_exe $(join(args, " ")) $name"`,
-            ),
-            stdout = outlog,
-            stderr = errlog,
-          ),
-        )
-      end
-    else
-      CUTEst_jll.sifdecoder() do decoder_exe
-        run(
-          pipeline(
-            ignorestatus(Cmd([decoder_exe, args..., name])),
-            stdout = outlog,
-            stderr = errlog,
-          ),
-        )
-      end
+    delete_temp_files(suffix)
+    run(
+      pipeline(
+        Cmd(`$(SIFDecode_jll.sifdecoder_standalone()) $(args) $(prec) $(path_sifname)`, ignorestatus=true),
+        stdout = outlog,
+        stderr = errlog,
+      ),
+    )
+    read(errlog, String) |> println
+    if verbose
+      read(outlog, String) |> println
     end
-    print(read(errlog, String))
-    verbose && println(read(outlog, String))
 
-    if isfile("ELFUN.f")
-      run(`gfortran -c -fPIC ELFUN.f EXTER.f GROUP.f RANGE.f`)
+    if isfile("ELFUN$suffix.f")
+      run(`gfortran -c -fPIC ELFUN$suffix.f`)
+      object_files = ["ELFUN$suffix.o"]
+      for file in ("GROUP", "RANGE", "ELFUNF", "ELFUND", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
+        if isfile("$file$suffix.f")
+          run(`gfortran -c -fPIC $file$suffix.f`)
+          push!(object_files, "$file$suffix.o")
+        end
+      end
       if Sys.isapple()
-        run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
-        )
+        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`)
       else
-        run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) ELFUN.o EXTER.o GROUP.o RANGE.o -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
-        )
+        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`)
       end
       run(`mv OUTSDIF.d $outsdif`)
-      run(`mv AUTOMAT.d $automat`)
-      delete_temp_files()
+      delete_temp_files(suffix)
       global cutest_lib =
         Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     end
@@ -270,28 +274,32 @@ function CUTEstModel(
   lfirst::Bool = true,
   lvfirst::Bool = true,
 )
+
   sifname = (length(name) < 4 || name[(end - 3):end] != ".SIF") ? "$name.SIF" : name
-  name = splitext(basename(sifname))[1]
-  if !isfile(sifname) && !isfile(joinpath(ENV["MASTSIF"], sifname))
-    error("$name not found")
-  elseif isfile(sifname) && !isfile(joinpath(ENV["MASTSIF"], sifname))
+  if isfile(sifname)
     # This file is local so make sure the full path is maintained for sifdecoder
-    sifname = joinpath(pwd(), basename(sifname))
+    path_sifname = joinpath(pwd(), sifname)
+  else
+    path_sifname = joinpath(ENV["MASTSIF"], sifname)
+    if !isfile(path_sifname)
+      error("$name not found")
+    end
   end
-  outsdif = "OUTSDIF_$name.d"
-  automat = "AUTOMAT_$name.d"
+
+  pname, sif = basename(name) |> splitext
+  outsdif = "OUTSDIF_$pname.d"
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
   io_err = Cint[0]
   global cutest_lib
   cd(cutest_problems_path) do
     if !decode
-      (isfile(outsdif) && isfile(automat)) || error("CUTEst: no decoded problem found")
-      libname = "lib$name"
+      isfile(outsdif) || error("CUTEst: no decoded problem found")
+      libname = "lib$pname"
       isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
       cutest_lib = Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
-      sifdecoder(sifname, args..., verbose = verbose, outsdif = outsdif, automat = automat)
+      sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif)
     end
     ccall(
       dlsym(cutest_lib, :fortran_open_),
