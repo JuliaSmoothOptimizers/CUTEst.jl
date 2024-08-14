@@ -35,6 +35,10 @@ function main()
 
   format_file(path, YASStyle())
 
+  code = read(path, String)
+  code = "#! format: off\n" * code * "#! format: on\n"
+  write(path, code)
+
   return nothing
 end
 
