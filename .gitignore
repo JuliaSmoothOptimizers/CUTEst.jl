@@ -9,3 +9,6 @@ deps/*
 docs/build
 docs/site
 dos/Manifest.toml
+
+gen/Manifest.toml
+
