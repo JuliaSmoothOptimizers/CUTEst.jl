@@ -2,7 +2,7 @@ using Documenter, CUTEst, NLPModels
 
 makedocs(
   modules = [CUTEst],
-  doctest = true,
+  doctest = false,
   linkcheck = true,
   format = Documenter.HTML(
     assets = ["assets/style.css"],

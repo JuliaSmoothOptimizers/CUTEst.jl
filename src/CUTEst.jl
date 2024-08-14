@@ -245,14 +245,13 @@ You can, for instance, change parameters of the model:
 using CUTEst
 
 nlp = CUTEstModel("CHAIN", "-param", "NH=50")
-print(nlp.meta.nnzh)
+println(nlp.meta.nnzh)
 finalize(nlp)
 nlp = CUTEstModel("CHAIN", "-param", "NH=100")
-print(nlp.meta.nnzh)
+println(nlp.meta.nnzh)
 finalize(nlp)
 
 # output
-
 
 153
 303
