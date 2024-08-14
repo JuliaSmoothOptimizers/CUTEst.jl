@@ -138,7 +138,18 @@ function set_mastsif()
 end
 
 function delete_temp_files(suffix::String)
-  for f in ("ELFUN", "ELFUNF", "ELFUND", "RANGE", "GROUP", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
+  for f in (
+    "ELFUN",
+    "ELFUNF",
+    "ELFUND",
+    "RANGE",
+    "GROUP",
+    "GROUPF",
+    "GROUPD",
+    "SETTYP",
+    "EXTER",
+    "EXTERA",
+  )
     for ext in ("f", "o")
       fname = "$f$suffix.$ext"
       isfile(fname) && rm(fname, force = true)
@@ -159,7 +170,7 @@ function sifdecoder(
   args...;
   verbose::Bool = false,
   outsdif::String = "OUTSDIF_$(basename(name)).d",
-  precision::Symbol = :double
+  precision::Symbol = :double,
 )
   if precision == :single
     prec = "-sp"
@@ -169,7 +180,7 @@ function sifdecoder(
     suffix = ""
   elseif precision == :quadruple
     prec = "-qp"
-    suffix ="_q"
+    suffix = "_q"
   else
     error("The $precision precision is not supported.")
   end
@@ -195,7 +206,10 @@ function sifdecoder(
     delete_temp_files(suffix)
     run(
       pipeline(
-        Cmd(`$(SIFDecode_jll.sifdecoder_standalone()) $(args) $(prec) $(path_sifname)`, ignorestatus=true),
+        Cmd(
+          `$(SIFDecode_jll.sifdecoder_standalone()) $(args) $(prec) $(path_sifname)`,
+          ignorestatus = true,
+        ),
         stdout = outlog,
         stderr = errlog,
       ),
@@ -208,16 +222,21 @@ function sifdecoder(
     if isfile("ELFUN$suffix.f")
       run(`gfortran -c -fPIC ELFUN$suffix.f`)
       object_files = ["ELFUN$suffix.o"]
-      for file in ("GROUP", "RANGE", "ELFUNF", "ELFUND", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
+      for file in
+          ("GROUP", "RANGE", "ELFUNF", "ELFUND", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
         if isfile("$file$suffix.f")
           run(`gfortran -c -fPIC $file$suffix.f`)
           push!(object_files, "$file$suffix.o")
         end
       end
       if Sys.isapple()
-        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`)
+        run(
+          `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
+        )
       else
-        run(`$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`)
+        run(
+          `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
+        )
       end
       run(`mv OUTSDIF.d $outsdif`)
       delete_temp_files(suffix)
@@ -274,7 +293,6 @@ function CUTEstModel(
   lfirst::Bool = true,
   lvfirst::Bool = true,
 )
-
   sifname = (length(name) < 4 || name[(end - 3):end] != ".SIF") ? "$name.SIF" : name
   if isfile(sifname)
     # This file is local so make sure the full path is maintained for sifdecoder
