@@ -297,7 +297,10 @@ function CUTEstModel(
     else
       sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif)
     end
-    fortran_open_(
+    ccall(
+      dlsym(cutest_lib, :fortran_open_),
+      Nothing,
+      (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}),
       [funit],
       outsdif,
       io_err,
