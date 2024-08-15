@@ -80,7 +80,10 @@ function __init__()
 
   # set default MASTSIF location if the user hasn't set it already
   if !("MASTSIF" ∈ keys(ENV))
-    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-99c5b38e7d03")
+    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-229e00b81891")
+    # Path for the other sets of SIF problems:
+    # ENV["MASTSIF"] = joinpath(artifact"maros-meszaros", "optrove-maros-meszaros-9adfb5707b1e")
+    # ENV["MASTSIF"] = joinpath(artifact"netlib-lp", "optrove-netlib-lp-f83996fca937")
   else
     @info "call set_mastsif() to use the full SIF collection"
   end
