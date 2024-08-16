@@ -32,6 +32,7 @@ function sifdecoder(
   verbose::Bool = false,
   outsdif::String = "OUTSDIF_$(basename(name)).d",
   precision::Symbol = :double,
+  libsif_folder::String = cutest_problems_path
 )
   if precision == :single
     prec = "-sp"
@@ -60,7 +61,7 @@ function sifdecoder(
 
   outlog = tempname()
   errlog = tempname()
-  cd(cutest_problems_path) do
+  cd(libsif_folder) do
     delete_temp_files(suffix)
     run(
       pipeline(
@@ -89,7 +90,11 @@ Build a shared library from a decoded SIF problem.
 Example:
     `build_libsif("DIXMAANJ")`.
 """
-function build_libsif(name::AbstractString; precision::Symbol = :double)
+function build_libsif(
+  name::AbstractString;
+  precision::Symbol = :double,
+  libsif_folder::String = cutest_problems_path
+)
   if precision == :single
     prec = "-sp"
     suffix = "_s"
@@ -106,7 +111,7 @@ function build_libsif(name::AbstractString; precision::Symbol = :double)
   pname, sif = basename(name) |> splitext
   libname = "lib$pname"
 
-  cd(cutest_problems_path) do
+  cd(libsif_folder) do
     if isfile("ELFUN$suffix.f")
       run(`gfortran -c -fPIC ELFUN$suffix.f`)
       object_files = ["ELFUN$suffix.o"]
