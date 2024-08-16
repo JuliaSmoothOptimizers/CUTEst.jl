@@ -11,7 +11,7 @@ problems = ["BROWNDEN", "HS5", "HS6", "HS10", "HS11", "HS13", "HS14"]
 # test sifdecoder
 for pb in problems
   for precision in (:single, :double, :quadruple)
-    sifdecoder(pb, verbose=true, precision=precision)
+    sifdecoder(pb, precision=precision)
   end
 end
 
