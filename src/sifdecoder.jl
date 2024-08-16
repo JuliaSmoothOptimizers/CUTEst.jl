@@ -76,7 +76,7 @@ function sifdecoder(
     if verbose
       read(outlog, String) |> println
     end
-    isfile("OUTSIF.d") && run(`mv OUTSDIF.d $outsdif`)
+    isfile("OUTSDIF.d") && run(`mv OUTSDIF.d $outsdif`)
   end
   rm(outlog)
   rm(errlog)
