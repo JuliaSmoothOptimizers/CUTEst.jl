@@ -76,6 +76,7 @@ function sifdecoder(
     if verbose
       read(outlog, String) |> println
     end
+    isfile("OUTSIF.d") && run(`mv OUTSDIF.d $outsdif`)
   end
   rm(outlog)
   rm(errlog)
@@ -125,7 +126,6 @@ function build_libsif(name::AbstractString; precision::Symbol = :double)
           `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
         )
       end
-      run(`mv OUTSDIF.d $outsdif`)
       delete_temp_files(suffix)
       global cutest_lib =
         Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
