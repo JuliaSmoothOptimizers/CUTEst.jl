@@ -49,8 +49,11 @@ function __init__()
 end
 
 # to allow view inputs with stride one
-StrideOneVector{T} =
-  Union{Ref{T}, Vector{T}, SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer}}
+StrideOneVector{T} = Union{
+  Ref{T},
+  Vector{T},
+  SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer},
+}
 
 include("libcutest.jl")
 include("model.jl")
