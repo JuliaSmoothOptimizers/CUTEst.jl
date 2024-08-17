@@ -92,13 +92,13 @@ end
 
 CUTEstException(info::Integer) = CUTEstException(convert(Int32, info))
 
-macro cutest_error()  # Handle nonzero exit codes.
-  esc(:(io_err[1] > 0 && throw(CUTEstException(io_err[1]))))
+function cutest_error(status::Cint)  # Handle nonzero exit codes.
+  (status > 0) && throw(CUTEstException(status))
 end
 
 # to allow view inputs with stride one
 StrideOneVector{T} =
-  Union{Vector{T}, SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer}}
+  Union{Ref{T}, Vector{T}, SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer}}
 
 include("sifdecoder.jl")
 include("core_interface.jl")
@@ -188,7 +188,6 @@ function CUTEstModel(
   outsdif = "OUTSDIF_$pname.d"
   global cutest_instances
   cutest_instances > 0 && error("CUTEst: call finalize on current model first")
-  io_err = Cint[0]
   global cutest_lib
   cd(cutest_problems_path) do
     if !decode
@@ -200,47 +199,40 @@ function CUTEstModel(
       sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = :double)
       build_libsif(path_sifname, precision = :double)
     end
-    ccall(
-      dlsym(cutest_lib, :fortran_open_),
-      Nothing,
-      (Ref{Int32}, Ptr{UInt8}, Ptr{Int32}),
-      [funit],
-      outsdif,
-      io_err,
-    )
-    @cutest_error
+    status = Ref{Cint}(0)
+    fortran_open_(Ref{Cint}(funit), outsdif, status)
+    cutest_error(status[])
   end
 
   # Obtain problem size.
-  nvar = Cint[0]
-  ncon = Cint[0]
+  status = Ref{Cint}(0)
+  nvar = Ref{Cint}(0)
+  ncon = Ref{Cint}(0)
 
-  cdimen(io_err, [funit], nvar, ncon)
-  @cutest_error
-  nvar = nvar[1]
-  ncon = ncon[1]
+  cdimen(status, Ref{Cint}(funit), nvar, ncon)
+  cutest_error(status[])
 
-  x = Vector{Float64}(undef, nvar)
-  bl = Vector{Float64}(undef, nvar)
-  bu = Vector{Float64}(undef, nvar)
-  v = Vector{Float64}(undef, ncon)
-  cl = Vector{Float64}(undef, ncon)
-  cu = Vector{Float64}(undef, ncon)
-  equatn = Vector{Int32}(undef, ncon)
-  linear = Vector{Int32}(undef, ncon)
+  x = Vector{Float64}(undef, nvar[])
+  bl = Vector{Float64}(undef, nvar[])
+  bu = Vector{Float64}(undef, nvar[])
+  v = Vector{Float64}(undef, ncon[])
+  cl = Vector{Float64}(undef, ncon[])
+  cu = Vector{Float64}(undef, ncon[])
+  equatn = Vector{Int32}(undef, ncon[])
+  linear = Vector{Int32}(undef, ncon[])
 
-  if ncon > 0
-    e_order = efirst ? Cint[1] : Cint[0]
-    l_order = lfirst ? Cint[1] : Cint[0]
-    v_order = lvfirst ? Cint[1] : Cint[0]
+  if ncon[] > 0
+    e_order = efirst ? Ref{Cint}(1) : Ref{Cint}(0)
+    l_order = lfirst ? Ref{Cint}(1) : Ref{Cint}(0)
+    v_order = lvfirst ? Ref{Cint}(1) : Ref{Cint}(0)
     # Equality constraints first, linear constraints first, nonlinear variables first.
     csetup(
-      io_err,
-      [funit],
-      Cint[0],
-      Cint[6],
-      [nvar],
-      [ncon],
+      status,
+      Ref{Cint}(funit),
+      Ref{Cint}(0),
+      Ref{Cint}(6),
+      nvar,
+      ncon,
       x,
       bl,
       bu,
@@ -254,9 +246,9 @@ function CUTEstModel(
       v_order,
     )
   else
-    usetup(io_err, [funit], Cint[0], Cint[6], [nvar], x, bl, bu)
+    usetup(status, Ref{Cint}(funit), Ref{Cint}(0), Ref{Cint}(6), nvar, x, bl, bu)
   end
-  @cutest_error
+  cutest_error(status[])
 
   for lim in Any[bl, bu, cl, cu]
     I = findall(abs.(lim) .>= 1e20)
@@ -266,26 +258,26 @@ function CUTEstModel(
   lin = findall(linear .!= 0)
   nlin = length(lin)
 
-  nnzh = Cint[0]
-  nnzj = Cint[0]
+  nnzh = Ref{Cint}(0)
+  nnzj = Ref{Cint}(0)
 
-  if ncon > 0
-    cdimsh(io_err, nnzh)
-    cdimsj(io_err, nnzj)
-    nnzj[1] -= nvar  # nnzj also counts the nonzeros in the objective gradient.
+  if ncon[] > 0
+    cdimsh(status, nnzh)
+    cdimsj(status, nnzj)
+    nnzj[] -= nvar[]  # nnzj also counts the nonzeros in the objective gradient.
   else
-    udimsh(io_err, nnzh)
+    udimsh(status, nnzh)
   end
-  @cutest_error
+  cutest_error(status[])
 
-  nnzh = Int(nnzh[1])
-  nnzj = Int(nnzj[1])
+  # Remove references
+  nvar = nvar[] |> Int
+  ncon = ncon[] |> Int
+  nnzj = nnzj[] |> Int
+  nnzh = nnzh[] |> Int
 
-  ccall(dlsym(cutest_lib, :fortran_close_), Nothing, (Ref{Int32}, Ptr{Int32}), funit, io_err)
-  @cutest_error
-
-  ncon = Int(ncon)
-  nvar = Int(nvar)
+  fortran_close_(Ref{Cint}(funit), status)
+  cutest_error(status[])
 
   lin_nnzj = min(nvar * nlin, nnzj)
   nln_nnzj = min(nvar * (ncon - nlin), nnzj)
@@ -321,8 +313,8 @@ function CUTEstModel(
   clincols = Vector{Int32}(undef, lin_nnzj)
   clinvals = Vector{Float64}(undef, lin_nnzj)
 
-  Jval = Array{Cdouble}(undef, nvar)
-  Jvar = Array{Cint}(undef, nvar)
+  Jval = Vector{Cdouble}(undef, nvar)
+  Jvar = Vector{Cint}(undef, nvar)
 
   nlp = CUTEstModel(
     meta,
@@ -352,16 +344,17 @@ function cutest_finalize(nlp::CUTEstModel)
   global cutest_instances
   cutest_instances == 0 && return
   global cutest_lib
-  io_err = Cint[0]
+  status = Ref{Cint}(0)
   if nlp.meta.ncon > 0
-    cterminate(io_err)
+    cterminate(status)
   else
-    uterminate(io_err)
+    uterminate(status)
   end
-  @cutest_error
+  cutest_error(status[])
   Libdl.dlclose(cutest_lib)
   cutest_instances -= 1
   cutest_lib = C_NULL
+  cutest_lib_path = ""
   return
 end
 

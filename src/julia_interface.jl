@@ -44,7 +44,7 @@ function NLPModels.objcons!(
     )
   end
   increment!(nlp, :neval_obj)
-  @cutest_error
+  cutest_error(io_err[])
 
   return f[1], c
 end
@@ -112,7 +112,7 @@ function NLPModels.objgrad!(
   end
   increment!(nlp, :neval_obj)
   increment!(nlp, :neval_grad)
-  @cutest_error
+  cutest_error(io_err[])
 
   return f[1], g
 end
@@ -208,7 +208,7 @@ function cons_coord!(
     rows,
     get_j,
   )
-  @cutest_error
+  cutest_error(io_err[])
   increment!(nlp, :neval_cons)
   increment!(nlp, :neval_jac)
   return c, rows, cols, vals
@@ -346,7 +346,7 @@ function NLPModels.jac_structure!(
     cols,
     rows,
   )
-  @cutest_error
+  cutest_error(io_err[])
 
   nlp.jrows .= rows[1:nnzj]
   nlp.jcols .= cols[1:nnzj]
@@ -370,7 +370,7 @@ function NLPModels.jac_structure!(nlp::CUTEstModel)
       nlp.jcols,
       nlp.jrows,
     )
-    @cutest_error
+    cutest_error(io_err[])
 
     nlp.jac_structure_reliable = true
   end
@@ -531,7 +531,7 @@ function NLPModels.jprod!(
     jv,
     ncon,
   )
-  @cutest_error
+  cutest_error(io_err[])
   increment!(nlp, :neval_jprod)
   return jv
 end
@@ -628,7 +628,7 @@ function NLPModels.jtprod!(
     jtv,
     nvar,
   )
-  @cutest_error
+  cutest_error(io_err[])
   increment!(nlp, :neval_jtprod)
   return jtv
 end
@@ -712,7 +712,7 @@ function NLPModels.hess_structure!(
       cols,
       rows,
     )
-    @cutest_error
+    cutest_error(io_err[])
   else
     ccall(
       dlsym(cutest_lib, :cutest_ushp_),
@@ -725,7 +725,7 @@ function NLPModels.hess_structure!(
       cols,
       rows,
     )
-    @cutest_error
+    cutest_error(io_err[])
   end
 
   nlp.hrows .= rows
@@ -753,7 +753,7 @@ function NLPModels.hess_structure!(nlp::CUTEstModel)
       nlp.hcols,
       nlp.hrows,
     )
-    @cutest_error
+    cutest_error(io_err[])
   else
     ccall(
       dlsym(cutest_lib, :cutest_ushp_),
@@ -766,7 +766,7 @@ function NLPModels.hess_structure!(nlp::CUTEstModel)
       nlp.hcols,
       nlp.hrows,
     )
-    @cutest_error
+    cutest_error(io_err[])
   end
 
   return nlp
@@ -829,7 +829,7 @@ function NLPModels.hess_coord!(
       nlp.hcols,
       nlp.hrows,
     )
-    @cutest_error
+    cutest_error(io_err[])
     increment!(nlp, :neval_hess)
     return vals
   end
@@ -888,7 +888,7 @@ function NLPModels.hess_coord!(
       nlp.hrows,
     )
   end
-  @cutest_error
+  cutest_error(io_err[])
 
   obj_weight != 1.0 && (vals[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   increment!(nlp, :neval_hess)
@@ -965,7 +965,7 @@ function NLPModels.hprod!(
       v,
       hv,
     )
-    @cutest_error
+    cutest_error(io_err[])
     increment!(nlp, :neval_hprod)
     return hv
   end
@@ -1009,7 +1009,7 @@ function NLPModels.hprod!(
       hv,
     )
   end
-  @cutest_error
+  cutest_error(io_err[])
 
   obj_weight != 1.0 && (hv[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   increment!(nlp, :neval_hprod)

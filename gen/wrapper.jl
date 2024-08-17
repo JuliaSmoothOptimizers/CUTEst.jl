@@ -32,7 +32,6 @@ function main()
   code = replace(code, "Ptr{ip_}" => "Ptr{Cint}")
   code = replace(code, "Ptr{ipc_}" => "Ptr{Cint}")
   write(path, code)
-
   format_file(path, YASStyle())
 
   code = read(path, String)
