@@ -1,23 +1,25 @@
-function delete_temp_files(suffix::String)
-  for f in (
-    "ELFUN",
-    "ELFUNF",
-    "ELFUND",
-    "RANGE",
-    "GROUP",
-    "GROUPF",
-    "GROUPD",
-    "SETTYP",
-    "EXTER",
-    "EXTERA",
-  )
-    for ext in ("f", "o")
-      fname = "$f$suffix.$ext"
-      isfile(fname) && rm(fname, force = true)
-    end
+"""
+    set_mastsif(set::String="sifcollection")
+
+Set the MASTSIF environment variable to point to a set of SIF problems.
+The supported sets are:
+- "sifcollection": the CUTEst NLP test set;
+- "maros-meszaros": the Maros-Meszaros QP test set;
+- "netlib-lp": the Netlib LP test set.
+
+"""
+function set_mastsif(set::String = "sifcollection")
+  if set == "sifcollection"
+    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-229e00b81891")
+  elseif set == "maros-meszaros"
+    ENV["MASTSIF"] = joinpath(artifact"maros-meszaros", "optrove-maros-meszaros-9adfb5707b1e")
+  elseif set == "netlib-lp"
+    ENV["MASTSIF"] = joinpath(artifact"netlib-lp", "optrove-netlib-lp-f83996fca937")
+  else
+    error("The set $set is not supported.")
   end
-  isfile("OUTSDIF.d") && rm("OUTSDIF.d", force = true)
-  nothing
+  @info "using full SIF collection located at" ENV["MASTSIF"]
+  return nothing
 end
 
 """Decode a SIF problem.
@@ -137,4 +139,26 @@ function build_libsif(
       global cutest_lib_path = joinpath(cutest_problems_path, "$libname.$(Libdl.dlext)")
     end
   end
+end
+
+function delete_temp_files(suffix::String)
+  for f in (
+    "ELFUN",
+    "ELFUNF",
+    "ELFUND",
+    "RANGE",
+    "GROUP",
+    "GROUPF",
+    "GROUPD",
+    "SETTYP",
+    "EXTER",
+    "EXTERA",
+  )
+    for ext in ("f", "o")
+      fname = "$f$suffix.$ext"
+      isfile(fname) && rm(fname, force = true)
+    end
+  end
+  isfile("OUTSDIF.d") && rm("OUTSDIF.d", force = true)
+  nothing
 end
