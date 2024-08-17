@@ -13,18 +13,15 @@ function NLPModels.objcons!(
   x::StrideOneVector{Float64},
   c::StrideOneVector{Float64},
 )
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
-  @lencheck nvar x
-  @lencheck ncon c
-  io_err = Cint[0]
-  f = Cdouble[0]
-  if ncon > 0
-    ccall(
-      dlsym(cutest_lib, :cutest_cfn_),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-      io_err,
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon c
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  status = Ref{Cint}(0)
+  f = Ref{Float64}(0)
+  if ncon[] > 0
+    cfn(
+      status,
       nvar,
       ncon,
       x,
@@ -33,20 +30,17 @@ function NLPModels.objcons!(
     )
     increment!(nlp, :neval_cons)
   else
-    ccall(
-      dlsym(cutest_lib, :cutest_ufn_),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}),
-      io_err,
+    ufn(
+      status,
       nvar,
       x,
       f,
     )
   end
   increment!(nlp, :neval_obj)
-  cutest_error(io_err[])
+  cutest_error(status[])
 
-  return f[1], c
+  return f[], c
 end
 
 function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector{Float64})
@@ -60,12 +54,12 @@ function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVect
   @lencheck nlp.meta.nvar x
   @lencheck ncon c
   if ncon > 0
-    cc = zeros(ncon)
+    cc = zeros(Float64, ncon)
     f, _ = objcons!(nlp, convert(Vector{Float64}, x), cc)
     c .= cc
     return f, c
   else
-    return objcons!(nlp, convert(Vector{Float64}, x), zeros(0))
+    return objcons!(nlp, convert(Vector{Float64}, x), Float64[])  # dispatch too complex for a Ref
   end
 end
 
@@ -80,17 +74,14 @@ function NLPModels.objgrad!(
   x::StrideOneVector{Float64},
   g::StrideOneVector{Float64},
 )
-  nvar = nlp.meta.nvar
-  @lencheck nvar x g
-  f = Cdouble[0]
-  io_err = Cint[0]
-  get_grad = 1
+  @lencheck nlp.meta.nvar x g
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  f = Ref{Float64}(0)
+  status = Ref{Cint}(0)
+  get_grad = Ref{Bool}(1)
   if nlp.meta.ncon > 0
-    ccall(
-      dlsym(cutest_lib, "cutest_cofg_"),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ref{Int32}),
-      io_err,
+    cofg(
+      status,
       nvar,
       x,
       f,
@@ -98,11 +89,8 @@ function NLPModels.objgrad!(
       get_grad,
     )
   else
-    ccall(
-      dlsym(cutest_lib, "cutest_uofg_"),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ref{Int32}),
-      io_err,
+    uofg(
+      status,
       nvar,
       x,
       f,
@@ -112,9 +100,9 @@ function NLPModels.objgrad!(
   end
   increment!(nlp, :neval_obj)
   increment!(nlp, :neval_grad)
-  cutest_error(io_err[])
+  cutest_error(status[])
 
-  return f[1], g
+  return f[], g
 end
 
 function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::StrideOneVector{Float64})
@@ -132,7 +120,7 @@ end
 
 function NLPModels.obj(nlp::CUTEstModel, x::AbstractVector)
   @lencheck nlp.meta.nvar x
-  f = objcons!(nlp, x, nlp.work)[1]
+  f, _ = objcons!(nlp, x, nlp.work)
   if nlp.meta.ncon > 0
     decrement!(nlp, :neval_cons) # does not really count as a constraint eval
   end
@@ -170,33 +158,18 @@ function cons_coord!(
   cols::StrideOneVector{Int32},
   vals::StrideOneVector{Float64},
 )
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
-  nnzj = nlp.meta.nnzj
-  @lencheck nvar x
-  @lencheck ncon c
-  @lencheck nnzj rows cols vals
-  io_err = Cint[0]
-  jsize = nlp.meta.nnzj
-  get_j = 1
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon c
+  @lencheck nlp.meta.nnzj rows cols vals
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  status = Ref{Cint}(0)
+  nnzj = Ref{Cint}(nlp.meta.nnzj)
+  jsize = Ref{Cint}(nlp.meta.nnzj)
+  get_j = Ref{Bool}(true)
 
-  ccall(
-    dlsym(cutest_lib, :cutest_ccfsg_),
-    Nothing,
-    (
-      Ptr{Int32},
-      Ref{Int32},
-      Ref{Int32},
-      Ptr{Float64},
-      Ptr{Float64},
-      Ref{Int32},
-      Ref{Int32},
-      Ptr{Float64},
-      Ptr{Int32},
-      Ptr{Int32},
-      Ref{Int32},
-    ),
-    io_err,
+  ccfsg(
+    status,
     nvar,
     ncon,
     x,
@@ -208,7 +181,7 @@ function cons_coord!(
     rows,
     get_j,
   )
-  cutest_error(io_err[])
+  cutest_error(status[])
   increment!(nlp, :neval_cons)
   increment!(nlp, :neval_jac)
   return c, rows, cols, vals
@@ -317,9 +290,10 @@ end
 function NLPModels.cons_nln!(nlp::CUTEstModel, x::AbstractVector, c::StrideOneVector)
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnln c
+  nvar = Ref{Cint}(nlp.meta.nvar)
   k = 1
   for j in nlp.meta.nln
-    cifn(Cint[0], Cint[nlp.meta.nvar], Cint[j], x, view(c, k:k))
+    cifn(Ref{Cint}(0), nvar, Ref{Cint}(j), x, view(c, k:k))
     k += 1
   end
   increment!(nlp, :neval_cons_nln)
@@ -332,45 +306,40 @@ function NLPModels.jac_structure!(
   cols::StrideOneVector{Int32},
 )
   @lencheck nlp.meta.nnzj rows cols
-  nnzj = nlp.meta.nnzj
-  io_err = Cint[0]
-  this_nnzj = Cint[0]
+  nnzj = Ref{Cint}(nlp.meta.nnzj)
+  status = Ref{Cint}(0)
+  this_nnzj = Ref{Cint}(0)
 
-  ccall(
-    dlsym(cutest_lib, :cutest_csjp_),
-    Nothing,
-    (Ptr{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
-    io_err,
+  # We should add a function csjp in core_interface.jl
+  cutest_csjp_(
+    status,
     this_nnzj,
     nnzj,
     cols,
     rows,
   )
-  cutest_error(io_err[])
+  cutest_error(status[])
 
-  nlp.jrows .= rows[1:nnzj]
-  nlp.jcols .= cols[1:nnzj]
+  nlp.jrows .= rows[1:nnzj[]]
+  nlp.jcols .= cols[1:nnzj[]]
 
   return rows, cols
 end
 
 function NLPModels.jac_structure!(nlp::CUTEstModel)
   if !nlp.jac_structure_reliable
-    nnzj = nlp.meta.nnzj
-    io_err = Cint[0]
-    this_nnzj = Cint[0]
+    nnzj = Ref{Cint}(nlp.meta.nnzj)
+    status = Ref{Cint}(0)
+    this_nnzj = Ref{Cint}(0)
 
-    ccall(
-      dlsym(cutest_lib, :cutest_csjp_),
-      Nothing,
-      (Ptr{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
-      io_err,
+    cutest_csjp_(
+      status,
       this_nnzj,
       nnzj,
       nlp.jcols,
       nlp.jrows,
     )
-    cutest_error(io_err[])
+    cutest_error(status[])
 
     nlp.jac_structure_reliable = true
   end
@@ -393,24 +362,24 @@ end
 
 function eval_lin_structure!(nlp::CUTEstModel)
   if !nlp.lin_structure_reliable
-    nvar = Cint[nlp.meta.nvar]
-    nnzj = Cint[0]
+    nvar = Ref{Cint}(nlp.meta.nvar)
+    nnzj = Ref{Cint}(0)
     i = 1
     for j in nlp.meta.lin
-      x0 = zeros(nlp.meta.nvar)
+      x0 = zeros(Float64, nlp.meta.nvar)
       ccifsg(
-        Cint[0],
+        Ref{Cint}(0),
         nvar,
-        Cint[j],
+        Ref{Cint}(j),
         x0,
         view(nlp.blin, j:j),
         nnzj,
         nvar,
         nlp.Jval,
         nlp.Jvar,
-        Cint[true],
+        Ref{Bool}(true),
       )
-      for k = 1:nnzj[1]
+      for k = 1:nnzj[]
         nlp.clinrows[i] = findfirst(x -> x == j, nlp.meta.lin)
         nlp.clincols[i] = nlp.Jvar[k]
         nlp.clinvals[i] = nlp.Jval[k]
@@ -460,7 +429,7 @@ function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abstrac
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzj vals
   cons_coord!(nlp, x, nlp.work, nlp.jrows, nlp.jcols, vals)
-  decrement!(nlp, :neval_cons) # does not really count as a constraint eval
+  decrement!(nlp, :neval_cons)  # does not really count as a constraint eval
   return vals
 end
 
@@ -474,15 +443,16 @@ function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abs
 end
 
 function NLPModels.jac_nln_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
-  nvar = Cint[nlp.meta.nvar]
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nln_nnzj vals
-  ci = [0.0]
-  nnzj = Cint[0]
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ci = Ref{Float64}(0.0)
+  nnzj = Ref{Cint}(0)
+  bool = Ref{Bool}(true)
   i = 1
   for j in nlp.meta.nln
-    ccifsg(Cint[0], nvar, Cint[j], x, ci, nnzj, nvar, nlp.Jval, nlp.Jvar, Cint[true])
-    for k = 1:nnzj[1]
+    ccifsg(Ref{Cint}(0), nvar, Ref{Cint}(j), x, ci, nnzj, nvar, nlp.Jval, nlp.Jvar, bool)
+    for k = 1:nnzj[]
       vals[i] = nlp.Jval[k]
       i += 1
     end
@@ -498,29 +468,15 @@ function NLPModels.jprod!(
   v::StrideOneVector{Float64},
   jv::StrideOneVector{Float64},
 )
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
-  @lencheck nvar x v
-  @lencheck ncon jv
-  got_j = 0
-  jtrans = 0
-  io_err = Cint[0]
-  ccall(
-    dlsym(cutest_lib, :cutest_cjprod_),
-    Nothing,
-    (
-      Ptr{Int32},
-      Ref{Int32},
-      Ref{Int32},
-      Ref{Int32},
-      Ref{Int32},
-      Ptr{Float64},
-      Ptr{Float64},
-      Ref{Int32},
-      Ptr{Float64},
-      Ref{Int32},
-    ),
-    io_err,
+  @lencheck nlp.meta.nvar x v
+  @lencheck nlp.meta.ncon jv
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  got_j = Ref{Bool}(false)
+  jtrans = Ref{Bool}(false)
+  status = Ref{Cint}(0)
+  cjprod(
+    status,
     nvar,
     ncon,
     got_j,
@@ -531,7 +487,7 @@ function NLPModels.jprod!(
     jv,
     ncon,
   )
-  cutest_error(io_err[])
+  cutest_error(status[])
   increment!(nlp, :neval_jprod)
   return jv
 end
@@ -595,29 +551,15 @@ function NLPModels.jtprod!(
   v::StrideOneVector{Float64},
   jtv::StrideOneVector{Float64},
 )
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
   @lencheck nlp.meta.nvar x jtv
   @lencheck nlp.meta.ncon v
-  got_j = 0
-  jtrans = 1
-  io_err = Cint[0]
-  ccall(
-    dlsym(cutest_lib, :cutest_cjprod_),
-    Nothing,
-    (
-      Ptr{Int32},
-      Ref{Int32},
-      Ref{Int32},
-      Ref{Int32},
-      Ref{Int32},
-      Ptr{Float64},
-      Ptr{Float64},
-      Ref{Int32},
-      Ptr{Float64},
-      Ref{Int32},
-    ),
-    io_err,
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  got_j = Ref{Bool}(false)
+  jtrans = Ref{Bool}(true)
+  status = Ref{Cint}(0)
+  cjprod(
+    status,
     nvar,
     ncon,
     got_j,
@@ -628,7 +570,7 @@ function NLPModels.jtprod!(
     jtv,
     nvar,
   )
-  cutest_error(io_err[])
+  cutest_error(status[])
   increment!(nlp, :neval_jtprod)
   return jtv
 end
@@ -652,7 +594,7 @@ function NLPModels.jtprod!(
 )
   @lencheck nlp.meta.nvar x jtv
   @lencheck nlp.meta.ncon v
-  jtvc = zeros(nlp.meta.nvar)
+  jtvc = zeros(Float64, nlp.meta.nvar)
   jtprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jtvc)
   jtv .= jtvc
 end
@@ -693,39 +635,33 @@ function NLPModels.hess_structure!(
   rows::StrideOneVector{Int32},
   cols::StrideOneVector{Int32},
 )
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
-  nnzh = nlp.meta.nnzh
-  @lencheck nnzh rows cols
-  io_err = Cint[0]
-  this_nnzh = Cint[0]
+  @lencheck nlp.meta.nnzh rows cols
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  nnzh = Ref{Cint}(nlp.meta.nnzh)
+  status = Ref{Cint}(0)
+  this_nnzh = Ref{Cint}(0)
 
-  if ncon > 0
-    ccall(
-      dlsym(cutest_lib, :cutest_cshp_),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
-      io_err,
+  if ncon[] > 0
+    cshp(
+      status,
       nvar,
       this_nnzh,
       nnzh,
       cols,
       rows,
     )
-    cutest_error(io_err[])
+    cutest_error(status[])
   else
-    ccall(
-      dlsym(cutest_lib, :cutest_ushp_),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
-      io_err,
+    ushp(
+      status,
       nvar,
       this_nnzh,
       nnzh,
       cols,
       rows,
     )
-    cutest_error(io_err[])
+    cutest_error(status[])
   end
 
   nlp.hrows .= rows
@@ -735,38 +671,32 @@ function NLPModels.hess_structure!(
 end
 
 function NLPModels.hess_structure!(nlp::CUTEstModel)
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
-  nnzh = nlp.meta.nnzh
-  io_err = Cint[0]
-  this_nnzh = Cint[0]
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  nnzh = Ref{Cint}(nlp.meta.nnzh)
+  status = Ref{Cint}(0)
+  this_nnzh = Ref{Cint}(0)
 
-  if ncon > 0
-    ccall(
-      dlsym(cutest_lib, :cutest_cshp_),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
-      io_err,
+  if ncon[] > 0
+    cshp(
+      status,
       nvar,
       this_nnzh,
       nnzh,
       nlp.hcols,
       nlp.hrows,
     )
-    cutest_error(io_err[])
+    cutest_error(status[])
   else
-    ccall(
-      dlsym(cutest_lib, :cutest_ushp_),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Int32}),
-      io_err,
+    ushp(
+      status,
       nvar,
       this_nnzh,
       nnzh,
       nlp.hcols,
       nlp.hrows,
     )
-    cutest_error(io_err[])
+    cutest_error(status[])
   end
 
   return nlp
@@ -796,29 +726,15 @@ function NLPModels.hess_coord!(
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon y
   @lencheck nlp.meta.nnzh vals
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
-  nnzh = nlp.meta.nnzh
-  io_err = Cint[0]
-  this_nnzh = Cint[0]
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  nnzh = Ref{Cint}(nlp.meta.nnzh)
+  status = Ref{Cint}(0)
+  this_nnzh = Ref{Cint}(0)
 
-  if obj_weight == 0.0 && ncon > 0
-    ccall(
-      dlsym(cutest_lib, :cutest_cshc_),
-      Nothing,
-      (
-        Ptr{Int32},
-        Ref{Int32},
-        Ref{Int32},
-        Ptr{Float64},
-        Ptr{Float64},
-        Ptr{Int32},
-        Ref{Int32},
-        Ptr{Float64},
-        Ptr{Int32},
-        Ptr{Int32},
-      ),
-      io_err,
+  if obj_weight == 0.0 && ncon[] > 0
+    cshc(
+      status,
       nvar,
       ncon,
       x,
@@ -829,31 +745,17 @@ function NLPModels.hess_coord!(
       nlp.hcols,
       nlp.hrows,
     )
-    cutest_error(io_err[])
+    cutest_error(status[])
     increment!(nlp, :neval_hess)
     return vals
   end
 
-  if ncon > 0
+  if ncon[] > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == 1.0 ? y : y / obj_weight
 
-    ccall(
-      dlsym(cutest_lib, :cutest_csh_),
-      Nothing,
-      (
-        Ptr{Int32},
-        Ref{Int32},
-        Ref{Int32},
-        Ptr{Float64},
-        Ptr{Float64},
-        Ptr{Int32},
-        Ref{Int32},
-        Ptr{Float64},
-        Ptr{Int32},
-        Ptr{Int32},
-      ),
-      io_err,
+    csh(
+      status,
       nvar,
       ncon,
       x,
@@ -865,20 +767,8 @@ function NLPModels.hess_coord!(
       nlp.hrows,
     )
   else
-    ccall(
-      dlsym(cutest_lib, :cutest_ush_),
-      Nothing,
-      (
-        Ptr{Int32},
-        Ref{Int32},
-        Ptr{Float64},
-        Ptr{Int32},
-        Ref{Int32},
-        Ptr{Float64},
-        Ptr{Int32},
-        Ptr{Int32},
-      ),
-      io_err,
+    ush(
+      status,
       nvar,
       x,
       this_nnzh,
@@ -888,9 +778,9 @@ function NLPModels.hess_coord!(
       nlp.hrows,
     )
   end
-  cutest_error(io_err[])
+  cutest_error(status[])
 
-  obj_weight != 1.0 && (vals[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
+  obj_weight != 1.0 && (vals .*= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   increment!(nlp, :neval_hess)
   return vals
 end
@@ -925,7 +815,7 @@ function NLPModels.hess_coord!(
 )
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzh vals
-  hess_coord!(nlp, x, zeros(nlp.meta.ncon), vals; obj_weight = obj_weight)
+  hess_coord!(nlp, x, zeros(Float64, nlp.meta.ncon), vals; obj_weight = obj_weight)
 end
 
 function NLPModels.hprod!(
@@ -936,27 +826,15 @@ function NLPModels.hprod!(
   hv::StrideOneVector{Float64};
   obj_weight::Float64 = 1.0,
 )
-  nvar = nlp.meta.nvar
-  ncon = nlp.meta.ncon
-  @lencheck nvar x v hv
-  @lencheck ncon y
-  io_err = Cint[0]
-  goth = Cint[0]
-  if obj_weight == 0.0 && ncon > 0
-    ccall(
-      dlsym(cutest_lib, :cutest_chcprod_),
-      Nothing,
-      (
-        Ptr{Int32},
-        Ref{Int32},
-        Ref{Int32},
-        Ptr{Int32},
-        Ptr{Float64},
-        Ptr{Float64},
-        Ptr{Float64},
-        Ptr{Float64},
-      ),
-      io_err,
+  @lencheck nlp.meta.nvar x v hv
+  @lencheck nlp.meta.ncon y
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  status = Ref{Cint}(0)
+  goth = Ref{Bool}(0)
+  if obj_weight == 0.0 && ncon[] > 0
+    chcprod(
+      status,
       nvar,
       ncon,
       goth,
@@ -965,29 +843,17 @@ function NLPModels.hprod!(
       v,
       hv,
     )
-    cutest_error(io_err[])
+    cutest_error(status[])
     increment!(nlp, :neval_hprod)
     return hv
   end
 
-  if ncon > 0
+  if ncon[] > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == 1 ? y : y / obj_weight
 
-    ccall(
-      dlsym(cutest_lib, :cutest_chprod_),
-      Nothing,
-      (
-        Ptr{Int32},
-        Ref{Int32},
-        Ref{Int32},
-        Ptr{Int32},
-        Ptr{Float64},
-        Ptr{Float64},
-        Ptr{Float64},
-        Ptr{Float64},
-      ),
-      io_err,
+    chprod(
+      status,
       nvar,
       ncon,
       goth,
@@ -997,11 +863,8 @@ function NLPModels.hprod!(
       hv,
     )
   else
-    ccall(
-      dlsym(cutest_lib, :cutest_uhprod_),
-      Nothing,
-      (Ptr{Int32}, Ref{Int32}, Ptr{Int32}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-      io_err,
+    uhprod(
+      status,
       nvar,
       goth,
       x,
@@ -1009,9 +872,9 @@ function NLPModels.hprod!(
       hv,
     )
   end
-  cutest_error(io_err[])
+  cutest_error(status[])
 
-  obj_weight != 1.0 && (hv[:] *= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
+  obj_weight != 1.0 && (hv .*= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   increment!(nlp, :neval_hprod)
   return hv
 end
@@ -1046,7 +909,7 @@ function NLPModels.hprod!(
 )
   @lencheck nlp.meta.nvar x v hv
   @lencheck nlp.meta.ncon y
-  hvc = zeros(nlp.meta.nvar)
+  hvc = zeros(Float64, nlp.meta.nvar)
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
@@ -1069,7 +932,7 @@ function NLPModels.hprod!(
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
-    zeros(nlp.meta.ncon),
+    zeros(Float64, nlp.meta.ncon),
     convert(Vector{Float64}, v),
     hv,
     obj_weight = obj_weight,
@@ -1084,7 +947,7 @@ function NLPModels.hprod!(
   obj_weight::Float64 = 1.0,
 )
   @lencheck nlp.meta.nvar x v hv
-  hvc = zeros(nlp.meta.nvar)
+  hvc = zeros(Float64, nlp.meta.nvar)
   hprod!(
     nlp,
     convert(Vector{Float64}, x),

@@ -83,9 +83,9 @@ For more information, run the shell command
 
 Usage:
 
-    usetup(io_err, input, out, io_buffer, n, x, x_l, x_u)
+    usetup(status, input, out, io_buffer, n, x, x_l, x_u)
 
-  - io_err:    [OUT] Vector{Cint}
+  - status:    [OUT] Vector{Cint}
   - input:     [IN] Vector{Cint}
   - out:       [IN] Vector{Cint}
   - io_buffer: [IN] Vector{Cint}
@@ -95,7 +95,7 @@ Usage:
   - x_u:       [OUT] Vector{Cdouble}
 """
 function usetup(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   input::StrideOneVector{Cint},
   out::StrideOneVector{Cint},
   io_buffer::StrideOneVector{Cint},
@@ -104,20 +104,8 @@ function usetup(
   x_l::StrideOneVector{Cdouble},
   x_u::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_usetup_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_usetup_(
+    status,
     input,
     out,
     io_buffer,
@@ -144,10 +132,10 @@ For more information, run the shell command
 
 Usage:
 
-    csetup(io_err, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
+    csetup(status, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
 linear, e_order, l_order, v_order)
 
-  - io_err:    [OUT] Vector{Cint}
+  - status:    [OUT] Vector{Cint}
   - input:     [IN] Vector{Cint}
   - out:       [IN] Vector{Cint}
   - io_buffer: [IN] Vector{Cint}
@@ -159,14 +147,14 @@ linear, e_order, l_order, v_order)
   - y:         [OUT] Vector{Cdouble}
   - c_l:       [OUT] Vector{Cdouble}
   - c_u:       [OUT] Vector{Cdouble}
-  - equatn:    [OUT] Vector{Cint}
-  - linear:    [OUT] Vector{Cint}
+  - equatn:    [OUT] Vector{Bool}
+  - linear:    [OUT] Vector{Bool}
   - e_order:   [IN] Vector{Cint}
   - l_order:   [IN] Vector{Cint}
   - v_order:   [IN] Vector{Cint}
 """
 function csetup(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   input::StrideOneVector{Cint},
   out::StrideOneVector{Cint},
   io_buffer::StrideOneVector{Cint},
@@ -178,35 +166,14 @@ function csetup(
   y::StrideOneVector{Cdouble},
   c_l::StrideOneVector{Cdouble},
   c_u::StrideOneVector{Cdouble},
-  equatn::StrideOneVector{Cint},
-  linear::StrideOneVector{Cint},
+  equatn::StrideOneVector{Bool},
+  linear::StrideOneVector{Bool},
   e_order::StrideOneVector{Cint},
   l_order::StrideOneVector{Cint},
   v_order::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csetup_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_csetup_(
+    status,
     input,
     out,
     io_buffer,
@@ -239,22 +206,19 @@ For more information, run the shell command
 
 Usage:
 
-    udimen(io_err, input, n)
+    udimen(status, input, n)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - input:   [IN] Vector{Cint}
   - n:       [OUT] Vector{Cint}
 """
 function udimen(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   input::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_udimen_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_udimen_(
+    status,
     input,
     n,
   )
@@ -275,13 +239,16 @@ For more information, run the shell command
 
 Usage:
 
-    udimsh(io_err, nnzh)
+    udimsh(status, nnzh)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
 """
-function udimsh(io_err::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-  ccall(dlsym(cutest_lib, "cutest_udimsh_"), Nothing, (Ptr{Cint}, Ptr{Cint}), io_err, nnzh)
+function udimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+  cutest_udimsh_(
+    status,
+    nnzh,
+  )
 end
 
 """# udimse
@@ -301,24 +268,21 @@ For more information, run the shell command
 
 Usage:
 
-    udimse(io_err, ne, he_val_ne, he_row_ne)
+    udimse(status, ne, he_val_ne, he_row_ne)
 
-  - io_err:    [OUT] Vector{Cint}
+  - status:    [OUT] Vector{Cint}
   - ne:        [OUT] Vector{Cint}
   - he_val_ne: [OUT] Vector{Cint}
   - he_row_ne: [OUT] Vector{Cint}
 """
 function udimse(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   ne::StrideOneVector{Cint},
   he_val_ne::StrideOneVector{Cint},
   he_row_ne::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_udimse_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_udimse_(
+    status,
     ne,
     he_val_ne,
     he_row_ne,
@@ -339,22 +303,19 @@ For more information, run the shell command
 
 Usage:
 
-    uvartype(io_err, n, x_type)
+    uvartype(status, n, x_type)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
 function uvartype(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x_type::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_uvartype_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_uvartype_(
+    status,
     n,
     x_type,
   )
@@ -372,9 +333,9 @@ For more information, run the shell command
 
 Usage:
 
-    unames(io_err, n, pname, vname)
+    unames(status, n, pname, vname)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - pname:   [OUT] Vector{UInt8}
   - vname:   [OUT] Vector{UInt8}
@@ -382,16 +343,13 @@ Usage:
 To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
 function unames(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   pname::StrideOneVector{UInt8},
-  vname::Array{UInt8, 2},
+  vname::Matrix{UInt8},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_unames_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}, Ptr{UInt8}),
-    io_err,
+  cutest_unames_(
+    status,
     n,
     pname,
     vname,
@@ -412,22 +370,19 @@ For more information, run the shell command
 
 Usage:
 
-    ureport(io_err, calls, time)
+    ureport(status, calls, time)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - calls:   [OUT] Vector{Cdouble}
   - time:    [OUT] Vector{Cdouble}
 """
 function ureport(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   calls::StrideOneVector{Cdouble},
   time::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ureport_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_ureport_(
+    status,
     calls,
     time,
   )
@@ -449,24 +404,21 @@ For more information, run the shell command
 
 Usage:
 
-    cdimen(io_err, input, n, m)
+    cdimen(status, input, n, m)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - input:   [IN] Vector{Cint}
   - n:       [OUT] Vector{Cint}
   - m:       [OUT] Vector{Cint}
 """
 function cdimen(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   input::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cdimen_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_cdimen_(
+    status,
     input,
     n,
     m,
@@ -491,13 +443,16 @@ For more information, run the shell command
 
 Usage:
 
-    cdimsj(io_err, nnzj)
+    cdimsj(status, nnzj)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - nnzj:    [OUT] Vector{Cint}
 """
-function cdimsj(io_err::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
-  ccall(dlsym(cutest_lib, "cutest_cdimsj_"), Nothing, (Ptr{Cint}, Ptr{Cint}), io_err, nnzj)
+function cdimsj(status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
+  cutest_cdimsj_(
+    status,
+    nnzj,
+  )
 end
 
 """# cdimsh
@@ -517,13 +472,16 @@ For more information, run the shell command
 
 Usage:
 
-    cdimsh(io_err, nnzh)
+    cdimsh(status, nnzh)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
 """
-function cdimsh(io_err::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-  ccall(dlsym(cutest_lib, "cutest_cdimsh_"), Nothing, (Ptr{Cint}, Ptr{Cint}), io_err, nnzh)
+function cdimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+  cutest_cdimsh_(
+    status,
+    nnzh,
+  )
 end
 
 """# cdimchp
@@ -543,13 +501,16 @@ For more information, run the shell command
 
 Usage:
 
-    cdimchp(io_err, nnzchp)
+    cdimchp(status, nnzchp)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - nnzchp:  [OUT] Vector{Cint}
 """
-function cdimchp(io_err::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
-  ccall(dlsym(cutest_lib, "cutest_cdimchp_"), Nothing, (Ptr{Cint}, Ptr{Cint}), io_err, nnzchp)
+function cdimchp(status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
+  cutest_cdimchp_(
+    status,
+    nnzchp,
+  )
 end
 
 """# cdimse
@@ -571,24 +532,21 @@ For more information, run the shell command
 
 Usage:
 
-    cdimse(io_err, ne, he_val_ne, he_row_ne)
+    cdimse(status, ne, he_val_ne, he_row_ne)
 
-  - io_err:    [OUT] Vector{Cint}
+  - status:    [OUT] Vector{Cint}
   - ne:        [OUT] Vector{Cint}
   - he_val_ne: [OUT] Vector{Cint}
   - he_row_ne: [OUT] Vector{Cint}
 """
 function cdimse(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   ne::StrideOneVector{Cint},
   he_val_ne::StrideOneVector{Cint},
   he_row_ne::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cdimse_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_cdimse_(
+    status,
     ne,
     he_val_ne,
     he_row_ne,
@@ -596,28 +554,25 @@ function cdimse(
 end
 
 """# cstats
-    cstats(io_err, nonlinear_variables_objective,
+    cstats(status, nonlinear_variables_objective,
 nonlinear_variables_constraints, equality_constraints,
 linear_constraints)
 
-  - io_err:                          [OUT] Vector{Cint}
+  - status:                          [OUT] Vector{Cint}
   - nonlinear_variables_objective:   [OUT] Vector{Cint}
   - nonlinear_variables_constraints: [OUT] Vector{Cint}
   - equality_constraints:            [OUT] Vector{Cint}
   - linear_constraints:              [OUT] Vector{Cint}
 """
 function cstats(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   nonlinear_variables_objective::StrideOneVector{Cint},
   nonlinear_variables_constraints::StrideOneVector{Cint},
   equality_constraints::StrideOneVector{Cint},
   linear_constraints::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cstats_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_cstats_(
+    status,
     nonlinear_variables_objective,
     nonlinear_variables_constraints,
     equality_constraints,
@@ -641,22 +596,19 @@ For more information, run the shell command
 
 Usage:
 
-    cvartype(io_err, n, x_type)
+    cvartype(status, n, x_type)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
 function cvartype(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x_type::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cvartype_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_cvartype_(
+    status,
     n,
     x_type,
   )
@@ -677,9 +629,9 @@ For more information, run the shell command
 
 Usage:
 
-    cnames(io_err, n, m, pname, vname, cname)
+    cnames(status, n, m, pname, vname, cname)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - pname:   [OUT] Vector{UInt8}
@@ -690,18 +642,15 @@ To get useful names, use `String(x)` where `x` can be `pname`, `vname[:,i]`,
 or `cname[:,i]`.
 """
 function cnames(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   pname::StrideOneVector{UInt8},
-  vname::Array{UInt8, 2},
-  cname::Array{UInt8, 2},
+  vname::Matrix{UInt8},
+  cname::Matrix{UInt8},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cnames_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}, Ptr{UInt8}, Ptr{UInt8}),
-    io_err,
+  cutest_cnames_(
+    status,
     n,
     m,
     pname,
@@ -726,22 +675,19 @@ For more information, run the shell command
 
 Usage:
 
-    creport(io_err, calls, time)
+    creport(status, calls, time)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - calls:   [OUT] Vector{Cdouble}
   - time:    [OUT] Vector{Cdouble}
 """
 function creport(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   calls::StrideOneVector{Cdouble},
   time::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_creport_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_creport_(
+    status,
     calls,
     time,
   )
@@ -762,20 +708,17 @@ For more information, run the shell command
 
 Usage:
 
-    connames(io_err, m, cname)
+    connames(status, m, cname)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - cname:   [OUT] Vector{UInt8}
 
 To get useful names, use `String(cname[:,i])`.
 """
-function connames(io_err::StrideOneVector{Cint}, m::StrideOneVector{Cint}, cname::Array{UInt8, 2})
-  ccall(
-    dlsym(cutest_lib, "cutest_connames_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
-    io_err,
+function connames(status::StrideOneVector{Cint}, m::StrideOneVector{Cint}, cname::Matrix{UInt8})
+  cutest_connames_(
+    status,
     m,
     cname,
   )
@@ -797,22 +740,19 @@ For more information, run the shell command
 
 Usage:
 
-    pname(io_err, input, pname)
+    pname(status, input, pname)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - input:   [IN] Vector{Cint}
   - pname:   [OUT] Vector{UInt8}
 """
 function pname(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   input::StrideOneVector{Cint},
   pname::StrideOneVector{UInt8},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_pname_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
-    io_err,
+  cutest_pname_(
+    status,
     input,
     pname,
   )
@@ -832,15 +772,18 @@ For more information, run the shell command
 
 Usage:
 
-    probname(io_err, pname)
+    probname(status, pname)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - pname:   [OUT] Vector{UInt8}
 
 To get a useful name, use `String(pname)`.
 """
-function probname(io_err::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
-  ccall(dlsym(cutest_lib, "cutest_probname_"), Nothing, (Ptr{Cint}, Ptr{UInt8}), io_err, pname)
+function probname(status::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
+  cutest_probname_(
+    status,
+    pname,
+  )
 end
 
 """# varnames
@@ -858,20 +801,17 @@ For more information, run the shell command
 
 Usage:
 
-    varnames(io_err, n, vname)
+    varnames(status, n, vname)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - vname:   [OUT] Vector{UInt8}
 
 To get useful names, use `String(vname[:, i])`.
 """
-function varnames(io_err::StrideOneVector{Cint}, n::StrideOneVector{Cint}, vname::Array{UInt8, 2})
-  ccall(
-    dlsym(cutest_lib, "cutest_varnames_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{UInt8}),
-    io_err,
+function varnames(status::StrideOneVector{Cint}, n::StrideOneVector{Cint}, vname::Matrix{UInt8})
+  cutest_varnames_(
+    status,
     n,
     vname,
   )
@@ -890,24 +830,21 @@ For more information, run the shell command
 
 Usage:
 
-    ufn(io_err, n, x, f)
+    ufn(status, n, x, f)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
 """
 function ufn(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ufn_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_ufn_(
+    status,
     n,
     x,
     f,
@@ -927,24 +864,21 @@ For more information, run the shell command
 
 Usage:
 
-    ugr(io_err, n, x, g)
+    ugr(status, n, x, g)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
 """
 function ugr(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ugr_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_ugr_(
+    status,
     n,
     x,
     g,
@@ -965,28 +899,25 @@ For more information, run the shell command
 
 Usage:
 
-    uofg(io_err, n, x, f, g, grad)
+    uofg(status, n, x, f, g, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
-  - grad:    [IN] Vector{Cint}
+  - grad:    [IN] Vector{Bool}
 """
 function uofg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Cint},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_uofg_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}),
-    io_err,
+  cutest_cint_uofg_(
+    status,
     n,
     x,
     f,
@@ -1009,26 +940,23 @@ For more information, run the shell command
 
 Usage:
 
-    udh(io_err, n, x, lh1, h)
+    udh(status, n, x, lh1, h)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - lh1:     [IN] Vector{Cint}
-  - h:       [OUT] Array{Cdouble, 2}
+  - h:       [OUT] Matrix{Cdouble}
 """
 function udh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   lh1::StrideOneVector{Cint},
-  h::Array{Cdouble, 2},
+  h::Matrix{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_udh_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
-    io_err,
+  cutest_udh_(
+    status,
     n,
     x,
     lh1,
@@ -1050,9 +978,9 @@ For more information, run the shell command
 
 Usage:
 
-    ushp(io_err, n, nnzh, lh, h_row, h_col)
+    ushp(status, n, nnzh, lh, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
   - lh:      [IN] Vector{Cint}
@@ -1060,18 +988,15 @@ Usage:
   - h_col:   [OUT] Vector{Cint}
 """
 function ushp(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   nnzh::StrideOneVector{Cint},
   lh::StrideOneVector{Cint},
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ushp_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_ushp_(
+    status,
     n,
     nnzh,
     lh,
@@ -1095,9 +1020,9 @@ For more information, run the shell command
 
 Usage:
 
-    ush(io_err, n, x, nnzh, lh, h_val, h_row, h_col)
+    ush(status, n, x, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - nnzh:    [OUT] Vector{Cint}
@@ -1107,7 +1032,7 @@ Usage:
   - h_col:   [OUT] Vector{Cint}
 """
 function ush(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   nnzh::StrideOneVector{Cint},
@@ -1116,11 +1041,8 @@ function ush(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ush_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_ush_(
+    status,
     n,
     x,
     nnzh,
@@ -1147,10 +1069,10 @@ For more information, run the shell command
 
 Usage:
 
-    ueh(io_err, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
+    ueh(status, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
 lhe_val, he_val, byrows)
 
-  - io_err:     [OUT] Vector{Cint}
+  - status:     [OUT] Vector{Cint}
   - n:          [IN] Vector{Cint}
   - x:          [IN] Vector{Cdouble}
   - ne:         [OUT] Vector{Cint}
@@ -1161,10 +1083,10 @@ lhe_val, he_val, byrows)
   - he_row:     [OUT] Vector{Cint}
   - lhe_val:    [IN] Vector{Cint}
   - he_val:     [OUT] Vector{Cdouble}
-  - byrows:     [IN] Vector{Cint}
+  - byrows:     [IN] Vector{Bool}
 """
 function ueh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   ne::StrideOneVector{Cint},
@@ -1175,26 +1097,10 @@ function ueh(
   he_row::StrideOneVector{Cint},
   lhe_val::StrideOneVector{Cint},
   he_val::StrideOneVector{Cdouble},
-  byrows::StrideOneVector{Cint},
+  byrows::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ueh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_ueh_(
+    status,
     n,
     x,
     ne,
@@ -1224,28 +1130,25 @@ For more information, run the shell command
 
 Usage:
 
-    ugrdh(io_err, n, x, g, lh1, h)
+    ugrdh(status, n, x, g, lh1, h)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
   - lh1:     [IN] Vector{Cint}
-  - h:       [OUT] Array{Cdouble, 2}
+  - h:       [OUT] Matrix{Cdouble}
 """
 function ugrdh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
   lh1::StrideOneVector{Cint},
-  h::Array{Cdouble, 2},
+  h::Matrix{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ugrdh_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
-    io_err,
+  cutest_ugrdh_(
+    status,
     n,
     x,
     g,
@@ -1269,9 +1172,9 @@ For more information, run the shell command
 
 Usage:
 
-    ugrsh(io_err, n, x, g, nnzh, lh, h_val, h_row, h_col)
+    ugrsh(status, n, x, g, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
@@ -1282,7 +1185,7 @@ Usage:
   - h_col:   [OUT] Vector{Cint}
 """
 function ugrsh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
@@ -1292,21 +1195,8 @@ function ugrsh(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ugrsh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_ugrsh_(
+    status,
     n,
     x,
     g,
@@ -1335,10 +1225,10 @@ For more information, run the shell command
 
 Usage:
 
-    ugreh(io_err, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
+    ugreh(status, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
 lhe_val, he_val, byrows)
 
-  - io_err:     [OUT] Vector{Cint}
+  - status:     [OUT] Vector{Cint}
   - n:          [IN] Vector{Cint}
   - x:          [IN] Vector{Cdouble}
   - g:          [OUT] Vector{Cdouble}
@@ -1350,10 +1240,10 @@ lhe_val, he_val, byrows)
   - he_row:     [OUT] Vector{Cint}
   - lhe_val:    [IN] Vector{Cint}
   - he_val:     [OUT] Vector{Cdouble}
-  - byrows:     [IN] Vector{Cint}
+  - byrows:     [IN] Vector{Bool}
 """
 function ugreh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
@@ -1365,27 +1255,10 @@ function ugreh(
   he_row::StrideOneVector{Cint},
   lhe_val::StrideOneVector{Cint},
   he_val::StrideOneVector{Cdouble},
-  byrows::StrideOneVector{Cint},
+  byrows::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ugreh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_ugreh_(
+    status,
     n,
     x,
     g,
@@ -1415,28 +1288,25 @@ For more information, run the shell command
 
 Usage:
 
-    uhprod(io_err, n, goth, x, vector, result)
+    uhprod(status, n, goth, x, vector, result)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Cint}
+  - goth:    [IN] Vector{Bool}
   - x:       [IN] Vector{Cdouble}
   - vector:  [IN] Vector{Cdouble}
   - result:  [OUT] Vector{Cdouble}
 """
 function uhprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
-  goth::StrideOneVector{Cint},
+  goth::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   vector::StrideOneVector{Cdouble},
   result::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_uhprod_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_cint_uhprod_(
+    status,
     n,
     goth,
     x,
@@ -1459,12 +1329,12 @@ For more information, run the shell command
 
 Usage:
 
-    ushprod(io_err, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
+    ushprod(status, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
 index_nz_result, result)
 
-  - io_err:          [OUT] Vector{Cint}
+  - status:          [OUT] Vector{Cint}
   - n:               [IN] Vector{Cint}
-  - goth:            [IN] Vector{Cint}
+  - goth:            [IN] Vector{Bool}
   - x:               [IN] Vector{Cdouble}
   - nnz_vector:      [IN] Vector{Cint}
   - index_nz_vector: [IN] Vector{Cint}
@@ -1476,9 +1346,9 @@ index_nz_result, result)
 Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function ushprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
-  goth::StrideOneVector{Cint},
+  goth::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   nnz_vector::StrideOneVector{Cint},
   index_nz_vector::StrideOneVector{Cint},
@@ -1487,22 +1357,8 @@ function ushprod(
   index_nz_result::StrideOneVector{Cint},
   result::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ushprod_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_cint_ushprod_(
+    status,
     n,
     goth,
     x,
@@ -1530,30 +1386,27 @@ For more information, run the shell command
 
 Usage:
 
-    ubandh(io_err, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+    ubandh(status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
 
-  - io_err:            [OUT] Vector{Cint}
+  - status:            [OUT] Vector{Cint}
   - n:                 [IN] Vector{Cint}
   - x:                 [IN] Vector{Cdouble}
   - semibandwidth:     [IN] Vector{Cint}
-  - h_band:            [OUT] Array{Cdouble, 2}
+  - h_band:            [OUT] Matrix{Cdouble}
   - lbandh:            [IN] Vector{Cint}
   - max_semibandwidth: [OUT] Vector{Cint}
 """
 function ubandh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   semibandwidth::StrideOneVector{Cint},
-  h_band::Array{Cdouble, 2},
+  h_band::Matrix{Cdouble},
   lbandh::StrideOneVector{Cint},
   max_semibandwidth::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ubandh_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_ubandh_(
+    status,
     n,
     x,
     semibandwidth,
@@ -1579,9 +1432,9 @@ For more information, run the shell command
 
 Usage:
 
-    cfn(io_err, n, m, x, f, c)
+    cfn(status, n, m, x, f, c)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
@@ -1589,18 +1442,15 @@ Usage:
   - c:       [OUT] Vector{Cdouble}
 """
 function cfn(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
   c::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cfn_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_cfn_(
+    status,
     n,
     m,
     x,
@@ -1625,28 +1475,25 @@ For more information, run the shell command
 
 Usage:
 
-    cofg(io_err, n, x, f, g, grad)
+    cofg(status, n, x, f, g, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
-  - grad:    [IN] Vector{Cint}
+  - grad:    [IN] Vector{Bool}
 """
 function cofg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Cint},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cofg_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}),
-    io_err,
+  cutest_cint_cofg_(
+    status,
     n,
     x,
     f,
@@ -1671,9 +1518,9 @@ For more information, run the shell command
 
 Usage:
 
-    cofsg(io_err, n, x, f, nnzg, lg, g_val, g_var, grad)
+    cofsg(status, n, x, f, nnzg, lg, g_val, g_var, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
@@ -1681,10 +1528,10 @@ Usage:
   - lg:      [IN] Vector{Cint}
   - g_val:   [OUT] Vector{Cdouble}
   - g_var:   [OUT] Vector{Cint}
-  - grad:    [IN] Vector{Cint}
+  - grad:    [IN] Vector{Bool}
 """
 function cofsg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
@@ -1692,23 +1539,10 @@ function cofsg(
   lg::StrideOneVector{Cint},
   g_val::StrideOneVector{Cdouble},
   g_var::StrideOneVector{Cint},
-  grad::StrideOneVector{Cint},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cofsg_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_cofsg_(
+    status,
     n,
     x,
     f,
@@ -1736,47 +1570,33 @@ For more information, run the shell command
 
 Usage:
 
-    ccfg(io_err, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+    ccfg(status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - c:       [OUT] Vector{Cdouble}
-  - jtrans:  [IN] Vector{Cint}
+  - jtrans:  [IN] Vector{Bool}
   - lcjac1:  [IN] Vector{Cint}
   - lcjac2:  [IN] Vector{Cint}
-  - cjac:    [OUT] Array{Cdouble, 2}
-  - grad:    [IN] Vector{Cint}
+  - cjac:    [OUT] Matrix{Cdouble}
+  - grad:    [IN] Vector{Bool}
 """
 function ccfg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   c::StrideOneVector{Cdouble},
-  jtrans::StrideOneVector{Cint},
+  jtrans::StrideOneVector{Bool},
   lcjac1::StrideOneVector{Cint},
   lcjac2::StrideOneVector{Cint},
-  cjac::Array{Cdouble, 2},
-  grad::StrideOneVector{Cint},
+  cjac::Matrix{Cdouble},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ccfg_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_ccfg_(
+    status,
     n,
     m,
     x,
@@ -1805,41 +1625,29 @@ For more information, run the shell command
 
 Usage:
 
-    clfg(io_err, n, m, x, y, f, g, grad)
+    clfg(status, n, m, x, y, f, g, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
-  - grad:    [IN] Vector{Cint}
+  - grad:    [IN] Vector{Bool}
 """
 function clfg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Cint},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_clfg_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_clfg_(
+    status,
     n,
     m,
     x,
@@ -1867,50 +1675,35 @@ For more information, run the shell command
 
 Usage:
 
-    cgr(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+    cgr(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
-  - grlagf:  [IN] Vector{Cint}
+  - grlagf:  [IN] Vector{Bool}
   - g:       [OUT] Vector{Cdouble}
-  - jtrans:  [IN] Vector{Cint}
+  - jtrans:  [IN] Vector{Bool}
   - lj1:     [IN] Vector{Cint}
   - lj2:     [IN] Vector{Cint}
-  - j_val:   [OUT] Array{Cdouble, 2}
+  - j_val:   [OUT] Matrix{Cdouble}
 """
 function cgr(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Cint},
+  grlagf::StrideOneVector{Bool},
   g::StrideOneVector{Cdouble},
-  jtrans::StrideOneVector{Cint},
+  jtrans::StrideOneVector{Bool},
   lj1::StrideOneVector{Cint},
   lj2::StrideOneVector{Cint},
-  j_val::Array{Cdouble, 2},
+  j_val::Matrix{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cgr_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_cint_cgr_(
+    status,
     n,
     m,
     x,
@@ -1943,14 +1736,14 @@ For more information, run the shell command
 
 Usage:
 
-    csgr(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
+    csgr(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
-  - grlagf:  [IN] Vector{Cint}
+  - grlagf:  [IN] Vector{Bool}
   - nnzj:    [OUT] Vector{Cint}
   - lj:      [IN] Vector{Cint}
   - j_val:   [OUT] Vector{Cdouble}
@@ -1958,35 +1751,20 @@ Usage:
   - j_fun:   [OUT] Vector{Cint}
 """
 function csgr(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Cint},
+  grlagf::StrideOneVector{Bool},
   nnzj::StrideOneVector{Cint},
   lj::StrideOneVector{Cint},
   j_val::StrideOneVector{Cdouble},
   j_var::StrideOneVector{Cint},
   j_fun::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csgr_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_csgr_(
+    status,
     n,
     m,
     x,
@@ -2017,9 +1795,9 @@ For more information, run the shell command
 
 Usage:
 
-    ccfsg(io_err, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
+    ccfsg(status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
@@ -2029,10 +1807,10 @@ Usage:
   - j_val:   [OUT] Vector{Cdouble}
   - j_var:   [OUT] Vector{Cint}
   - j_fun:   [OUT] Vector{Cint}
-  - grad:    [IN] Vector{Cint}
+  - grad:    [IN] Vector{Bool}
 """
 function ccfsg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
@@ -2042,25 +1820,10 @@ function ccfsg(
   j_val::StrideOneVector{Cdouble},
   j_var::StrideOneVector{Cint},
   j_fun::StrideOneVector{Cint},
-  grad::StrideOneVector{Cint},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ccfsg_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_ccfsg_(
+    status,
     n,
     m,
     x,
@@ -2091,30 +1854,27 @@ For more information, run the shell command
 
 Usage:
 
-    ccifg(io_err, n, icon, x, ci, gci, grad)
+    ccifg(status, n, icon, x, ci, gci, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - icon:    [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - ci:      [OUT] Vector{Cdouble}
   - gci:     [OUT] Vector{Cdouble}
-  - grad:    [IN] Vector{Cint}
+  - grad:    [IN] Vector{Bool}
 """
 function ccifg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   icon::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   ci::StrideOneVector{Cdouble},
   gci::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Cint},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ccifg_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}),
-    io_err,
+  cutest_cint_ccifg_(
+    status,
     n,
     icon,
     x,
@@ -2142,9 +1902,9 @@ For more information, run the shell command
 
 Usage:
 
-    ccifsg(io_err, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
+    ccifsg(status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - icon:    [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
@@ -2153,10 +1913,10 @@ Usage:
   - lgci:    [IN] Vector{Cint}
   - gci_val: [OUT] Vector{Cdouble}
   - gci_var: [OUT] Vector{Cint}
-  - grad:    [IN] Vector{Cint}
+  - grad:    [IN] Vector{Bool}
 """
 function ccifsg(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   icon::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
@@ -2165,24 +1925,10 @@ function ccifsg(
   lgci::StrideOneVector{Cint},
   gci_val::StrideOneVector{Cdouble},
   gci_var::StrideOneVector{Cint},
-  grad::StrideOneVector{Cint},
+  grad::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ccifsg_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_ccifsg_(
+    status,
     n,
     icon,
     x,
@@ -2214,56 +1960,39 @@ For more information, run the shell command
 
 Usage:
 
-    cgrdh(io_err, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+    cgrdh(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
-  - grlagf:  [IN] Vector{Cint}
+  - grlagf:  [IN] Vector{Bool}
   - g:       [OUT] Vector{Cdouble}
-  - jtrans:  [IN] Vector{Cint}
+  - jtrans:  [IN] Vector{Bool}
   - lj1:     [IN] Vector{Cint}
   - lj2:     [IN] Vector{Cint}
-  - j_val:   [OUT] Array{Cdouble, 2}
+  - j_val:   [OUT] Matrix{Cdouble}
   - lh1:     [IN] Vector{Cint}
-  - h_val:   [OUT] Array{Cdouble, 2}
+  - h_val:   [OUT] Matrix{Cdouble}
 """
 function cgrdh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Cint},
+  grlagf::StrideOneVector{Bool},
   g::StrideOneVector{Cdouble},
-  jtrans::StrideOneVector{Cint},
+  jtrans::StrideOneVector{Bool},
   lj1::StrideOneVector{Cint},
   lj2::StrideOneVector{Cint},
-  j_val::Array{Cdouble, 2},
+  j_val::Matrix{Cdouble},
   lh1::StrideOneVector{Cint},
-  h_val::Array{Cdouble, 2},
+  h_val::Matrix{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cgrdh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_cint_cgrdh_(
+    status,
     n,
     m,
     x,
@@ -2296,30 +2025,27 @@ For more information, run the shell command
 
 Usage:
 
-    cdh(io_err, n, m, x, y, lh1, h_val)
+    cdh(status, n, m, x, y, lh1, h_val)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
   - lh1:     [IN] Vector{Cint}
-  - h_val:   [OUT] Array{Cdouble, 2}
+  - h_val:   [OUT] Matrix{Cdouble}
 """
 function cdh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
   lh1::StrideOneVector{Cint},
-  h_val::Array{Cdouble, 2},
+  h_val::Matrix{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cdh_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
-    io_err,
+  cutest_cdh_(
+    status,
     n,
     m,
     x,
@@ -2346,30 +2072,27 @@ For more information, run the shell command
 
 Usage:
 
-    cdhc(io_err, n, m, x, y, lh1, h_val)
+    cdhc(status, n, m, x, y, lh1, h_val)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
   - lh1:     [IN] Vector{Cint}
-  - h_val:   [OUT] Array{Cdouble, 2}
+  - h_val:   [OUT] Matrix{Cdouble}
 """
 function cdhc(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
   lh1::StrideOneVector{Cint},
-  h_val::Array{Cdouble, 2},
+  h_val::Matrix{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cdhc_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cdouble}),
-    io_err,
+  cutest_cdhc_(
+    status,
     n,
     m,
     x,
@@ -2395,9 +2118,9 @@ For more information, run the shell command
 
 Usage:
 
-    cshp(io_err, n, nnzh, lh, h_row, h_col)
+    cshp(status, n, nnzh, lh, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
   - lh:      [IN] Vector{Cint}
@@ -2405,18 +2128,15 @@ Usage:
   - h_col:   [OUT] Vector{Cint}
 """
 function cshp(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   nnzh::StrideOneVector{Cint},
   lh::StrideOneVector{Cint},
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cshp_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_cshp_(
+    status,
     n,
     nnzh,
     lh,
@@ -2442,9 +2162,9 @@ For more information, run the shell command
 
 Usage:
 
-    csh(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+    csh(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
@@ -2456,7 +2176,7 @@ Usage:
   - h_col:   [OUT] Vector{Cint}
 """
 function csh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
@@ -2467,22 +2187,8 @@ function csh(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_csh_(
+    status,
     n,
     m,
     x,
@@ -2512,9 +2218,9 @@ For more information, run the shell command
 
 Usage:
 
-    cshc(io_err, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+    cshc(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
@@ -2526,7 +2232,7 @@ Usage:
   - h_col:   [OUT] Vector{Cint}
 """
 function cshc(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
@@ -2537,22 +2243,8 @@ function cshc(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cshc_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cshc_(
+    status,
     n,
     m,
     x,
@@ -2584,10 +2276,10 @@ For more information, run the shell command
 
 Usage:
 
-    ceh(io_err, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
+    ceh(status, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
 he_row, lhe_val, he_val, byrows)
 
-  - io_err:     [OUT] Vector{Cint}
+  - status:     [OUT] Vector{Cint}
   - n:          [IN] Vector{Cint}
   - m:          [IN] Vector{Cint}
   - x:          [IN] Vector{Cdouble}
@@ -2603,7 +2295,7 @@ he_row, lhe_val, he_val, byrows)
   - byrows:     [IN] Vector{Cint}
 """
 function ceh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
@@ -2618,26 +2310,8 @@ function ceh(
   he_val::StrideOneVector{Cdouble},
   byrows::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_ceh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_ceh_(
+    status,
     n,
     m,
     x,
@@ -2671,28 +2345,25 @@ For more information, run the shell command
 
 Usage:
 
-    cidh(io_err, n, x, iprob, lh1, h)
+    cidh(status, n, x, iprob, lh1, h)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - iprob:   [IN] Vector{Cint}
   - lh1:     [IN] Vector{Cint}
-  - h:       [OUT] Array{Cdouble, 2}
+  - h:       [OUT] Matrix{Cdouble}
 """
 function cidh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   iprob::StrideOneVector{Cint},
   lh1::StrideOneVector{Cint},
-  h::Array{Cdouble, 2},
+  h::Matrix{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cidh_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}),
-    io_err,
+  cutest_cidh_(
+    status,
     n,
     x,
     iprob,
@@ -2718,9 +2389,9 @@ For more information, run the shell command
 
 Usage:
 
-    cish(io_err, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
+    cish(status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - iprob:   [IN] Vector{Cint}
@@ -2731,7 +2402,7 @@ Usage:
   - h_col:   [OUT] Vector{Cint}
 """
 function cish(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   iprob::StrideOneVector{Cint},
@@ -2741,21 +2412,8 @@ function cish(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cish_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cish_(
+    status,
     n,
     x,
     iprob,
@@ -2786,15 +2444,15 @@ For more information, run the shell command
 
 Usage:
 
-    csgrsh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
+    csgrsh(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
 h_val, h_row, h_col)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
-  - grlagf:  [IN] Vector{Cint}
+  - grlagf:  [IN] Vector{Bool}
   - nnzj:    [OUT] Vector{Cint}
   - lj:      [IN] Vector{Cint}
   - j_val:   [OUT] Vector{Cdouble}
@@ -2807,12 +2465,12 @@ h_val, h_row, h_col)
   - h_col:   [OUT] Vector{Cint}
 """
 function csgrsh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Cint},
+  grlagf::StrideOneVector{Bool},
   nnzj::StrideOneVector{Cint},
   lj::StrideOneVector{Cint},
   j_val::StrideOneVector{Cdouble},
@@ -2824,28 +2482,8 @@ function csgrsh(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csgrsh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_csgrsh_(
+    status,
     n,
     m,
     x,
@@ -2886,16 +2524,16 @@ For more information, run the shell command
 
 Usage:
 
-    csgreh(io_err, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne,
+    csgreh(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne,
 lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val,
 byrows)
 
-  - io_err:     [OUT] Vector{Cint}
+  - status:     [OUT] Vector{Cint}
   - n:          [IN] Vector{Cint}
   - m:          [IN] Vector{Cint}
   - x:          [IN] Vector{Cdouble}
   - y:          [IN] Vector{Cdouble}
-  - grlagf:     [IN] Vector{Cint}
+  - grlagf:     [IN] Vector{Bool}
   - nnzj:       [OUT] Vector{Cint}
   - lj:         [IN] Vector{Cint}
   - j_val:      [OUT] Vector{Cdouble}
@@ -2909,15 +2547,15 @@ byrows)
   - he_row:     [OUT] Vector{Cint}
   - lhe_val:    [IN] Vector{Cint}
   - he_val:     [OUT] Vector{Cdouble}
-  - byrows:     [IN] Vector{Cint}
+  - byrows:     [IN] Vector{Bool}
 """
 function csgreh(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Cint},
+  grlagf::StrideOneVector{Bool},
   nnzj::StrideOneVector{Cint},
   lj::StrideOneVector{Cint},
   j_val::StrideOneVector{Cdouble},
@@ -2931,34 +2569,10 @@ function csgreh(
   he_row::StrideOneVector{Cint},
   lhe_val::StrideOneVector{Cint},
   he_val::StrideOneVector{Cdouble},
-  byrows::StrideOneVector{Cint},
+  byrows::StrideOneVector{Bool},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csgreh_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_csgreh_(
+    status,
     n,
     m,
     x,
@@ -2998,41 +2612,29 @@ For more information, run the shell command
 
 Usage:
 
-    chprod(io_err, n, m, goth, x, y, vector, result)
+    chprod(status, n, m, goth, x, y, vector, result)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Cint}
+  - goth:    [IN] Vector{Bool}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
   - vector:  [IN] Vector{Cdouble}
   - result:  [OUT] Vector{Cdouble}
 """
 function chprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
-  goth::StrideOneVector{Cint},
+  goth::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
   vector::StrideOneVector{Cdouble},
   result::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_chprod_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_cint_chprod_(
+    status,
     n,
     m,
     goth,
@@ -3060,10 +2662,10 @@ For more information, run the shell command
 
 Usage:
 
-    cshprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+    cshprod(status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
 nnz_result, index_nz_result, result)
 
-  - io_err:          [OUT] Vector{Cint}
+  - status:          [OUT] Vector{Cint}
   - n:               [IN] Vector{Cint}
   - m:               [IN] Vector{Cint}
   - goth:            [IN] Vector{Cint}
@@ -3079,7 +2681,7 @@ nnz_result, index_nz_result, result)
 Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function cshprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   goth::StrideOneVector{Cint},
@@ -3092,24 +2694,8 @@ function cshprod(
   index_nz_result::StrideOneVector{Cint},
   result::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cshprod_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_cshprod_(
+    status,
     n,
     m,
     goth,
@@ -3141,41 +2727,29 @@ For more information, run the shell command
 
 Usage:
 
-    chcprod(io_err, n, m, goth, x, y, vector, result)
+    chcprod(status, n, m, goth, x, y, vector, result)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Cint}
+  - goth:    [IN] Vector{Bool}
   - x:       [IN] Vector{Cdouble}
   - y:       [IN] Vector{Cdouble}
   - vector:  [IN] Vector{Cdouble}
   - result:  [OUT] Vector{Cdouble}
 """
 function chcprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
-  goth::StrideOneVector{Cint},
+  goth::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
   vector::StrideOneVector{Cdouble},
   result::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_chcprod_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_cint_chcprod_(
+    status,
     n,
     m,
     goth,
@@ -3203,13 +2777,13 @@ For more information, run the shell command
 
 Usage:
 
-    cshcprod(io_err, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
+    cshcprod(status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
 nnz_result, index_nz_result, result)
 
-  - io_err:          [OUT] Vector{Cint}
+  - status:          [OUT] Vector{Cint}
   - n:               [IN] Vector{Cint}
   - m:               [IN] Vector{Cint}
-  - goth:            [IN] Vector{Cint}
+  - goth:            [IN] Vector{Bool}
   - x:               [IN] Vector{Cdouble}
   - y:               [IN] Vector{Cdouble}
   - nnz_vector:      [IN] Vector{Cint}
@@ -3220,10 +2794,10 @@ nnz_result, index_nz_result, result)
   - result:          [OUT] Vector{Cdouble}
 """
 function cshcprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
-  goth::StrideOneVector{Cint},
+  goth::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   y::StrideOneVector{Cdouble},
   nnz_vector::StrideOneVector{Cint},
@@ -3233,24 +2807,8 @@ function cshcprod(
   index_nz_result::StrideOneVector{Cint},
   result::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cshcprod_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-    ),
-    io_err,
+  cutest_cint_cshcprod_(
+    status,
     n,
     m,
     goth,
@@ -3282,13 +2840,13 @@ For more information, run the shell command
 
 Usage:
 
-    cjprod(io_err, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+    cjprod(status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
-  - gotj:    [IN] Vector{Cint}
-  - jtrans:  [IN] Vector{Cint}
+  - gotj:    [IN] Vector{Bool}
+  - jtrans:  [IN] Vector{Bool}
   - x:       [IN] Vector{Cdouble}
   - vector:  [IN] Vector{Cdouble}
   - lvector: [IN] Vector{Cint}
@@ -3296,33 +2854,19 @@ Usage:
   - lresult: [IN] Vector{Cint}
 """
 function cjprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
-  gotj::StrideOneVector{Cint},
-  jtrans::StrideOneVector{Cint},
+  gotj::StrideOneVector{Bool},
+  jtrans::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   vector::StrideOneVector{Cdouble},
   lvector::StrideOneVector{Cint},
   result::StrideOneVector{Cdouble},
   lresult::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cjprod_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_cjprod_(
+    status,
     n,
     m,
     gotj,
@@ -3352,14 +2896,14 @@ For more information, run the shell command
 
 Usage:
 
-    csjprod(io_err, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
+    csjprod(status, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
 lvector, nnz_result, index_nz_result, result, lresult)
 
-  - io_err:          [OUT] Vector{Cint}
+  - status:          [OUT] Vector{Cint}
   - n:               [IN] Vector{Cint}
   - m:               [IN] Vector{Cint}
-  - gotj:            [IN] Vector{Cint}
-  - jtrans:          [IN] Vector{Cint}
+  - gotj:            [IN] Vector{Bool}
+  - jtrans:          [IN] Vector{Bool}
   - x:               [IN] Vector{Cdouble}
   - nnz_vector:      [IN] Vector{Cint}
   - index_nz_vector: [IN] Vector{Cint}
@@ -3371,11 +2915,11 @@ lvector, nnz_result, index_nz_result, result, lresult)
   - lresult:         [IN] Vector{Cint}
 """
 function csjprod(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
-  gotj::StrideOneVector{Cint},
-  jtrans::StrideOneVector{Cint},
+  gotj::StrideOneVector{Bool},
+  jtrans::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   nnz_vector::StrideOneVector{Cint},
   index_nz_vector::StrideOneVector{Cint},
@@ -3386,26 +2930,8 @@ function csjprod(
   result::StrideOneVector{Cdouble},
   lresult::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csjprod_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_csjprod_(
+    status,
     n,
     m,
     gotj,
@@ -3439,12 +2965,12 @@ For more information, run the shell command
 
 Usage:
 
-    cchprods(io_err, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+    cchprods(status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Cint}
+  - goth:    [IN] Vector{Bool}
   - x:       [IN] Vector{Cdouble}
   - vector:  [IN] Vector{Cdouble}
   - lchp:    [IN] Vector{Cint}
@@ -3453,10 +2979,10 @@ Usage:
   - chp_ptr: [IN] Vector{Cint}
 """
 function cchprods(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
-  goth::StrideOneVector{Cint},
+  goth::StrideOneVector{Bool},
   x::StrideOneVector{Cdouble},
   vector::StrideOneVector{Cdouble},
   lchp::StrideOneVector{Cint},
@@ -3464,22 +2990,8 @@ function cchprods(
   chp_ind::StrideOneVector{Cint},
   chp_ptr::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cchprods_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cdouble},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_cint_cchprods_(
+    status,
     n,
     m,
     goth,
@@ -3500,26 +3012,23 @@ script sifdecoder at the point x= X.
 
 Usage:
 
-    cchprodsp(io_err, m, lchp, chp_ind, chp_ptr)
+    cchprodsp(status, m, lchp, chp_ind, chp_ptr)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - m:       [IN] Vector{Cint}
   - lchp:    [IN] Vector{Cint}
   - chp_ind: [IN] Vector{Cint}
   - chp_ptr: [IN] Vector{Cint}
 """
 function cchprodsp(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
   lchp::StrideOneVector{Cint},
   chp_ind::StrideOneVector{Cint},
   chp_ptr::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cchprodsp_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_cchprodsp_(
+    status,
     m,
     lchp,
     chp_ind,
@@ -3537,12 +3046,12 @@ For more information, run the shell command
 
 Usage:
 
-    uterminate(io_err)
+    uterminate(status)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
 """
-function uterminate(io_err::StrideOneVector{Cint})
-  ccall(dlsym(cutest_lib, "cutest_uterminate_"), Nothing, (Ptr{Cint},), io_err)
+function uterminate(status::StrideOneVector{Cint})
+  cutest_uterminate_(status)
 end
 
 """# cterminate
@@ -3555,12 +3064,12 @@ For more information, run the shell command
 
 Usage:
 
-    cterminate(io_err)
+    cterminate(status)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
 """
-function cterminate(io_err::StrideOneVector{Cint})
-  ccall(dlsym(cutest_lib, "cutest_cterminate_"), Nothing, (Ptr{Cint},), io_err)
+function cterminate(status::StrideOneVector{Cint})
+  cutest_cterminate_(status)
 end
 
 """# cifn
@@ -3576,24 +3085,21 @@ Usage:
 
 
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - iprob:   [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
 """
 function cifn(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   iprob::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cifn_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_cifn_(
+    status,
     n,
     iprob,
     x,
@@ -3613,7 +3119,7 @@ For more information, run the shell command
 
 Usage:
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - iprob:   [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
@@ -3623,7 +3129,7 @@ Usage:
   - g_var:   [OUT] Vector{Cint}
 """
 function cisgr(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   iprod::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
@@ -3632,11 +3138,8 @@ function cisgr(
   g_val::StrideOneVector{Cdouble},
   g_var::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cisgr_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cint}),
-    io_err,
+  cutest_cisgr_(
+    status,
     n,
     iprod,
     x,
@@ -3659,9 +3162,9 @@ For more information, run the shell command
 
 Usage:
 
-    csgrp(io_err, n, nnzj, lj, j_var, j_fun)
+    csgrp(status, n, nnzj, lj, j_var, j_fun)
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - nnzj:       [OUT] Vector{Cint}
   - lj:         [IN] Vector{Cint}
@@ -3669,18 +3172,15 @@ Usage:
   - j_fun:      [OUT] Vector{Cint}
 """
 function csgrp(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   nnzj::StrideOneVector{Cint},
   lj::StrideOneVector{Cint},
   j_var::StrideOneVector{Cint},
   j_fun::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csgrp_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}),
-    io_err,
+  cutest_csgrp_(
+    status,
     n,
     nnzj,
     lj,
@@ -3698,24 +3198,21 @@ For more information, run the shell command
 
     man cutest_cigr
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - iprob:   [IN] Vector{Cint}
   - x:       [IN] Vector{Cdouble}
   - g_val:   [OUT] Vector{Cdouble}
 """
 function cigr(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   iprob::StrideOneVector{Cint},
   x::StrideOneVector{Cdouble},
   g_val::StrideOneVector{Cdouble},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_cigr_"),
-    Nothing,
-    (Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cdouble}, Ptr{Cdouble}),
-    io_err,
+  cutest_cigr_(
+    status,
     n,
     iprob,
     x,
@@ -3734,7 +3231,7 @@ For more information, run the shell command
 
     man cutest_csgrshp
 
-  - io_err:  [OUT] Vector{Cint}
+  - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - nnzj:    [OUT] Vector{Cint}
   - lj:      [IN] Vector{Cint}
@@ -3746,7 +3243,7 @@ For more information, run the shell command
   - h_col:   [OUT] Vector{Cint}
 """
 function csgrshp(
-  io_err::StrideOneVector{Cint},
+  status::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
   nnzj::StrideOneVector{Cint},
   lj::StrideOneVector{Cint},
@@ -3757,22 +3254,8 @@ function csgrshp(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  ccall(
-    dlsym(cutest_lib, "cutest_csgrshp_"),
-    Nothing,
-    (
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-      Ptr{Cint},
-    ),
-    io_err,
+  cutest_csgrshp_(
+    status,
     n,
     nnzj,
     lj,

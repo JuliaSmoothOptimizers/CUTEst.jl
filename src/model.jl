@@ -108,8 +108,8 @@ function CUTEstModel(
   v = Vector{Float64}(undef, ncon[])
   cl = Vector{Float64}(undef, ncon[])
   cu = Vector{Float64}(undef, ncon[])
-  equatn = Vector{Int32}(undef, ncon[])
-  linear = Vector{Int32}(undef, ncon[])
+  equatn = Vector{Bool}(undef, ncon[])
+  linear = Vector{Bool}(undef, ncon[])
 
   if ncon[] > 0
     e_order = efirst ? Ref{Cint}(1) : Ref{Cint}(0)
