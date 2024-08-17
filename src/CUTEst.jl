@@ -115,7 +115,7 @@ The supported sets are:
 - "netlib-lp": the Netlib LP test set.
 
 """
-function set_mastsif(set::String="sifcollection")
+function set_mastsif(set::String = "sifcollection")
   if set == "sifcollection"
     ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-229e00b81891")
   elseif set == "maros-meszaros"
