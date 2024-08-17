@@ -32,7 +32,7 @@ function sifdecoder(
   verbose::Bool = false,
   outsdif::String = "OUTSDIF_$(basename(name)).d",
   precision::Symbol = :double,
-  libsif_folder::String = cutest_problems_path
+  libsif_folder::String = cutest_problems_path,
 )
   if precision == :single
     prec = "-sp"
@@ -93,7 +93,7 @@ Example:
 function build_libsif(
   name::AbstractString;
   precision::Symbol = :double,
-  libsif_folder::String = cutest_problems_path
+  libsif_folder::String = cutest_problems_path,
 )
   if precision == :single
     prec = "-sp"
