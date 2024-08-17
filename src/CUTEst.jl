@@ -79,8 +79,8 @@ function __init__()
   end
 
   # set default MASTSIF location if the user hasn't set it already
-  if !("MASTSIF" ∈ keys(ENV))
-    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-99c5b38e7d03")
+  if !haskey(ENV, "MASTSIF")
+    set_mastsif()
   else
     @info "call set_mastsif() to use the full SIF collection"
   end
@@ -106,14 +106,27 @@ include("julia_interface.jl")
 include("classification.jl")
 
 """
-    set_mastsif()
+    set_mastsif(set::String="sifcollection")
 
-Set the MASTSIF environment variable to point to the main SIF collection.
+Set the MASTSIF environment variable to point to a set of SIF problems.
+The supported sets are:
+- "sifcollection": the CUTEst NLP test set;
+- "maros-meszaros": the Maros-Meszaros QP test set;
+- "netlib-lp": the Netlib LP test set.
+
 """
-function set_mastsif()
-  ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-99c5b38e7d03")
+function set_mastsif(set::String="sifcollection")
+  if set == "sifcollection"
+    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-229e00b81891")
+  elseif set == "maros-meszaros"
+    ENV["MASTSIF"] = joinpath(artifact"maros-meszaros", "optrove-maros-meszaros-9adfb5707b1e")
+  elseif set == "netlib-lp"
+    ENV["MASTSIF"] = joinpath(artifact"netlib-lp", "optrove-netlib-lp-f83996fca937")
+  else
+    error("The set $set is not supported.")
+  end
   @info "using full SIF collection located at" ENV["MASTSIF"]
-  nothing
+  return nothing
 end
 
 """

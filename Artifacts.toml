@@ -1,6 +1,23 @@
 [sifcollection]
-git-tree-sha1 = "a7ea0d0aaf29a39ca0fe75588fc077cdd5b5ed54"
+git-tree-sha1 = "a39ce7e15e83de78fee4847fa67c5f63e3f0c3c5"
+lazy = true
 
     [[sifcollection.download]]
-    url = "https://bitbucket.org/optrove/sif/get/99c5b38e7d03.tar.gz"
-    sha256 = "33b29e46288c6f019f4ee58e0df6b2797bc2642419b2c181edc574c8db8f6f34"
+    url = "https://bitbucket.org/optrove/sif/get/229e00b81891789fe29f099d1844565ef0ac14d3.tar.gz"
+    sha256 = "6e2cf075ddd4fe715a912847c70efdf2711114b6b1342ad4649edeae25e80b4c"
+
+[maros-meszaros]
+git-tree-sha1 = "0eff5ae5b345db85386f55f672a19c90f23257b2"
+lazy = true
+
+    [[maros-meszaros.download]]
+    url = "https://bitbucket.org/optrove/maros-meszaros/get/9adfb5707b1e0b83a2e0a26cc8310704ff01b7c1.tar.gz"
+    sha256 = "1bdb9df59502c2f24ae23303f70b2edbdf54660c1db88a048c230e4d3ab851c3"
+
+[netlib-lp]
+git-tree-sha1 = "545f8c5577a056981a21caf3f53bd7b59cf67410"
+lazy = true
+
+    [[netlib-lp.download]]
+    url = "https://bitbucket.org/optrove/netlib-lp/get/f83996fca9370b23d8896f134c4dfe7adbaca0ec.tar.gz"
+    sha256 = "e5b7d4128a0bde757ac59182228f80a33828ccc62c1764a33de722b096c0dd9a"

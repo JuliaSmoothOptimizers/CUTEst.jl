@@ -83,3 +83,8 @@ if !Sys.iswindows()
     end
   end
 end
+
+# test set_mastsif
+for set in ("sifcollection", "maros-meszaros", "netlib-lp")
+  set_mastsif(set)
+end
