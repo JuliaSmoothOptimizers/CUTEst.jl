@@ -1001,10 +1001,12 @@ function cutest_cterminate_s_(status)
 end
 
 function fortran_open_(funit, fname, ierr)
-  @ccall cutest_lib_path.fortran_open_(funit::Ptr{Cint}, fname::Ptr{Cchar}, ierr::Ptr{Cint})::Cvoid
+  fortran_open_ptr = Libdl.dlsym(cutest_lib, :fortran_open_)
+  @ccall $fortran_open_ptr(funit::Ptr{Cint}, fname::Ptr{Cchar}, ierr::Ptr{Cint})::Cvoid
 end
 
 function fortran_close_(funit, ierr)
-  @ccall cutest_lib_path.fortran_close_(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
+  fortran_close_ptr = Libdl.dlsym(cutest_lib, :fortran_close_)
+  @ccall $fortran_close_ptr(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
 end
 #! format: on
