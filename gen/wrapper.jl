@@ -31,6 +31,20 @@ function main()
   code = replace(code, "Ptr{rpc_}" => "Ptr{Float64}")
   code = replace(code, "Ptr{ip_}" => "Ptr{Cint}")
   code = replace(code, "Ptr{ipc_}" => "Ptr{Cint}")
+
+  blocks = split(code, "end\n")
+  nblocks = length(blocks)
+  code = ""
+  for (index, block) in enumerate(blocks)
+    if contains(block, "function")
+      fname = split(split(block, "function ")[2], "(")[1]
+      ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib, :$(fname))"
+      block = replace(block, "    @ccall libcutest.$fname" => "    $ptr\n    @ccall \$ptr_$(fname)")
+    end
+    code = code * block
+    (index < nblocks) && (code = code * "end\n")
+  end
+
   write(path, code)
   format_file(path, YASStyle())
 
