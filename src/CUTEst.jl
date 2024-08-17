@@ -100,6 +100,7 @@ end
 StrideOneVector{T} =
   Union{Vector{T}, SubArray{T, 1, Vector{T}, Tuple{UnitRange{U}}, true} where {U <: Integer}}
 
+include("sifdecoder.jl")
 include("core_interface.jl")
 include("julia_interface.jl")
 include("classification.jl")
@@ -112,119 +113,6 @@ Set the MASTSIF environment variable to point to the main SIF collection.
 function set_mastsif()
   ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-99c5b38e7d03")
   @info "using full SIF collection located at" ENV["MASTSIF"]
-  nothing
-end
-
-function delete_temp_files(suffix::String)
-  for f in (
-    "ELFUN",
-    "ELFUNF",
-    "ELFUND",
-    "RANGE",
-    "GROUP",
-    "GROUPF",
-    "GROUPD",
-    "SETTYP",
-    "EXTER",
-    "EXTERA",
-  )
-    for ext in ("f", "o")
-      fname = "$f$suffix.$ext"
-      isfile(fname) && rm(fname, force = true)
-    end
-  end
-  isfile("OUTSDIF.d") && rm("OUTSDIF.d", force = true)
-  nothing
-end
-
-"""Decode problem and build shared library.
-
-Optional arguments are passed directly to the SIF decoder.
-Example:
-    `sifdecoder("DIXMAANJ", "-param", "M=30")`.
-"""
-function sifdecoder(
-  name::AbstractString,
-  args...;
-  verbose::Bool = false,
-  outsdif::String = "OUTSDIF_$(basename(name)).d",
-  precision::Symbol = :double,
-)
-  if precision == :single
-    prec = "-sp"
-    suffix = "_s"
-  elseif precision == :double
-    prec = "-dp"
-    suffix = ""
-  elseif precision == :quadruple
-    prec = "-qp"
-    suffix = "_q"
-  else
-    error("The $precision precision is not supported.")
-  end
-
-  if length(name) < 4 || name[(end - 3):end] != ".SIF"
-    name = "$name.SIF"
-  end
-  if isfile(name)
-    path_sifname = abspath(name)
-  else
-    path_sifname = joinpath(ENV["MASTSIF"], name)
-    if !isfile(path_sifname)
-      error("$name not found")
-    end
-  end
-
-  pname, sif = basename(name) |> splitext
-  libname = "lib$pname"
-
-  outlog = tempname()
-  errlog = tempname()
-  cd(cutest_problems_path) do
-    delete_temp_files(suffix)
-    run(
-      pipeline(
-        Cmd(
-          `$(SIFDecode_jll.sifdecoder_standalone()) $(args) $(prec) $(path_sifname)`,
-          ignorestatus = true,
-        ),
-        stdout = outlog,
-        stderr = errlog,
-      ),
-    )
-    read(errlog, String) |> println
-    if verbose
-      read(outlog, String) |> println
-    end
-
-    if isfile("ELFUN$suffix.f")
-      run(`gfortran -c -fPIC ELFUN$suffix.f`)
-      object_files = ["ELFUN$suffix.o"]
-      for file in
-          ("GROUP", "RANGE", "ELFUNF", "ELFUND", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
-        if isfile("$file$suffix.f")
-          run(`gfortran -c -fPIC $file$suffix.f`)
-          push!(object_files, "$file$suffix.o")
-        end
-      end
-      if Sys.isapple()
-        run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
-        )
-      else
-        run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
-        )
-      end
-      run(`mv OUTSDIF.d $outsdif`)
-      delete_temp_files(suffix)
-      global cutest_lib =
-        Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
-      global cutest_lib_path = joinpath(cutest_problems_path, "$libname.$(Libdl.dlext)")
-    end
-  end
-  rm(outlog)
-  rm(errlog)
   nothing
 end
 
@@ -296,7 +184,8 @@ function CUTEstModel(
       isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
       cutest_lib = Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
-      sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif)
+      sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = :double)
+      build_libsif(path_sifname, precision = :double)
     end
     ccall(
       dlsym(cutest_lib, :fortran_open_),
