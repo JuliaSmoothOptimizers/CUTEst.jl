@@ -67,7 +67,8 @@ export usetup,
   cisgr,
   csgrp,
   cigr,
-  csgrshp
+  csgrshp,
+  csjp
 
 """# usetup
 The usetup subroutine sets up the correct data structures for
