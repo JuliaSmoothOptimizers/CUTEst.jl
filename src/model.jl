@@ -4,11 +4,9 @@ mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
   hrows::Vector{Int32}
   hcols::Vector{Int32}
 
-  jac_structure_reliable::Bool
   jrows::Vector{Int32}
   jcols::Vector{Int32}
 
-  lin_structure_reliable::Bool
   blin::Vector{Float64}
   clinrows::Vector{Int32}
   clincols::Vector{Int32}
@@ -160,17 +158,78 @@ function CUTEstModel(
   end
   cutest_error(status[])
 
+  # Sparsity pattern of the hessian
+  hrows = Vector{Int32}(undef, nnzh[])
+  hcols = Vector{Int32}(undef, nnzh[])
+  this_nnzh = Ref{Cint}(0)
+  if ncon[] > 0
+    cshp(status, nvar, this_nnzh, nnzh, hcols, hrows)
+  else
+    ushp(status, nvar, this_nnzh, nnzh, hcols, hrows)
+  end
+  cutest_error(status[])
+
+  # sparsity pattern of the jacobian
+  jrows = Vector{Int32}(undef, nnzj[])
+  jcols = Vector{Int32}(undef, nnzj[])
+  this_nnzj = Ref{Cint}(0)
+  csjp(status, this_nnzj, nnzj, jcols, jrows)
+  cutest_error(status[])
+
+  # compute lin_nnzj and nln_nnzj
+  lin_nnzj = 0
+  for row in jrows
+    if linear[row]
+      lin_nnzj += 1
+    end
+  end
+  nln_nnzj = nnzj[] - lin_nnzj
+
+  blin = Vector{Float64}(undef, nlin)
+  clinrows = Vector{Int32}(undef, lin_nnzj)
+  clincols = Vector{Int32}(undef, lin_nnzj)
+  clinvals = Vector{Float64}(undef, lin_nnzj)
+  Jval = Vector{Cdouble}(undef, nvar[])
+  Jvar = Vector{Cint}(undef, nvar[])
+
+  # sparsity pattern of the linear constraints
+  i = 0
+  nnzj_tmp = Ref{Cint}(nnzj[])
+  x0 = Vector{Float64}(undef, nvar[])
+  for j in lin
+    x0 .= 0.0
+    ccifsg(
+      Ref{Cint}(0),
+      nvar,
+      Ref{Cint}(j),
+      x0,
+      view(blin, j:j),
+      nnzj_tmp,
+      nvar,
+      Jval,
+      Jvar,
+      Ref{Bool}(true),
+    )
+    for k = 1:nvar[]
+      if Jval[k] != 0.0
+        i += 1
+        clinrows[i] = j
+        clincols[i] = Jvar[k]
+        clinvals[i] = Jval[k]
+      end
+    end
+  end
+
   # Remove references
   nvar = nvar[] |> Int
   ncon = ncon[] |> Int
   nnzj = nnzj[] |> Int
   nnzh = nnzh[] |> Int
 
+  work = Vector{Int32}(undef, ncon)
+
   fortran_close_(Ref{Cint}(funit), status)
   cutest_error(status[])
-
-  lin_nnzj = min(nvar * nlin, nnzj)
-  nln_nnzj = min(nvar * (ncon - nlin), nnzj)
 
   meta = NLPModelMeta(
     nvar,
@@ -189,32 +248,13 @@ function CUTEstModel(
     name = splitext(name)[1],
   )
 
-  hrows = Vector{Int32}(undef, nnzh)
-  hcols = Vector{Int32}(undef, nnzh)
-
-  jac_structure_reliable = false
-  jrows = Vector{Int32}(undef, nnzj)
-  jcols = Vector{Int32}(undef, nnzj)
-  work = Vector{Int32}(undef, ncon)
-
-  lin_structure_reliable = false
-  blin = Vector{Float64}(undef, nlin)
-  clinrows = Vector{Int32}(undef, lin_nnzj)
-  clincols = Vector{Int32}(undef, lin_nnzj)
-  clinvals = Vector{Float64}(undef, lin_nnzj)
-
-  Jval = Vector{Cdouble}(undef, nvar)
-  Jvar = Vector{Cint}(undef, nvar)
-
   nlp = CUTEstModel(
     meta,
     Counters(),
     hrows,
     hcols,
-    jac_structure_reliable,
     jrows,
     jcols,
-    lin_structure_reliable,
     blin,
     clinrows,
     clincols,

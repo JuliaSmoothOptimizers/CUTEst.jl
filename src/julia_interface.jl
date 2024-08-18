@@ -78,7 +78,7 @@ function NLPModels.objgrad!(
   nvar = Ref{Cint}(nlp.meta.nvar)
   f = Ref{Float64}(0)
   status = Ref{Cint}(0)
-  get_grad = Ref{Bool}(1)
+  get_grad = Ref{Bool}(true)
   if nlp.meta.ncon > 0
     cofg(
       status,
@@ -271,7 +271,6 @@ end
 function NLPModels.cons_lin!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVector)
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nlin c
-  eval_lin_structure!(nlp)
   coo_prod!(nlp.clinrows, nlp.clincols, nlp.clinvals, x, c)
   c .+= nlp.blin
   increment!(nlp, :neval_cons_lin)
@@ -302,95 +301,13 @@ end
 
 function NLPModels.jac_structure!(
   nlp::CUTEstModel,
-  rows::StrideOneVector{Int32},
-  cols::StrideOneVector{Int32},
-)
-  @lencheck nlp.meta.nnzj rows cols
-  nnzj = Ref{Cint}(nlp.meta.nnzj)
-  status = Ref{Cint}(0)
-  this_nnzj = Ref{Cint}(0)
-
-  csjp(
-    status,
-    this_nnzj,
-    nnzj,
-    cols,
-    rows,
-  )
-  cutest_error(status[])
-
-  nlp.jrows .= rows[1:nnzj[]]
-  nlp.jcols .= cols[1:nnzj[]]
-
-  return rows, cols
-end
-
-function NLPModels.jac_structure!(nlp::CUTEstModel)
-  if !nlp.jac_structure_reliable
-    nnzj = Ref{Cint}(nlp.meta.nnzj)
-    status = Ref{Cint}(0)
-    this_nnzj = Ref{Cint}(0)
-
-    csjp(
-      status,
-      this_nnzj,
-      nnzj,
-      nlp.jcols,
-      nlp.jrows,
-    )
-    cutest_error(status[])
-
-    nlp.jac_structure_reliable = true
-  end
-  return nlp
-end
-
-function NLPModels.jac_structure!(
-  nlp::CUTEstModel,
   rows::AbstractVector{<:Integer},
   cols::AbstractVector{<:Integer},
 )
   @lencheck nlp.meta.nnzj rows cols
-  jrows = Vector{Int32}(undef, nlp.meta.nnzj)
-  jcols = Vector{Int32}(undef, nlp.meta.nnzj)
-  jac_structure!(nlp, jrows, jcols)
-  rows .= jrows
-  cols .= jcols
+  rows .= nlp.jrows
+  cols .= nlp.jcols
   return rows, cols
-end
-
-function eval_lin_structure!(nlp::CUTEstModel)
-  if !nlp.lin_structure_reliable
-    nvar = Ref{Cint}(nlp.meta.nvar)
-    nnzj = Ref{Cint}(0)
-    i = 1
-    for j in nlp.meta.lin
-      x0 = zeros(Float64, nlp.meta.nvar)
-      ccifsg(
-        Ref{Cint}(0),
-        nvar,
-        Ref{Cint}(j),
-        x0,
-        view(nlp.blin, j:j),
-        nnzj,
-        nvar,
-        nlp.Jval,
-        nlp.Jvar,
-        Ref{Bool}(true),
-      )
-      for k = 1:nnzj[]
-        nlp.clinrows[i] = findfirst(x -> x == j, nlp.meta.lin)
-        nlp.clincols[i] = nlp.Jvar[k]
-        nlp.clinvals[i] = nlp.Jval[k]
-        i += 1
-      end
-    end
-    nlp.clinrows[i:end] .= Int32(1)
-    nlp.clincols[i:end] .= Int32(1)
-    nlp.clinvals[i:end] .= 0.0
-    nlp.lin_structure_reliable = true
-  end
-  return nlp
 end
 
 function NLPModels.jac_lin_structure!(
@@ -399,7 +316,6 @@ function NLPModels.jac_lin_structure!(
   cols::AbstractVector{<:Integer},
 )
   @lencheck nlp.meta.lin_nnzj rows cols
-  eval_lin_structure!(nlp)
   rows .= nlp.clinrows
   cols .= nlp.clincols
   return rows, cols
@@ -411,16 +327,12 @@ function NLPModels.jac_nln_structure!(
   cols::AbstractVector{<:Integer},
 )
   @lencheck nlp.meta.nln_nnzj rows cols
-  jac_structure!(nlp)
   k = 1
   for i in findall(j -> j in nlp.meta.nln, nlp.jrows)
     rows[k] = nlp.jrows[i] - count(x < nlp.jrows[i] for x in nlp.meta.lin)
     cols[k] = nlp.jcols[i]
     k += 1
   end
-  rows[k:end] .= zero(Int32)
-  cols[k:end] .= zero(Int32)
-
   return rows, cols
 end
 
@@ -436,7 +348,6 @@ function NLPModels.jac_lin_coord!(nlp::CUTEstModel, x::AbstractVector, vals::Abs
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.lin_nnzj vals
   increment!(nlp, :neval_jac_lin)
-  eval_lin_structure!(nlp)
   vals .= nlp.clinvals
   return vals
 end
@@ -539,7 +450,6 @@ function NLPModels.jprod_lin!(
   @lencheck nlp.meta.nvar x v
   @lencheck nlp.meta.nlin jv
   increment!(nlp, :neval_jprod_lin)
-  eval_lin_structure!(nlp)
   jprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jv)
   return jv
 end
@@ -624,81 +534,8 @@ function NLPModels.jtprod_lin!(
   @lencheck nlp.meta.nvar x jtv
   @lencheck nlp.meta.nlin v
   increment!(nlp, :neval_jtprod_lin)
-  eval_lin_structure!(nlp)
   jtprod_lin!(nlp, nlp.clinrows, nlp.clincols, nlp.clinvals, v, jtv)
   return jtv
-end
-
-function NLPModels.hess_structure!(
-  nlp::CUTEstModel,
-  rows::StrideOneVector{Int32},
-  cols::StrideOneVector{Int32},
-)
-  @lencheck nlp.meta.nnzh rows cols
-  nvar = Ref{Cint}(nlp.meta.nvar)
-  ncon = Ref{Cint}(nlp.meta.ncon)
-  nnzh = Ref{Cint}(nlp.meta.nnzh)
-  status = Ref{Cint}(0)
-  this_nnzh = Ref{Cint}(0)
-
-  if ncon[] > 0
-    cshp(
-      status,
-      nvar,
-      this_nnzh,
-      nnzh,
-      cols,
-      rows,
-    )
-    cutest_error(status[])
-  else
-    ushp(
-      status,
-      nvar,
-      this_nnzh,
-      nnzh,
-      cols,
-      rows,
-    )
-    cutest_error(status[])
-  end
-
-  nlp.hrows .= rows
-  nlp.hcols .= cols
-
-  return rows, cols
-end
-
-function NLPModels.hess_structure!(nlp::CUTEstModel)
-  nvar = Ref{Cint}(nlp.meta.nvar)
-  ncon = Ref{Cint}(nlp.meta.ncon)
-  nnzh = Ref{Cint}(nlp.meta.nnzh)
-  status = Ref{Cint}(0)
-  this_nnzh = Ref{Cint}(0)
-
-  if ncon[] > 0
-    cshp(
-      status,
-      nvar,
-      this_nnzh,
-      nnzh,
-      nlp.hcols,
-      nlp.hrows,
-    )
-    cutest_error(status[])
-  else
-    ushp(
-      status,
-      nvar,
-      this_nnzh,
-      nnzh,
-      nlp.hcols,
-      nlp.hrows,
-    )
-    cutest_error(status[])
-  end
-
-  return nlp
 end
 
 function NLPModels.hess_structure!(
@@ -707,11 +544,8 @@ function NLPModels.hess_structure!(
   cols::AbstractVector{<:Integer},
 )
   @lencheck nlp.meta.nnzh rows cols
-  hrows = Vector{Int32}(undef, nlp.meta.nnzh)
-  hcols = Vector{Int32}(undef, nlp.meta.nnzh)
-  hess_structure!(nlp, hrows, hcols)
-  rows .= hrows
-  cols .= hcols
+  rows .= nlp.hrows
+  cols .= nlp.hcols
   return rows, cols
 end
 
@@ -928,10 +762,11 @@ function NLPModels.hprod!(
   obj_weight::Float64 = 1.0,
 )
   @lencheck nlp.meta.nvar x v hv
+  nlp.work .= 0.0  # Lagrange multipliers
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
-    zeros(Float64, nlp.meta.ncon),
+    nlp.work,
     convert(Vector{Float64}, v),
     hv,
     obj_weight = obj_weight,
