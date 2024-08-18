@@ -128,6 +128,11 @@ function build_libsif(
         run(
           `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
         )
+      elseif Sys.iswindows()
+        libcutest_double = joinpath(libpath, "libcutest_double.a")
+        run(
+          `gfortran -shared -o $libname.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $(libcutest_double) -Wl,--no-whole-archive`,
+        )
       else
         run(
           `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,

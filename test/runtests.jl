@@ -15,7 +15,7 @@ for pb in problems
   end
 end
 
-if !Sys.iswindows()
+# if !Sys.iswindows()
   include("test_core.jl")
   include("test_julia.jl")
   include("coverage.jl")
@@ -82,7 +82,7 @@ if !Sys.iswindows()
       finalize(nlp)
     end
   end
-end
+# end
 
 # test set_mastsif
 for set in ("sifcollection", "maros-meszaros", "netlib-lp")
