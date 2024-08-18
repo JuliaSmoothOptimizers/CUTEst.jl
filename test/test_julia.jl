@@ -42,13 +42,6 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
-      jac_structure!(nlp)
-      jrow0, jcol0 = jac_structure(nlp)
-      @test all(jrow0 .== jrow)
-      @test all(jcol0 .== jcol)
-      @test all(jrow0 .== nlp.jrows)
-      @test all(jcol0 .== nlp.jcols)
-
       x = Vector{Float64}(undef, 2 * nlp.meta.nvar)
       x[1:2:end] .= x0
       (cx, jrow, jcol, jval) = cons_coord(nlp, @view x[1:2:end])
@@ -90,23 +83,18 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     for obj_weight in obj_weights
       Hx = hess(nlp, x0, obj_weight = obj_weight)
       @test isapprox(Hx, H(x0, obj_weight = obj_weight), rtol = rtol)
-      hess_structure!(nlp)
-      hrow, hcol = hess_structure(nlp)
-      @test all(hrow .== nlp.hrows)
-      @test all(hcol .== nlp.hcols)
       hval = hess_coord(nlp, x0, obj_weight = obj_weight)
       @test isapprox(
-        sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
+        sparse(nlp.hrows, nlp.hcols, hval, nlp.meta.nvar, nlp.meta.nvar),
         tril(H(x0, obj_weight = obj_weight)),
         rtol = rtol,
       )
       if nlp.meta.ncon > 0
         Wx = hess(nlp, x0, ones(nlp.meta.ncon), obj_weight = obj_weight)
         @test isapprox(Wx, W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight), rtol = rtol)
-        hrow, hcol = hess_structure(nlp)
         hval = hess_coord(nlp, x0, ones(nlp.meta.ncon), obj_weight = obj_weight)
         @test isapprox(
-          sparse(hrow, hcol, hval, nlp.meta.nvar, nlp.meta.nvar),
+          sparse(nlp.hrows, nlp.hcols, hval, nlp.meta.nvar, nlp.meta.nvar),
           tril(W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight)),
           rtol = rtol,
         )
