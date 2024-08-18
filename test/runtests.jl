@@ -80,7 +80,7 @@ finalize(nlp)
     @test nlp.meta.nvar == 2
     finalize(nlp)
   end
-# end
+end
 
 # test set_mastsif
 for set in ("sifcollection", "maros-meszaros", "netlib-lp")
