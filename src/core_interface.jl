@@ -3267,3 +3267,33 @@ function csgrshp(
     h_col,
   )
 end
+
+"""# csjp
+The csjp subroutine evaluates the sparsity pattern of the Jacobian of the
+constraints for a problem decoded from a SIF file by the script sifdecoder.
+
+For more information, run the shell command
+
+    man cutest_csjp
+
+  - status:  [OUT] Vector{Cint}
+  - nnzj:    [OUT] Vector{Cint}
+  - lj:      [IN] Vector{Cint}
+  - jvar:    [OUT] Vector{Cint}
+  - jcon:    [OUT] Vector{Cint}
+"""
+function csjp(
+  status::StrideOneVector{Cint},
+  nnzj::StrideOneVector{Cint},
+  lj::StrideOneVector{Cint},
+  jvar::StrideOneVector{Cint},
+  jcon::StrideOneVector{Cint}
+)
+  cutest_csjp_(
+    status,
+    nnzj,
+    lj,
+    jvar,
+    jcon,
+  )
+end
