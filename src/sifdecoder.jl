@@ -33,7 +33,7 @@ Example:
 function sifdecoder(
   name::AbstractString,
   args...;
-  verbose::Bool = false,
+  verbose::Bool = true,
   precision::Symbol = :double,
   outsdif::String = _name_outsdif(name, precision),
   libsif_folder::String = cutest_problems_path,

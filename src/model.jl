@@ -56,7 +56,7 @@ function CUTEstModel(
   name::AbstractString,
   args...;
   decode::Bool = true,
-  verbose::Bool = false,
+  verbose::Bool = true,
   efirst::Bool = true,
   lfirst::Bool = true,
   lvfirst::Bool = true,
