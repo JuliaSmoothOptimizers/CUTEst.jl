@@ -1,5 +1,5 @@
-mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
-  meta::NLPModelMeta{Float64, Vector{Float64}}
+mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
+  meta::NLPModelMeta{T, Vector{T}}
   counters::Counters
   hrows::Vector{Int32}
   hcols::Vector{Int32}
@@ -7,13 +7,13 @@ mutable struct CUTEstModel <: AbstractNLPModel{Float64, Vector{Float64}}
   jrows::Vector{Int32}
   jcols::Vector{Int32}
 
-  blin::Vector{Float64}
+  blin::Vector{T}
   clinrows::Vector{Int32}
   clincols::Vector{Int32}
-  clinvals::Vector{Float64}
+  clinvals::Vector{T}
 
-  work::Vector{Float64}
-  Jval::Vector{Cdouble}
+  work::Vector{T}
+  Jval::Vector{T}
   Jvar::Vector{Cint}
 end
 
@@ -73,16 +73,16 @@ function CUTEstModel(
   end
 
   pname, sif = basename(name) |> splitext
-  outsdif = "OUTSDIF_$pname.d"
-  global cutest_instances
-  cutest_instances > 0 && error("CUTEst: call finalize on current model first")
-  global cutest_lib
+  outsdif = "OUTSDIF_$(pname)_double.d"
+  global cutest_instances_double
+  cutest_instances_double > 0 && error("CUTEst: call finalize on current model first")
+  global cutest_lib_double
   cd(cutest_problems_path) do
     if !decode
       isfile(outsdif) || error("CUTEst: no decoded problem found")
-      libname = "lib$pname"
-      isfile("$libname.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
-      cutest_lib = Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      libsif = "lib$(pname)_double"
+      isfile("$libsif.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
+      cutest_lib_double = Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
       sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = :double)
       build_libsif(path_sifname, precision = :double)
@@ -226,7 +226,7 @@ function CUTEstModel(
   nnzj = nnzj[] |> Int
   nnzh = nnzh[] |> Int
 
-  work = Vector{Int32}(undef, ncon)
+  work = Vector{Float64}(undef, ncon)
 
   fortran_close_(Ref{Cint}(funit), status)
   cutest_error(status[])
@@ -248,7 +248,7 @@ function CUTEstModel(
     name = splitext(name)[1],
   )
 
-  nlp = CUTEstModel(
+  nlp = CUTEstModel{Float64}(
     meta,
     Counters(),
     hrows,
@@ -264,16 +264,16 @@ function CUTEstModel(
     Jvar,
   )
 
-  cutest_instances += 1
+  cutest_instances_double += 1
   finalizer(cutest_finalize, nlp)
 
   return nlp
 end
 
 function cutest_finalize(nlp::CUTEstModel)
-  global cutest_instances
-  cutest_instances == 0 && return
-  global cutest_lib
+  global cutest_instances_double
+  cutest_instances_double == 0 && return
+  global cutest_lib_double
   status = Ref{Cint}(0)
   if nlp.meta.ncon > 0
     cterminate(status)
@@ -281,9 +281,9 @@ function cutest_finalize(nlp::CUTEstModel)
     uterminate(status)
   end
   cutest_error(status[])
-  Libdl.dlclose(cutest_lib)
-  cutest_instances -= 1
-  cutest_lib = C_NULL
+  Libdl.dlclose(cutest_lib_double)
+  cutest_instances_double -= 1
+  cutest_lib_double = C_NULL
   return
 end
 

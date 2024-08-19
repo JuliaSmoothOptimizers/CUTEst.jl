@@ -22,6 +22,8 @@ function set_mastsif(set::String = "sifcollection")
   return nothing
 end
 
+_name_outsdif(name::AbstractString, precision::Symbol) = "OUTSDIF_$(basename(name))_$(precision).d"
+
 """Decode a SIF problem.
 
 Optional arguments are passed directly to the SIF decoder.
@@ -32,8 +34,8 @@ function sifdecoder(
   name::AbstractString,
   args...;
   verbose::Bool = false,
-  outsdif::String = "OUTSDIF_$(basename(name)).d",
   precision::Symbol = :double,
+  outsdif::String = _name_outsdif(name, precision),
   libsif_folder::String = cutest_problems_path,
 )
   if precision == :single
@@ -111,7 +113,7 @@ function build_libsif(
   end
 
   pname, sif = basename(name) |> splitext
-  libname = "lib$pname"
+  libsif = "lib$(pname)_$(precision)"
 
   cd(libsif_folder) do
     if isfile("ELFUN$suffix.f")
@@ -126,7 +128,12 @@ function build_libsif(
       end
       if Sys.isapple()
         run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
+          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
+        )
+      elseif Sys.iswindows()
+        libcutest_double = joinpath(libpath, "libcutest_double.a")
+        run(
+          `gfortran -shared -o $libsif.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $(libcutest_double) -Wl,--no-whole-archive`,
         )
       elseif Sys.iswindows()
         libcutest_double = joinpath(libpath, "libcutest_double.a")
@@ -135,13 +142,12 @@ function build_libsif(
         )
       else
         run(
-          `$linker $sh_flags -o $libname.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
+          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
         )
       end
       delete_temp_files(suffix)
-      global cutest_lib =
-        Libdl.dlopen(libname, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
-      global cutest_lib_path = joinpath(cutest_problems_path, "$libname.$(Libdl.dlext)")
+      global cutest_lib_double =
+        Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     end
   end
 end

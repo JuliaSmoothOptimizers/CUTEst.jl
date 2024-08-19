@@ -12,7 +12,7 @@ For each of those, we dropped the `cutest_`, so the functions `cutest_ufn` and
 To use then you have to convert the types using `Cint` and `Cdouble`, and
 pass arrays because of the underlying pointers in Fortran.
 In practice, there isn't much improvement in calling these or `ccall`s, except
-for the use of the internal `cutest_lib`.
+for the use of the internal `cutest_lib_double`.
 
 **Only use these functions if you really know what you're doing.**
 

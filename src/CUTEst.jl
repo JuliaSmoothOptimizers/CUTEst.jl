@@ -1,8 +1,4 @@
-#See JuliaSmoothOptimizers/NLPModels.jl/issues/113
-__precompile__()
-
 # Using CUTEst from Julia.
-
 module CUTEst
 
 using CUTEst_jll
@@ -14,8 +10,12 @@ using NLPModels
 import Libdl.dlsym
 
 # Only one problem can be interfaced at any given time.
-global cutest_instances = 0
-global cutest_lib = C_NULL
+global cutest_instances_single = 0
+global cutest_instances_double = 0
+global cutest_instances_quadruple = 0
+global cutest_lib_single = C_NULL
+global cutest_lib_double = C_NULL
+global cutest_lib_quadruple = C_NULL
 
 export CUTEstModel, sifdecoder, build_libsif, set_mastsif
 
