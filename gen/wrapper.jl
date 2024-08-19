@@ -32,6 +32,12 @@ function main()
   code = replace(code, "Ptr{ip_}" => "Ptr{Cint}")
   code = replace(code, "Ptr{ipc_}" => "Ptr{Cint}")
 
+  # errors in cutest.h
+  code = replace(code, "cutest_cint_csgrp_" => "cutest_csgrp_")
+  code = replace(code, "cutest_cint_csjp_" => "cutest_csjp_")
+  code = replace(code, "cutest_cint_csgrshp_" => "cutest_csgrshp_")
+  code = replace(code, "cutest_cint_cchprodsp_" => "cutest_cchprodsp_")
+
   blocks = split(code, "end\n")
   nblocks = length(blocks)
   code = ""

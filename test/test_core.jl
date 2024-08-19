@@ -28,8 +28,8 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
     nnzg = Cint[0]
     nnzj = Cint[0]
     nnzh = Cint[0]
-    True = Cint[true]
-    False = Cint[false]
+    True = Bool[true]
+    False = Bool[false]
     Jx = Array{Cdouble}(undef, ncon[1], nvar[1])
     Jtx = Array{Cdouble}(undef, nvar[1], ncon[1])
     Jval = Array{Cdouble}(undef, nlp.meta.nnzj + nlp.meta.nvar)
@@ -59,8 +59,8 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
     nnzg = view(Cint[0], 1:1)
     nnzj = view(Cint[0], 1:1)
     nnzh = view(Cint[0], 1:1)
-    True = view(Cint[true], 1:1)
-    False = view(Cint[false], 1:1)
+    True = view(Bool[true], 1:1)
+    False = view(Bool[false], 1:1)
     Jx = Array{Cdouble}(undef, ncon[1], nvar[1])
     Jtx = Array{Cdouble}(undef, nvar[1], ncon[1])
     Jval = @view(Array{Cdouble}(undef, nlp.meta.nnzj + nlp.meta.nvar + 1)[2:end])
