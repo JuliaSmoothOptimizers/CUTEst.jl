@@ -12,7 +12,9 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
   clincols::Vector{Int32}
   clinvals::Vector{T}
 
-  work::Vector{T}
+  workspace_nvar::Vector{T}
+  workspace_ncon::Vector{T}
+
   Jval::Vector{T}
   Jvar::Vector{Cint}
 end
@@ -227,7 +229,8 @@ function CUTEstModel(
   nnzj = nnzj[] |> Int
   nnzh = nnzh[] |> Int
 
-  work = Vector{Float64}(undef, ncon)
+  workspace_nvar = Vector{Float64}(undef, nvar)
+  workspace_ncon = Vector{Float64}(undef, ncon)
 
   fortran_close_(Ref{Cint}(funit), status)
   cutest_error(status[])
@@ -260,7 +263,8 @@ function CUTEstModel(
     clinrows,
     clincols,
     clinvals,
-    work,
+    workspace_nvar,
+    workspace_ncon,
     Jval,
     Jvar,
   )

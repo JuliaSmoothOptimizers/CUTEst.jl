@@ -42,7 +42,7 @@ function NLPModels.objcons!(nlp::CUTEstModel, x::AbstractVector, c::AbstractVect
   @lencheck nlp.meta.nvar x
   @lencheck ncon c
   if ncon > 0
-    cc = zeros(Float64, ncon)
+    cc = nlp.workspace_ncon
     f, _ = objcons!(nlp, convert(Vector{Float64}, x), cc)
     c .= cc
     return f, c
@@ -86,7 +86,7 @@ end
 
 function NLPModels.objgrad!(nlp::CUTEstModel, x::AbstractVector, g::AbstractVector)
   @lencheck nlp.meta.nvar x g
-  gc = Vector{Float64}(undef, nlp.meta.nvar)
+  gc = nlp.workspace_nvar
   f, _ = objgrad!(nlp, convert(Vector{Float64}, x), gc)
   g .= gc
   return f, g
@@ -94,7 +94,7 @@ end
 
 function NLPModels.obj(nlp::CUTEstModel, x::AbstractVector)
   @lencheck nlp.meta.nvar x
-  f, _ = objcons!(nlp, x, nlp.work)
+  f, _ = objcons!(nlp, x, nlp.workspace_ncon)
   if nlp.meta.ncon > 0
     decrement!(nlp, :neval_cons) # does not really count as a constraint eval
   end
@@ -301,7 +301,7 @@ end
 function NLPModels.jac_coord!(nlp::CUTEstModel, x::AbstractVector, vals::AbstractVector)
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzj vals
-  cons_coord!(nlp, x, nlp.work, nlp.jrows, nlp.jcols, vals)
+  cons_coord!(nlp, x, nlp.workspace_ncon, nlp.jrows, nlp.jcols, vals)
   decrement!(nlp, :neval_cons)  # does not really count as a constraint eval
   return vals
 end
@@ -372,7 +372,7 @@ function NLPModels.jprod!(
 )
   @lencheck nlp.meta.nvar x v
   @lencheck nlp.meta.ncon jv
-  jvc = nlp.work
+  jvc = nlp.workspace_ncon
   jprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jvc)
   jv .= jvc
 end
@@ -385,11 +385,11 @@ function NLPModels.jprod_nln!(
 )
   @lencheck nlp.meta.nvar x v
   @lencheck nlp.meta.nnln jv
-  jvc = nlp.work
+  jvc = nlp.workspace_ncon
   jprod!(nlp, x, v, jvc)
   decrement!(nlp, :neval_jprod)
   increment!(nlp, :neval_jprod_nln)
-  jv .= jvc[nlp.meta.nln]
+  jv .= view(jvc, nlp.meta.nln)
 end
 
 function NLPModels.jprod_lin!(
@@ -443,7 +443,7 @@ function NLPModels.jtprod!(
 )
   @lencheck nlp.meta.nvar x jtv
   @lencheck nlp.meta.ncon v
-  jtvc = zeros(Float64, nlp.meta.nvar)
+  jtvc = nlp.workspace_nvar
   jtprod!(nlp, convert(Vector{Float64}, x), convert(Vector{Float64}, v), jtvc)
   jtv .= jtvc
 end
@@ -456,7 +456,7 @@ function NLPModels.jtprod_nln!(
 )
   @lencheck nlp.meta.nvar x jtv
   @lencheck nlp.meta.nnln v
-  _v = nlp.work
+  _v = nlp.workspace_ncon
   _v[nlp.meta.lin] .= 0.0
   _v[nlp.meta.nln] = v
   jtprod!(nlp, x, _v, jtv)
@@ -557,7 +557,9 @@ function NLPModels.hess_coord!(
 )
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzh vals
-  hess_coord!(nlp, x, zeros(Float64, nlp.meta.ncon), vals; obj_weight = obj_weight)
+  λ = nlp.workspace_ncon
+  λ .= 0.0
+  hess_coord!(nlp, x, λ, vals; obj_weight = obj_weight)
 end
 
 function NLPModels.hprod!(
@@ -583,15 +585,19 @@ function NLPModels.hprod!(
 
   if ncon[] > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
-    z = obj_weight == 1 ? y : y / obj_weight
-
+    if obj_weight == 1.0
+      z = y
+    else
+      z = nlp.workspace_ncon
+      z .= y ./ obj_weight
+    end
     chprod(status, nvar, ncon, goth, x, z, v, hv)
   else
     uhprod(status, nvar, goth, x, v, hv)
   end
   cutest_error(status[])
 
-  obj_weight != 1.0 && (hv .*= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
+  (obj_weight != 1.0) && (hv .*= obj_weight)  # also ok if obj_weight == 0 and ncon == 0
   increment!(nlp, :neval_hprod)
   return hv
 end
@@ -626,7 +632,7 @@ function NLPModels.hprod!(
 )
   @lencheck nlp.meta.nvar x v hv
   @lencheck nlp.meta.ncon y
-  hvc = zeros(Float64, nlp.meta.nvar)
+  hvc = nlp.workspace_nvar
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
@@ -646,11 +652,12 @@ function NLPModels.hprod!(
   obj_weight::Float64 = 1.0,
 )
   @lencheck nlp.meta.nvar x v hv
-  nlp.work .= 0.0  # Lagrange multipliers
+  λ = nlp.workspace_ncon
+  λ .= 0.0  # Lagrange multipliers
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
-    nlp.work,
+    λ,
     convert(Vector{Float64}, v),
     hv,
     obj_weight = obj_weight,
@@ -665,7 +672,7 @@ function NLPModels.hprod!(
   obj_weight::Float64 = 1.0,
 )
   @lencheck nlp.meta.nvar x v hv
-  hvc = zeros(Float64, nlp.meta.nvar)
+  hvc = nlp.workspace_nvar
   hprod!(
     nlp,
     convert(Vector{Float64}, x),
