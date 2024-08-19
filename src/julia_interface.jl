@@ -791,3 +791,27 @@ function NLPModels.hprod!(
   )
   hv .= hvc
 end
+
+function NLPModels.jth_hess_coord!(
+  nlp::CUTEstModel,
+  x::AbstractVector,
+  j::Integer,
+  vals::AbstractVector,
+)
+  nvar = Ref{Cint}(nlp.meta.nvar)
+  ncon = Ref{Cint}(nlp.meta.ncon)
+  nnzh = Ref{Cint}(nlp.meta.nnzh)
+  status = Ref{Cint}(0)
+  cish(
+    status,
+    nvar,
+    x,
+    Ref{Cint}(j),
+    nnzh,
+    nnzh,
+    vals,
+    nlp.hrows,
+    nlp.hcols,
+  )
+  return vals
+end
