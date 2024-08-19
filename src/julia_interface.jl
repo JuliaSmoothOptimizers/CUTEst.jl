@@ -20,22 +20,10 @@ function NLPModels.objcons!(
   status = Ref{Cint}(0)
   f = Ref{Float64}(0)
   if ncon[] > 0
-    cfn(
-      status,
-      nvar,
-      ncon,
-      x,
-      f,
-      c,
-    )
+    cfn(status, nvar, ncon, x, f, c)
     increment!(nlp, :neval_cons)
   else
-    ufn(
-      status,
-      nvar,
-      x,
-      f,
-    )
+    ufn(status, nvar, x, f)
   end
   increment!(nlp, :neval_obj)
   cutest_error(status[])
@@ -80,23 +68,9 @@ function NLPModels.objgrad!(
   status = Ref{Cint}(0)
   get_grad = Ref{Bool}(true)
   if nlp.meta.ncon > 0
-    cofg(
-      status,
-      nvar,
-      x,
-      f,
-      g,
-      get_grad,
-    )
+    cofg(status, nvar, x, f, g, get_grad)
   else
-    uofg(
-      status,
-      nvar,
-      x,
-      f,
-      g,
-      get_grad,
-    )
+    uofg(status, nvar, x, f, g, get_grad)
   end
   increment!(nlp, :neval_obj)
   increment!(nlp, :neval_grad)
@@ -168,19 +142,7 @@ function cons_coord!(
   jsize = Ref{Cint}(nlp.meta.nnzj)
   get_j = Ref{Bool}(true)
 
-  ccfsg(
-    status,
-    nvar,
-    ncon,
-    x,
-    c,
-    nnzj,
-    jsize,
-    vals,
-    cols,
-    rows,
-    get_j,
-  )
+  ccfsg(status, nvar, ncon, x, c, nnzj, jsize, vals, cols, rows, get_j)
   cutest_error(status[])
   increment!(nlp, :neval_cons)
   increment!(nlp, :neval_jac)
@@ -385,18 +347,7 @@ function NLPModels.jprod!(
   got_j = Ref{Bool}(false)
   jtrans = Ref{Bool}(false)
   status = Ref{Cint}(0)
-  cjprod(
-    status,
-    nvar,
-    ncon,
-    got_j,
-    jtrans,
-    x,
-    v,
-    nvar,
-    jv,
-    ncon,
-  )
+  cjprod(status, nvar, ncon, got_j, jtrans, x, v, nvar, jv, ncon)
   cutest_error(status[])
   increment!(nlp, :neval_jprod)
   return jv
@@ -467,18 +418,7 @@ function NLPModels.jtprod!(
   got_j = Ref{Bool}(false)
   jtrans = Ref{Bool}(true)
   status = Ref{Cint}(0)
-  cjprod(
-    status,
-    nvar,
-    ncon,
-    got_j,
-    jtrans,
-    x,
-    v,
-    ncon,
-    jtv,
-    nvar,
-  )
+  cjprod(status, nvar, ncon, got_j, jtrans, x, v, ncon, jtv, nvar)
   cutest_error(status[])
   increment!(nlp, :neval_jtprod)
   return jtv
@@ -566,18 +506,7 @@ function NLPModels.hess_coord!(
   this_nnzh = Ref{Cint}(0)
 
   if obj_weight == 0.0 && ncon[] > 0
-    cshc(
-      status,
-      nvar,
-      ncon,
-      x,
-      y,
-      this_nnzh,
-      nnzh,
-      vals,
-      nlp.hcols,
-      nlp.hrows,
-    )
+    cshc(status, nvar, ncon, x, y, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
     cutest_error(status[])
     increment!(nlp, :neval_hess)
     return vals
@@ -587,29 +516,9 @@ function NLPModels.hess_coord!(
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == 1.0 ? y : y / obj_weight
 
-    csh(
-      status,
-      nvar,
-      ncon,
-      x,
-      z,
-      this_nnzh,
-      nnzh,
-      vals,
-      nlp.hcols,
-      nlp.hrows,
-    )
+    csh(status, nvar, ncon, x, z, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
   else
-    ush(
-      status,
-      nvar,
-      x,
-      this_nnzh,
-      nnzh,
-      vals,
-      nlp.hcols,
-      nlp.hrows,
-    )
+    ush(status, nvar, x, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
   end
   cutest_error(status[])
 
@@ -666,16 +575,7 @@ function NLPModels.hprod!(
   status = Ref{Cint}(0)
   goth = Ref{Bool}(0)
   if obj_weight == 0.0 && ncon[] > 0
-    chcprod(
-      status,
-      nvar,
-      ncon,
-      goth,
-      x,
-      y,
-      v,
-      hv,
-    )
+    chcprod(status, nvar, ncon, goth, x, y, v, hv)
     cutest_error(status[])
     increment!(nlp, :neval_hprod)
     return hv
@@ -685,25 +585,9 @@ function NLPModels.hprod!(
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == 1 ? y : y / obj_weight
 
-    chprod(
-      status,
-      nvar,
-      ncon,
-      goth,
-      x,
-      z,
-      v,
-      hv,
-    )
+    chprod(status, nvar, ncon, goth, x, z, v, hv)
   else
-    uhprod(
-      status,
-      nvar,
-      goth,
-      x,
-      v,
-      hv,
-    )
+    uhprod(status, nvar, goth, x, v, hv)
   end
   cutest_error(status[])
 
