@@ -41,7 +41,7 @@ jobs:
         with:
           compiler: 'gcc'
           version: '11'
-        if: matrix.os == 'macos-latest' || matrix.os == 'macos-13'
+        if: matrix.os != 'ubuntu-latest'
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}

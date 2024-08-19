@@ -28,12 +28,14 @@ const cutest_problems_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 
 function __init__()
-  if success(`bash -c "type gfortran"`)
-    @static Sys.isapple() ? (global libgfortran = []) :
-            (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
-  else
-    @error "gfortran is not installed. Please install it and try again."
-    return
+  if !Sys.iswindows()
+    if success(`bash -c "type gfortran"`)
+      @static Sys.isapple() ? (global libgfortran = []) :
+              (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
+    else
+      @error "gfortran is not installed. Please install it and try again."
+      return
+    end
   end
 
   # set default MASTSIF location if the user hasn't set it already
