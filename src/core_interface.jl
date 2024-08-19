@@ -105,16 +105,7 @@ function usetup(
   x_l::StrideOneVector{Cdouble},
   x_u::StrideOneVector{Cdouble},
 )
-  cutest_usetup_(
-    status,
-    input,
-    out,
-    io_buffer,
-    n,
-    x,
-    x_l,
-    x_u,
-  )
+  cutest_usetup_(status, input, out, io_buffer, n, x, x_l, x_u)
 end
 
 """# csetup
@@ -218,11 +209,7 @@ function udimen(
   input::StrideOneVector{Cint},
   n::StrideOneVector{Cint},
 )
-  cutest_udimen_(
-    status,
-    input,
-    n,
-  )
+  cutest_udimen_(status, input, n)
 end
 
 """# udimsh
@@ -246,10 +233,7 @@ Usage:
   - nnzh:    [OUT] Vector{Cint}
 """
 function udimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-  cutest_udimsh_(
-    status,
-    nnzh,
-  )
+  cutest_udimsh_(status, nnzh)
 end
 
 """# udimse
@@ -282,12 +266,7 @@ function udimse(
   he_val_ne::StrideOneVector{Cint},
   he_row_ne::StrideOneVector{Cint},
 )
-  cutest_udimse_(
-    status,
-    ne,
-    he_val_ne,
-    he_row_ne,
-  )
+  cutest_udimse_(status, ne, he_val_ne, he_row_ne)
 end
 
 """# uvartype
@@ -315,11 +294,7 @@ function uvartype(
   n::StrideOneVector{Cint},
   x_type::StrideOneVector{Cint},
 )
-  cutest_uvartype_(
-    status,
-    n,
-    x_type,
-  )
+  cutest_uvartype_(status, n, x_type)
 end
 
 """# unames
@@ -349,12 +324,7 @@ function unames(
   pname::StrideOneVector{UInt8},
   vname::Matrix{UInt8},
 )
-  cutest_unames_(
-    status,
-    n,
-    pname,
-    vname,
-  )
+  cutest_unames_(status, n, pname, vname)
 end
 
 """# ureport
@@ -382,11 +352,7 @@ function ureport(
   calls::StrideOneVector{Cdouble},
   time::StrideOneVector{Cdouble},
 )
-  cutest_ureport_(
-    status,
-    calls,
-    time,
-  )
+  cutest_ureport_(status, calls, time)
 end
 
 """# cdimen
@@ -418,12 +384,7 @@ function cdimen(
   n::StrideOneVector{Cint},
   m::StrideOneVector{Cint},
 )
-  cutest_cdimen_(
-    status,
-    input,
-    n,
-    m,
-  )
+  cutest_cdimen_(status, input, n, m)
 end
 
 """# cdimsj
@@ -450,10 +411,7 @@ Usage:
   - nnzj:    [OUT] Vector{Cint}
 """
 function cdimsj(status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
-  cutest_cdimsj_(
-    status,
-    nnzj,
-  )
+  cutest_cdimsj_(status, nnzj)
 end
 
 """# cdimsh
@@ -479,10 +437,7 @@ Usage:
   - nnzh:    [OUT] Vector{Cint}
 """
 function cdimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-  cutest_cdimsh_(
-    status,
-    nnzh,
-  )
+  cutest_cdimsh_(status, nnzh)
 end
 
 """# cdimchp
@@ -508,10 +463,7 @@ Usage:
   - nnzchp:  [OUT] Vector{Cint}
 """
 function cdimchp(status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
-  cutest_cdimchp_(
-    status,
-    nnzchp,
-  )
+  cutest_cdimchp_(status, nnzchp)
 end
 
 """# cdimse
@@ -546,12 +498,7 @@ function cdimse(
   he_val_ne::StrideOneVector{Cint},
   he_row_ne::StrideOneVector{Cint},
 )
-  cutest_cdimse_(
-    status,
-    ne,
-    he_val_ne,
-    he_row_ne,
-  )
+  cutest_cdimse_(status, ne, he_val_ne, he_row_ne)
 end
 
 """# cstats
@@ -608,11 +555,7 @@ function cvartype(
   n::StrideOneVector{Cint},
   x_type::StrideOneVector{Cint},
 )
-  cutest_cvartype_(
-    status,
-    n,
-    x_type,
-  )
+  cutest_cvartype_(status, n, x_type)
 end
 
 """# cnames
@@ -650,14 +593,7 @@ function cnames(
   vname::Matrix{UInt8},
   cname::Matrix{UInt8},
 )
-  cutest_cnames_(
-    status,
-    n,
-    m,
-    pname,
-    vname,
-    cname,
-  )
+  cutest_cnames_(status, n, m, pname, vname, cname)
 end
 
 """# creport
@@ -687,11 +623,7 @@ function creport(
   calls::StrideOneVector{Cdouble},
   time::StrideOneVector{Cdouble},
 )
-  cutest_creport_(
-    status,
-    calls,
-    time,
-  )
+  cutest_creport_(status, calls, time)
 end
 
 """# connames
@@ -718,11 +650,7 @@ Usage:
 To get useful names, use `String(cname[:,i])`.
 """
 function connames(status::StrideOneVector{Cint}, m::StrideOneVector{Cint}, cname::Matrix{UInt8})
-  cutest_connames_(
-    status,
-    m,
-    cname,
-  )
+  cutest_connames_(status, m, cname)
 end
 
 """# pname
@@ -752,11 +680,7 @@ function pname(
   input::StrideOneVector{Cint},
   pname::StrideOneVector{UInt8},
 )
-  cutest_pname_(
-    status,
-    input,
-    pname,
-  )
+  cutest_pname_(status, input, pname)
 end
 
 """# probname
@@ -781,10 +705,7 @@ Usage:
 To get a useful name, use `String(pname)`.
 """
 function probname(status::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
-  cutest_probname_(
-    status,
-    pname,
-  )
+  cutest_probname_(status, pname)
 end
 
 """# varnames
@@ -811,11 +732,7 @@ Usage:
 To get useful names, use `String(vname[:, i])`.
 """
 function varnames(status::StrideOneVector{Cint}, n::StrideOneVector{Cint}, vname::Matrix{UInt8})
-  cutest_varnames_(
-    status,
-    n,
-    vname,
-  )
+  cutest_varnames_(status, n, vname)
 end
 
 """# ufn
@@ -844,12 +761,7 @@ function ufn(
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
 )
-  cutest_ufn_(
-    status,
-    n,
-    x,
-    f,
-  )
+  cutest_ufn_(status, n, x, f)
 end
 
 """# ugr
@@ -878,12 +790,7 @@ function ugr(
   x::StrideOneVector{Cdouble},
   g::StrideOneVector{Cdouble},
 )
-  cutest_ugr_(
-    status,
-    n,
-    x,
-    g,
-  )
+  cutest_ugr_(status, n, x, g)
 end
 
 """# uofg
@@ -917,14 +824,7 @@ function uofg(
   g::StrideOneVector{Cdouble},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_uofg_(
-    status,
-    n,
-    x,
-    f,
-    g,
-    grad,
-  )
+  cutest_cint_uofg_(status, n, x, f, g, grad)
 end
 
 """# udh
@@ -956,13 +856,7 @@ function udh(
   lh1::StrideOneVector{Cint},
   h::Matrix{Cdouble},
 )
-  cutest_udh_(
-    status,
-    n,
-    x,
-    lh1,
-    h,
-  )
+  cutest_udh_(status, n, x, lh1, h)
 end
 
 """# ushp
@@ -996,14 +890,7 @@ function ushp(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_ushp_(
-    status,
-    n,
-    nnzh,
-    lh,
-    h_row,
-    h_col,
-  )
+  cutest_ushp_(status, n, nnzh, lh, h_row, h_col)
 end
 
 """# ush
@@ -1042,16 +929,7 @@ function ush(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_ush_(
-    status,
-    n,
-    x,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+  cutest_ush_(status, n, x, nnzh, lh, h_val, h_row, h_col)
 end
 
 """# ueh
@@ -1148,14 +1026,7 @@ function ugrdh(
   lh1::StrideOneVector{Cint},
   h::Matrix{Cdouble},
 )
-  cutest_ugrdh_(
-    status,
-    n,
-    x,
-    g,
-    lh1,
-    h,
-  )
+  cutest_ugrdh_(status, n, x, g, lh1, h)
 end
 
 """# ugrsh
@@ -1196,17 +1067,7 @@ function ugrsh(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_ugrsh_(
-    status,
-    n,
-    x,
-    g,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+  cutest_ugrsh_(status, n, x, g, nnzh, lh, h_val, h_row, h_col)
 end
 
 """# ugreh
@@ -1306,14 +1167,7 @@ function uhprod(
   vector::StrideOneVector{Cdouble},
   result::StrideOneVector{Cdouble},
 )
-  cutest_cint_uhprod_(
-    status,
-    n,
-    goth,
-    x,
-    vector,
-    result,
-  )
+  cutest_cint_uhprod_(status, n, goth, x, vector, result)
 end
 
 """# ushprod
@@ -1406,15 +1260,7 @@ function ubandh(
   lbandh::StrideOneVector{Cint},
   max_semibandwidth::StrideOneVector{Cint},
 )
-  cutest_ubandh_(
-    status,
-    n,
-    x,
-    semibandwidth,
-    h_band,
-    lbandh,
-    max_semibandwidth,
-  )
+  cutest_ubandh_(status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
 end
 
 """# cfn
@@ -1450,14 +1296,7 @@ function cfn(
   f::StrideOneVector{Cdouble},
   c::StrideOneVector{Cdouble},
 )
-  cutest_cfn_(
-    status,
-    n,
-    m,
-    x,
-    f,
-    c,
-  )
+  cutest_cfn_(status, n, m, x, f, c)
 end
 
 """# cofg
@@ -1493,14 +1332,7 @@ function cofg(
   g::StrideOneVector{Cdouble},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_cofg_(
-    status,
-    n,
-    x,
-    f,
-    g,
-    grad,
-  )
+  cutest_cint_cofg_(status, n, x, f, g, grad)
 end
 
 """# cofsg
@@ -1542,17 +1374,7 @@ function cofsg(
   g_var::StrideOneVector{Cint},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_cofsg_(
-    status,
-    n,
-    x,
-    f,
-    nnzg,
-    lg,
-    g_val,
-    g_var,
-    grad,
-  )
+  cutest_cint_cofsg_(status, n, x, f, nnzg, lg, g_val, g_var, grad)
 end
 
 """# ccfg
@@ -1596,18 +1418,7 @@ function ccfg(
   cjac::Matrix{Cdouble},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_ccfg_(
-    status,
-    n,
-    m,
-    x,
-    c,
-    jtrans,
-    lcjac1,
-    lcjac2,
-    cjac,
-    grad,
-  )
+  cutest_cint_ccfg_(status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 end
 
 """# clfg
@@ -1647,16 +1458,7 @@ function clfg(
   g::StrideOneVector{Cdouble},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_clfg_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    f,
-    g,
-    grad,
-  )
+  cutest_cint_clfg_(status, n, m, x, y, f, g, grad)
 end
 
 """# cgr
@@ -1703,19 +1505,7 @@ function cgr(
   lj2::StrideOneVector{Cint},
   j_val::Matrix{Cdouble},
 )
-  cutest_cint_cgr_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    g,
-    jtrans,
-    lj1,
-    lj2,
-    j_val,
-  )
+  cutest_cint_cgr_(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 end
 
 """# csgr
@@ -1764,19 +1554,7 @@ function csgr(
   j_var::StrideOneVector{Cint},
   j_fun::StrideOneVector{Cint},
 )
-  cutest_cint_csgr_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    nnzj,
-    lj,
-    j_val,
-    j_var,
-    j_fun,
-  )
+  cutest_cint_csgr_(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
 end
 
 """# ccfsg
@@ -1823,19 +1601,7 @@ function ccfsg(
   j_fun::StrideOneVector{Cint},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_ccfsg_(
-    status,
-    n,
-    m,
-    x,
-    c,
-    nnzj,
-    lj,
-    j_val,
-    j_var,
-    j_fun,
-    grad,
-  )
+  cutest_cint_ccfsg_(status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
 end
 
 """# ccifg
@@ -1874,15 +1640,7 @@ function ccifg(
   gci::StrideOneVector{Cdouble},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_ccifg_(
-    status,
-    n,
-    icon,
-    x,
-    ci,
-    gci,
-    grad,
-  )
+  cutest_cint_ccifg_(status, n, icon, x, ci, gci, grad)
 end
 
 """# ccifsg
@@ -1928,18 +1686,7 @@ function ccifsg(
   gci_var::StrideOneVector{Cint},
   grad::StrideOneVector{Bool},
 )
-  cutest_cint_ccifsg_(
-    status,
-    n,
-    icon,
-    x,
-    ci,
-    nnzgci,
-    lgci,
-    gci_val,
-    gci_var,
-    grad,
-  )
+  cutest_cint_ccifsg_(status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
 end
 
 """# cgrdh
@@ -1992,21 +1739,7 @@ function cgrdh(
   lh1::StrideOneVector{Cint},
   h_val::Matrix{Cdouble},
 )
-  cutest_cint_cgrdh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    g,
-    jtrans,
-    lj1,
-    lj2,
-    j_val,
-    lh1,
-    h_val,
-  )
+  cutest_cint_cgrdh_(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 end
 
 """# cdh
@@ -2045,15 +1778,7 @@ function cdh(
   lh1::StrideOneVector{Cint},
   h_val::Matrix{Cdouble},
 )
-  cutest_cdh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    lh1,
-    h_val,
-  )
+  cutest_cdh_(status, n, m, x, y, lh1, h_val)
 end
 
 """# cdhc
@@ -2092,15 +1817,7 @@ function cdhc(
   lh1::StrideOneVector{Cint},
   h_val::Matrix{Cdouble},
 )
-  cutest_cdhc_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    lh1,
-    h_val,
-  )
+  cutest_cdhc_(status, n, m, x, y, lh1, h_val)
 end
 
 """# cshp
@@ -2136,14 +1853,7 @@ function cshp(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_cshp_(
-    status,
-    n,
-    nnzh,
-    lh,
-    h_row,
-    h_col,
-  )
+  cutest_cshp_(status, n, nnzh, lh, h_row, h_col)
 end
 
 """# csh
@@ -2188,18 +1898,7 @@ function csh(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_csh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+  cutest_csh_(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 end
 
 """# cshc
@@ -2244,18 +1943,7 @@ function cshc(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_cshc_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+  cutest_cshc_(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 end
 
 """# ceh
@@ -2363,14 +2051,7 @@ function cidh(
   lh1::StrideOneVector{Cint},
   h::Matrix{Cdouble},
 )
-  cutest_cidh_(
-    status,
-    n,
-    x,
-    iprob,
-    lh1,
-    h,
-  )
+  cutest_cidh_(status, n, x, iprob, lh1, h)
 end
 
 """# cish
@@ -2413,17 +2094,7 @@ function cish(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_cish_(
-    status,
-    n,
-    x,
-    iprob,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+  cutest_cish_(status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
 end
 
 """# csgrsh
@@ -2634,16 +2305,7 @@ function chprod(
   vector::StrideOneVector{Cdouble},
   result::StrideOneVector{Cdouble},
 )
-  cutest_cint_chprod_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    y,
-    vector,
-    result,
-  )
+  cutest_cint_chprod_(status, n, m, goth, x, y, vector, result)
 end
 
 """# cshprod
@@ -2749,16 +2411,7 @@ function chcprod(
   vector::StrideOneVector{Cdouble},
   result::StrideOneVector{Cdouble},
 )
-  cutest_cint_chcprod_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    y,
-    vector,
-    result,
-  )
+  cutest_cint_chcprod_(status, n, m, goth, x, y, vector, result)
 end
 
 """# cshcprod
@@ -2866,18 +2519,7 @@ function cjprod(
   result::StrideOneVector{Cdouble},
   lresult::StrideOneVector{Cint},
 )
-  cutest_cint_cjprod_(
-    status,
-    n,
-    m,
-    gotj,
-    jtrans,
-    x,
-    vector,
-    lvector,
-    result,
-    lresult,
-  )
+  cutest_cint_cjprod_(status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
 end
 
 """# csjprod
@@ -2991,18 +2633,7 @@ function cchprods(
   chp_ind::StrideOneVector{Cint},
   chp_ptr::StrideOneVector{Cint},
 )
-  cutest_cint_cchprods_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    vector,
-    lchp,
-    chp_val,
-    chp_ind,
-    chp_ptr,
-  )
+  cutest_cint_cchprods_(status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
 end
 
 """# cchprodsp
@@ -3028,13 +2659,7 @@ function cchprodsp(
   chp_ind::StrideOneVector{Cint},
   chp_ptr::StrideOneVector{Cint},
 )
-  cutest_cchprodsp_(
-    status,
-    m,
-    lchp,
-    chp_ind,
-    chp_ptr,
-  )
+  cutest_cchprodsp_(status, m, lchp, chp_ind, chp_ptr)
 end
 
 """# uterminate
@@ -3099,13 +2724,7 @@ function cifn(
   x::StrideOneVector{Cdouble},
   f::StrideOneVector{Cdouble},
 )
-  cutest_cifn_(
-    status,
-    n,
-    iprob,
-    x,
-    f,
-  )
+  cutest_cifn_(status, n, iprob, x, f)
 end
 
 """# cisgr
@@ -3139,16 +2758,7 @@ function cisgr(
   g_val::StrideOneVector{Cdouble},
   g_var::StrideOneVector{Cint},
 )
-  cutest_cisgr_(
-    status,
-    n,
-    iprod,
-    x,
-    nnzg,
-    lg,
-    g_val,
-    g_var,
-  )
+  cutest_cisgr_(status, n, iprod, x, nnzg, lg, g_val, g_var)
 end
 
 """# csgrp
@@ -3180,14 +2790,7 @@ function csgrp(
   j_var::StrideOneVector{Cint},
   j_fun::StrideOneVector{Cint},
 )
-  cutest_csgrp_(
-    status,
-    n,
-    nnzj,
-    lj,
-    j_var,
-    j_fun,
-  )
+  cutest_csgrp_(status, n, nnzj, lj, j_var, j_fun)
 end
 
 """# cigr
@@ -3212,13 +2815,7 @@ function cigr(
   x::StrideOneVector{Cdouble},
   g_val::StrideOneVector{Cdouble},
 )
-  cutest_cigr_(
-    status,
-    n,
-    iprob,
-    x,
-    g_val,
-  )
+  cutest_cigr_(status, n, iprob, x, g_val)
 end
 
 """# csgrshp
@@ -3255,18 +2852,7 @@ function csgrshp(
   h_row::StrideOneVector{Cint},
   h_col::StrideOneVector{Cint},
 )
-  cutest_csgrshp_(
-    status,
-    n,
-    nnzj,
-    lj,
-    j_var,
-    j_fun,
-    nnzh,
-    lh,
-    h_row,
-    h_col,
-  )
+  cutest_csgrshp_(status, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
 end
 
 """# csjp
@@ -3288,13 +2874,7 @@ function csjp(
   nnzj::StrideOneVector{Cint},
   lj::StrideOneVector{Cint},
   jvar::StrideOneVector{Cint},
-  jcon::StrideOneVector{Cint}
+  jcon::StrideOneVector{Cint},
 )
-  cutest_csjp_(
-    status,
-    nnzj,
-    lj,
-    jvar,
-    jcon,
-  )
+  cutest_csjp_(status, nnzj, lj, jvar, jcon)
 end
