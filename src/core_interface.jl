@@ -109,16 +109,7 @@ for (cutest_usetup, T) in ((:cutest_usetup_, :Float64),)
       x_l::StrideOneVector{Cdouble},
       x_u::StrideOneVector{Cdouble},
     )
-      $cutest_usetup(
-        status,
-        input,
-        out,
-        io_buffer,
-        n,
-        x,
-        x_l,
-        x_u,
-      )
+      $cutest_usetup(status, input, out, io_buffer, n, x, x_l, x_u)
     end
   end
 end
@@ -234,11 +225,7 @@ for (cutest_udimen, T) in ((:cutest_udimen_, :Float64),)
       input::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
     )
-      $cutest_udimen(
-        status,
-        input,
-        n,
-      )
+      $cutest_udimen(status, input, n)
     end
   end
 end
@@ -268,10 +255,7 @@ function udimsh end
 for (cutest_udimsh, T) in ((:cutest_udimsh_, :Float64),)
   @eval begin
     function udimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-      $cutest_udimsh(
-        status,
-        nnzh,
-      )
+      $cutest_udimsh(status, nnzh)
     end
   end
 end
@@ -310,12 +294,7 @@ for (cutest_udimse, T) in ((:cutest_udimse_, :Float64),)
       he_val_ne::StrideOneVector{Cint},
       he_row_ne::StrideOneVector{Cint},
     )
-      $cutest_udimse(
-        status,
-        ne,
-        he_val_ne,
-        he_row_ne,
-      )
+      $cutest_udimse(status, ne, he_val_ne, he_row_ne)
     end
   end
 end
@@ -349,11 +328,7 @@ for (cutest_uvartype, T) in ((:cutest_uvartype_, :Float64),)
       n::StrideOneVector{Cint},
       x_type::StrideOneVector{Cint},
     )
-      $cutest_uvartype(
-        status,
-        n,
-        x_type,
-      )
+      $cutest_uvartype(status, n, x_type)
     end
   end
 end
@@ -389,12 +364,7 @@ for (cutest_unames, T) in ((:cutest_unames_, :Float64),)
       pname::StrideOneVector{UInt8},
       vname::Matrix{UInt8},
     )
-      $cutest_unames(
-        status,
-        n,
-        pname,
-        vname,
-      )
+      $cutest_unames(status, n, pname, vname)
     end
   end
 end
@@ -428,11 +398,7 @@ for (cutest_ureport, T) in ((:cutest_ureport_, :Float64),)
       calls::StrideOneVector{Cdouble},
       time::StrideOneVector{Cdouble},
     )
-      $cutest_ureport(
-        status,
-        calls,
-        time,
-      )
+      $cutest_ureport(status, calls, time)
     end
   end
 end
@@ -470,12 +436,7 @@ for (cutest_cdimen, T) in ((:cutest_cdimen_, :Float64),)
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
     )
-      $cutest_cdimen(
-        status,
-        input,
-        n,
-        m,
-      )
+      $cutest_cdimen(status, input, n, m)
     end
   end
 end
@@ -508,10 +469,7 @@ function cdimsj end
 for (cutest_cdimsj, T) in ((:cutest_cdimsj_, :Float64),)
   @eval begin
     function cdimsj(status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
-      $cutest_cdimsj(
-        status,
-        nnzj,
-      )
+      $cutest_cdimsj(status, nnzj)
     end
   end
 end
@@ -543,10 +501,7 @@ function cdimsh end
 for (cutest_cdimsh, T) in ((:cutest_cdimsh_, :Float64),)
   @eval begin
     function cdimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-      $cutest_cdimsh(
-        status,
-        nnzh,
-      )
+      $cutest_cdimsh(status, nnzh)
     end
   end
 end
@@ -578,10 +533,7 @@ function cdimchp end
 for (cutest_cdimchp, T) in ((:cutest_cdimchp_, :Float64),)
   @eval begin
     function cdimchp(status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
-      $cutest_cdimchp(
-        status,
-        nnzchp,
-      )
+      $cutest_cdimchp(status, nnzchp)
     end
   end
 end
@@ -622,12 +574,7 @@ for (cutest_cdimse, T) in ((:cutest_cdimse_, :Float64),)
       he_val_ne::StrideOneVector{Cint},
       he_row_ne::StrideOneVector{Cint},
     )
-      $cutest_cdimse(
-        status,
-        ne,
-        he_val_ne,
-        he_row_ne,
-      )
+      $cutest_cdimse(status, ne, he_val_ne, he_row_ne)
     end
   end
 end
@@ -696,11 +643,7 @@ for (cutest_cvartype, T) in ((:cutest_cvartype_, :Float64),)
       n::StrideOneVector{Cint},
       x_type::StrideOneVector{Cint},
     )
-      $cutest_cvartype(
-        status,
-        n,
-        x_type,
-      )
+      $cutest_cvartype(status, n, x_type)
     end
   end
 end
@@ -744,14 +687,7 @@ for (cutest_cnames, T) in ((:cutest_cnames_, :Float64),)
       vname::Matrix{UInt8},
       cname::Matrix{UInt8},
     )
-      $cutest_cnames(
-        status,
-        n,
-        m,
-        pname,
-        vname,
-        cname,
-      )
+      $cutest_cnames(status, n, m, pname, vname, cname)
     end
   end
 end
@@ -787,11 +723,7 @@ for (cutest_creport, T) in ((:cutest_creport_, :Float64),)
       calls::StrideOneVector{Cdouble},
       time::StrideOneVector{Cdouble},
     )
-      $cutest_creport(
-        status,
-        calls,
-        time,
-      )
+      $cutest_creport(status, calls, time)
     end
   end
 end
@@ -824,11 +756,7 @@ function connames end
 for (cutest_connames, T) in ((:cutest_connames_, :Float64),)
   @eval begin
     function connames(status::StrideOneVector{Cint}, m::StrideOneVector{Cint}, cname::Matrix{UInt8})
-      $cutest_connames(
-        status,
-        m,
-        cname,
-      )
+      $cutest_connames(status, m, cname)
     end
   end
 end
@@ -864,11 +792,7 @@ for (cutest_pname, T) in ((:cutest_pname_, :Float64),)
       input::StrideOneVector{Cint},
       pname::StrideOneVector{UInt8},
     )
-      $cutest_pname(
-        status,
-        input,
-        pname,
-      )
+      $cutest_pname(status, input, pname)
     end
   end
 end
@@ -899,10 +823,7 @@ function probname end
 for (cutest_probname, T) in ((:cutest_probname_, :Float64),)
   @eval begin
     function probname(status::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
-      $cutest_probname(
-        status,
-        pname,
-      )
+      $cutest_probname(status, pname)
     end
   end
 end
@@ -935,11 +856,7 @@ function varnames end
 for (cutest_varnames, T) in ((:cutest_varnames_, :Float64),)
   @eval begin
     function varnames(status::StrideOneVector{Cint}, n::StrideOneVector{Cint}, vname::Matrix{UInt8})
-      $cutest_varnames(
-        status,
-        n,
-        vname,
-      )
+      $cutest_varnames(status, n, vname)
     end
   end
 end
@@ -974,12 +891,7 @@ for (cutest_ufn, T) in ((:cutest_ufn_, :Float64),)
       x::StrideOneVector{Cdouble},
       f::StrideOneVector{Cdouble},
     )
-      $cutest_ufn(
-        status,
-        n,
-        x,
-        f,
-      )
+      $cutest_ufn(status, n, x, f)
     end
   end
 end
@@ -1014,12 +926,7 @@ for (cutest_ugr, T) in ((:cutest_ugr_, :Float64),)
       x::StrideOneVector{Cdouble},
       g::StrideOneVector{Cdouble},
     )
-      $cutest_ugr(
-        status,
-        n,
-        x,
-        g,
-      )
+      $cutest_ugr(status, n, x, g)
     end
   end
 end
@@ -1059,14 +966,7 @@ for (cutest_cint_uofg, T) in ((:cutest_cint_uofg_, :Float64),)
       g::StrideOneVector{Cdouble},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_uofg(
-        status,
-        n,
-        x,
-        f,
-        g,
-        grad,
-      )
+      $cutest_cint_uofg(status, n, x, f, g, grad)
     end
   end
 end
@@ -1104,13 +1004,7 @@ for (cutest_udh, T) in ((:cutest_udh_, :Float64),)
       lh1::StrideOneVector{Cint},
       h::Matrix{Cdouble},
     )
-      $cutest_udh(
-        status,
-        n,
-        x,
-        lh1,
-        h,
-      )
+      $cutest_udh(status, n, x, lh1, h)
     end
   end
 end
@@ -1150,14 +1044,7 @@ for (cutest_ushp, T) in ((:cutest_ushp_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_ushp(
-        status,
-        n,
-        nnzh,
-        lh,
-        h_row,
-        h_col,
-      )
+      $cutest_ushp(status, n, nnzh, lh, h_row, h_col)
     end
   end
 end
@@ -1202,16 +1089,7 @@ for (cutest_ush, T) in ((:cutest_ush_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_ush(
-        status,
-        n,
-        x,
-        nnzh,
-        lh,
-        h_val,
-        h_row,
-        h_col,
-      )
+      $cutest_ush(status, n, x, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
@@ -1320,14 +1198,7 @@ for (cutest_ugrdh, T) in ((:cutest_ugrdh_, :Float64),)
       lh1::StrideOneVector{Cint},
       h::Matrix{Cdouble},
     )
-      $cutest_ugrdh(
-        status,
-        n,
-        x,
-        g,
-        lh1,
-        h,
-      )
+      $cutest_ugrdh(status, n, x, g, lh1, h)
     end
   end
 end
@@ -1374,17 +1245,7 @@ for (cutest_ugrsh, T) in ((:cutest_ugrsh_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_ugrsh(
-        status,
-        n,
-        x,
-        g,
-        nnzh,
-        lh,
-        h_val,
-        h_row,
-        h_col,
-      )
+      $cutest_ugrsh(status, n, x, g, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
@@ -1496,14 +1357,7 @@ for (cutest_cint_uhprod, T) in ((:cutest_cint_uhprod_, :Float64),)
       vector::StrideOneVector{Cdouble},
       result::StrideOneVector{Cdouble},
     )
-      $cutest_cint_uhprod(
-        status,
-        n,
-        goth,
-        x,
-        vector,
-        result,
-      )
+      $cutest_cint_uhprod(status, n, goth, x, vector, result)
     end
   end
 end
@@ -1608,15 +1462,7 @@ for (cutest_ubandh, T) in ((:cutest_ubandh_, :Float64),)
       lbandh::StrideOneVector{Cint},
       max_semibandwidth::StrideOneVector{Cint},
     )
-      $cutest_ubandh(
-        status,
-        n,
-        x,
-        semibandwidth,
-        h_band,
-        lbandh,
-        max_semibandwidth,
-      )
+      $cutest_ubandh(status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
     end
   end
 end
@@ -1658,14 +1504,7 @@ for (cutest_cfn, T) in ((:cutest_cfn_, :Float64),)
       f::StrideOneVector{Cdouble},
       c::StrideOneVector{Cdouble},
     )
-      $cutest_cfn(
-        status,
-        n,
-        m,
-        x,
-        f,
-        c,
-      )
+      $cutest_cfn(status, n, m, x, f, c)
     end
   end
 end
@@ -1707,14 +1546,7 @@ for (cutest_cint_cofg, T) in ((:cutest_cint_cofg_, :Float64),)
       g::StrideOneVector{Cdouble},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_cofg(
-        status,
-        n,
-        x,
-        f,
-        g,
-        grad,
-      )
+      $cutest_cint_cofg(status, n, x, f, g, grad)
     end
   end
 end
@@ -1762,17 +1594,7 @@ for (cutest_cint_cofsg, T) in ((:cutest_cint_cofsg_, :Float64),)
       g_var::StrideOneVector{Cint},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_cofsg(
-        status,
-        n,
-        x,
-        f,
-        nnzg,
-        lg,
-        g_val,
-        g_var,
-        grad,
-      )
+      $cutest_cint_cofsg(status, n, x, f, nnzg, lg, g_val, g_var, grad)
     end
   end
 end
@@ -1822,18 +1644,7 @@ for (cutest_cint_ccfg, T) in ((:cutest_cint_ccfg_, :Float64),)
       cjac::Matrix{Cdouble},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccfg(
-        status,
-        n,
-        m,
-        x,
-        c,
-        jtrans,
-        lcjac1,
-        lcjac2,
-        cjac,
-        grad,
-      )
+      $cutest_cint_ccfg(status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
     end
   end
 end
@@ -1879,16 +1690,7 @@ for (cutest_cint_clfg, T) in ((:cutest_cint_clfg_, :Float64),)
       g::StrideOneVector{Cdouble},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_clfg(
-        status,
-        n,
-        m,
-        x,
-        y,
-        f,
-        g,
-        grad,
-      )
+      $cutest_cint_clfg(status, n, m, x, y, f, g, grad)
     end
   end
 end
@@ -1941,19 +1743,7 @@ for (cutest_cint_cgr, T) in ((:cutest_cint_cgr_, :Float64),)
       lj2::StrideOneVector{Cint},
       j_val::Matrix{Cdouble},
     )
-      $cutest_cint_cgr(
-        status,
-        n,
-        m,
-        x,
-        y,
-        grlagf,
-        g,
-        jtrans,
-        lj1,
-        lj2,
-        j_val,
-      )
+      $cutest_cint_cgr(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
     end
   end
 end
@@ -2008,19 +1798,7 @@ for (cutest_cint_csgr, T) in ((:cutest_cint_csgr_, :Float64),)
       j_var::StrideOneVector{Cint},
       j_fun::StrideOneVector{Cint},
     )
-      $cutest_cint_csgr(
-        status,
-        n,
-        m,
-        x,
-        y,
-        grlagf,
-        nnzj,
-        lj,
-        j_val,
-        j_var,
-        j_fun,
-      )
+      $cutest_cint_csgr(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
     end
   end
 end
@@ -2073,19 +1851,7 @@ for (cutest_cint_ccfsg, T) in ((:cutest_cint_ccfsg_, :Float64),)
       j_fun::StrideOneVector{Cint},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccfsg(
-        status,
-        n,
-        m,
-        x,
-        c,
-        nnzj,
-        lj,
-        j_val,
-        j_var,
-        j_fun,
-        grad,
-      )
+      $cutest_cint_ccfsg(status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
     end
   end
 end
@@ -2130,15 +1896,7 @@ for (cutest_cint_ccifg, T) in ((:cutest_cint_ccifg_, :Float64),)
       gci::StrideOneVector{Cdouble},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccifg(
-        status,
-        n,
-        icon,
-        x,
-        ci,
-        gci,
-        grad,
-      )
+      $cutest_cint_ccifg(status, n, icon, x, ci, gci, grad)
     end
   end
 end
@@ -2190,18 +1948,7 @@ for (cutest_cint_ccifsg, T) in ((:cutest_cint_ccifsg_, :Float64),)
       gci_var::StrideOneVector{Cint},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccifsg(
-        status,
-        n,
-        icon,
-        x,
-        ci,
-        nnzgci,
-        lgci,
-        gci_val,
-        gci_var,
-        grad,
-      )
+      $cutest_cint_ccifsg(status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
     end
   end
 end
@@ -2260,21 +2007,7 @@ for (cutest_cint_cgrdh, T) in ((:cutest_cint_cgrdh_, :Float64),)
       lh1::StrideOneVector{Cint},
       h_val::Matrix{Cdouble},
     )
-      $cutest_cint_cgrdh(
-        status,
-        n,
-        m,
-        x,
-        y,
-        grlagf,
-        g,
-        jtrans,
-        lj1,
-        lj2,
-        j_val,
-        lh1,
-        h_val,
-      )
+      $cutest_cint_cgrdh(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
     end
   end
 end
@@ -2319,15 +2052,7 @@ for (cutest_cdh, T) in ((:cutest_cdh_, :Float64),)
       lh1::StrideOneVector{Cint},
       h_val::Matrix{Cdouble},
     )
-      $cutest_cdh(
-        status,
-        n,
-        m,
-        x,
-        y,
-        lh1,
-        h_val,
-      )
+      $cutest_cdh(status, n, m, x, y, lh1, h_val)
     end
   end
 end
@@ -2372,15 +2097,7 @@ for (cutest_cdhc, T) in ((:cutest_cdhc_, :Float64),)
       lh1::StrideOneVector{Cint},
       h_val::Matrix{Cdouble},
     )
-      $cutest_cdhc(
-        status,
-        n,
-        m,
-        x,
-        y,
-        lh1,
-        h_val,
-      )
+      $cutest_cdhc(status, n, m, x, y, lh1, h_val)
     end
   end
 end
@@ -2422,14 +2139,7 @@ for (cutest_cshp, T) in ((:cutest_cshp_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_cshp(
-        status,
-        n,
-        nnzh,
-        lh,
-        h_row,
-        h_col,
-      )
+      $cutest_cshp(status, n, nnzh, lh, h_row, h_col)
     end
   end
 end
@@ -2480,18 +2190,7 @@ for (cutest_csh, T) in ((:cutest_csh_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_csh(
-        status,
-        n,
-        m,
-        x,
-        y,
-        nnzh,
-        lh,
-        h_val,
-        h_row,
-        h_col,
-      )
+      $cutest_csh(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
@@ -2542,18 +2241,7 @@ for (cutest_cshc, T) in ((:cutest_cshc_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_cshc(
-        status,
-        n,
-        m,
-        x,
-        y,
-        nnzh,
-        lh,
-        h_val,
-        h_row,
-        h_col,
-      )
+      $cutest_cshc(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
@@ -2673,14 +2361,7 @@ for (cutest_cidh, T) in ((:cutest_cidh_, :Float64),)
       lh1::StrideOneVector{Cint},
       h::Matrix{Cdouble},
     )
-      $cutest_cidh(
-        status,
-        n,
-        x,
-        iprob,
-        lh1,
-        h,
-      )
+      $cutest_cidh(status, n, x, iprob, lh1, h)
     end
   end
 end
@@ -2729,17 +2410,7 @@ for (cutest_cish, T) in ((:cutest_cish_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_cish(
-        status,
-        n,
-        x,
-        iprob,
-        nnzh,
-        lh,
-        h_val,
-        h_row,
-        h_col,
-      )
+      $cutest_cish(status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
@@ -2968,16 +2639,7 @@ for (cutest_cint_chprod, T) in ((:cutest_cint_chprod_, :Float64),)
       vector::StrideOneVector{Cdouble},
       result::StrideOneVector{Cdouble},
     )
-      $cutest_cint_chprod(
-        status,
-        n,
-        m,
-        goth,
-        x,
-        y,
-        vector,
-        result,
-      )
+      $cutest_cint_chprod(status, n, m, goth, x, y, vector, result)
     end
   end
 end
@@ -3095,16 +2757,7 @@ for (cutest_cint_chcprod, T) in ((:cutest_cint_chcprod_, :Float64),)
       vector::StrideOneVector{Cdouble},
       result::StrideOneVector{Cdouble},
     )
-      $cutest_cint_chcprod(
-        status,
-        n,
-        m,
-        goth,
-        x,
-        y,
-        vector,
-        result,
-      )
+      $cutest_cint_chcprod(status, n, m, goth, x, y, vector, result)
     end
   end
 end
@@ -3224,18 +2877,7 @@ for (cutest_cint_cjprod, T) in ((:cutest_cint_cjprod_, :Float64),)
       result::StrideOneVector{Cdouble},
       lresult::StrideOneVector{Cint},
     )
-      $cutest_cint_cjprod(
-        status,
-        n,
-        m,
-        gotj,
-        jtrans,
-        x,
-        vector,
-        lvector,
-        result,
-        lresult,
-      )
+      $cutest_cint_cjprod(status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
     end
   end
 end
@@ -3361,18 +3003,7 @@ for (cutest_cint_cchprods, T) in ((:cutest_cint_cchprods_, :Float64),)
       chp_ind::StrideOneVector{Cint},
       chp_ptr::StrideOneVector{Cint},
     )
-      $cutest_cint_cchprods(
-        status,
-        n,
-        m,
-        goth,
-        x,
-        vector,
-        lchp,
-        chp_val,
-        chp_ind,
-        chp_ptr,
-      )
+      $cutest_cint_cchprods(status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
     end
   end
 end
@@ -3404,13 +3035,7 @@ for (cutest_cchprodsp, T) in ((:cutest_cchprodsp_, :Float64),)
       chp_ind::StrideOneVector{Cint},
       chp_ptr::StrideOneVector{Cint},
     )
-      $cutest_cchprodsp(
-        status,
-        m,
-        lchp,
-        chp_ind,
-        chp_ptr,
-      )
+      $cutest_cchprodsp(status, m, lchp, chp_ind, chp_ptr)
     end
   end
 end
@@ -3493,13 +3118,7 @@ for (cutest_cifn, T) in ((:cutest_cifn_, :Float64),)
       x::StrideOneVector{Cdouble},
       f::StrideOneVector{Cdouble},
     )
-      $cutest_cifn(
-        status,
-        n,
-        iprob,
-        x,
-        f,
-      )
+      $cutest_cifn(status, n, iprob, x, f)
     end
   end
 end
@@ -3539,16 +3158,7 @@ for (cutest_cisgr, T) in ((:cutest_cisgr_, :Float64),)
       g_val::StrideOneVector{Cdouble},
       g_var::StrideOneVector{Cint},
     )
-      $cutest_cisgr(
-        status,
-        n,
-        iprod,
-        x,
-        nnzg,
-        lg,
-        g_val,
-        g_var,
-      )
+      $cutest_cisgr(status, n, iprod, x, nnzg, lg, g_val, g_var)
     end
   end
 end
@@ -3586,14 +3196,7 @@ for (cutest_csgrp, T) in ((:cutest_csgrp_, :Float64),)
       j_var::StrideOneVector{Cint},
       j_fun::StrideOneVector{Cint},
     )
-      $cutest_csgrp(
-        status,
-        n,
-        nnzj,
-        lj,
-        j_var,
-        j_fun,
-      )
+      $cutest_csgrp(status, n, nnzj, lj, j_var, j_fun)
     end
   end
 end
@@ -3624,13 +3227,7 @@ for (cutest_cigr, T) in ((:cutest_cigr_, :Float64),)
       x::StrideOneVector{Cdouble},
       g_val::StrideOneVector{Cdouble},
     )
-      $cutest_cigr(
-        status,
-        n,
-        iprob,
-        x,
-        g_val,
-      )
+      $cutest_cigr(status, n, iprob, x, g_val)
     end
   end
 end
@@ -3673,18 +3270,7 @@ for (cutest_csgrshp, T) in ((:cutest_csgrshp_, :Float64),)
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_csgrshp(
-        status,
-        n,
-        nnzj,
-        lj,
-        j_var,
-        j_fun,
-        nnzh,
-        lh,
-        h_row,
-        h_col,
-      )
+      $cutest_csgrshp(status, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
     end
   end
 end
@@ -3712,15 +3298,9 @@ for (cutest_csjp, T) in ((:cutest_csjp_, :Float64),)
       nnzj::StrideOneVector{Cint},
       lj::StrideOneVector{Cint},
       jvar::StrideOneVector{Cint},
-      jcon::StrideOneVector{Cint}
+      jcon::StrideOneVector{Cint},
     )
-      $cutest_csjp(
-        status,
-        nnzj,
-        lj,
-        jvar,
-        jcon,
-      )
+      $cutest_csjp(status, nnzj, lj, jvar, jcon)
     end
   end
 end
