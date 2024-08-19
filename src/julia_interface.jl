@@ -310,8 +310,7 @@ function NLPModels.jac_structure!(
   status = Ref{Cint}(0)
   this_nnzj = Ref{Cint}(0)
 
-  # We should add a function csjp in core_interface.jl
-  cutest_csjp_(
+  csjp(
     status,
     this_nnzj,
     nnzj,
@@ -332,7 +331,7 @@ function NLPModels.jac_structure!(nlp::CUTEstModel)
     status = Ref{Cint}(0)
     this_nnzj = Ref{Cint}(0)
 
-    cutest_csjp_(
+    csjp(
       status,
       this_nnzj,
       nnzj,
