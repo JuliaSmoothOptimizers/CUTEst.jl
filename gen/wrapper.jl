@@ -16,6 +16,7 @@ function main()
 
   args = get_default_args()
   push!(args, "-I$include_dir")
+  push!(args, "-DREAL_128")
 
   ctx = create_context(headers, args, options)
   build!(ctx)
@@ -44,11 +45,46 @@ function main()
   for (index, block) in enumerate(blocks)
     if contains(block, "function")
       fname = split(split(block, "function ")[2], "(")[1]
-      ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib, :$(fname))"
+      if contains(block, "_s(") || contains(block, "_s_(")
+        ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib_single, :$(fname))"
+      elseif contains(block, "_q(") || contains(block, "_q_(")
+        ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib_quadruple, :$(fname))"
+      else
+        ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib_double, :$(fname))"
+      end
       block = replace(block, "    @ccall libcutest.$fname" => "    $ptr\n    @ccall \$ptr_$(fname)")
     end
     code = code * block
     (index < nblocks) && (code = code * "end\n")
+  end
+
+  # Add wrappers of "fortran_open" and "fortran_close" for single and quadruple precisison
+  blocks = split(code, "end\n")
+  nblocks = length(blocks)
+  code = ""
+  for (index, block) in enumerate(blocks)
+    code = code * block
+    (index < nblocks) && (code = code * "end\n")
+    for routine in ("fortran_open_", "fortran_close_")
+      # add the routines `fortran_open_s_` and `fortran_close_s_`
+      if contains(block, routine)
+        block_single = block
+        block_single = replace(block_single, "double" => "single")
+        block_single = replace(block_single, routine => "$(routine)s_")
+        block_single = replace(block_single, ":$(routine)s_"  => ":$(routine)")
+        code = code * block_single
+        (index < nblocks) && (code = code * "end\n")
+      end
+      # Add the routines `fortran_open_q_` and `fortran_close_q_`
+      if contains(block, routine)
+        block_quadruple = block
+        block_quadruple = replace(block_quadruple, "double" => "quadruple")
+        block_quadruple = replace(block_quadruple, routine => "$(routine)q_")
+        block_quadruple = replace(block_quadruple, ":$(routine)q_"  => ":$(routine)")
+        code = code * block_quadruple
+        (index < nblocks) && (code = code * "end\n")
+      end
+    end
   end
 
   write(path, code)

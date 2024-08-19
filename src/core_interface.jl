@@ -95,26 +95,32 @@ Usage:
   - x_l:       [OUT] Vector{Cdouble}
   - x_u:       [OUT] Vector{Cdouble}
 """
-function usetup(
-  status::StrideOneVector{Cint},
-  input::StrideOneVector{Cint},
-  out::StrideOneVector{Cint},
-  io_buffer::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  x_l::StrideOneVector{Cdouble},
-  x_u::StrideOneVector{Cdouble},
-)
-  cutest_usetup_(
-    status,
-    input,
-    out,
-    io_buffer,
-    n,
-    x,
-    x_l,
-    x_u,
-  )
+function usetup end
+
+for (cutest_usetup, T) in ((:cutest_usetup_, :Float64),)
+  @eval begin
+    function usetup(
+      status::StrideOneVector{Cint},
+      input::StrideOneVector{Cint},
+      out::StrideOneVector{Cint},
+      io_buffer::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      x_l::StrideOneVector{Cdouble},
+      x_u::StrideOneVector{Cdouble},
+    )
+      $cutest_usetup(
+        status,
+        input,
+        out,
+        io_buffer,
+        n,
+        x,
+        x_l,
+        x_u,
+      )
+    end
+  end
 end
 
 """# csetup
@@ -154,44 +160,50 @@ linear, e_order, l_order, v_order)
   - l_order:   [IN] Vector{Cint}
   - v_order:   [IN] Vector{Cint}
 """
-function csetup(
-  status::StrideOneVector{Cint},
-  input::StrideOneVector{Cint},
-  out::StrideOneVector{Cint},
-  io_buffer::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  x_l::StrideOneVector{Cdouble},
-  x_u::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  c_l::StrideOneVector{Cdouble},
-  c_u::StrideOneVector{Cdouble},
-  equatn::StrideOneVector{Bool},
-  linear::StrideOneVector{Bool},
-  e_order::StrideOneVector{Cint},
-  l_order::StrideOneVector{Cint},
-  v_order::StrideOneVector{Cint},
-)
-  cutest_cint_csetup_(
-    status,
-    input,
-    out,
-    io_buffer,
-    n,
-    m,
-    x,
-    x_l,
-    x_u,
-    y,
-    c_l,
-    c_u,
-    equatn,
-    linear,
-    e_order,
-    l_order,
-    v_order,
-  )
+function csetup end
+
+for (cutest_cint_csetup, T) in ((:cutest_cint_csetup_, :Float64),)
+  @eval begin
+    function csetup(
+      status::StrideOneVector{Cint},
+      input::StrideOneVector{Cint},
+      out::StrideOneVector{Cint},
+      io_buffer::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      x_l::StrideOneVector{Cdouble},
+      x_u::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      c_l::StrideOneVector{Cdouble},
+      c_u::StrideOneVector{Cdouble},
+      equatn::StrideOneVector{Bool},
+      linear::StrideOneVector{Bool},
+      e_order::StrideOneVector{Cint},
+      l_order::StrideOneVector{Cint},
+      v_order::StrideOneVector{Cint},
+    )
+      $cutest_cint_csetup(
+        status,
+        input,
+        out,
+        io_buffer,
+        n,
+        m,
+        x,
+        x_l,
+        x_u,
+        y,
+        c_l,
+        c_u,
+        equatn,
+        linear,
+        e_order,
+        l_order,
+        v_order,
+      )
+    end
+  end
 end
 
 """# udimen
@@ -213,16 +225,22 @@ Usage:
   - input:   [IN] Vector{Cint}
   - n:       [OUT] Vector{Cint}
 """
-function udimen(
-  status::StrideOneVector{Cint},
-  input::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-)
-  cutest_udimen_(
-    status,
-    input,
-    n,
-  )
+function udimen end
+
+for (cutest_udimen, T) in ((:cutest_udimen_, :Float64),)
+  @eval begin
+    function udimen(
+      status::StrideOneVector{Cint},
+      input::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+    )
+      $cutest_udimen(
+        status,
+        input,
+        n,
+      )
+    end
+  end
 end
 
 """# udimsh
@@ -245,11 +263,17 @@ Usage:
   - status:  [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
 """
-function udimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-  cutest_udimsh_(
-    status,
-    nnzh,
-  )
+function udimsh end
+
+for (cutest_udimsh, T) in ((:cutest_udimsh_, :Float64),)
+  @eval begin
+    function udimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+      $cutest_udimsh(
+        status,
+        nnzh,
+      )
+    end
+  end
 end
 
 """# udimse
@@ -276,18 +300,24 @@ Usage:
   - he_val_ne: [OUT] Vector{Cint}
   - he_row_ne: [OUT] Vector{Cint}
 """
-function udimse(
-  status::StrideOneVector{Cint},
-  ne::StrideOneVector{Cint},
-  he_val_ne::StrideOneVector{Cint},
-  he_row_ne::StrideOneVector{Cint},
-)
-  cutest_udimse_(
-    status,
-    ne,
-    he_val_ne,
-    he_row_ne,
-  )
+function udimse end
+
+for (cutest_udimse, T) in ((:cutest_udimse_, :Float64),)
+  @eval begin
+    function udimse(
+      status::StrideOneVector{Cint},
+      ne::StrideOneVector{Cint},
+      he_val_ne::StrideOneVector{Cint},
+      he_row_ne::StrideOneVector{Cint},
+    )
+      $cutest_udimse(
+        status,
+        ne,
+        he_val_ne,
+        he_row_ne,
+      )
+    end
+  end
 end
 
 """# uvartype
@@ -310,16 +340,22 @@ Usage:
   - n:       [IN] Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
-function uvartype(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x_type::StrideOneVector{Cint},
-)
-  cutest_uvartype_(
-    status,
-    n,
-    x_type,
-  )
+function uvartype end
+
+for (cutest_uvartype, T) in ((:cutest_uvartype_, :Float64),)
+  @eval begin
+    function uvartype(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x_type::StrideOneVector{Cint},
+    )
+      $cutest_uvartype(
+        status,
+        n,
+        x_type,
+      )
+    end
+  end
 end
 
 """# unames
@@ -343,18 +379,24 @@ Usage:
 
 To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
-function unames(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  pname::StrideOneVector{UInt8},
-  vname::Matrix{UInt8},
-)
-  cutest_unames_(
-    status,
-    n,
-    pname,
-    vname,
-  )
+function unames end
+
+for (cutest_unames, T) in ((:cutest_unames_, :Float64),)
+  @eval begin
+    function unames(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      pname::StrideOneVector{UInt8},
+      vname::Matrix{UInt8},
+    )
+      $cutest_unames(
+        status,
+        n,
+        pname,
+        vname,
+      )
+    end
+  end
 end
 
 """# ureport
@@ -377,16 +419,22 @@ Usage:
   - calls:   [OUT] Vector{Cdouble}
   - time:    [OUT] Vector{Cdouble}
 """
-function ureport(
-  status::StrideOneVector{Cint},
-  calls::StrideOneVector{Cdouble},
-  time::StrideOneVector{Cdouble},
-)
-  cutest_ureport_(
-    status,
-    calls,
-    time,
-  )
+function ureport end
+
+for (cutest_ureport, T) in ((:cutest_ureport_, :Float64),)
+  @eval begin
+    function ureport(
+      status::StrideOneVector{Cint},
+      calls::StrideOneVector{Cdouble},
+      time::StrideOneVector{Cdouble},
+    )
+      $cutest_ureport(
+        status,
+        calls,
+        time,
+      )
+    end
+  end
 end
 
 """# cdimen
@@ -412,18 +460,24 @@ Usage:
   - n:       [OUT] Vector{Cint}
   - m:       [OUT] Vector{Cint}
 """
-function cdimen(
-  status::StrideOneVector{Cint},
-  input::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-)
-  cutest_cdimen_(
-    status,
-    input,
-    n,
-    m,
-  )
+function cdimen end
+
+for (cutest_cdimen, T) in ((:cutest_cdimen_, :Float64),)
+  @eval begin
+    function cdimen(
+      status::StrideOneVector{Cint},
+      input::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+    )
+      $cutest_cdimen(
+        status,
+        input,
+        n,
+        m,
+      )
+    end
+  end
 end
 
 """# cdimsj
@@ -449,11 +503,17 @@ Usage:
   - status:  [OUT] Vector{Cint}
   - nnzj:    [OUT] Vector{Cint}
 """
-function cdimsj(status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
-  cutest_cdimsj_(
-    status,
-    nnzj,
-  )
+function cdimsj end
+
+for (cutest_cdimsj, T) in ((:cutest_cdimsj_, :Float64),)
+  @eval begin
+    function cdimsj(status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
+      $cutest_cdimsj(
+        status,
+        nnzj,
+      )
+    end
+  end
 end
 
 """# cdimsh
@@ -478,11 +538,17 @@ Usage:
   - status:  [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
 """
-function cdimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-  cutest_cdimsh_(
-    status,
-    nnzh,
-  )
+function cdimsh end
+
+for (cutest_cdimsh, T) in ((:cutest_cdimsh_, :Float64),)
+  @eval begin
+    function cdimsh(status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+      $cutest_cdimsh(
+        status,
+        nnzh,
+      )
+    end
+  end
 end
 
 """# cdimchp
@@ -507,11 +573,17 @@ Usage:
   - status:  [OUT] Vector{Cint}
   - nnzchp:  [OUT] Vector{Cint}
 """
-function cdimchp(status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
-  cutest_cdimchp_(
-    status,
-    nnzchp,
-  )
+function cdimchp end
+
+for (cutest_cdimchp, T) in ((:cutest_cdimchp_, :Float64),)
+  @eval begin
+    function cdimchp(status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
+      $cutest_cdimchp(
+        status,
+        nnzchp,
+      )
+    end
+  end
 end
 
 """# cdimse
@@ -540,18 +612,24 @@ Usage:
   - he_val_ne: [OUT] Vector{Cint}
   - he_row_ne: [OUT] Vector{Cint}
 """
-function cdimse(
-  status::StrideOneVector{Cint},
-  ne::StrideOneVector{Cint},
-  he_val_ne::StrideOneVector{Cint},
-  he_row_ne::StrideOneVector{Cint},
-)
-  cutest_cdimse_(
-    status,
-    ne,
-    he_val_ne,
-    he_row_ne,
-  )
+function cdimse end
+
+for (cutest_cdimse, T) in ((:cutest_cdimse_, :Float64),)
+  @eval begin
+    function cdimse(
+      status::StrideOneVector{Cint},
+      ne::StrideOneVector{Cint},
+      he_val_ne::StrideOneVector{Cint},
+      he_row_ne::StrideOneVector{Cint},
+    )
+      $cutest_cdimse(
+        status,
+        ne,
+        he_val_ne,
+        he_row_ne,
+      )
+    end
+  end
 end
 
 """# cstats
@@ -565,20 +643,26 @@ linear_constraints)
   - equality_constraints:            [OUT] Vector{Cint}
   - linear_constraints:              [OUT] Vector{Cint}
 """
-function cstats(
-  status::StrideOneVector{Cint},
-  nonlinear_variables_objective::StrideOneVector{Cint},
-  nonlinear_variables_constraints::StrideOneVector{Cint},
-  equality_constraints::StrideOneVector{Cint},
-  linear_constraints::StrideOneVector{Cint},
-)
-  cutest_cstats_(
-    status,
-    nonlinear_variables_objective,
-    nonlinear_variables_constraints,
-    equality_constraints,
-    linear_constraints,
-  )
+function cstats end
+
+for (cutest_cstats, T) in ((:cutest_cstats_, :Float64),)
+  @eval begin
+    function cstats(
+      status::StrideOneVector{Cint},
+      nonlinear_variables_objective::StrideOneVector{Cint},
+      nonlinear_variables_constraints::StrideOneVector{Cint},
+      equality_constraints::StrideOneVector{Cint},
+      linear_constraints::StrideOneVector{Cint},
+    )
+      $cutest_cstats(
+        status,
+        nonlinear_variables_objective,
+        nonlinear_variables_constraints,
+        equality_constraints,
+        linear_constraints,
+      )
+    end
+  end
 end
 
 """# cvartype
@@ -603,16 +687,22 @@ Usage:
   - n:       [IN] Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
-function cvartype(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x_type::StrideOneVector{Cint},
-)
-  cutest_cvartype_(
-    status,
-    n,
-    x_type,
-  )
+function cvartype end
+
+for (cutest_cvartype, T) in ((:cutest_cvartype_, :Float64),)
+  @eval begin
+    function cvartype(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x_type::StrideOneVector{Cint},
+    )
+      $cutest_cvartype(
+        status,
+        n,
+        x_type,
+      )
+    end
+  end
 end
 
 """# cnames
@@ -642,22 +732,28 @@ Usage:
 To get useful names, use `String(x)` where `x` can be `pname`, `vname[:,i]`,
 or `cname[:,i]`.
 """
-function cnames(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  pname::StrideOneVector{UInt8},
-  vname::Matrix{UInt8},
-  cname::Matrix{UInt8},
-)
-  cutest_cnames_(
-    status,
-    n,
-    m,
-    pname,
-    vname,
-    cname,
-  )
+function cnames end
+
+for (cutest_cnames, T) in ((:cutest_cnames_, :Float64),)
+  @eval begin
+    function cnames(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      pname::StrideOneVector{UInt8},
+      vname::Matrix{UInt8},
+      cname::Matrix{UInt8},
+    )
+      $cutest_cnames(
+        status,
+        n,
+        m,
+        pname,
+        vname,
+        cname,
+      )
+    end
+  end
 end
 
 """# creport
@@ -682,16 +778,22 @@ Usage:
   - calls:   [OUT] Vector{Cdouble}
   - time:    [OUT] Vector{Cdouble}
 """
-function creport(
-  status::StrideOneVector{Cint},
-  calls::StrideOneVector{Cdouble},
-  time::StrideOneVector{Cdouble},
-)
-  cutest_creport_(
-    status,
-    calls,
-    time,
-  )
+function creport end
+
+for (cutest_creport, T) in ((:cutest_creport_, :Float64),)
+  @eval begin
+    function creport(
+      status::StrideOneVector{Cint},
+      calls::StrideOneVector{Cdouble},
+      time::StrideOneVector{Cdouble},
+    )
+      $cutest_creport(
+        status,
+        calls,
+        time,
+      )
+    end
+  end
 end
 
 """# connames
@@ -717,12 +819,18 @@ Usage:
 
 To get useful names, use `String(cname[:,i])`.
 """
-function connames(status::StrideOneVector{Cint}, m::StrideOneVector{Cint}, cname::Matrix{UInt8})
-  cutest_connames_(
-    status,
-    m,
-    cname,
-  )
+function connames end
+
+for (cutest_connames, T) in ((:cutest_connames_, :Float64),)
+  @eval begin
+    function connames(status::StrideOneVector{Cint}, m::StrideOneVector{Cint}, cname::Matrix{UInt8})
+      $cutest_connames(
+        status,
+        m,
+        cname,
+      )
+    end
+  end
 end
 
 """# pname
@@ -747,16 +855,22 @@ Usage:
   - input:   [IN] Vector{Cint}
   - pname:   [OUT] Vector{UInt8}
 """
-function pname(
-  status::StrideOneVector{Cint},
-  input::StrideOneVector{Cint},
-  pname::StrideOneVector{UInt8},
-)
-  cutest_pname_(
-    status,
-    input,
-    pname,
-  )
+function pname end
+
+for (cutest_pname, T) in ((:cutest_pname_, :Float64),)
+  @eval begin
+    function pname(
+      status::StrideOneVector{Cint},
+      input::StrideOneVector{Cint},
+      pname::StrideOneVector{UInt8},
+    )
+      $cutest_pname(
+        status,
+        input,
+        pname,
+      )
+    end
+  end
 end
 
 """# probname
@@ -780,11 +894,17 @@ Usage:
 
 To get a useful name, use `String(pname)`.
 """
-function probname(status::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
-  cutest_probname_(
-    status,
-    pname,
-  )
+function probname end
+
+for (cutest_probname, T) in ((:cutest_probname_, :Float64),)
+  @eval begin
+    function probname(status::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
+      $cutest_probname(
+        status,
+        pname,
+      )
+    end
+  end
 end
 
 """# varnames
@@ -810,12 +930,18 @@ Usage:
 
 To get useful names, use `String(vname[:, i])`.
 """
-function varnames(status::StrideOneVector{Cint}, n::StrideOneVector{Cint}, vname::Matrix{UInt8})
-  cutest_varnames_(
-    status,
-    n,
-    vname,
-  )
+function varnames end
+
+for (cutest_varnames, T) in ((:cutest_varnames_, :Float64),)
+  @eval begin
+    function varnames(status::StrideOneVector{Cint}, n::StrideOneVector{Cint}, vname::Matrix{UInt8})
+      $cutest_varnames(
+        status,
+        n,
+        vname,
+      )
+    end
+  end
 end
 
 """# ufn
@@ -838,18 +964,24 @@ Usage:
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
 """
-function ufn(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  f::StrideOneVector{Cdouble},
-)
-  cutest_ufn_(
-    status,
-    n,
-    x,
-    f,
-  )
+function ufn end
+
+for (cutest_ufn, T) in ((:cutest_ufn_, :Float64),)
+  @eval begin
+    function ufn(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      f::StrideOneVector{Cdouble},
+    )
+      $cutest_ufn(
+        status,
+        n,
+        x,
+        f,
+      )
+    end
+  end
 end
 
 """# ugr
@@ -872,18 +1004,24 @@ Usage:
   - x:       [IN] Vector{Cdouble}
   - g:       [OUT] Vector{Cdouble}
 """
-function ugr(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  g::StrideOneVector{Cdouble},
-)
-  cutest_ugr_(
-    status,
-    n,
-    x,
-    g,
-  )
+function ugr end
+
+for (cutest_ugr, T) in ((:cutest_ugr_, :Float64),)
+  @eval begin
+    function ugr(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      g::StrideOneVector{Cdouble},
+    )
+      $cutest_ugr(
+        status,
+        n,
+        x,
+        g,
+      )
+    end
+  end
 end
 
 """# uofg
@@ -909,22 +1047,28 @@ Usage:
   - g:       [OUT] Vector{Cdouble}
   - grad:    [IN] Vector{Bool}
 """
-function uofg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  f::StrideOneVector{Cdouble},
-  g::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_uofg_(
-    status,
-    n,
-    x,
-    f,
-    g,
-    grad,
-  )
+function uofg end
+
+for (cutest_cint_uofg, T) in ((:cutest_cint_uofg_, :Float64),)
+  @eval begin
+    function uofg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      f::StrideOneVector{Cdouble},
+      g::StrideOneVector{Cdouble},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_uofg(
+        status,
+        n,
+        x,
+        f,
+        g,
+        grad,
+      )
+    end
+  end
 end
 
 """# udh
@@ -949,20 +1093,26 @@ Usage:
   - lh1:     [IN] Vector{Cint}
   - h:       [OUT] Matrix{Cdouble}
 """
-function udh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  lh1::StrideOneVector{Cint},
-  h::Matrix{Cdouble},
-)
-  cutest_udh_(
-    status,
-    n,
-    x,
-    lh1,
-    h,
-  )
+function udh end
+
+for (cutest_udh, T) in ((:cutest_udh_, :Float64),)
+  @eval begin
+    function udh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      lh1::StrideOneVector{Cint},
+      h::Matrix{Cdouble},
+    )
+      $cutest_udh(
+        status,
+        n,
+        x,
+        lh1,
+        h,
+      )
+    end
+  end
 end
 
 """# ushp
@@ -988,22 +1138,28 @@ Usage:
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function ushp(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_ushp_(
-    status,
-    n,
-    nnzh,
-    lh,
-    h_row,
-    h_col,
-  )
+function ushp end
+
+for (cutest_ushp, T) in ((:cutest_ushp_, :Float64),)
+  @eval begin
+    function ushp(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_ushp(
+        status,
+        n,
+        nnzh,
+        lh,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# ush
@@ -1032,26 +1188,32 @@ Usage:
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function ush(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_val::StrideOneVector{Cdouble},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_ush_(
-    status,
-    n,
-    x,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+function ush end
+
+for (cutest_ush, T) in ((:cutest_ush_, :Float64),)
+  @eval begin
+    function ush(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_val::StrideOneVector{Cdouble},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_ush(
+        status,
+        n,
+        x,
+        nnzh,
+        lh,
+        h_val,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# ueh
@@ -1086,34 +1248,40 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Vector{Cdouble}
   - byrows:     [IN] Vector{Bool}
 """
-function ueh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  ne::StrideOneVector{Cint},
-  lhe_ptr::StrideOneVector{Cint},
-  he_row_ptr::StrideOneVector{Cint},
-  he_val_ptr::StrideOneVector{Cint},
-  lhe_row::StrideOneVector{Cint},
-  he_row::StrideOneVector{Cint},
-  lhe_val::StrideOneVector{Cint},
-  he_val::StrideOneVector{Cdouble},
-  byrows::StrideOneVector{Bool},
-)
-  cutest_cint_ueh_(
-    status,
-    n,
-    x,
-    ne,
-    lhe_ptr,
-    he_row_ptr,
-    he_val_ptr,
-    lhe_row,
-    he_row,
-    lhe_val,
-    he_val,
-    byrows,
-  )
+function ueh end
+
+for (cutest_cint_ueh, T) in ((:cutest_cint_ueh_, :Float64),)
+  @eval begin
+    function ueh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      ne::StrideOneVector{Cint},
+      lhe_ptr::StrideOneVector{Cint},
+      he_row_ptr::StrideOneVector{Cint},
+      he_val_ptr::StrideOneVector{Cint},
+      lhe_row::StrideOneVector{Cint},
+      he_row::StrideOneVector{Cint},
+      lhe_val::StrideOneVector{Cint},
+      he_val::StrideOneVector{Cdouble},
+      byrows::StrideOneVector{Bool},
+    )
+      $cutest_cint_ueh(
+        status,
+        n,
+        x,
+        ne,
+        lhe_ptr,
+        he_row_ptr,
+        he_val_ptr,
+        lhe_row,
+        he_row,
+        lhe_val,
+        he_val,
+        byrows,
+      )
+    end
+  end
 end
 
 """# ugrdh
@@ -1140,22 +1308,28 @@ Usage:
   - lh1:     [IN] Vector{Cint}
   - h:       [OUT] Matrix{Cdouble}
 """
-function ugrdh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  g::StrideOneVector{Cdouble},
-  lh1::StrideOneVector{Cint},
-  h::Matrix{Cdouble},
-)
-  cutest_ugrdh_(
-    status,
-    n,
-    x,
-    g,
-    lh1,
-    h,
-  )
+function ugrdh end
+
+for (cutest_ugrdh, T) in ((:cutest_ugrdh_, :Float64),)
+  @eval begin
+    function ugrdh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      g::StrideOneVector{Cdouble},
+      lh1::StrideOneVector{Cint},
+      h::Matrix{Cdouble},
+    )
+      $cutest_ugrdh(
+        status,
+        n,
+        x,
+        g,
+        lh1,
+        h,
+      )
+    end
+  end
 end
 
 """# ugrsh
@@ -1185,28 +1359,34 @@ Usage:
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function ugrsh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  g::StrideOneVector{Cdouble},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_val::StrideOneVector{Cdouble},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_ugrsh_(
-    status,
-    n,
-    x,
-    g,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+function ugrsh end
+
+for (cutest_ugrsh, T) in ((:cutest_ugrsh_, :Float64),)
+  @eval begin
+    function ugrsh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      g::StrideOneVector{Cdouble},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_val::StrideOneVector{Cdouble},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_ugrsh(
+        status,
+        n,
+        x,
+        g,
+        nnzh,
+        lh,
+        h_val,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# ugreh
@@ -1243,36 +1423,42 @@ lhe_val, he_val, byrows)
   - he_val:     [OUT] Vector{Cdouble}
   - byrows:     [IN] Vector{Bool}
 """
-function ugreh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  g::StrideOneVector{Cdouble},
-  ne::StrideOneVector{Cint},
-  lhe_ptr::StrideOneVector{Cint},
-  he_row_ptr::StrideOneVector{Cint},
-  he_val_ptr::StrideOneVector{Cint},
-  lhe_row::StrideOneVector{Cint},
-  he_row::StrideOneVector{Cint},
-  lhe_val::StrideOneVector{Cint},
-  he_val::StrideOneVector{Cdouble},
-  byrows::StrideOneVector{Bool},
-)
-  cutest_cint_ugreh_(
-    status,
-    n,
-    x,
-    g,
-    ne,
-    lhe_ptr,
-    he_row_ptr,
-    he_val_ptr,
-    lhe_row,
-    he_row,
-    lhe_val,
-    he_val,
-    byrows,
-  )
+function ugreh end
+
+for (cutest_cint_ugreh, T) in ((:cutest_cint_ugreh_, :Float64),)
+  @eval begin
+    function ugreh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      g::StrideOneVector{Cdouble},
+      ne::StrideOneVector{Cint},
+      lhe_ptr::StrideOneVector{Cint},
+      he_row_ptr::StrideOneVector{Cint},
+      he_val_ptr::StrideOneVector{Cint},
+      lhe_row::StrideOneVector{Cint},
+      he_row::StrideOneVector{Cint},
+      lhe_val::StrideOneVector{Cint},
+      he_val::StrideOneVector{Cdouble},
+      byrows::StrideOneVector{Bool},
+    )
+      $cutest_cint_ugreh(
+        status,
+        n,
+        x,
+        g,
+        ne,
+        lhe_ptr,
+        he_row_ptr,
+        he_val_ptr,
+        lhe_row,
+        he_row,
+        lhe_val,
+        he_val,
+        byrows,
+      )
+    end
+  end
 end
 
 """# uhprod
@@ -1298,22 +1484,28 @@ Usage:
   - vector:  [IN] Vector{Cdouble}
   - result:  [OUT] Vector{Cdouble}
 """
-function uhprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  goth::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  vector::StrideOneVector{Cdouble},
-  result::StrideOneVector{Cdouble},
-)
-  cutest_cint_uhprod_(
-    status,
-    n,
-    goth,
-    x,
-    vector,
-    result,
-  )
+function uhprod end
+
+for (cutest_cint_uhprod, T) in ((:cutest_cint_uhprod_, :Float64),)
+  @eval begin
+    function uhprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      goth::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      vector::StrideOneVector{Cdouble},
+      result::StrideOneVector{Cdouble},
+    )
+      $cutest_cint_uhprod(
+        status,
+        n,
+        goth,
+        x,
+        vector,
+        result,
+      )
+    end
+  end
 end
 
 """# ushprod
@@ -1346,30 +1538,36 @@ index_nz_result, result)
 
 Notice that `vector` and `result` should have allocated dimension of `n`.
 """
-function ushprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  goth::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  nnz_vector::StrideOneVector{Cint},
-  index_nz_vector::StrideOneVector{Cint},
-  vector::StrideOneVector{Cdouble},
-  nnz_result::StrideOneVector{Cint},
-  index_nz_result::StrideOneVector{Cint},
-  result::StrideOneVector{Cdouble},
-)
-  cutest_cint_ushprod_(
-    status,
-    n,
-    goth,
-    x,
-    nnz_vector,
-    index_nz_vector,
-    vector,
-    nnz_result,
-    index_nz_result,
-    result,
-  )
+function ushprod end
+
+for (cutest_cint_ushprod, T) in ((:cutest_cint_ushprod_, :Float64),)
+  @eval begin
+    function ushprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      goth::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      nnz_vector::StrideOneVector{Cint},
+      index_nz_vector::StrideOneVector{Cint},
+      vector::StrideOneVector{Cdouble},
+      nnz_result::StrideOneVector{Cint},
+      index_nz_result::StrideOneVector{Cint},
+      result::StrideOneVector{Cdouble},
+    )
+      $cutest_cint_ushprod(
+        status,
+        n,
+        goth,
+        x,
+        nnz_vector,
+        index_nz_vector,
+        vector,
+        nnz_result,
+        index_nz_result,
+        result,
+      )
+    end
+  end
 end
 
 """# ubandh
@@ -1397,24 +1595,30 @@ Usage:
   - lbandh:            [IN] Vector{Cint}
   - max_semibandwidth: [OUT] Vector{Cint}
 """
-function ubandh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  semibandwidth::StrideOneVector{Cint},
-  h_band::Matrix{Cdouble},
-  lbandh::StrideOneVector{Cint},
-  max_semibandwidth::StrideOneVector{Cint},
-)
-  cutest_ubandh_(
-    status,
-    n,
-    x,
-    semibandwidth,
-    h_band,
-    lbandh,
-    max_semibandwidth,
-  )
+function ubandh end
+
+for (cutest_ubandh, T) in ((:cutest_ubandh_, :Float64),)
+  @eval begin
+    function ubandh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      semibandwidth::StrideOneVector{Cint},
+      h_band::Matrix{Cdouble},
+      lbandh::StrideOneVector{Cint},
+      max_semibandwidth::StrideOneVector{Cint},
+    )
+      $cutest_ubandh(
+        status,
+        n,
+        x,
+        semibandwidth,
+        h_band,
+        lbandh,
+        max_semibandwidth,
+      )
+    end
+  end
 end
 
 """# cfn
@@ -1442,22 +1646,28 @@ Usage:
   - f:       [OUT] Vector{Cdouble}
   - c:       [OUT] Vector{Cdouble}
 """
-function cfn(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  f::StrideOneVector{Cdouble},
-  c::StrideOneVector{Cdouble},
-)
-  cutest_cfn_(
-    status,
-    n,
-    m,
-    x,
-    f,
-    c,
-  )
+function cfn end
+
+for (cutest_cfn, T) in ((:cutest_cfn_, :Float64),)
+  @eval begin
+    function cfn(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      f::StrideOneVector{Cdouble},
+      c::StrideOneVector{Cdouble},
+    )
+      $cutest_cfn(
+        status,
+        n,
+        m,
+        x,
+        f,
+        c,
+      )
+    end
+  end
 end
 
 """# cofg
@@ -1485,22 +1695,28 @@ Usage:
   - g:       [OUT] Vector{Cdouble}
   - grad:    [IN] Vector{Bool}
 """
-function cofg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  f::StrideOneVector{Cdouble},
-  g::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_cofg_(
-    status,
-    n,
-    x,
-    f,
-    g,
-    grad,
-  )
+function cofg end
+
+for (cutest_cint_cofg, T) in ((:cutest_cint_cofg_, :Float64),)
+  @eval begin
+    function cofg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      f::StrideOneVector{Cdouble},
+      g::StrideOneVector{Cdouble},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_cofg(
+        status,
+        n,
+        x,
+        f,
+        g,
+        grad,
+      )
+    end
+  end
 end
 
 """# cofsg
@@ -1531,28 +1747,34 @@ Usage:
   - g_var:   [OUT] Vector{Cint}
   - grad:    [IN] Vector{Bool}
 """
-function cofsg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  f::StrideOneVector{Cdouble},
-  nnzg::StrideOneVector{Cint},
-  lg::StrideOneVector{Cint},
-  g_val::StrideOneVector{Cdouble},
-  g_var::StrideOneVector{Cint},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_cofsg_(
-    status,
-    n,
-    x,
-    f,
-    nnzg,
-    lg,
-    g_val,
-    g_var,
-    grad,
-  )
+function cofsg end
+
+for (cutest_cint_cofsg, T) in ((:cutest_cint_cofsg_, :Float64),)
+  @eval begin
+    function cofsg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      f::StrideOneVector{Cdouble},
+      nnzg::StrideOneVector{Cint},
+      lg::StrideOneVector{Cint},
+      g_val::StrideOneVector{Cdouble},
+      g_var::StrideOneVector{Cint},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_cofsg(
+        status,
+        n,
+        x,
+        f,
+        nnzg,
+        lg,
+        g_val,
+        g_var,
+        grad,
+      )
+    end
+  end
 end
 
 """# ccfg
@@ -1584,30 +1806,36 @@ Usage:
   - cjac:    [OUT] Matrix{Cdouble}
   - grad:    [IN] Vector{Bool}
 """
-function ccfg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  c::StrideOneVector{Cdouble},
-  jtrans::StrideOneVector{Bool},
-  lcjac1::StrideOneVector{Cint},
-  lcjac2::StrideOneVector{Cint},
-  cjac::Matrix{Cdouble},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_ccfg_(
-    status,
-    n,
-    m,
-    x,
-    c,
-    jtrans,
-    lcjac1,
-    lcjac2,
-    cjac,
-    grad,
-  )
+function ccfg end
+
+for (cutest_cint_ccfg, T) in ((:cutest_cint_ccfg_, :Float64),)
+  @eval begin
+    function ccfg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      c::StrideOneVector{Cdouble},
+      jtrans::StrideOneVector{Bool},
+      lcjac1::StrideOneVector{Cint},
+      lcjac2::StrideOneVector{Cint},
+      cjac::Matrix{Cdouble},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_ccfg(
+        status,
+        n,
+        m,
+        x,
+        c,
+        jtrans,
+        lcjac1,
+        lcjac2,
+        cjac,
+        grad,
+      )
+    end
+  end
 end
 
 """# clfg
@@ -1637,26 +1865,32 @@ Usage:
   - g:       [OUT] Vector{Cdouble}
   - grad:    [IN] Vector{Bool}
 """
-function clfg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  f::StrideOneVector{Cdouble},
-  g::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_clfg_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    f,
-    g,
-    grad,
-  )
+function clfg end
+
+for (cutest_cint_clfg, T) in ((:cutest_cint_clfg_, :Float64),)
+  @eval begin
+    function clfg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      f::StrideOneVector{Cdouble},
+      g::StrideOneVector{Cdouble},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_clfg(
+        status,
+        n,
+        m,
+        x,
+        y,
+        f,
+        g,
+        grad,
+      )
+    end
+  end
 end
 
 """# cgr
@@ -1690,32 +1924,38 @@ Usage:
   - lj2:     [IN] Vector{Cint}
   - j_val:   [OUT] Matrix{Cdouble}
 """
-function cgr(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Bool},
-  g::StrideOneVector{Cdouble},
-  jtrans::StrideOneVector{Bool},
-  lj1::StrideOneVector{Cint},
-  lj2::StrideOneVector{Cint},
-  j_val::Matrix{Cdouble},
-)
-  cutest_cint_cgr_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    g,
-    jtrans,
-    lj1,
-    lj2,
-    j_val,
-  )
+function cgr end
+
+for (cutest_cint_cgr, T) in ((:cutest_cint_cgr_, :Float64),)
+  @eval begin
+    function cgr(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      grlagf::StrideOneVector{Bool},
+      g::StrideOneVector{Cdouble},
+      jtrans::StrideOneVector{Bool},
+      lj1::StrideOneVector{Cint},
+      lj2::StrideOneVector{Cint},
+      j_val::Matrix{Cdouble},
+    )
+      $cutest_cint_cgr(
+        status,
+        n,
+        m,
+        x,
+        y,
+        grlagf,
+        g,
+        jtrans,
+        lj1,
+        lj2,
+        j_val,
+      )
+    end
+  end
 end
 
 """# csgr
@@ -1751,32 +1991,38 @@ Usage:
   - j_var:   [OUT] Vector{Cint}
   - j_fun:   [OUT] Vector{Cint}
 """
-function csgr(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Bool},
-  nnzj::StrideOneVector{Cint},
-  lj::StrideOneVector{Cint},
-  j_val::StrideOneVector{Cdouble},
-  j_var::StrideOneVector{Cint},
-  j_fun::StrideOneVector{Cint},
-)
-  cutest_cint_csgr_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    nnzj,
-    lj,
-    j_val,
-    j_var,
-    j_fun,
-  )
+function csgr end
+
+for (cutest_cint_csgr, T) in ((:cutest_cint_csgr_, :Float64),)
+  @eval begin
+    function csgr(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      grlagf::StrideOneVector{Bool},
+      nnzj::StrideOneVector{Cint},
+      lj::StrideOneVector{Cint},
+      j_val::StrideOneVector{Cdouble},
+      j_var::StrideOneVector{Cint},
+      j_fun::StrideOneVector{Cint},
+    )
+      $cutest_cint_csgr(
+        status,
+        n,
+        m,
+        x,
+        y,
+        grlagf,
+        nnzj,
+        lj,
+        j_val,
+        j_var,
+        j_fun,
+      )
+    end
+  end
 end
 
 """# ccfsg
@@ -1810,32 +2056,38 @@ Usage:
   - j_fun:   [OUT] Vector{Cint}
   - grad:    [IN] Vector{Bool}
 """
-function ccfsg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  c::StrideOneVector{Cdouble},
-  nnzj::StrideOneVector{Cint},
-  lj::StrideOneVector{Cint},
-  j_val::StrideOneVector{Cdouble},
-  j_var::StrideOneVector{Cint},
-  j_fun::StrideOneVector{Cint},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_ccfsg_(
-    status,
-    n,
-    m,
-    x,
-    c,
-    nnzj,
-    lj,
-    j_val,
-    j_var,
-    j_fun,
-    grad,
-  )
+function ccfsg end
+
+for (cutest_cint_ccfsg, T) in ((:cutest_cint_ccfsg_, :Float64),)
+  @eval begin
+    function ccfsg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      c::StrideOneVector{Cdouble},
+      nnzj::StrideOneVector{Cint},
+      lj::StrideOneVector{Cint},
+      j_val::StrideOneVector{Cdouble},
+      j_var::StrideOneVector{Cint},
+      j_fun::StrideOneVector{Cint},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_ccfsg(
+        status,
+        n,
+        m,
+        x,
+        c,
+        nnzj,
+        lj,
+        j_val,
+        j_var,
+        j_fun,
+        grad,
+      )
+    end
+  end
 end
 
 """# ccifg
@@ -1865,24 +2117,30 @@ Usage:
   - gci:     [OUT] Vector{Cdouble}
   - grad:    [IN] Vector{Bool}
 """
-function ccifg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  icon::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  ci::StrideOneVector{Cdouble},
-  gci::StrideOneVector{Cdouble},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_ccifg_(
-    status,
-    n,
-    icon,
-    x,
-    ci,
-    gci,
-    grad,
-  )
+function ccifg end
+
+for (cutest_cint_ccifg, T) in ((:cutest_cint_ccifg_, :Float64),)
+  @eval begin
+    function ccifg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      icon::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      ci::StrideOneVector{Cdouble},
+      gci::StrideOneVector{Cdouble},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_ccifg(
+        status,
+        n,
+        icon,
+        x,
+        ci,
+        gci,
+        grad,
+      )
+    end
+  end
 end
 
 """# ccifsg
@@ -1916,30 +2174,36 @@ Usage:
   - gci_var: [OUT] Vector{Cint}
   - grad:    [IN] Vector{Bool}
 """
-function ccifsg(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  icon::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  ci::StrideOneVector{Cdouble},
-  nnzgci::StrideOneVector{Cint},
-  lgci::StrideOneVector{Cint},
-  gci_val::StrideOneVector{Cdouble},
-  gci_var::StrideOneVector{Cint},
-  grad::StrideOneVector{Bool},
-)
-  cutest_cint_ccifsg_(
-    status,
-    n,
-    icon,
-    x,
-    ci,
-    nnzgci,
-    lgci,
-    gci_val,
-    gci_var,
-    grad,
-  )
+function ccifsg end
+
+for (cutest_cint_ccifsg, T) in ((:cutest_cint_ccifsg_, :Float64),)
+  @eval begin
+    function ccifsg(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      icon::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      ci::StrideOneVector{Cdouble},
+      nnzgci::StrideOneVector{Cint},
+      lgci::StrideOneVector{Cint},
+      gci_val::StrideOneVector{Cdouble},
+      gci_var::StrideOneVector{Cint},
+      grad::StrideOneVector{Bool},
+    )
+      $cutest_cint_ccifsg(
+        status,
+        n,
+        icon,
+        x,
+        ci,
+        nnzgci,
+        lgci,
+        gci_val,
+        gci_var,
+        grad,
+      )
+    end
+  end
 end
 
 """# cgrdh
@@ -1977,36 +2241,42 @@ Usage:
   - lh1:     [IN] Vector{Cint}
   - h_val:   [OUT] Matrix{Cdouble}
 """
-function cgrdh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Bool},
-  g::StrideOneVector{Cdouble},
-  jtrans::StrideOneVector{Bool},
-  lj1::StrideOneVector{Cint},
-  lj2::StrideOneVector{Cint},
-  j_val::Matrix{Cdouble},
-  lh1::StrideOneVector{Cint},
-  h_val::Matrix{Cdouble},
-)
-  cutest_cint_cgrdh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    g,
-    jtrans,
-    lj1,
-    lj2,
-    j_val,
-    lh1,
-    h_val,
-  )
+function cgrdh end
+
+for (cutest_cint_cgrdh, T) in ((:cutest_cint_cgrdh_, :Float64),)
+  @eval begin
+    function cgrdh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      grlagf::StrideOneVector{Bool},
+      g::StrideOneVector{Cdouble},
+      jtrans::StrideOneVector{Bool},
+      lj1::StrideOneVector{Cint},
+      lj2::StrideOneVector{Cint},
+      j_val::Matrix{Cdouble},
+      lh1::StrideOneVector{Cint},
+      h_val::Matrix{Cdouble},
+    )
+      $cutest_cint_cgrdh(
+        status,
+        n,
+        m,
+        x,
+        y,
+        grlagf,
+        g,
+        jtrans,
+        lj1,
+        lj2,
+        j_val,
+        lh1,
+        h_val,
+      )
+    end
+  end
 end
 
 """# cdh
@@ -2036,24 +2306,30 @@ Usage:
   - lh1:     [IN] Vector{Cint}
   - h_val:   [OUT] Matrix{Cdouble}
 """
-function cdh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  lh1::StrideOneVector{Cint},
-  h_val::Matrix{Cdouble},
-)
-  cutest_cdh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    lh1,
-    h_val,
-  )
+function cdh end
+
+for (cutest_cdh, T) in ((:cutest_cdh_, :Float64),)
+  @eval begin
+    function cdh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      lh1::StrideOneVector{Cint},
+      h_val::Matrix{Cdouble},
+    )
+      $cutest_cdh(
+        status,
+        n,
+        m,
+        x,
+        y,
+        lh1,
+        h_val,
+      )
+    end
+  end
 end
 
 """# cdhc
@@ -2083,24 +2359,30 @@ Usage:
   - lh1:     [IN] Vector{Cint}
   - h_val:   [OUT] Matrix{Cdouble}
 """
-function cdhc(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  lh1::StrideOneVector{Cint},
-  h_val::Matrix{Cdouble},
-)
-  cutest_cdhc_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    lh1,
-    h_val,
-  )
+function cdhc end
+
+for (cutest_cdhc, T) in ((:cutest_cdhc_, :Float64),)
+  @eval begin
+    function cdhc(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      lh1::StrideOneVector{Cint},
+      h_val::Matrix{Cdouble},
+    )
+      $cutest_cdhc(
+        status,
+        n,
+        m,
+        x,
+        y,
+        lh1,
+        h_val,
+      )
+    end
+  end
 end
 
 """# cshp
@@ -2128,22 +2410,28 @@ Usage:
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function cshp(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_cshp_(
-    status,
-    n,
-    nnzh,
-    lh,
-    h_row,
-    h_col,
-  )
+function cshp end
+
+for (cutest_cshp, T) in ((:cutest_cshp_, :Float64),)
+  @eval begin
+    function cshp(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_cshp(
+        status,
+        n,
+        nnzh,
+        lh,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# csh
@@ -2176,30 +2464,36 @@ Usage:
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function csh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_val::StrideOneVector{Cdouble},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_csh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+function csh end
+
+for (cutest_csh, T) in ((:cutest_csh_, :Float64),)
+  @eval begin
+    function csh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_val::StrideOneVector{Cdouble},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_csh(
+        status,
+        n,
+        m,
+        x,
+        y,
+        nnzh,
+        lh,
+        h_val,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# cshc
@@ -2232,30 +2526,36 @@ Usage:
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function cshc(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_val::StrideOneVector{Cdouble},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_cshc_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+function cshc end
+
+for (cutest_cshc, T) in ((:cutest_cshc_, :Float64),)
+  @eval begin
+    function cshc(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_val::StrideOneVector{Cdouble},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_cshc(
+        status,
+        n,
+        m,
+        x,
+        y,
+        nnzh,
+        lh,
+        h_val,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# ceh
@@ -2295,38 +2595,44 @@ he_row, lhe_val, he_val, byrows)
   - he_val:     [OUT] Vector{Cdouble}
   - byrows:     [IN] Vector{Cint}
 """
-function ceh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  ne::StrideOneVector{Cint},
-  lhe_ptr::StrideOneVector{Cint},
-  he_row_ptr::StrideOneVector{Cint},
-  he_val_ptr::StrideOneVector{Cint},
-  lhe_row::StrideOneVector{Cint},
-  he_row::StrideOneVector{Cint},
-  lhe_val::StrideOneVector{Cint},
-  he_val::StrideOneVector{Cdouble},
-  byrows::StrideOneVector{Cint},
-)
-  cutest_ceh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    ne,
-    lhe_ptr,
-    he_row_ptr,
-    he_val_ptr,
-    lhe_row,
-    he_row,
-    lhe_val,
-    he_val,
-    byrows,
-  )
+function ceh end
+
+for (cutest_ceh, T) in ((:cutest_ceh_, :Float64),)
+  @eval begin
+    function ceh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      ne::StrideOneVector{Cint},
+      lhe_ptr::StrideOneVector{Cint},
+      he_row_ptr::StrideOneVector{Cint},
+      he_val_ptr::StrideOneVector{Cint},
+      lhe_row::StrideOneVector{Cint},
+      he_row::StrideOneVector{Cint},
+      lhe_val::StrideOneVector{Cint},
+      he_val::StrideOneVector{Cdouble},
+      byrows::StrideOneVector{Cint},
+    )
+      $cutest_ceh(
+        status,
+        n,
+        m,
+        x,
+        y,
+        ne,
+        lhe_ptr,
+        he_row_ptr,
+        he_val_ptr,
+        lhe_row,
+        he_row,
+        lhe_val,
+        he_val,
+        byrows,
+      )
+    end
+  end
 end
 
 """# cidh
@@ -2355,22 +2661,28 @@ Usage:
   - lh1:     [IN] Vector{Cint}
   - h:       [OUT] Matrix{Cdouble}
 """
-function cidh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  iprob::StrideOneVector{Cint},
-  lh1::StrideOneVector{Cint},
-  h::Matrix{Cdouble},
-)
-  cutest_cidh_(
-    status,
-    n,
-    x,
-    iprob,
-    lh1,
-    h,
-  )
+function cidh end
+
+for (cutest_cidh, T) in ((:cutest_cidh_, :Float64),)
+  @eval begin
+    function cidh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      iprob::StrideOneVector{Cint},
+      lh1::StrideOneVector{Cint},
+      h::Matrix{Cdouble},
+    )
+      $cutest_cidh(
+        status,
+        n,
+        x,
+        iprob,
+        lh1,
+        h,
+      )
+    end
+  end
 end
 
 """# cish
@@ -2402,28 +2714,34 @@ Usage:
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function cish(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  iprob::StrideOneVector{Cint},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_val::StrideOneVector{Cdouble},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_cish_(
-    status,
-    n,
-    x,
-    iprob,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+function cish end
+
+for (cutest_cish, T) in ((:cutest_cish_, :Float64),)
+  @eval begin
+    function cish(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      iprob::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_val::StrideOneVector{Cdouble},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_cish(
+        status,
+        n,
+        x,
+        iprob,
+        nnzh,
+        lh,
+        h_val,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# csgrsh
@@ -2465,42 +2783,48 @@ h_val, h_row, h_col)
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function csgrsh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Bool},
-  nnzj::StrideOneVector{Cint},
-  lj::StrideOneVector{Cint},
-  j_val::StrideOneVector{Cdouble},
-  j_var::StrideOneVector{Cint},
-  j_fun::StrideOneVector{Cint},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_val::StrideOneVector{Cdouble},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_cint_csgrsh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    nnzj,
-    lj,
-    j_val,
-    j_var,
-    j_fun,
-    nnzh,
-    lh,
-    h_val,
-    h_row,
-    h_col,
-  )
+function csgrsh end
+
+for (cutest_cint_csgrsh, T) in ((:cutest_cint_csgrsh_, :Float64),)
+  @eval begin
+    function csgrsh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      grlagf::StrideOneVector{Bool},
+      nnzj::StrideOneVector{Cint},
+      lj::StrideOneVector{Cint},
+      j_val::StrideOneVector{Cdouble},
+      j_var::StrideOneVector{Cint},
+      j_fun::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_val::StrideOneVector{Cdouble},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_cint_csgrsh(
+        status,
+        n,
+        m,
+        x,
+        y,
+        grlagf,
+        nnzj,
+        lj,
+        j_val,
+        j_var,
+        j_fun,
+        nnzh,
+        lh,
+        h_val,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# csgreh
@@ -2550,50 +2874,56 @@ byrows)
   - he_val:     [OUT] Vector{Cdouble}
   - byrows:     [IN] Vector{Bool}
 """
-function csgreh(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  grlagf::StrideOneVector{Bool},
-  nnzj::StrideOneVector{Cint},
-  lj::StrideOneVector{Cint},
-  j_val::StrideOneVector{Cdouble},
-  j_var::StrideOneVector{Cint},
-  j_fun::StrideOneVector{Cint},
-  ne::StrideOneVector{Cint},
-  lhe_ptr::StrideOneVector{Cint},
-  he_row_ptr::StrideOneVector{Cint},
-  he_val_ptr::StrideOneVector{Cint},
-  lhe_row::StrideOneVector{Cint},
-  he_row::StrideOneVector{Cint},
-  lhe_val::StrideOneVector{Cint},
-  he_val::StrideOneVector{Cdouble},
-  byrows::StrideOneVector{Bool},
-)
-  cutest_cint_csgreh_(
-    status,
-    n,
-    m,
-    x,
-    y,
-    grlagf,
-    nnzj,
-    lj,
-    j_val,
-    j_var,
-    j_fun,
-    ne,
-    lhe_ptr,
-    he_row_ptr,
-    he_val_ptr,
-    lhe_row,
-    he_row,
-    lhe_val,
-    he_val,
-    byrows,
-  )
+function csgreh end
+
+for (cutest_cint_csgreh, T) in ((:cutest_cint_csgreh_, :Float64),)
+  @eval begin
+    function csgreh(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      grlagf::StrideOneVector{Bool},
+      nnzj::StrideOneVector{Cint},
+      lj::StrideOneVector{Cint},
+      j_val::StrideOneVector{Cdouble},
+      j_var::StrideOneVector{Cint},
+      j_fun::StrideOneVector{Cint},
+      ne::StrideOneVector{Cint},
+      lhe_ptr::StrideOneVector{Cint},
+      he_row_ptr::StrideOneVector{Cint},
+      he_val_ptr::StrideOneVector{Cint},
+      lhe_row::StrideOneVector{Cint},
+      he_row::StrideOneVector{Cint},
+      lhe_val::StrideOneVector{Cint},
+      he_val::StrideOneVector{Cdouble},
+      byrows::StrideOneVector{Bool},
+    )
+      $cutest_cint_csgreh(
+        status,
+        n,
+        m,
+        x,
+        y,
+        grlagf,
+        nnzj,
+        lj,
+        j_val,
+        j_var,
+        j_fun,
+        ne,
+        lhe_ptr,
+        he_row_ptr,
+        he_val_ptr,
+        lhe_row,
+        he_row,
+        lhe_val,
+        he_val,
+        byrows,
+      )
+    end
+  end
 end
 
 """# chprod
@@ -2624,26 +2954,32 @@ Usage:
   - vector:  [IN] Vector{Cdouble}
   - result:  [OUT] Vector{Cdouble}
 """
-function chprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  goth::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  vector::StrideOneVector{Cdouble},
-  result::StrideOneVector{Cdouble},
-)
-  cutest_cint_chprod_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    y,
-    vector,
-    result,
-  )
+function chprod end
+
+for (cutest_cint_chprod, T) in ((:cutest_cint_chprod_, :Float64),)
+  @eval begin
+    function chprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      goth::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      vector::StrideOneVector{Cdouble},
+      result::StrideOneVector{Cdouble},
+    )
+      $cutest_cint_chprod(
+        status,
+        n,
+        m,
+        goth,
+        x,
+        y,
+        vector,
+        result,
+      )
+    end
+  end
 end
 
 """# cshprod
@@ -2681,34 +3017,40 @@ nnz_result, index_nz_result, result)
 
 Notice that `vector` and `result` should have allocated dimension of `n`.
 """
-function cshprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  goth::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  nnz_vector::StrideOneVector{Cint},
-  index_nz_vector::StrideOneVector{Cint},
-  vector::StrideOneVector{Cdouble},
-  nnz_result::StrideOneVector{Cint},
-  index_nz_result::StrideOneVector{Cint},
-  result::StrideOneVector{Cdouble},
-)
-  cutest_cshprod_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    y,
-    nnz_vector,
-    index_nz_vector,
-    vector,
-    nnz_result,
-    index_nz_result,
-    result,
-  )
+function cshprod end
+
+for (cutest_cshprod, T) in ((:cutest_cshprod_, :Float64),)
+  @eval begin
+    function cshprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      goth::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      nnz_vector::StrideOneVector{Cint},
+      index_nz_vector::StrideOneVector{Cint},
+      vector::StrideOneVector{Cdouble},
+      nnz_result::StrideOneVector{Cint},
+      index_nz_result::StrideOneVector{Cint},
+      result::StrideOneVector{Cdouble},
+    )
+      $cutest_cshprod(
+        status,
+        n,
+        m,
+        goth,
+        x,
+        y,
+        nnz_vector,
+        index_nz_vector,
+        vector,
+        nnz_result,
+        index_nz_result,
+        result,
+      )
+    end
+  end
 end
 
 """# chcprod
@@ -2739,26 +3081,32 @@ Usage:
   - vector:  [IN] Vector{Cdouble}
   - result:  [OUT] Vector{Cdouble}
 """
-function chcprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  goth::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  vector::StrideOneVector{Cdouble},
-  result::StrideOneVector{Cdouble},
-)
-  cutest_cint_chcprod_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    y,
-    vector,
-    result,
-  )
+function chcprod end
+
+for (cutest_cint_chcprod, T) in ((:cutest_cint_chcprod_, :Float64),)
+  @eval begin
+    function chcprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      goth::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      vector::StrideOneVector{Cdouble},
+      result::StrideOneVector{Cdouble},
+    )
+      $cutest_cint_chcprod(
+        status,
+        n,
+        m,
+        goth,
+        x,
+        y,
+        vector,
+        result,
+      )
+    end
+  end
 end
 
 """# cshcprod
@@ -2794,34 +3142,40 @@ nnz_result, index_nz_result, result)
   - index_nz_result: [OUT] Vector{Cint}
   - result:          [OUT] Vector{Cdouble}
 """
-function cshcprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  goth::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  y::StrideOneVector{Cdouble},
-  nnz_vector::StrideOneVector{Cint},
-  index_nz_vector::StrideOneVector{Cint},
-  vector::StrideOneVector{Cdouble},
-  nnz_result::StrideOneVector{Cint},
-  index_nz_result::StrideOneVector{Cint},
-  result::StrideOneVector{Cdouble},
-)
-  cutest_cint_cshcprod_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    y,
-    nnz_vector,
-    index_nz_vector,
-    vector,
-    nnz_result,
-    index_nz_result,
-    result,
-  )
+function cshcprod end
+
+for (cutest_cint_cshcprod, T) in ((:cutest_cint_cshcprod_, :Float64),)
+  @eval begin
+    function cshcprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      goth::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      y::StrideOneVector{Cdouble},
+      nnz_vector::StrideOneVector{Cint},
+      index_nz_vector::StrideOneVector{Cint},
+      vector::StrideOneVector{Cdouble},
+      nnz_result::StrideOneVector{Cint},
+      index_nz_result::StrideOneVector{Cint},
+      result::StrideOneVector{Cdouble},
+    )
+      $cutest_cint_cshcprod(
+        status,
+        n,
+        m,
+        goth,
+        x,
+        y,
+        nnz_vector,
+        index_nz_vector,
+        vector,
+        nnz_result,
+        index_nz_result,
+        result,
+      )
+    end
+  end
 end
 
 """# cjprod
@@ -2854,30 +3208,36 @@ Usage:
   - result:  [OUT] Vector{Cdouble}
   - lresult: [IN] Vector{Cint}
 """
-function cjprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  gotj::StrideOneVector{Bool},
-  jtrans::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  vector::StrideOneVector{Cdouble},
-  lvector::StrideOneVector{Cint},
-  result::StrideOneVector{Cdouble},
-  lresult::StrideOneVector{Cint},
-)
-  cutest_cint_cjprod_(
-    status,
-    n,
-    m,
-    gotj,
-    jtrans,
-    x,
-    vector,
-    lvector,
-    result,
-    lresult,
-  )
+function cjprod end
+
+for (cutest_cint_cjprod, T) in ((:cutest_cint_cjprod_, :Float64),)
+  @eval begin
+    function cjprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      gotj::StrideOneVector{Bool},
+      jtrans::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      vector::StrideOneVector{Cdouble},
+      lvector::StrideOneVector{Cint},
+      result::StrideOneVector{Cdouble},
+      lresult::StrideOneVector{Cint},
+    )
+      $cutest_cint_cjprod(
+        status,
+        n,
+        m,
+        gotj,
+        jtrans,
+        x,
+        vector,
+        lvector,
+        result,
+        lresult,
+      )
+    end
+  end
 end
 
 """# csjprod
@@ -2915,38 +3275,44 @@ lvector, nnz_result, index_nz_result, result, lresult)
   - result:          [OUT] Vector{Cdouble}
   - lresult:         [IN] Vector{Cint}
 """
-function csjprod(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  gotj::StrideOneVector{Bool},
-  jtrans::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  nnz_vector::StrideOneVector{Cint},
-  index_nz_vector::StrideOneVector{Cint},
-  vector::StrideOneVector{Cdouble},
-  lvector::StrideOneVector{Cint},
-  nnz_result::StrideOneVector{Cint},
-  index_nz_result::StrideOneVector{Cint},
-  result::StrideOneVector{Cdouble},
-  lresult::StrideOneVector{Cint},
-)
-  cutest_cint_csjprod_(
-    status,
-    n,
-    m,
-    gotj,
-    jtrans,
-    x,
-    nnz_vector,
-    index_nz_vector,
-    vector,
-    lvector,
-    nnz_result,
-    index_nz_result,
-    result,
-    lresult,
-  )
+function csjprod end
+
+for (cutest_cint_csjprod, T) in ((:cutest_cint_csjprod_, :Float64),)
+  @eval begin
+    function csjprod(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      gotj::StrideOneVector{Bool},
+      jtrans::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      nnz_vector::StrideOneVector{Cint},
+      index_nz_vector::StrideOneVector{Cint},
+      vector::StrideOneVector{Cdouble},
+      lvector::StrideOneVector{Cint},
+      nnz_result::StrideOneVector{Cint},
+      index_nz_result::StrideOneVector{Cint},
+      result::StrideOneVector{Cdouble},
+      lresult::StrideOneVector{Cint},
+    )
+      $cutest_cint_csjprod(
+        status,
+        n,
+        m,
+        gotj,
+        jtrans,
+        x,
+        nnz_vector,
+        index_nz_vector,
+        vector,
+        lvector,
+        nnz_result,
+        index_nz_result,
+        result,
+        lresult,
+      )
+    end
+  end
 end
 
 """# cchprods
@@ -2979,30 +3345,36 @@ Usage:
   - chp_ind: [IN] Vector{Cint}
   - chp_ptr: [IN] Vector{Cint}
 """
-function cchprods(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  goth::StrideOneVector{Bool},
-  x::StrideOneVector{Cdouble},
-  vector::StrideOneVector{Cdouble},
-  lchp::StrideOneVector{Cint},
-  chp_val::StrideOneVector{Cdouble},
-  chp_ind::StrideOneVector{Cint},
-  chp_ptr::StrideOneVector{Cint},
-)
-  cutest_cint_cchprods_(
-    status,
-    n,
-    m,
-    goth,
-    x,
-    vector,
-    lchp,
-    chp_val,
-    chp_ind,
-    chp_ptr,
-  )
+function cchprods end
+
+for (cutest_cint_cchprods, T) in ((:cutest_cint_cchprods_, :Float64),)
+  @eval begin
+    function cchprods(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      goth::StrideOneVector{Bool},
+      x::StrideOneVector{Cdouble},
+      vector::StrideOneVector{Cdouble},
+      lchp::StrideOneVector{Cint},
+      chp_val::StrideOneVector{Cdouble},
+      chp_ind::StrideOneVector{Cint},
+      chp_ptr::StrideOneVector{Cint},
+    )
+      $cutest_cint_cchprods(
+        status,
+        n,
+        m,
+        goth,
+        x,
+        vector,
+        lchp,
+        chp_val,
+        chp_ind,
+        chp_ptr,
+      )
+    end
+  end
 end
 
 """# cchprodsp
@@ -3021,20 +3393,26 @@ Usage:
   - chp_ind: [IN] Vector{Cint}
   - chp_ptr: [IN] Vector{Cint}
 """
-function cchprodsp(
-  status::StrideOneVector{Cint},
-  m::StrideOneVector{Cint},
-  lchp::StrideOneVector{Cint},
-  chp_ind::StrideOneVector{Cint},
-  chp_ptr::StrideOneVector{Cint},
-)
-  cutest_cchprodsp_(
-    status,
-    m,
-    lchp,
-    chp_ind,
-    chp_ptr,
-  )
+function cchprodsp end
+
+for (cutest_cchprodsp, T) in ((:cutest_cchprodsp_, :Float64),)
+  @eval begin
+    function cchprodsp(
+      status::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      lchp::StrideOneVector{Cint},
+      chp_ind::StrideOneVector{Cint},
+      chp_ptr::StrideOneVector{Cint},
+    )
+      $cutest_cchprodsp(
+        status,
+        m,
+        lchp,
+        chp_ind,
+        chp_ptr,
+      )
+    end
+  end
 end
 
 """# uterminate
@@ -3051,8 +3429,14 @@ Usage:
 
   - status:  [OUT] Vector{Cint}
 """
-function uterminate(status::StrideOneVector{Cint})
-  cutest_uterminate_(status)
+function uterminate end
+
+for (cutest_uterminate, T) in ((:cutest_uterminate_, :Float64),)
+  @eval begin
+    function uterminate(status::StrideOneVector{Cint})
+      $cutest_uterminate(status)
+    end
+  end
 end
 
 """# cterminate
@@ -3069,8 +3453,14 @@ Usage:
 
   - status:  [OUT] Vector{Cint}
 """
-function cterminate(status::StrideOneVector{Cint})
-  cutest_cterminate_(status)
+function cterminate end
+
+for (cutest_cterminate, T) in ((:cutest_cterminate_, :Float64),)
+  @eval begin
+    function cterminate(status::StrideOneVector{Cint})
+      $cutest_cterminate(status)
+    end
+  end
 end
 
 """# cifn
@@ -3092,20 +3482,26 @@ Usage:
   - x:       [IN] Vector{Cdouble}
   - f:       [OUT] Vector{Cdouble}
 """
-function cifn(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  iprob::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  f::StrideOneVector{Cdouble},
-)
-  cutest_cifn_(
-    status,
-    n,
-    iprob,
-    x,
-    f,
-  )
+function cifn end
+
+for (cutest_cifn, T) in ((:cutest_cifn_, :Float64),)
+  @eval begin
+    function cifn(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      iprob::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      f::StrideOneVector{Cdouble},
+    )
+      $cutest_cifn(
+        status,
+        n,
+        iprob,
+        x,
+        f,
+      )
+    end
+  end
 end
 
 """# cisgr
@@ -3129,26 +3525,32 @@ Usage:
   - g_val:   [OUT] Vector{Cdouble}
   - g_var:   [OUT] Vector{Cint}
 """
-function cisgr(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  iprod::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  nnzg::StrideOneVector{Cint},
-  lg::StrideOneVector{Cint},
-  g_val::StrideOneVector{Cdouble},
-  g_var::StrideOneVector{Cint},
-)
-  cutest_cisgr_(
-    status,
-    n,
-    iprod,
-    x,
-    nnzg,
-    lg,
-    g_val,
-    g_var,
-  )
+function cisgr end
+
+for (cutest_cisgr, T) in ((:cutest_cisgr_, :Float64),)
+  @eval begin
+    function cisgr(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      iprod::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      nnzg::StrideOneVector{Cint},
+      lg::StrideOneVector{Cint},
+      g_val::StrideOneVector{Cdouble},
+      g_var::StrideOneVector{Cint},
+    )
+      $cutest_cisgr(
+        status,
+        n,
+        iprod,
+        x,
+        nnzg,
+        lg,
+        g_val,
+        g_var,
+      )
+    end
+  end
 end
 
 """# csgrp
@@ -3172,22 +3574,28 @@ Usage:
   - j_var:      [OUT] Vector{Cint}
   - j_fun:      [OUT] Vector{Cint}
 """
-function csgrp(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  nnzj::StrideOneVector{Cint},
-  lj::StrideOneVector{Cint},
-  j_var::StrideOneVector{Cint},
-  j_fun::StrideOneVector{Cint},
-)
-  cutest_csgrp_(
-    status,
-    n,
-    nnzj,
-    lj,
-    j_var,
-    j_fun,
-  )
+function csgrp end
+
+for (cutest_csgrp, T) in ((:cutest_csgrp_, :Float64),)
+  @eval begin
+    function csgrp(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      nnzj::StrideOneVector{Cint},
+      lj::StrideOneVector{Cint},
+      j_var::StrideOneVector{Cint},
+      j_fun::StrideOneVector{Cint},
+    )
+      $cutest_csgrp(
+        status,
+        n,
+        nnzj,
+        lj,
+        j_var,
+        j_fun,
+      )
+    end
+  end
 end
 
 """# cigr
@@ -3205,20 +3613,26 @@ For more information, run the shell command
   - x:       [IN] Vector{Cdouble}
   - g_val:   [OUT] Vector{Cdouble}
 """
-function cigr(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  iprob::StrideOneVector{Cint},
-  x::StrideOneVector{Cdouble},
-  g_val::StrideOneVector{Cdouble},
-)
-  cutest_cigr_(
-    status,
-    n,
-    iprob,
-    x,
-    g_val,
-  )
+function cigr end
+
+for (cutest_cigr, T) in ((:cutest_cigr_, :Float64),)
+  @eval begin
+    function cigr(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      iprob::StrideOneVector{Cint},
+      x::StrideOneVector{Cdouble},
+      g_val::StrideOneVector{Cdouble},
+    )
+      $cutest_cigr(
+        status,
+        n,
+        iprob,
+        x,
+        g_val,
+      )
+    end
+  end
 end
 
 """# csgrshp
@@ -3243,30 +3657,36 @@ For more information, run the shell command
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
-function csgrshp(
-  status::StrideOneVector{Cint},
-  n::StrideOneVector{Cint},
-  nnzj::StrideOneVector{Cint},
-  lj::StrideOneVector{Cint},
-  j_var::StrideOneVector{Cint},
-  j_fun::StrideOneVector{Cint},
-  nnzh::StrideOneVector{Cint},
-  lh::StrideOneVector{Cint},
-  h_row::StrideOneVector{Cint},
-  h_col::StrideOneVector{Cint},
-)
-  cutest_csgrshp_(
-    status,
-    n,
-    nnzj,
-    lj,
-    j_var,
-    j_fun,
-    nnzh,
-    lh,
-    h_row,
-    h_col,
-  )
+function csgrshp end
+
+for (cutest_csgrshp, T) in ((:cutest_csgrshp_, :Float64),)
+  @eval begin
+    function csgrshp(
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      nnzj::StrideOneVector{Cint},
+      lj::StrideOneVector{Cint},
+      j_var::StrideOneVector{Cint},
+      j_fun::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      h_row::StrideOneVector{Cint},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_csgrshp(
+        status,
+        n,
+        nnzj,
+        lj,
+        j_var,
+        j_fun,
+        nnzh,
+        lh,
+        h_row,
+        h_col,
+      )
+    end
+  end
 end
 
 """# csjp
@@ -3283,18 +3703,24 @@ For more information, run the shell command
   - jvar:    [OUT] Vector{Cint}
   - jcon:    [OUT] Vector{Cint}
 """
-function csjp(
-  status::StrideOneVector{Cint},
-  nnzj::StrideOneVector{Cint},
-  lj::StrideOneVector{Cint},
-  jvar::StrideOneVector{Cint},
-  jcon::StrideOneVector{Cint}
-)
-  cutest_csjp_(
-    status,
-    nnzj,
-    lj,
-    jvar,
-    jcon,
-  )
+function csjp end
+
+for (cutest_csjp, T) in ((:cutest_csjp_, :Float64),)
+  @eval begin
+    function csjp(
+      status::StrideOneVector{Cint},
+      nnzj::StrideOneVector{Cint},
+      lj::StrideOneVector{Cint},
+      jvar::StrideOneVector{Cint},
+      jcon::StrideOneVector{Cint}
+    )
+      $cutest_csjp(
+        status,
+        nnzj,
+        lj,
+        jvar,
+        jcon,
+      )
+    end
+  end
 end
