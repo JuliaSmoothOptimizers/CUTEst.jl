@@ -82,7 +82,8 @@ function CUTEstModel(
       isfile(outsdif) || error("CUTEst: no decoded problem found")
       libsif = "lib$(pname)_double"
       isfile("$libsif.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
-      cutest_lib_double = Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      cutest_lib_double =
+        Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
       sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = :double)
       build_libsif(path_sifname, precision = :double)

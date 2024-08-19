@@ -71,7 +71,7 @@ function main()
         block_single = block
         block_single = replace(block_single, "double" => "single")
         block_single = replace(block_single, routine => "$(routine)s_")
-        block_single = replace(block_single, ":$(routine)s_"  => ":$(routine)")
+        block_single = replace(block_single, ":$(routine)s_" => ":$(routine)")
         code = code * block_single
         (index < nblocks) && (code = code * "end\n")
       end
@@ -80,7 +80,7 @@ function main()
         block_quadruple = block
         block_quadruple = replace(block_quadruple, "double" => "quadruple")
         block_quadruple = replace(block_quadruple, routine => "$(routine)q_")
-        block_quadruple = replace(block_quadruple, ":$(routine)q_"  => ":$(routine)")
+        block_quadruple = replace(block_quadruple, ":$(routine)q_" => ":$(routine)")
         code = code * block_quadruple
         (index < nblocks) && (code = code * "end\n")
       end
