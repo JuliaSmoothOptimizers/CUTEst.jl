@@ -29,6 +29,7 @@ isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 
 function __init__()
   if !Sys.iswindows()
+    # gfortran is installed with an artifact on Windows
     if success(`bash -c "type gfortran"`)
       @static Sys.isapple() ? (global libgfortran = []) :
               (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
