@@ -3445,7 +3445,7 @@ for (fortran_open, T) in ((:fortran_open_s_, :Float32),
       ::Type{$T},
       funit,
       outsdif,
-      status
+      status,
     )
       $fortran_open(funit, outsdif, status)
     end
@@ -3458,9 +3458,24 @@ for (fortran_close, T) in ((:fortran_close_s_, :Float32),
     function fclose(
       ::Type{$T},
       funit,
-      status
+      status,
     )
       $fortran_close(funit, status)
+    end
+  end
+end
+
+
+for (cutest_cconst, T) in ((:cutest_cconst_s_, :Float32),
+                           (:cutest_cconst_  , :Float64))
+  @eval begin
+    function cconst(
+      ::Type{$T},
+      status,
+      m,
+      c,
+    )
+      $cutest_cconst(status, m, c)
     end
   end
 end

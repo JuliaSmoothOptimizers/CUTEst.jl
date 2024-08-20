@@ -102,12 +102,15 @@ function build_libsif(
   if precision == :single
     prec = "-sp"
     suffix = "_s"
+    library = "cutest_single"
   elseif precision == :double
     prec = "-dp"
     suffix = ""
+    library = "cutest_double"
   elseif precision == :quadruple
     prec = "-qp"
     suffix = "_q"
+    library = "cutest_quadruple"
   else
     error("The $precision precision is not supported.")
   end
@@ -128,25 +131,31 @@ function build_libsif(
       end
       if Sys.isapple()
         run(
-          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "libcutest_double.$(Libdl.dlext)")) $libgfortran`,
+          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "lib$library.$dlext)")) $libgfortran`,
         )
       elseif Sys.iswindows()
         @static if Sys.iswindows()
           mingw = Int == Int64 ? "mingw64" : "mingw32"
           gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
-          libcutest_double = joinpath(libpath, "libcutest_double.a")
+          libcutest = joinpath(libpath, "lib$library.a")
           run(
-            `$gfortran -shared -o $libsif.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $(libcutest_double) -Wl,--no-whole-archive`,
+            `$gfortran -shared -o $libsif.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
           )
         end
       else
         run(
-          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -lcutest_double $libgfortran`,
+          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -l$library $libgfortran`,
         )
       end
       delete_temp_files(suffix)
-      global cutest_lib_double =
-        Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      cutest_lib = Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      if precision == :single
+        global cutest_lib_single = cutest_lib
+      elseif precision == :double
+        global cutest_lib_double = cutest_lib
+      else  # precision = :quadruple
+        global cutest_lib_quadruple = cutest_lib
+      end
     end
   end
 end
