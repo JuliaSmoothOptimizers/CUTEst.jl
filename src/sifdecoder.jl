@@ -136,9 +136,11 @@ function build_libsif(
           `gfortran -shared -o $libsif.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $(libcutest_double) -Wl,--no-whole-archive`,
         )
       elseif Sys.iswindows()
+        mingw = Int == Int64 ? "mingw64" : "mingw32"
+        gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
         libcutest_double = joinpath(libpath, "libcutest_double.a")
         run(
-          `gfortran -shared -o $libname.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $(libcutest_double) -Wl,--no-whole-archive`,
+          `$gfortran -shared -o $libname.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $(libcutest_double) -Wl,--no-whole-archive`,
         )
       else
         run(
