@@ -1,15 +1,15 @@
 mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
   meta::NLPModelMeta{T, Vector{T}}
   counters::Counters
-  hrows::Vector{Int32}
-  hcols::Vector{Int32}
+  hrows::Vector{Cint}
+  hcols::Vector{Cint}
 
-  jrows::Vector{Int32}
-  jcols::Vector{Int32}
+  jrows::Vector{Cint}
+  jcols::Vector{Cint}
 
   blin::Vector{T}
-  clinrows::Vector{Int32}
-  clincols::Vector{Int32}
+  clinrows::Vector{Cint}
+  clincols::Vector{Cint}
   clinvals::Vector{T}
 
   workspace_nvar::Vector{T}
@@ -91,7 +91,7 @@ function CUTEstModel(
       build_libsif(path_sifname, precision = :double)
     end
     status = Ref{Cint}(0)
-    fortran_open_(Ref{Cint}(funit), outsdif, status)
+    fopen(Float64, Ref{Cint}(funit), outsdif, status)
     cutest_error(status[])
   end
 
@@ -100,7 +100,7 @@ function CUTEstModel(
   nvar = Ref{Cint}(0)
   ncon = Ref{Cint}(0)
 
-  cdimen(status, Ref{Cint}(funit), nvar, ncon)
+  cdimen(Float64, status, Ref{Cint}(funit), nvar, ncon)
   cutest_error(status[])
 
   x = Vector{Float64}(undef, nvar[])
@@ -118,6 +118,7 @@ function CUTEstModel(
     v_order = lvfirst ? Ref{Cint}(1) : Ref{Cint}(0)
     # Equality constraints first, linear constraints first, nonlinear variables first.
     csetup(
+      Float64,
       status,
       Ref{Cint}(funit),
       Ref{Cint}(0),
@@ -137,7 +138,7 @@ function CUTEstModel(
       v_order,
     )
   else
-    usetup(status, Ref{Cint}(funit), Ref{Cint}(0), Ref{Cint}(6), nvar, x, bl, bu)
+    usetup(Float64, status, Ref{Cint}(funit), Ref{Cint}(0), Ref{Cint}(6), nvar, x, bl, bu)
   end
   cutest_error(status[])
 
@@ -153,30 +154,30 @@ function CUTEstModel(
   nnzj = Ref{Cint}(0)
 
   if ncon[] > 0
-    cdimsh(status, nnzh)
-    cdimsj(status, nnzj)
+    cdimsh(Float64, status, nnzh)
+    cdimsj(Float64, status, nnzj)
     nnzj[] -= nvar[]  # nnzj also counts the nonzeros in the objective gradient.
   else
-    udimsh(status, nnzh)
+    udimsh(Float64, status, nnzh)
   end
   cutest_error(status[])
 
   # Sparsity pattern of the hessian
-  hrows = Vector{Int32}(undef, nnzh[])
-  hcols = Vector{Int32}(undef, nnzh[])
+  hrows = Vector{Cint}(undef, nnzh[])
+  hcols = Vector{Cint}(undef, nnzh[])
   this_nnzh = Ref{Cint}(0)
   if ncon[] > 0
-    cshp(status, nvar, this_nnzh, nnzh, hcols, hrows)
+    cshp(Float64, status, nvar, this_nnzh, nnzh, hcols, hrows)
   else
-    ushp(status, nvar, this_nnzh, nnzh, hcols, hrows)
+    ushp(Float64, status, nvar, this_nnzh, nnzh, hcols, hrows)
   end
   cutest_error(status[])
 
   # sparsity pattern of the jacobian
-  jrows = Vector{Int32}(undef, nnzj[])
-  jcols = Vector{Int32}(undef, nnzj[])
+  jrows = Vector{Cint}(undef, nnzj[])
+  jcols = Vector{Cint}(undef, nnzj[])
   this_nnzj = Ref{Cint}(0)
-  csjp(status, this_nnzj, nnzj, jcols, jrows)
+  csjp(Float64, status, this_nnzj, nnzj, jcols, jrows)
   cutest_error(status[])
 
   # compute lin_nnzj and nln_nnzj
@@ -189,8 +190,8 @@ function CUTEstModel(
   nln_nnzj = nnzj[] - lin_nnzj
 
   blin = Vector{Float64}(undef, nlin)
-  clinrows = Vector{Int32}(undef, lin_nnzj)
-  clincols = Vector{Int32}(undef, lin_nnzj)
+  clinrows = Vector{Cint}(undef, lin_nnzj)
+  clincols = Vector{Cint}(undef, lin_nnzj)
   clinvals = Vector{Float64}(undef, lin_nnzj)
   Jval = Vector{Cdouble}(undef, nvar[])
   Jvar = Vector{Cint}(undef, nvar[])
@@ -202,6 +203,7 @@ function CUTEstModel(
   for j in lin
     x0 .= 0.0
     ccifsg(
+      Float64,
       Ref{Cint}(0),
       nvar,
       Ref{Cint}(j),
@@ -232,7 +234,7 @@ function CUTEstModel(
   workspace_nvar = Vector{Float64}(undef, nvar)
   workspace_ncon = Vector{Float64}(undef, ncon)
 
-  fortran_close_(Ref{Cint}(funit), status)
+  fclose(Float64, Ref{Cint}(funit), status)
   cutest_error(status[])
 
   meta = NLPModelMeta(
@@ -275,15 +277,15 @@ function CUTEstModel(
   return nlp
 end
 
-function cutest_finalize(nlp::CUTEstModel)
+function cutest_finalize(nlp::CUTEstModel{Float64})
   global cutest_instances_double
   cutest_instances_double == 0 && return
   global cutest_lib_double
   status = Ref{Cint}(0)
   if nlp.meta.ncon > 0
-    cterminate(status)
+    cterminate(Float64, status)
   else
-    uterminate(status)
+    uterminate(Float64, status)
   end
   cutest_error(status[])
   Libdl.dlclose(cutest_lib_double)
@@ -293,10 +295,10 @@ function cutest_finalize(nlp::CUTEstModel)
 end
 
 struct CUTEstException <: Exception
-  info::Int32
+  info::Cint
   msg::String
 
-  function CUTEstException(info::Int32)
+  function CUTEstException(info::Cint)
     if info == 1
       msg = "memory allocation error"
     elseif info == 2
@@ -310,7 +312,7 @@ struct CUTEstException <: Exception
   end
 end
 
-CUTEstException(info::Integer) = CUTEstException(convert(Int32, info))
+CUTEstException(info::Integer) = CUTEstException(info |> Cint)
 
 function cutest_error(status::Cint)  # Handle nonzero exit codes.
   (status > 0) && throw(CUTEstException(status))

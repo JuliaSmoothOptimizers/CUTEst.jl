@@ -46,13 +46,13 @@ for p in problems
 
   println("$p: julia interface: f(x₀) = $(obj(nlp, x0))")
 
-  io_err = Cint[0]
+  status = Cint[0]
   fval = [0.0]
   if ncon > 0
     cx = zeros(ncon)
-    cfn(io_err, Cint[nvar], Cint[ncon], x0, fval, cx)
+    cfn(Float64, status, Cint[nvar], Cint[ncon], x0, fval, cx)
   else
-    ufn(io_err, Cint[nvar], x0, fval)
+    ufn(Float64, status, Cint[nvar], x0, fval)
   end
   println("$p: core interface: f(x₀) = $(fval[1])")
 
