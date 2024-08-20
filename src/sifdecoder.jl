@@ -10,7 +10,7 @@ The supported sets are:
 """
 function set_mastsif(set::String = "sifcollection")
   if set == "sifcollection"
-    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-c71425cc7f54")
+    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-9c590588ccca")
   elseif set == "maros-meszaros"
     ENV["MASTSIF"] = joinpath(artifact"maros-meszaros", "optrove-maros-meszaros-9adfb5707b1e")
   elseif set == "netlib-lp"
