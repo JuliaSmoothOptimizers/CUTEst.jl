@@ -6,7 +6,7 @@ using JuliaFormatter
 
 function main()
   cd(@__DIR__)
-  include_dir = joinpath(CUTEst_jll.artifact_dir, "include")
+  include_dir = "/home/alexis/Applications/CUTEst/include"  # joinpath(CUTEst_jll.artifact_dir, "include")
   headers = map(header -> joinpath(include_dir, header), ["cutest.h"])
 
   options = load_options(joinpath(@__DIR__, "cutest.toml"))
@@ -33,16 +33,6 @@ function main()
   code = replace(code, "Ptr{ip_}" => "Ptr{Cint}")
   code = replace(code, "Ptr{ipc_}" => "Ptr{Cint}")
 
-  # errors in cutest.h
-  code = replace(code, "cutest_cint_csgrp_" => "cutest_csgrp_")
-  code = replace(code, "cutest_cint_csjp_" => "cutest_csjp_")
-  code = replace(code, "cutest_cint_csgrshp_" => "cutest_csgrshp_")
-  code = replace(code, "cutest_cint_cchprodsp_" => "cutest_cchprodsp_")
-  code = replace(code, "CUTEST_cconst_s" => "cutest_cconst_s_")
-  code = replace(code, "CUTEST_cconst" => "cutest_cconst_")
-  code = replace(code, "_q(" => "_q_(")
-  code = replace(code, "CUTEST_" => "cutest_")
-
   blocks = split(code, "end\n")
   nblocks = length(blocks)
   code = ""
@@ -60,35 +50,6 @@ function main()
     end
     code = code * block
     (index < nblocks) && (code = code * "end\n")
-  end
-
-  # Add wrappers of "fortran_open" and "fortran_close" for single and quadruple precisison
-  blocks = split(code, "end\n")
-  nblocks = length(blocks)
-  code = ""
-  for (index, block) in enumerate(blocks)
-    code = code * block
-    (index < nblocks) && (code = code * "end\n")
-    for routine in ("fortran_open_", "fortran_close_")
-      # add the routines `fortran_open_s_` and `fortran_close_s_`
-      if contains(block, routine)
-        block_single = block
-        block_single = replace(block_single, "double" => "single")
-        block_single = replace(block_single, routine => "$(routine)s_")
-        block_single = replace(block_single, ":$(routine)s_" => ":$(routine)")
-        code = code * block_single
-        (index < nblocks) && (code = code * "end\n")
-      end
-      # Add the routines `fortran_open_q_` and `fortran_close_q_`
-      if contains(block, routine)
-        block_quadruple = block
-        block_quadruple = replace(block_quadruple, "double" => "quadruple")
-        block_quadruple = replace(block_quadruple, routine => "$(routine)q_")
-        block_quadruple = replace(block_quadruple, ":$(routine)q_" => ":$(routine)")
-        code = code * block_quadruple
-        (index < nblocks) && (code = code * "end\n")
-      end
-    end
   end
 
   write(path, code)

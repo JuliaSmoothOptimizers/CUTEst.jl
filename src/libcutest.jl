@@ -108,11 +108,6 @@ function cutest_cdimsh_(status, nnzh)
   @ccall $ptr_cutest_cdimsh_(status::Ptr{Cint}, nnzh::Ptr{Cint})::Cvoid
 end
 
-function cutest_cdimcop(status, nnzohp)
-  ptr_cutest_cdimcop = Libdl.dlsym(cutest_lib_double, :cutest_cdimcop)
-  @ccall $ptr_cutest_cdimcop(status::Ptr{Cint}, nnzohp::Ptr{Cint})::Cvoid
-end
-
 function cutest_cdimohp_(status, nnzohp)
   ptr_cutest_cdimohp_ = Libdl.dlsym(cutest_lib_double, :cutest_cdimohp_)
   @ccall $ptr_cutest_cdimohp_(status::Ptr{Cint}, nnzohp::Ptr{Cint})::Cvoid
@@ -561,6 +556,16 @@ function cutest_cterminate_(status)
   @ccall $ptr_cutest_cterminate_(status::Ptr{Cint})::Cvoid
 end
 
+function fortran_open_(funit, fname, ierr)
+  ptr_fortran_open_ = Libdl.dlsym(cutest_lib_double, :fortran_open_)
+  @ccall $ptr_fortran_open_(funit::Ptr{Cint}, fname::Ptr{Cchar}, ierr::Ptr{Cint})::Cvoid
+end
+
+function fortran_close_(funit, ierr)
+  ptr_fortran_close_ = Libdl.dlsym(cutest_lib_double, :fortran_close_)
+  @ccall $ptr_fortran_close_(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
+end
+
 function cutest_usetup_s_(status, funit, iout, io_buffer, n, x, bl, bu)
   ptr_cutest_usetup_s_ = Libdl.dlsym(cutest_lib_single, :cutest_usetup_s_)
   @ccall $ptr_cutest_usetup_s_(status::Ptr{Cint}, funit::Ptr{Cint}, iout::Ptr{Cint},
@@ -635,11 +640,6 @@ end
 function cutest_cdimsh_s_(status, nnzh)
   ptr_cutest_cdimsh_s_ = Libdl.dlsym(cutest_lib_single, :cutest_cdimsh_s_)
   @ccall $ptr_cutest_cdimsh_s_(status::Ptr{Cint}, nnzh::Ptr{Cint})::Cvoid
-end
-
-function cutest_cdimcop_s(status, nnzohp)
-  ptr_cutest_cdimcop_s = Libdl.dlsym(cutest_lib_single, :cutest_cdimcop_s)
-  @ccall $ptr_cutest_cdimcop_s(status::Ptr{Cint}, nnzohp::Ptr{Cint})::Cvoid
 end
 
 function cutest_cdimohp_s_(status, nnzohp)
@@ -1099,6 +1099,16 @@ function cutest_cterminate_s_(status)
   @ccall $ptr_cutest_cterminate_s_(status::Ptr{Cint})::Cvoid
 end
 
+function fortran_open_s_(funit, fname, ierr)
+  ptr_fortran_open_s_ = Libdl.dlsym(cutest_lib_single, :fortran_open_s_)
+  @ccall $ptr_fortran_open_s_(funit::Ptr{Cint}, fname::Ptr{Cchar}, ierr::Ptr{Cint})::Cvoid
+end
+
+function fortran_close_s_(funit, ierr)
+  ptr_fortran_close_s_ = Libdl.dlsym(cutest_lib_single, :fortran_close_s_)
+  @ccall $ptr_fortran_close_s_(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
+end
+
 function cutest_udimen_q_(status, funit, n)
   ptr_cutest_udimen_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_udimen_q_)
   @ccall $ptr_cutest_udimen_q_(status::Ptr{Cint}, funit::Ptr{Cint}, n::Ptr{Cint})::Cvoid
@@ -1132,9 +1142,9 @@ function cutest_cdimen_q_(status, funit, n, m)
                                m::Ptr{Cint})::Cvoid
 end
 
-function cutest_cnoobj_q_(status, funit, noobj)
-  ptr_cutest_cnoobj_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cnoobj_q_)
-  @ccall $ptr_cutest_cnoobj_q_(status::Ptr{Cint}, funit::Ptr{Cint}, noobj::Ptr{Bool})::Cvoid
+function cutest_cint_cnoobj_q_(status, funit, noobj)
+  ptr_cutest_cint_cnoobj_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cnoobj_q_)
+  @ccall $ptr_cutest_cint_cnoobj_q_(status::Ptr{Cint}, funit::Ptr{Cint}, noobj::Ptr{Bool})::Cvoid
 end
 
 function cutest_cdimsg_q_(status, nnzg)
@@ -1150,11 +1160,6 @@ end
 function cutest_cdimsh_q_(status, nnzh)
   ptr_cutest_cdimsh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cdimsh_q_)
   @ccall $ptr_cutest_cdimsh_q_(status::Ptr{Cint}, nnzh::Ptr{Cint})::Cvoid
-end
-
-function cutest_cdimcop_q_(status, nnzohp)
-  ptr_cutest_cdimcop_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cdimcop_q_)
-  @ccall $ptr_cutest_cdimcop_q_(status::Ptr{Cint}, nnzohp::Ptr{Cint})::Cvoid
 end
 
 function cutest_cdimohp_q_(status, nnzohp)
@@ -1272,33 +1277,13 @@ function cutest_cterminate_q_(status)
   @ccall $ptr_cutest_cterminate_q_(status::Ptr{Cint})::Cvoid
 end
 
-function fortran_open_(funit, fname, ierr)
-  ptr_fortran_open_ = Libdl.dlsym(cutest_lib_double, :fortran_open_)
-  @ccall $ptr_fortran_open_(funit::Ptr{Cint}, fname::Ptr{Cchar}, ierr::Ptr{Cint})::Cvoid
-end
-
-function fortran_open_s_(funit, fname, ierr)
-  ptr_fortran_open_s_ = Libdl.dlsym(cutest_lib_single, :fortran_open_)
-  @ccall $ptr_fortran_open_s_(funit::Ptr{Cint}, fname::Ptr{Cchar}, ierr::Ptr{Cint})::Cvoid
-end
-
 function fortran_open_q_(funit, fname, ierr)
-  ptr_fortran_open_q_ = Libdl.dlsym(cutest_lib_quadruple, :fortran_open_)
+  ptr_fortran_open_q_ = Libdl.dlsym(cutest_lib_quadruple, :fortran_open_q_)
   @ccall $ptr_fortran_open_q_(funit::Ptr{Cint}, fname::Ptr{Cchar}, ierr::Ptr{Cint})::Cvoid
 end
 
-function fortran_close_(funit, ierr)
-  ptr_fortran_close_ = Libdl.dlsym(cutest_lib_double, :fortran_close_)
-  @ccall $ptr_fortran_close_(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
-end
-
-function fortran_close_s_(funit, ierr)
-  ptr_fortran_close_s_ = Libdl.dlsym(cutest_lib_single, :fortran_close_)
-  @ccall $ptr_fortran_close_s_(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
-end
-
 function fortran_close_q_(funit, ierr)
-  ptr_fortran_close_q_ = Libdl.dlsym(cutest_lib_quadruple, :fortran_close_)
+  ptr_fortran_close_q_ = Libdl.dlsym(cutest_lib_quadruple, :fortran_close_q_)
   @ccall $ptr_fortran_close_q_(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
 end
 #! format: on
