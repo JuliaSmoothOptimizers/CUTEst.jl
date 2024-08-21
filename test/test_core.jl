@@ -264,7 +264,25 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
         y1[k] = 0.0
       end
 
-      csgrsh(Float64, st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun, nnzh, lh, Hval, Hrow, Hcol)
+      csgrsh(
+        Float64,
+        st,
+        nvar,
+        ncon,
+        x0,
+        y0,
+        False,
+        nnzj,
+        lj,
+        Jval,
+        Jvar,
+        Jfun,
+        nnzh,
+        lh,
+        Hval,
+        Hrow,
+        Hcol,
+      )
       gx = zeros(nvar[1])
       Jx = zeros(ncon[1], nvar[1])
       for k = 1:nnzj[1]
@@ -284,7 +302,25 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
-      csgrsh(Float64, st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun, nnzh, lh, Hval, Hrow, Hcol)
+      csgrsh(
+        Float64,
+        st,
+        nvar,
+        ncon,
+        x0,
+        y0,
+        True,
+        nnzj,
+        lj,
+        Jval,
+        Jvar,
+        Jfun,
+        nnzh,
+        lh,
+        Hval,
+        Hrow,
+        Hcol,
+      )
       glx = zeros(nvar[1])
       Jx = zeros(ncon[1], nvar[1])
       for k = 1:nnzj[1]
@@ -423,7 +459,25 @@ function test_coreinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel; test_v
           Hrow,
           Hcol,
         )
-        csgrsh(Float64, st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun, nnzh, lh, Hval, Hrow, Hcol)
+        csgrsh(
+          Float64,
+          st,
+          nvar,
+          ncon,
+          x0,
+          y0,
+          True,
+          nnzj,
+          lj,
+          Jval,
+          Jvar,
+          Jfun,
+          nnzh,
+          lh,
+          Hval,
+          Hrow,
+          Hcol,
+        )
         chprod(Float64, st, nvar, ncon, False, x0, y0, v, Hv)
         chcprod(Float64, st, nvar, ncon, False, x0, y0, v, Hv)
         cjprod(Float64, st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon)

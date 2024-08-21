@@ -76,7 +76,8 @@ function CUTEstModel(
     end
   end
 
-  (precision != :double) && error("The current version of CUTEst_jll.jl only supports double precision.")
+  (precision != :double) &&
+    error("The current version of CUTEst_jll.jl only supports double precision.")
   if precision == :single
     T = Float32
     global cutest_instances_single
@@ -85,10 +86,10 @@ function CUTEstModel(
     T = Float64
     global cutest_instances_double
     cutest_instances_double > 0 && error("CUTEst: call finalize on current model first")
-  # elseif precision == :quadruple
-  #   T = Float128
-  #   global cutest_instances_quadruple
-  #   cutest_instances_quadruple > 0 && error("CUTEst: call finalize on current model first")
+    # elseif precision == :quadruple
+    #   T = Float128
+    #   global cutest_instances_quadruple
+    #   cutest_instances_quadruple > 0 && error("CUTEst: call finalize on current model first")
   else
     error("The $precision precision is not supported.")
   end
@@ -306,16 +307,16 @@ function CUTEstModel(
   return nlp
 end
 
-function cutest_finalize(nlp::CUTEstModel{T}) where T
+function cutest_finalize(nlp::CUTEstModel{T}) where {T}
   if T == Float32
     global cutest_instances_single
     cutest_instances_single == 0 && return
   elseif T == Float64
     global cutest_instances_double
     cutest_instances_double == 0 && return
-  # else  # precision = :quadruple
-  #   global cutest_instances_quadruple
-  #   cutest_instances_quadruple == 0 && return
+    # else  # precision = :quadruple
+    #   global cutest_instances_quadruple
+    #   cutest_instances_quadruple == 0 && return
   end
   status = Ref{Cint}(0)
   if nlp.meta.ncon > 0
@@ -334,11 +335,11 @@ function cutest_finalize(nlp::CUTEstModel{T}) where T
     Libdl.dlclose(cutest_lib_double)
     cutest_instances_double -= 1
     cutest_lib_double = C_NULL
-  # else  # precision = :quadruple
-  #   global cutest_lib_quadruple
-  #   Libdl.dlclose(cutest_lib_quadruple)
-  #   cutest_instances_quadruple -= 1
-  #   cutest_lib_quadruple = C_NULL
+    # else  # precision = :quadruple
+    #   global cutest_lib_quadruple
+    #   Libdl.dlclose(cutest_lib_quadruple)
+    #   cutest_instances_quadruple -= 1
+    #   cutest_lib_quadruple = C_NULL
   end
   return
 end
