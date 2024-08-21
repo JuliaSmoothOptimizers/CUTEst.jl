@@ -135,8 +135,9 @@ function build_libsif(
         end
       end
       if Sys.isapple()
+        libcutest = joinpath(libpath, "lib$library.$dlext")
         run(
-          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "lib$library.$dlext)")) $libgfortran`,
+          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $libcutest $libgfortran`,
         )
       elseif Sys.iswindows()
         @static if Sys.iswindows()
