@@ -97,8 +97,7 @@ Usage:
 """
 function usetup end
 
-for (cutest_usetup, T) in ((:cutest_usetup_s_, :Float32),
-                           (:cutest_usetup_  , :Float64))
+for (cutest_usetup, T) in ((:cutest_usetup_s_, :Float32), (:cutest_usetup_, :Float64))
   @eval begin
     function usetup(
       ::Type{$T},
@@ -155,8 +154,8 @@ linear, e_order, l_order, v_order)
 """
 function csetup end
 
-for (cutest_cint_csetup, T) in ((:cutest_cint_csetup_s_, :Float32),
-                                (:cutest_cint_csetup_  , :Float64))
+for (cutest_cint_csetup, T) in
+    ((:cutest_cint_csetup_s_, :Float32), (:cutest_cint_csetup_, :Float64))
   @eval begin
     function csetup(
       ::Type{$T},
@@ -222,8 +221,7 @@ Usage:
 """
 function udimen end
 
-for (cutest_udimen, T) in ((:cutest_udimen_s_, :Float32),
-                           (:cutest_udimen_  , :Float64))
+for (cutest_udimen, T) in ((:cutest_udimen_s_, :Float32), (:cutest_udimen_, :Float64))
   @eval begin
     function udimen(
       ::Type{$T},
@@ -258,8 +256,7 @@ Usage:
 """
 function udimsh end
 
-for (cutest_udimsh, T) in ((:cutest_udimsh_s_, :Float32),
-                           (:cutest_udimsh_  , :Float64))
+for (cutest_udimsh, T) in ((:cutest_udimsh_s_, :Float32), (:cutest_udimsh_, :Float64))
   @eval begin
     function udimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
       $cutest_udimsh(status, nnzh)
@@ -293,8 +290,7 @@ Usage:
 """
 function udimse end
 
-for (cutest_udimse, T) in ((:cutest_udimse_s_, :Float32),
-                           (:cutest_udimse_  , :Float64))
+for (cutest_udimse, T) in ((:cutest_udimse_s_, :Float32), (:cutest_udimse_, :Float64))
   @eval begin
     function udimse(
       ::Type{$T},
@@ -330,8 +326,7 @@ Usage:
 """
 function uvartype end
 
-for (cutest_uvartype, T) in ((:cutest_uvartype_s_, :Float32),
-                             (:cutest_uvartype_  , :Float64))
+for (cutest_uvartype, T) in ((:cutest_uvartype_s_, :Float32), (:cutest_uvartype_, :Float64))
   @eval begin
     function uvartype(
       ::Type{$T},
@@ -367,8 +362,7 @@ To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
 function unames end
 
-for (cutest_unames, T) in ((:cutest_unames_s_, :Float32),
-                           (:cutest_unames_  , :Float64))
+for (cutest_unames, T) in ((:cutest_unames_s_, :Float32), (:cutest_unames_, :Float64))
   @eval begin
     function unames(
       ::Type{$T},
@@ -404,8 +398,7 @@ Usage:
 """
 function ureport end
 
-for (cutest_ureport, T) in ((:cutest_ureport_s_, :Float32),
-                            (:cutest_ureport_  , :Float64))
+for (cutest_ureport, T) in ((:cutest_ureport_s_, :Float32), (:cutest_ureport_, :Float64))
   @eval begin
     function ureport(
       ::Type{$T},
@@ -443,8 +436,7 @@ Usage:
 """
 function cdimen end
 
-for (cutest_cdimen, T) in ((:cutest_cdimen_s_, :Float32),
-                           (:cutest_cdimen_  , :Float64))
+for (cutest_cdimen, T) in ((:cutest_cdimen_s_, :Float32), (:cutest_cdimen_, :Float64))
   @eval begin
     function cdimen(
       ::Type{$T},
@@ -483,8 +475,7 @@ Usage:
 """
 function cdimsj end
 
-for (cutest_cdimsj, T) in ((:cutest_cdimsj_s_, :Float32),
-                           (:cutest_cdimsj_  , :Float64))
+for (cutest_cdimsj, T) in ((:cutest_cdimsj_s_, :Float32), (:cutest_cdimsj_, :Float64))
   @eval begin
     function cdimsj(::Type{$T}, status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
       $cutest_cdimsj(status, nnzj)
@@ -516,8 +507,7 @@ Usage:
 """
 function cdimsh end
 
-for (cutest_cdimsh, T) in ((:cutest_cdimsh_s_, :Float32),
-                           (:cutest_cdimsh_  , :Float64))
+for (cutest_cdimsh, T) in ((:cutest_cdimsh_s_, :Float32), (:cutest_cdimsh_, :Float64))
   @eval begin
     function cdimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
       $cutest_cdimsh(status, nnzh)
@@ -549,8 +539,7 @@ Usage:
 """
 function cdimchp end
 
-for (cutest_cdimchp, T) in ((:cutest_cdimchp_s_, :Float32),
-                            (:cutest_cdimchp_  , :Float64))
+for (cutest_cdimchp, T) in ((:cutest_cdimchp_s_, :Float32), (:cutest_cdimchp_, :Float64))
   @eval begin
     function cdimchp(::Type{$T}, status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
       $cutest_cdimchp(status, nnzchp)
@@ -586,8 +575,7 @@ Usage:
 """
 function cdimse end
 
-for (cutest_cdimse, T) in ((:cutest_cdimse_s_, :Float32),
-                           (:cutest_cdimse_  , :Float64))
+for (cutest_cdimse, T) in ((:cutest_cdimse_s_, :Float32), (:cutest_cdimse_, :Float64))
   @eval begin
     function cdimse(
       ::Type{$T},
@@ -614,8 +602,7 @@ linear_constraints)
 """
 function cstats end
 
-for (cutest_cstats, T) in ((:cutest_cstats_s_, :Float32),
-                           (:cutest_cstats_  , :Float64))
+for (cutest_cstats, T) in ((:cutest_cstats_s_, :Float32), (:cutest_cstats_, :Float64))
   @eval begin
     function cstats(
       ::Type{$T},
@@ -660,8 +647,7 @@ Usage:
 """
 function cvartype end
 
-for (cutest_cvartype, T) in ((:cutest_cvartype_s_, :Float32),
-                             (:cutest_cvartype_  , :Float64))
+for (cutest_cvartype, T) in ((:cutest_cvartype_s_, :Float32), (:cutest_cvartype_, :Float64))
   @eval begin
     function cvartype(
       ::Type{$T},
@@ -703,8 +689,7 @@ or `cname[:,i]`.
 """
 function cnames end
 
-for (cutest_cnames, T) in ((:cutest_cnames_s_, :Float32),
-                           (:cutest_cnames_  , :Float64))
+for (cutest_cnames, T) in ((:cutest_cnames_s_, :Float32), (:cutest_cnames_, :Float64))
   @eval begin
     function cnames(
       ::Type{$T},
@@ -744,8 +729,7 @@ Usage:
 """
 function creport end
 
-for (cutest_creport, T) in ((:cutest_creport_s_, :Float32),
-                            (:cutest_creport_  , :Float64))
+for (cutest_creport, T) in ((:cutest_creport_s_, :Float32), (:cutest_creport_, :Float64))
   @eval begin
     function creport(
       ::Type{$T},
@@ -783,10 +767,14 @@ To get useful names, use `String(cname[:,i])`.
 """
 function connames end
 
-for (cutest_connames, T) in ((:cutest_connames_s_, :Float32),
-                             (:cutest_connames_  , :Float64))
+for (cutest_connames, T) in ((:cutest_connames_s_, :Float32), (:cutest_connames_, :Float64))
   @eval begin
-    function connames(::Type{$T}, status::StrideOneVector{Cint}, m::StrideOneVector{Cint}, cname::Matrix{UInt8})
+    function connames(
+      ::Type{$T},
+      status::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      cname::Matrix{UInt8},
+    )
       $cutest_connames(status, m, cname)
     end
   end
@@ -816,8 +804,7 @@ Usage:
 """
 function pname end
 
-for (cutest_pname, T) in ((:cutest_pname_s_, :Float32),
-                          (:cutest_pname_  , :Float64))
+for (cutest_pname, T) in ((:cutest_pname_s_, :Float32), (:cutest_pname_, :Float64))
   @eval begin
     function pname(
       ::Type{$T},
@@ -853,8 +840,7 @@ To get a useful name, use `String(pname)`.
 """
 function probname end
 
-for (cutest_probname, T) in ((:cutest_probname_s_, :Float32),
-                             (:cutest_probname_  , :Float64))
+for (cutest_probname, T) in ((:cutest_probname_s_, :Float32), (:cutest_probname_, :Float64))
   @eval begin
     function probname(::Type{$T}, status::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
       $cutest_probname(status, pname)
@@ -887,10 +873,14 @@ To get useful names, use `String(vname[:, i])`.
 """
 function varnames end
 
-for (cutest_varnames, T) in ((:cutest_varnames_s_, :Float32),
-                             (:cutest_varnames_  , :Float64))
+for (cutest_varnames, T) in ((:cutest_varnames_s_, :Float32), (:cutest_varnames_, :Float64))
   @eval begin
-    function varnames(::Type{$T}, status::StrideOneVector{Cint}, n::StrideOneVector{Cint}, vname::Matrix{UInt8})
+    function varnames(
+      ::Type{$T},
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      vname::Matrix{UInt8},
+    )
       $cutest_varnames(status, n, vname)
     end
   end
@@ -918,8 +908,7 @@ Usage:
 """
 function ufn end
 
-for (cutest_ufn, T) in ((:cutest_ufn_s_, :Float32),
-                        (:cutest_ufn_  , :Float64))
+for (cutest_ufn, T) in ((:cutest_ufn_s_, :Float32), (:cutest_ufn_, :Float64))
   @eval begin
     function ufn(
       ::Type{$T},
@@ -955,8 +944,7 @@ Usage:
 """
 function ugr end
 
-for (cutest_ugr, T) in ((:cutest_ugr_s_, :Float32),
-                        (:cutest_ugr_  , :Float64))
+for (cutest_ugr, T) in ((:cutest_ugr_s_, :Float32), (:cutest_ugr_, :Float64))
   @eval begin
     function ugr(
       ::Type{$T},
@@ -995,8 +983,7 @@ Usage:
 """
 function uofg end
 
-for (cutest_cint_uofg, T) in ((:cutest_cint_uofg_s_, :Float32),
-                              (:cutest_cint_uofg_  , :Float64))
+for (cutest_cint_uofg, T) in ((:cutest_cint_uofg_s_, :Float32), (:cutest_cint_uofg_, :Float64))
   @eval begin
     function uofg(
       ::Type{$T},
@@ -1036,8 +1023,7 @@ Usage:
 """
 function udh end
 
-for (cutest_udh, T) in ((:cutest_udh_s_, :Float32),
-                        (:cutest_udh_  , :Float64))
+for (cutest_udh, T) in ((:cutest_udh_s_, :Float32), (:cutest_udh_, :Float64))
   @eval begin
     function udh(
       ::Type{$T},
@@ -1077,8 +1063,7 @@ Usage:
 """
 function ushp end
 
-for (cutest_ushp, T) in ((:cutest_ushp_s_, :Float32),
-                         (:cutest_ushp_  , :Float64))
+for (cutest_ushp, T) in ((:cutest_ushp_s_, :Float32), (:cutest_ushp_, :Float64))
   @eval begin
     function ushp(
       ::Type{$T},
@@ -1122,8 +1107,7 @@ Usage:
 """
 function ush end
 
-for (cutest_ush, T) in ((:cutest_ush_s_, :Float32),
-                        (:cutest_ush_  , :Float64))
+for (cutest_ush, T) in ((:cutest_ush_s_, :Float32), (:cutest_ush_, :Float64))
   @eval begin
     function ush(
       ::Type{$T},
@@ -1175,8 +1159,7 @@ lhe_val, he_val, byrows)
 """
 function ueh end
 
-for (cutest_cint_ueh, T) in ((:cutest_cint_ueh_s_, :Float32),
-                             (:cutest_cint_ueh_  , :Float64))
+for (cutest_cint_ueh, T) in ((:cutest_cint_ueh_s_, :Float32), (:cutest_cint_ueh_, :Float64))
   @eval begin
     function ueh(
       ::Type{$T},
@@ -1237,8 +1220,7 @@ Usage:
 """
 function ugrdh end
 
-for (cutest_ugrdh, T) in ((:cutest_ugrdh_s_, :Float32),
-                          (:cutest_ugrdh_  , :Float64))
+for (cutest_ugrdh, T) in ((:cutest_ugrdh_s_, :Float32), (:cutest_ugrdh_, :Float64))
   @eval begin
     function ugrdh(
       ::Type{$T},
@@ -1283,8 +1265,7 @@ Usage:
 """
 function ugrsh end
 
-for (cutest_ugrsh, T) in ((:cutest_ugrsh_s_, :Float32),
-                          (:cutest_ugrsh_  , :Float64))
+for (cutest_ugrsh, T) in ((:cutest_ugrsh_s_, :Float32), (:cutest_ugrsh_, :Float64))
   @eval begin
     function ugrsh(
       ::Type{$T},
@@ -1339,8 +1320,7 @@ lhe_val, he_val, byrows)
 """
 function ugreh end
 
-for (cutest_cint_ugreh, T) in ((:cutest_cint_ugreh_s_, :Float32),
-                               (:cutest_cint_ugreh_  , :Float64))
+for (cutest_cint_ugreh, T) in ((:cutest_cint_ugreh_s_, :Float32), (:cutest_cint_ugreh_, :Float64))
   @eval begin
     function ugreh(
       ::Type{$T},
@@ -1402,8 +1382,8 @@ Usage:
 """
 function uhprod end
 
-for (cutest_cint_uhprod, T) in ((:cutest_cint_uhprod_s_, :Float32),
-                                (:cutest_cint_uhprod_  , :Float64))
+for (cutest_cint_uhprod, T) in
+    ((:cutest_cint_uhprod_s_, :Float32), (:cutest_cint_uhprod_, :Float64))
   @eval begin
     function uhprod(
       ::Type{$T},
@@ -1451,8 +1431,8 @@ Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function ushprod end
 
-for (cutest_cint_ushprod, T) in ((:cutest_cint_ushprod_s_, :Float32),
-                                 (:cutest_cint_ushprod_  , :Float64))
+for (cutest_cint_ushprod, T) in
+    ((:cutest_cint_ushprod_s_, :Float32), (:cutest_cint_ushprod_, :Float64))
   @eval begin
     function ushprod(
       ::Type{$T},
@@ -1510,8 +1490,7 @@ Usage:
 """
 function ubandh end
 
-for (cutest_ubandh, T) in ((:cutest_ubandh_s_, :Float32),
-                           (:cutest_ubandh_  , :Float64))
+for (cutest_ubandh, T) in ((:cutest_ubandh_s_, :Float32), (:cutest_ubandh_, :Float64))
   @eval begin
     function ubandh(
       ::Type{$T},
@@ -1555,8 +1534,7 @@ Usage:
 """
 function cfn end
 
-for (cutest_cfn, T) in ((:cutest_cfn_s_, :Float32),
-                        (:cutest_cfn_  , :Float64))
+for (cutest_cfn, T) in ((:cutest_cfn_s_, :Float32), (:cutest_cfn_, :Float64))
   @eval begin
     function cfn(
       ::Type{$T},
@@ -1599,8 +1577,7 @@ Usage:
 """
 function cofg end
 
-for (cutest_cint_cofg, T) in ((:cutest_cint_cofg_s_, :Float32),
-                              (:cutest_cint_cofg_  , :Float64))
+for (cutest_cint_cofg, T) in ((:cutest_cint_cofg_s_, :Float32), (:cutest_cint_cofg_, :Float64))
   @eval begin
     function cofg(
       ::Type{$T},
@@ -1646,8 +1623,7 @@ Usage:
 """
 function cofsg end
 
-for (cutest_cint_cofsg, T) in ((:cutest_cint_cofsg_s_, :Float32),
-                               (:cutest_cint_cofsg_  , :Float64))
+for (cutest_cint_cofsg, T) in ((:cutest_cint_cofsg_s_, :Float32), (:cutest_cint_cofsg_, :Float64))
   @eval begin
     function cofsg(
       ::Type{$T},
@@ -1697,8 +1673,7 @@ Usage:
 """
 function ccfg end
 
-for (cutest_cint_ccfg, T) in ((:cutest_cint_ccfg_s_, :Float32),
-                              (:cutest_cint_ccfg_  , :Float64))
+for (cutest_cint_ccfg, T) in ((:cutest_cint_ccfg_s_, :Float32), (:cutest_cint_ccfg_, :Float64))
   @eval begin
     function ccfg(
       ::Type{$T},
@@ -1747,8 +1722,7 @@ Usage:
 """
 function clfg end
 
-for (cutest_cint_clfg, T) in ((:cutest_cint_clfg_s_, :Float32),
-                              (:cutest_cint_clfg_  , :Float64))
+for (cutest_cint_clfg, T) in ((:cutest_cint_clfg_s_, :Float32), (:cutest_cint_clfg_, :Float64))
   @eval begin
     function clfg(
       ::Type{$T},
@@ -1799,8 +1773,7 @@ Usage:
 """
 function cgr end
 
-for (cutest_cint_cgr, T) in ((:cutest_cint_cgr_s_, :Float32),
-                             (:cutest_cint_cgr_  , :Float64))
+for (cutest_cint_cgr, T) in ((:cutest_cint_cgr_s_, :Float32), (:cutest_cint_cgr_, :Float64))
   @eval begin
     function cgr(
       ::Type{$T},
@@ -1856,8 +1829,7 @@ Usage:
 """
 function csgr end
 
-for (cutest_cint_csgr, T) in ((:cutest_cint_csgr_s_, :Float32),
-                              (:cutest_cint_csgr_  , :Float64))
+for (cutest_cint_csgr, T) in ((:cutest_cint_csgr_s_, :Float32), (:cutest_cint_csgr_, :Float64))
   @eval begin
     function csgr(
       ::Type{$T},
@@ -1911,8 +1883,7 @@ Usage:
 """
 function ccfsg end
 
-for (cutest_cint_ccfsg, T) in ((:cutest_cint_ccfsg_s_, :Float32),
-                               (:cutest_cint_ccfsg_  , :Float64))
+for (cutest_cint_ccfsg, T) in ((:cutest_cint_ccfsg_s_, :Float32), (:cutest_cint_ccfsg_, :Float64))
   @eval begin
     function ccfsg(
       ::Type{$T},
@@ -1962,8 +1933,7 @@ Usage:
 """
 function ccifg end
 
-for (cutest_cint_ccifg, T) in ((:cutest_cint_ccifg_s_, :Float32),
-                               (:cutest_cint_ccifg_  , :Float64))
+for (cutest_cint_ccifg, T) in ((:cutest_cint_ccifg_s_, :Float32), (:cutest_cint_ccifg_, :Float64))
   @eval begin
     function ccifg(
       ::Type{$T},
@@ -2013,8 +1983,8 @@ Usage:
 """
 function ccifsg end
 
-for (cutest_cint_ccifsg, T) in ((:cutest_cint_ccifsg_s_, :Float32),
-                                (:cutest_cint_ccifsg_  , :Float64))
+for (cutest_cint_ccifsg, T) in
+    ((:cutest_cint_ccifsg_s_, :Float32), (:cutest_cint_ccifsg_, :Float64))
   @eval begin
     function ccifsg(
       ::Type{$T},
@@ -2071,8 +2041,7 @@ Usage:
 """
 function cgrdh end
 
-for (cutest_cint_cgrdh, T) in ((:cutest_cint_cgrdh_s_, :Float32),
-                               (:cutest_cint_cgrdh_  , :Float64))
+for (cutest_cint_cgrdh, T) in ((:cutest_cint_cgrdh_s_, :Float32), (:cutest_cint_cgrdh_, :Float64))
   @eval begin
     function cgrdh(
       ::Type{$T},
@@ -2124,8 +2093,7 @@ Usage:
 """
 function cdh end
 
-for (cutest_cdh, T) in ((:cutest_cdh_s_, :Float32),
-                        (:cutest_cdh_  , :Float64))
+for (cutest_cdh, T) in ((:cutest_cdh_s_, :Float32), (:cutest_cdh_, :Float64))
   @eval begin
     function cdh(
       ::Type{$T},
@@ -2171,8 +2139,7 @@ Usage:
 """
 function cdhc end
 
-for (cutest_cdhc, T) in ((:cutest_cdhc_s_, :Float32),
-                         (:cutest_cdhc_  , :Float64))
+for (cutest_cdhc, T) in ((:cutest_cdhc_s_, :Float32), (:cutest_cdhc_, :Float64))
   @eval begin
     function cdhc(
       ::Type{$T},
@@ -2216,8 +2183,7 @@ Usage:
 """
 function cshp end
 
-for (cutest_cshp, T) in ((:cutest_cshp_s_, :Float32),
-                         (:cutest_cshp_  , :Float64))
+for (cutest_cshp, T) in ((:cutest_cshp_s_, :Float32), (:cutest_cshp_, :Float64))
   @eval begin
     function cshp(
       ::Type{$T},
@@ -2265,8 +2231,7 @@ Usage:
 """
 function csh end
 
-for (cutest_csh, T) in ((:cutest_csh_s_, :Float32),
-                        (:cutest_csh_  , :Float64))
+for (cutest_csh, T) in ((:cutest_csh_s_, :Float32), (:cutest_csh_, :Float64))
   @eval begin
     function csh(
       ::Type{$T},
@@ -2318,8 +2283,7 @@ Usage:
 """
 function cshc end
 
-for (cutest_cshc, T) in ((:cutest_cshc_s_, :Float32),
-                         (:cutest_cshc_  , :Float64))
+for (cutest_cshc, T) in ((:cutest_cshc_s_, :Float32), (:cutest_cshc_, :Float64))
   @eval begin
     function cshc(
       ::Type{$T},
@@ -2378,8 +2342,7 @@ he_row, lhe_val, he_val, byrows)
 """
 function ceh end
 
-for (cutest_ceh, T) in ((:cutest_ceh_s_, :Float32),
-                        (:cutest_ceh_  , :Float64))
+for (cutest_ceh, T) in ((:cutest_ceh_s_, :Float32), (:cutest_ceh_, :Float64))
   @eval begin
     function ceh(
       ::Type{$T},
@@ -2446,8 +2409,7 @@ Usage:
 """
 function cidh end
 
-for (cutest_cidh, T) in ((:cutest_cidh_s_, :Float32),
-                         (:cutest_cidh_  , :Float64))
+for (cutest_cidh, T) in ((:cutest_cidh_s_, :Float32), (:cutest_cidh_, :Float64))
   @eval begin
     function cidh(
       ::Type{$T},
@@ -2494,8 +2456,7 @@ Usage:
 """
 function cish end
 
-for (cutest_cish, T) in ((:cutest_cish_s_, :Float32),
-                         (:cutest_cish_  , :Float64))
+for (cutest_cish, T) in ((:cutest_cish_s_, :Float32), (:cutest_cish_, :Float64))
   @eval begin
     function cish(
       ::Type{$T},
@@ -2555,8 +2516,8 @@ h_val, h_row, h_col)
 """
 function csgrsh end
 
-for (cutest_cint_csgrsh, T) in ((:cutest_cint_csgrsh_s_, :Float32),
-                                (:cutest_cint_csgrsh_  , :Float64))
+for (cutest_cint_csgrsh, T) in
+    ((:cutest_cint_csgrsh_s_, :Float32), (:cutest_cint_csgrsh_, :Float64))
   @eval begin
     function csgrsh(
       ::Type{$T},
@@ -2648,8 +2609,8 @@ byrows)
 """
 function csgreh end
 
-for (cutest_cint_csgreh, T) in ((:cutest_cint_csgreh_s_, :Float32),
-                                (:cutest_cint_csgreh_  , :Float64))
+for (cutest_cint_csgreh, T) in
+    ((:cutest_cint_csgreh_s_, :Float32), (:cutest_cint_csgreh_, :Float64))
   @eval begin
     function csgreh(
       ::Type{$T},
@@ -2730,8 +2691,8 @@ Usage:
 """
 function chprod end
 
-for (cutest_cint_chprod, T) in ((:cutest_cint_chprod_s_, :Float32),
-                                (:cutest_cint_chprod_  , :Float64))
+for (cutest_cint_chprod, T) in
+    ((:cutest_cint_chprod_s_, :Float32), (:cutest_cint_chprod_, :Float64))
   @eval begin
     function chprod(
       ::Type{$T},
@@ -2786,8 +2747,7 @@ Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function cshprod end
 
-for (cutest_cshprod, T) in ((:cutest_cshprod_s_, :Float32),
-                            (:cutest_cshprod_  , :Float64))
+for (cutest_cshprod, T) in ((:cutest_cshprod_s_, :Float32), (:cutest_cshprod_, :Float64))
   @eval begin
     function cshprod(
       ::Type{$T},
@@ -2852,8 +2812,8 @@ Usage:
 """
 function chcprod end
 
-for (cutest_cint_chcprod, T) in ((:cutest_cint_chcprod_s_, :Float32),
-                                 (:cutest_cint_chcprod_  , :Float64))
+for (cutest_cint_chcprod, T) in
+    ((:cutest_cint_chcprod_s_, :Float32), (:cutest_cint_chcprod_, :Float64))
   @eval begin
     function chcprod(
       ::Type{$T},
@@ -2906,8 +2866,8 @@ nnz_result, index_nz_result, result)
 """
 function cshcprod end
 
-for (cutest_cint_cshcprod, T) in ((:cutest_cint_cshcprod_s_, :Float32),
-                                  (:cutest_cint_cshcprod_  , :Float64))
+for (cutest_cint_cshcprod, T) in
+    ((:cutest_cint_cshcprod_s_, :Float32), (:cutest_cint_cshcprod_, :Float64))
   @eval begin
     function cshcprod(
       ::Type{$T},
@@ -2974,8 +2934,8 @@ Usage:
 """
 function cjprod end
 
-for (cutest_cint_cjprod, T) in ((:cutest_cint_cjprod_s_, :Float32),
-                                (:cutest_cint_cjprod_  , :Float64))
+for (cutest_cint_cjprod, T) in
+    ((:cutest_cint_cjprod_s_, :Float32), (:cutest_cint_cjprod_, :Float64))
   @eval begin
     function cjprod(
       ::Type{$T},
@@ -3032,8 +2992,8 @@ lvector, nnz_result, index_nz_result, result, lresult)
 """
 function csjprod end
 
-for (cutest_cint_csjprod, T) in ((:cutest_cint_csjprod_s_, :Float32),
-                                 (:cutest_cint_csjprod_  , :Float64))
+for (cutest_cint_csjprod, T) in
+    ((:cutest_cint_csjprod_s_, :Float32), (:cutest_cint_csjprod_, :Float64))
   @eval begin
     function csjprod(
       ::Type{$T},
@@ -3104,8 +3064,8 @@ Usage:
 """
 function cchprods end
 
-for (cutest_cint_cchprods, T) in ((:cutest_cint_cchprods_s_, :Float32),
-                                  (:cutest_cint_cchprods_  , :Float64))
+for (cutest_cint_cchprods, T) in
+    ((:cutest_cint_cchprods_s_, :Float32), (:cutest_cint_cchprods_, :Float64))
   @eval begin
     function cchprods(
       ::Type{$T},
@@ -3143,8 +3103,7 @@ Usage:
 """
 function cchprodsp end
 
-for (cutest_cchprodsp, T) in ((:cutest_cchprodsp_s_, :Float32),
-                              (:cutest_cchprodsp_  , :Float64))
+for (cutest_cchprodsp, T) in ((:cutest_cchprodsp_s_, :Float32), (:cutest_cchprodsp_, :Float64))
   @eval begin
     function cchprodsp(
       ::Type{$T},
@@ -3175,8 +3134,7 @@ Usage:
 """
 function uterminate end
 
-for (cutest_uterminate, T) in ((:cutest_uterminate_s_, :Float32),
-                               (:cutest_uterminate_  , :Float64))
+for (cutest_uterminate, T) in ((:cutest_uterminate_s_, :Float32), (:cutest_uterminate_, :Float64))
   @eval begin
     function uterminate(::Type{$T}, status::StrideOneVector{Cint})
       $cutest_uterminate(status)
@@ -3200,8 +3158,7 @@ Usage:
 """
 function cterminate end
 
-for (cutest_cterminate, T) in ((:cutest_cterminate_s_, :Float32),
-                               (:cutest_cterminate_  , :Float64))
+for (cutest_cterminate, T) in ((:cutest_cterminate_s_, :Float32), (:cutest_cterminate_, :Float64))
   @eval begin
     function cterminate(::Type{$T}, status::StrideOneVector{Cint})
       $cutest_cterminate(status)
@@ -3230,8 +3187,7 @@ Usage:
 """
 function cifn end
 
-for (cutest_cifn, T) in ((:cutest_cifn_s_, :Float32),
-                         (:cutest_cifn_  , :Float64))
+for (cutest_cifn, T) in ((:cutest_cifn_s_, :Float32), (:cutest_cifn_, :Float64))
   @eval begin
     function cifn(
       ::Type{$T},
@@ -3269,8 +3225,7 @@ Usage:
 """
 function cisgr end
 
-for (cutest_cisgr, T) in ((:cutest_cisgr_s_, :Float32),
-                          (:cutest_cisgr_  , :Float64))
+for (cutest_cisgr, T) in ((:cutest_cisgr_s_, :Float32), (:cutest_cisgr_, :Float64))
   @eval begin
     function cisgr(
       ::Type{$T},
@@ -3311,8 +3266,7 @@ Usage:
 """
 function csgrp end
 
-for (cutest_csgrp, T) in ((:cutest_csgrp_s_, :Float32),
-                          (:cutest_csgrp_  , :Float64))
+for (cutest_csgrp, T) in ((:cutest_csgrp_s_, :Float32), (:cutest_csgrp_, :Float64))
   @eval begin
     function csgrp(
       ::Type{$T},
@@ -3345,8 +3299,7 @@ For more information, run the shell command
 """
 function cigr end
 
-for (cutest_cigr, T) in ((:cutest_cigr_s_, :Float32),
-                         (:cutest_cigr_  , :Float64))
+for (cutest_cigr, T) in ((:cutest_cigr_s_, :Float32), (:cutest_cigr_, :Float64))
   @eval begin
     function cigr(
       ::Type{$T},
@@ -3385,8 +3338,7 @@ For more information, run the shell command
 """
 function csgrshp end
 
-for (cutest_csgrshp, T) in ((:cutest_csgrshp_s_, :Float32),
-                            (:cutest_csgrshp_  , :Float64))
+for (cutest_csgrshp, T) in ((:cutest_csgrshp_s_, :Float32), (:cutest_csgrshp_, :Float64))
   @eval begin
     function csgrshp(
       ::Type{$T},
@@ -3422,8 +3374,7 @@ For more information, run the shell command
 """
 function csjp end
 
-for (cutest_csjp, T) in ((:cutest_csjp_s_, :Float32),
-                         (:cutest_csjp_  , :Float64))
+for (cutest_csjp, T) in ((:cutest_csjp_s_, :Float32), (:cutest_csjp_, :Float64))
   @eval begin
     function csjp(
       ::Type{$T},
@@ -3438,43 +3389,25 @@ for (cutest_csjp, T) in ((:cutest_csjp_s_, :Float32),
   end
 end
 
-for (fortran_open, T) in ((:fortran_open_s_, :Float32),
-                          (:fortran_open_  , :Float64))
+for (fortran_open, T) in ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64))
   @eval begin
-    function fopen(
-      ::Type{$T},
-      funit,
-      outsdif,
-      status,
-    )
+    function fopen(::Type{$T}, funit, outsdif, status)
       $fortran_open(funit, outsdif, status)
     end
   end
 end
 
-for (fortran_close, T) in ((:fortran_close_s_, :Float32),
-                           (:fortran_close_  , :Float64))
+for (fortran_close, T) in ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64))
   @eval begin
-    function fclose(
-      ::Type{$T},
-      funit,
-      status,
-    )
+    function fclose(::Type{$T}, funit, status)
       $fortran_close(funit, status)
     end
   end
 end
 
-
-for (cutest_cconst, T) in ((:cutest_cconst_s_, :Float32),
-                           (:cutest_cconst_  , :Float64))
+for (cutest_cconst, T) in ((:cutest_cconst_s_, :Float32), (:cutest_cconst_, :Float64))
   @eval begin
-    function cconst(
-      ::Type{$T},
-      status,
-      m,
-      c,
-    )
+    function cconst(::Type{$T}, status, m, c)
       $cutest_cconst(status, m, c)
     end
   end
