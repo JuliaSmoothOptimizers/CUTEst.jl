@@ -137,7 +137,7 @@ function build_libsif(
       if Sys.isapple()
         libcutest = joinpath(libpath, "lib$library.$dlext")
         run(
-          `gfortran -dynamiclib -o $libsif.$dlext $(object_files) -Wl,-rpath $libpath $libcutest`,
+          `gfortran -dynamiclib -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`,
         )
       elseif Sys.iswindows()
         @static if Sys.iswindows()
@@ -151,7 +151,7 @@ function build_libsif(
       else
         libcutest = joinpath(libpath, "lib$library.$dlext")
         run(
-          `gfortran -shared -o $libsif.$dlext $(object_files) -Wl,-rpath $libpath $libcutest`,
+          `gfortran -shared -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`,
         )
       end
       delete_temp_files(suffix)
