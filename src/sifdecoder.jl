@@ -136,9 +136,7 @@ function build_libsif(
       end
       if Sys.isapple()
         libcutest = joinpath(libpath, "lib$library.$dlext")
-        run(
-          `gfortran -dynamiclib -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`,
-        )
+        run(`gfortran -dynamiclib -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`)
       elseif Sys.iswindows()
         @static if Sys.iswindows()
           mingw = Int == Int64 ? "mingw64" : "mingw32"
