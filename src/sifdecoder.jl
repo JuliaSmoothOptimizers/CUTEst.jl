@@ -150,7 +150,7 @@ function build_libsif(
         end
       else
         run(
-          `gfortran -shared -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath -L$libpath -l$library $libgfortran`,
+          `gfortran -shared -o $libsif.$dlext $(object_files) -Wl,-rpath=$libpath -L$libpath -l$library $libgfortran`,
         )
       end
       delete_temp_files(suffix)
