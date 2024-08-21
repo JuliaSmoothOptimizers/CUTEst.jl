@@ -4,16 +4,16 @@ status = Cint[0]
 
 function coverage_increase(nlp::CUTEstModel{Float64})
   n, m = nlp.meta.nvar, nlp.meta.ncon
-  pname = Vector{UInt8}(undef, 10)
+  pname = Vector{Cchar}(undef, 10)
   probname(Float64, status, pname)
-  vname = Matrix{UInt8}(undef, 10, n)
+  vname = Matrix{Cchar}(undef, 10, n)
   varnames(Float64, status, Cint[n], vname)
   if m == 0
     unames(Float64, status, Cint[n], pname, vname)
     calls, time = Vector{Float64}(undef, 4), Vector{Float64}(undef, 2)
     ureport(Float64, status, calls, time)
   else
-    cname = Matrix{UInt8}(undef, 10, m)
+    cname = Matrix{Cchar}(undef, 10, m)
     connames(Float64, status, Cint[m], cname)
     cnames(Float64, status, Cint[n], Cint[m], pname, vname, cname)
     calls, time = Vector{Float64}(undef, 7), Vector{Float64}(undef, 2)

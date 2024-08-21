@@ -355,8 +355,8 @@ Usage:
 
   - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
-  - pname:   [OUT] Vector{UInt8}
-  - vname:   [OUT] Vector{UInt8}
+  - pname:   [OUT] Vector{Cchar}
+  - vname:   [OUT] Vector{Cchar}
 
 To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
@@ -368,8 +368,8 @@ for (cutest_unames, T) in ((:cutest_unames_s_, :Float32), (:cutest_unames_, :Flo
       ::Type{$T},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
-      pname::StrideOneVector{UInt8},
-      vname::Matrix{UInt8},
+      pname::StrideOneVector{Cchar},
+      vname::Matrix{Cchar},
     )
       $cutest_unames(status, n, pname, vname)
     end
@@ -680,9 +680,9 @@ Usage:
   - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
   - m:       [IN] Vector{Cint}
-  - pname:   [OUT] Vector{UInt8}
-  - vname:   [OUT] Vector{UInt8}
-  - cname:   [OUT] Vector{UInt8}
+  - pname:   [OUT] Vector{Cchar}
+  - vname:   [OUT] Vector{Cchar}
+  - cname:   [OUT] Vector{Cchar}
 
 To get useful names, use `String(x)` where `x` can be `pname`, `vname[:,i]`,
 or `cname[:,i]`.
@@ -696,9 +696,9 @@ for (cutest_cnames, T) in ((:cutest_cnames_s_, :Float32), (:cutest_cnames_, :Flo
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
-      pname::StrideOneVector{UInt8},
-      vname::Matrix{UInt8},
-      cname::Matrix{UInt8},
+      pname::StrideOneVector{Cchar},
+      vname::Matrix{Cchar},
+      cname::Matrix{Cchar},
     )
       $cutest_cnames(status, n, m, pname, vname, cname)
     end
@@ -761,7 +761,7 @@ Usage:
 
   - status:  [OUT] Vector{Cint}
   - m:       [IN] Vector{Cint}
-  - cname:   [OUT] Vector{UInt8}
+  - cname:   [OUT] Vector{Cchar}
 
 To get useful names, use `String(cname[:,i])`.
 """
@@ -773,7 +773,7 @@ for (cutest_connames, T) in ((:cutest_connames_s_, :Float32), (:cutest_connames_
       ::Type{$T},
       status::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
-      cname::Matrix{UInt8},
+      cname::Matrix{Cchar},
     )
       $cutest_connames(status, m, cname)
     end
@@ -800,7 +800,7 @@ Usage:
 
   - status:  [OUT] Vector{Cint}
   - input:   [IN] Vector{Cint}
-  - pname:   [OUT] Vector{UInt8}
+  - pname:   [OUT] Vector{Cchar}
 """
 function pname end
 
@@ -810,7 +810,7 @@ for (cutest_pname, T) in ((:cutest_pname_s_, :Float32), (:cutest_pname_, :Float6
       ::Type{$T},
       status::StrideOneVector{Cint},
       input::StrideOneVector{Cint},
-      pname::StrideOneVector{UInt8},
+      pname::StrideOneVector{Cchar},
     )
       $cutest_pname(status, input, pname)
     end
@@ -834,7 +834,7 @@ Usage:
     probname(status, pname)
 
   - status:  [OUT] Vector{Cint}
-  - pname:   [OUT] Vector{UInt8}
+  - pname:   [OUT] Vector{Cchar}
 
 To get a useful name, use `String(pname)`.
 """
@@ -842,7 +842,7 @@ function probname end
 
 for (cutest_probname, T) in ((:cutest_probname_s_, :Float32), (:cutest_probname_, :Float64))
   @eval begin
-    function probname(::Type{$T}, status::StrideOneVector{Cint}, pname::StrideOneVector{UInt8})
+    function probname(::Type{$T}, status::StrideOneVector{Cint}, pname::StrideOneVector{Cchar})
       $cutest_probname(status, pname)
     end
   end
@@ -867,7 +867,7 @@ Usage:
 
   - status:  [OUT] Vector{Cint}
   - n:       [IN] Vector{Cint}
-  - vname:   [OUT] Vector{UInt8}
+  - vname:   [OUT] Vector{Cchar}
 
 To get useful names, use `String(vname[:, i])`.
 """
@@ -879,7 +879,7 @@ for (cutest_varnames, T) in ((:cutest_varnames_s_, :Float32), (:cutest_varnames_
       ::Type{$T},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
-      vname::Matrix{UInt8},
+      vname::Matrix{Cchar},
     )
       $cutest_varnames(status, n, vname)
     end
