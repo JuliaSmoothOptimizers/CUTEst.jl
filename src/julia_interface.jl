@@ -2,40 +2,6 @@ export cons_coord, cons_coord!, consjac
 
 using NLPModels, SparseArrays
 
-# function NLPModels.obj(nlp::CUTEstModel{T}, x::StrideOneVector{T}) where T
-#   @lencheck nlp.meta.nvar x
-#   nvar = Ref{Cint}(nlp.meta.nvar)
-#   status = Ref{Cint}(0)
-#   f = Ref{T}(0)
-#   ufn(T, status, nvar, x, f)
-#   increment!(nlp, :neval_obj)
-#   return f[]
-# end
-
-# function NLPModels.obj(nlp::CUTEstModel{T}, x::AbstractVector) where T
-#   @lencheck nlp.meta.nvar x
-#   nvar = Ref{Cint}(nlp.meta.nvar)
-#   status = Ref{Cint}(0)
-#   x_ = Vector{T}(x)
-#   obj(nlp, x_)
-# end
-
-# function NLPModels.grad!(nlp::CUTEstModel{T}, x::StrideOneVector{T}, g::StrideOneVector{T}) where T
-#   @lencheck nlp.meta.nvar x g
-#   nvar = Ref{Cint}(nlp.meta.nvar)
-#   status = Ref{Cint}(0)
-#   ugr(T, status, nvar, x, g)
-#   increment!(nlp, :neval_grad)
-#   return g
-# end
-
-# function NLPModels.grad!(nlp::CUTEstModel{T}, x::AbstractVector, g::AbstractVector) where T
-#   @lencheck nlp.meta.nvar x g
-#   x_ = Vector{T}(x)
-#   g_ = Vector{T}(g)
-#   grad!(nlp, x_, g_)
-# end
-
 function NLPModels.objcons(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
   @lencheck nlp.meta.nvar x
   c = Vector{T}(undef, nlp.meta.ncon)
