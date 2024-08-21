@@ -1,37 +1,37 @@
 # Tests made to increase the coverage.
 
-io_err = Cint[0]
+status = Cint[0]
 
-function coverage_increase(nlp::CUTEstModel)
+function coverage_increase(nlp::CUTEstModel{Float64})
   n, m = nlp.meta.nvar, nlp.meta.ncon
-  pname = Array{UInt8, 1}(undef, 10)
-  probname(io_err, pname)
-  vname = Array{UInt8, 2}(undef, 10, n)
-  varnames(io_err, Cint[n], vname)
+  pname = Vector{UInt8}(undef, 10)
+  probname(Float64, status, pname)
+  vname = Matrix{UInt8}(undef, 10, n)
+  varnames(Float64, status, Cint[n], vname)
   if m == 0
-    unames(io_err, Cint[n], pname, vname)
-    calls, time = Array{Cdouble}(undef, 4), Array{Cdouble}(undef, 2)
-    ureport(io_err, calls, time)
+    unames(Float64, status, Cint[n], pname, vname)
+    calls, time = Vector{Float64}(undef, 4), Vector{Float64}(undef, 2)
+    ureport(Float64, status, calls, time)
   else
-    cname = Array{UInt8, 2}(undef, 10, m)
-    connames(io_err, Cint[m], cname)
-    cnames(io_err, Cint[n], Cint[m], pname, vname, cname)
-    calls, time = Array{Cdouble}(undef, 7), Array{Cdouble}(undef, 2)
-    creport(io_err, calls, time)
+    cname = Matrix{UInt8}(undef, 10, m)
+    connames(Float64, status, Cint[m], cname)
+    cnames(Float64, status, Cint[n], Cint[m], pname, vname, cname)
+    calls, time = Vector{Float64}(undef, 7), Vector{Float64}(undef, 2)
+    creport(Float64, status, calls, time)
     nvo, nvc, ec, lc = Cint[0], Cint[0], Cint[0], Cint[0]
-    cstats(io_err, nvo, nvc, ec, lc)
+    cstats(Float64, status, nvo, nvc, ec, lc)
 
     lchp = Cint[0]
-    cdimchp(io_err, lchp)
-    chp_ind, chp_ptr = Array{Cint}(undef, lchp[1]), Array{Cint}(undef, m + 1)
-    cchprodsp(io_err, Cint[m], lchp, chp_ind, chp_ptr)
+    cdimchp(Float64, status, lchp)
+    chp_ind, chp_ptr = Vector{Cint}(undef, lchp[1]), Vector{Cint}(undef, m + 1)
+    cchprodsp(Float64, status, Cint[m], lchp, chp_ind, chp_ptr)
     lj, nnzj = Cint[0], Cint[0]
-    cdimsj(io_err, lj)
-    j_var, j_fun = Array{Cint}(undef, lj[1]), Array{Cint}(undef, lj[1])
-    csgrp(io_err, Cint[n], nnzj, lj, j_var, j_fun)
+    cdimsj(Float64, status, lj)
+    j_var, j_fun = Vector{Cint}(undef, lj[1]), Vector{Cint}(undef, lj[1])
+    csgrp(Float64, status, Cint[n], nnzj, lj, j_var, j_fun)
     lh, nnzh = Cint[0], Cint[0]
-    cdimsh(io_err, lh)
-    h_row, h_col = Array{Cint}(undef, lh[1]), Array{Cint}(undef, lh[1])
-    csgrshp(io_err, Cint[n], nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
+    cdimsh(Float64, status, lh)
+    h_row, h_col = Vector{Cint}(undef, lh[1]), Vector{Cint}(undef, lh[1])
+    csgrshp(Float64, status, Cint[n], nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
   end
 end

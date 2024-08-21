@@ -1,15 +1,15 @@
 mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
   meta::NLPModelMeta{T, Vector{T}}
   counters::Counters
-  hrows::Vector{Int32}
-  hcols::Vector{Int32}
+  hrows::Vector{Cint}
+  hcols::Vector{Cint}
 
-  jrows::Vector{Int32}
-  jcols::Vector{Int32}
+  jrows::Vector{Cint}
+  jcols::Vector{Cint}
 
   blin::Vector{T}
-  clinrows::Vector{Int32}
-  clincols::Vector{Int32}
+  clinrows::Vector{Cint}
+  clincols::Vector{Cint}
   clinvals::Vector{T}
 
   workspace_nvar::Vector{T}
@@ -48,6 +48,7 @@ finalize(nlp)
 
 ## Keyword arguments
 
+- `precision::Symbol = :double` : Precision of the CUTEstModel.
 - `decode::Bool = true`: Whether to call sifdecoder.
 - `verbose::Bool = false`: Passed to sifdecoder.
 - `efirst`::Bool = true`: Equalities first?
@@ -57,6 +58,7 @@ finalize(nlp)
 function CUTEstModel(
   name::AbstractString,
   args...;
+  precision::Symbol = :double,
   decode::Bool = true,
   verbose::Bool = false,
   efirst::Bool = true,
@@ -74,24 +76,45 @@ function CUTEstModel(
     end
   end
 
+  (precision != :double) && error("The current version of CUTEst_jll.jl only supports double precision.")
+  if precision == :single
+    T = Float32
+    global cutest_instances_single
+    cutest_instances_single > 0 && error("CUTEst: call finalize on current model first")
+  elseif precision == :double
+    T = Float64
+    global cutest_instances_double
+    cutest_instances_double > 0 && error("CUTEst: call finalize on current model first")
+  # elseif precision == :quadruple
+  #   T = Float128
+  #   global cutest_instances_quadruple
+  #   cutest_instances_quadruple > 0 && error("CUTEst: call finalize on current model first")
+  else
+    error("The $precision precision is not supported.")
+  end
+
   pname, sif = basename(name) |> splitext
-  outsdif = "OUTSDIF_$(pname)_double.d"
-  global cutest_instances_double
-  cutest_instances_double > 0 && error("CUTEst: call finalize on current model first")
-  global cutest_lib_double
+  outsdif = "OUTSDIF_$(pname)_$precision.d"
+
   cd(cutest_problems_path) do
     if !decode
       isfile(outsdif) || error("CUTEst: no decoded problem found")
       libsif = "lib$(pname)_double"
-      isfile("$libsif.$(Libdl.dlext)") || error("CUTEst: lib not found; decode problem first")
-      cutest_lib_double =
-        Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      isfile("$libsif.$dlext") || error("CUTEst: lib not found; decode problem first")
+      cutest_lib = Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
+      if precision == :single
+        global cutest_lib_single = cutest_lib
+      elseif precision == :double
+        global cutest_lib_double = cutest_lib
+      else  # precision = :quadruple
+        global cutest_lib_quadruple = cutest_lib
+      end
     else
-      sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = :double)
-      build_libsif(path_sifname, precision = :double)
+      sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = precision)
+      build_libsif(path_sifname, precision = precision)
     end
     status = Ref{Cint}(0)
-    fortran_open_(Ref{Cint}(funit), outsdif, status)
+    fopen(T, Ref{Cint}(funit), outsdif, status)
     cutest_error(status[])
   end
 
@@ -100,15 +123,15 @@ function CUTEstModel(
   nvar = Ref{Cint}(0)
   ncon = Ref{Cint}(0)
 
-  cdimen(status, Ref{Cint}(funit), nvar, ncon)
+  cdimen(T, status, Ref{Cint}(funit), nvar, ncon)
   cutest_error(status[])
 
-  x = Vector{Float64}(undef, nvar[])
-  bl = Vector{Float64}(undef, nvar[])
-  bu = Vector{Float64}(undef, nvar[])
-  v = Vector{Float64}(undef, ncon[])
-  cl = Vector{Float64}(undef, ncon[])
-  cu = Vector{Float64}(undef, ncon[])
+  x = Vector{T}(undef, nvar[])
+  bl = Vector{T}(undef, nvar[])
+  bu = Vector{T}(undef, nvar[])
+  v = Vector{T}(undef, ncon[])
+  cl = Vector{T}(undef, ncon[])
+  cu = Vector{T}(undef, ncon[])
   equatn = Vector{Bool}(undef, ncon[])
   linear = Vector{Bool}(undef, ncon[])
 
@@ -118,6 +141,7 @@ function CUTEstModel(
     v_order = lvfirst ? Ref{Cint}(1) : Ref{Cint}(0)
     # Equality constraints first, linear constraints first, nonlinear variables first.
     csetup(
+      T,
       status,
       Ref{Cint}(funit),
       Ref{Cint}(0),
@@ -137,7 +161,7 @@ function CUTEstModel(
       v_order,
     )
   else
-    usetup(status, Ref{Cint}(funit), Ref{Cint}(0), Ref{Cint}(6), nvar, x, bl, bu)
+    usetup(T, status, Ref{Cint}(funit), Ref{Cint}(0), Ref{Cint}(6), nvar, x, bl, bu)
   end
   cutest_error(status[])
 
@@ -153,30 +177,30 @@ function CUTEstModel(
   nnzj = Ref{Cint}(0)
 
   if ncon[] > 0
-    cdimsh(status, nnzh)
-    cdimsj(status, nnzj)
+    cdimsh(T, status, nnzh)
+    cdimsj(T, status, nnzj)
     nnzj[] -= nvar[]  # nnzj also counts the nonzeros in the objective gradient.
   else
-    udimsh(status, nnzh)
+    udimsh(T, status, nnzh)
   end
   cutest_error(status[])
 
   # Sparsity pattern of the hessian
-  hrows = Vector{Int32}(undef, nnzh[])
-  hcols = Vector{Int32}(undef, nnzh[])
+  hrows = Vector{Cint}(undef, nnzh[])
+  hcols = Vector{Cint}(undef, nnzh[])
   this_nnzh = Ref{Cint}(0)
   if ncon[] > 0
-    cshp(status, nvar, this_nnzh, nnzh, hcols, hrows)
+    cshp(T, status, nvar, this_nnzh, nnzh, hcols, hrows)
   else
-    ushp(status, nvar, this_nnzh, nnzh, hcols, hrows)
+    ushp(T, status, nvar, this_nnzh, nnzh, hcols, hrows)
   end
   cutest_error(status[])
 
   # sparsity pattern of the jacobian
-  jrows = Vector{Int32}(undef, nnzj[])
-  jcols = Vector{Int32}(undef, nnzj[])
+  jrows = Vector{Cint}(undef, nnzj[])
+  jcols = Vector{Cint}(undef, nnzj[])
   this_nnzj = Ref{Cint}(0)
-  csjp(status, this_nnzj, nnzj, jcols, jrows)
+  csjp(T, status, this_nnzj, nnzj, jcols, jrows)
   cutest_error(status[])
 
   # compute lin_nnzj and nln_nnzj
@@ -188,20 +212,21 @@ function CUTEstModel(
   end
   nln_nnzj = nnzj[] - lin_nnzj
 
-  blin = Vector{Float64}(undef, nlin)
-  clinrows = Vector{Int32}(undef, lin_nnzj)
-  clincols = Vector{Int32}(undef, lin_nnzj)
-  clinvals = Vector{Float64}(undef, lin_nnzj)
+  blin = Vector{T}(undef, nlin)
+  clinrows = Vector{Cint}(undef, lin_nnzj)
+  clincols = Vector{Cint}(undef, lin_nnzj)
+  clinvals = Vector{T}(undef, lin_nnzj)
   Jval = Vector{Cdouble}(undef, nvar[])
   Jvar = Vector{Cint}(undef, nvar[])
 
   # sparsity pattern of the linear constraints
   i = 0
   nnzj_tmp = Ref{Cint}(nnzj[])
-  x0 = Vector{Float64}(undef, nvar[])
+  x0 = Vector{T}(undef, nvar[])
   for j in lin
     x0 .= 0.0
     ccifsg(
+      T,
       Ref{Cint}(0),
       nvar,
       Ref{Cint}(j),
@@ -229,10 +254,10 @@ function CUTEstModel(
   nnzj = nnzj[] |> Int
   nnzh = nnzh[] |> Int
 
-  workspace_nvar = Vector{Float64}(undef, nvar)
-  workspace_ncon = Vector{Float64}(undef, ncon)
+  workspace_nvar = Vector{T}(undef, nvar)
+  workspace_ncon = Vector{T}(undef, ncon)
 
-  fortran_close_(Ref{Cint}(funit), status)
+  fclose(T, Ref{Cint}(funit), status)
   cutest_error(status[])
 
   meta = NLPModelMeta(
@@ -252,7 +277,7 @@ function CUTEstModel(
     name = splitext(name)[1],
   )
 
-  nlp = CUTEstModel{Float64}(
+  nlp = CUTEstModel{T}(
     meta,
     Counters(),
     hrows,
@@ -269,34 +294,60 @@ function CUTEstModel(
     Jvar,
   )
 
-  cutest_instances_double += 1
+  if precision == :single
+    cutest_instances_single += 1
+  elseif precision == :double
+    cutest_instances_double += 1
+  else  # precision = :quadruple
+    cutest_instances_quadruple += 1
+  end
   finalizer(cutest_finalize, nlp)
 
   return nlp
 end
 
-function cutest_finalize(nlp::CUTEstModel)
-  global cutest_instances_double
-  cutest_instances_double == 0 && return
-  global cutest_lib_double
+function cutest_finalize(nlp::CUTEstModel{T}) where T
+  if T == Float32
+    global cutest_instances_single
+    cutest_instances_single == 0 && return
+  elseif T == Float64
+    global cutest_instances_double
+    cutest_instances_double == 0 && return
+  # else  # precision = :quadruple
+  #   global cutest_instances_quadruple
+  #   cutest_instances_quadruple == 0 && return
+  end
   status = Ref{Cint}(0)
   if nlp.meta.ncon > 0
-    cterminate(status)
+    cterminate(T, status)
   else
-    uterminate(status)
+    uterminate(T, status)
   end
   cutest_error(status[])
-  Libdl.dlclose(cutest_lib_double)
-  cutest_instances_double -= 1
-  cutest_lib_double = C_NULL
+  if T == Float32
+    global cutest_lib_single
+    Libdl.dlclose(cutest_lib_single)
+    cutest_instances_single -= 1
+    cutest_lib_single = C_NULL
+  elseif T == Float64
+    global cutest_lib_double
+    Libdl.dlclose(cutest_lib_double)
+    cutest_instances_double -= 1
+    cutest_lib_double = C_NULL
+  # else  # precision = :quadruple
+  #   global cutest_lib_quadruple
+  #   Libdl.dlclose(cutest_lib_quadruple)
+  #   cutest_instances_quadruple -= 1
+  #   cutest_lib_quadruple = C_NULL
+  end
   return
 end
 
 struct CUTEstException <: Exception
-  info::Int32
+  info::Cint
   msg::String
 
-  function CUTEstException(info::Int32)
+  function CUTEstException(info::Cint)
     if info == 1
       msg = "memory allocation error"
     elseif info == 2
@@ -310,7 +361,7 @@ struct CUTEstException <: Exception
   end
 end
 
-CUTEstException(info::Integer) = CUTEstException(convert(Int32, info))
+CUTEstException(info::Integer) = CUTEstException(info |> Cint)
 
 function cutest_error(status::Cint)  # Handle nonzero exit codes.
   (status > 0) && throw(CUTEstException(status))
