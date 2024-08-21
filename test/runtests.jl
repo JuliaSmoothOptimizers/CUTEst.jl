@@ -18,6 +18,7 @@ end
 include("test_core.jl")
 include("test_julia.jl")
 include("coverage.jl")
+# include("multiple-precision.jl")
 
 for problem in problems
   println("Testing interfaces on problem $problem")

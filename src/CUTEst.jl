@@ -19,23 +19,15 @@ global cutest_lib_quadruple = C_NULL
 
 export CUTEstModel, sifdecoder, build_libsif, set_mastsif
 
-const funit = convert(Int32, 42)
-@static Sys.isapple() ? (const linker = "gfortran") : (const linker = "ld")
-@static Sys.isapple() ? (const sh_flags = ["-dynamiclib", "-undefined", "dynamic_lookup"]) :
-        (const sh_flags = ["-shared"])
-
+const funit = Int32(42)
 const cutest_problems_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 
 function __init__()
   if !Sys.iswindows()
     # gfortran is installed with an artifact on Windows
-    if success(`bash -c "type gfortran"`)
-      @static Sys.isapple() ? (global libgfortran = []) :
-              (global libgfortran = [strip(read(`gfortran --print-file libgfortran.so`, String))])
-    else
-      @error "gfortran is not installed. Please install it and try again."
-      return
+    if !success(`bash -c "type gfortran"`)
+      error("gfortran is not installed. Please install it and try again.")
     end
   end
 

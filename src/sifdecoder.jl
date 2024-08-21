@@ -77,9 +77,14 @@ function sifdecoder(
         stderr = errlog,
       ),
     )
-    read(errlog, String) |> println
+    error_str = read(errlog, String)
+    if length(error_str) > 0
+      println(error_str)
+      error("Unable to compile a shared library for the problem $name.")
+    end
     if verbose
-      read(outlog, String) |> println
+      output_str = read(outlog, String)
+      println(output_str)
     end
     isfile("OUTSDIF.d") && run(`mv OUTSDIF.d $outsdif`)
   end
@@ -130,8 +135,9 @@ function build_libsif(
         end
       end
       if Sys.isapple()
+        libcutest = joinpath(libpath, "lib$library.$dlext")
         run(
-          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -Wl,-rpath $libpath $(joinpath(libpath, "lib$library.$dlext)")) $libgfortran`,
+          `gfortran -dynamiclib -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`,
         )
       elseif Sys.iswindows()
         @static if Sys.iswindows()
@@ -139,12 +145,13 @@ function build_libsif(
           gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
           libcutest = joinpath(libpath, "lib$library.a")
           run(
-            `$gfortran -shared -o $libsif.$(Libdl.dlext) $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
+            `$gfortran -shared -o $libsif.$dlext $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
           )
         end
       else
+        libgfortran = strip(read(`gfortran --print-file libgfortran.so`, String))
         run(
-          `$linker $sh_flags -o $libsif.$(Libdl.dlext) $(object_files) -rpath=$libpath -L$libpath -l$library $libgfortran`,
+          `ld -shared -o $libsif.$dlext $(object_files) -rpath=$libpath -L$libpath -l$library $libgfortran`,
         )
       end
       delete_temp_files(suffix)
