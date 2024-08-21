@@ -2,10 +2,42 @@ export cons_coord, cons_coord!, consjac
 
 using NLPModels, SparseArrays
 
-function NLPModels.objcons(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
+function NLPModels.obj(nlp::CUTEstModel{T}, x::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x
-  c = Vector{T}(undef, nlp.meta.ncon)
-  objcons!(nlp, Vector{T}(x), c)
+  if nlp.meta.ncon > 0
+    iprob = Ref{Cint}(0)
+    cifn(T, nlp.libsif, nlp.status, nlp.nvar, iprob, x, nlp.f)
+  else
+    ufn(T, nlp.libsif, nlp.status, nlp.nvar, x, nlp.f)
+  end
+  increment!(nlp, :neval_obj)
+  return nlp.f[]
+end
+
+function NLPModels.obj(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
+  @lencheck nlp.meta.nvar x
+  x_ = Vector{T}(x)
+  obj(nlp, x_)
+end
+
+function NLPModels.grad!(nlp::CUTEstModel{T}, x::StrideOneVector{T}, g::StrideOneVector{T}) where {T}
+  @lencheck nlp.meta.nvar x g
+  if nlp.meta.ncon > 0
+    iprob = Ref{Cint}(0)
+    cigr(T, nlp.libsif, nlp.status, nlp.nvar, iprob, x, g)
+  else
+    ugr(T, nlp.libsif, nlp.status, nlp.nvar, x, g)
+  end
+  increment!(nlp, :neval_grad)
+  return g
+end
+
+function NLPModels.grad!(nlp::CUTEstModel{T}, x::AbstractVector, g::AbstractVector) where {T}
+  @lencheck nlp.meta.nvar x g
+  x_ = Vector{T}(x)
+  g_ = Vector{T}(g)
+  grad!(nlp, x_, g_)
+  g .= g_
 end
 
 function NLPModels.objcons!(
@@ -15,7 +47,7 @@ function NLPModels.objcons!(
 ) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
-  if nlp.ncon[] > 0
+  if nlp.meta.ncon > 0
     cfn(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, nlp.f, c)
     increment!(nlp, :neval_cons)
   else
@@ -36,7 +68,7 @@ end
 function NLPModels.objcons!(nlp::CUTEstModel{T}, x::AbstractVector, c::AbstractVector) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
-  if nlp.ncon[] > 0
+  if nlp.meta.ncon > 0
     cc = nlp.workspace_ncon
     f, _ = objcons!(nlp, Vector{T}(x), cc)
     c .= cc
@@ -46,12 +78,6 @@ function NLPModels.objcons!(nlp::CUTEstModel{T}, x::AbstractVector, c::AbstractV
   end
 end
 
-function NLPModels.objgrad(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
-  @lencheck nlp.meta.nvar x
-  g = Vector{T}(undef, nlp.meta.nvar)
-  objgrad!(nlp, Vector{T}(x), g)
-end
-
 function NLPModels.objgrad!(
   nlp::CUTEstModel{T},
   x::StrideOneVector{T},
@@ -59,7 +85,7 @@ function NLPModels.objgrad!(
 ) where {T}
   @lencheck nlp.meta.nvar x g
   get_grad = cutest_true
-  if nlp.ncon[] > 0
+  if nlp.meta.ncon > 0
     cofg(T, nlp.libsif, nlp.status, nlp.nvar, x, nlp.f, g, get_grad)
   else
     uofg(T, nlp.libsif, nlp.status, nlp.nvar, x, nlp.f, g, get_grad)
@@ -82,22 +108,6 @@ function NLPModels.objgrad!(nlp::CUTEstModel{T}, x::AbstractVector, g::AbstractV
   f, _ = objgrad!(nlp, Vector{T}(x), gc)
   g .= gc
   return f, g
-end
-
-function NLPModels.obj(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
-  @lencheck nlp.meta.nvar x
-  f, _ = objcons!(nlp, x, nlp.workspace_ncon)
-  if nlp.ncon[] > 0
-    decrement!(nlp, :neval_cons) # does not really count as a constraint eval
-  end
-  return f
-end
-
-function NLPModels.grad!(nlp::CUTEstModel{T}, x::AbstractVector, g::AbstractVector) where {T}
-  @lencheck nlp.meta.nvar x g
-  objgrad!(nlp, x, g)
-  decrement!(nlp, :neval_obj) # does not really count as a objective eval
-  return g
 end
 
 """
@@ -496,14 +506,14 @@ function NLPModels.hess_coord!(
   @lencheck nlp.meta.nnzh vals
   this_nnzh = Ref{Cint}(0)
 
-  if obj_weight == zero(T) && (nlp.ncon[] > 0)
+  if obj_weight == zero(T) && (nlp.meta.ncon > 0)
     cshc(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, y, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
     cutest_error(nlp.status[])
     increment!(nlp, :neval_hess)
     return vals
   end
 
-  if nlp.ncon[] > 0
+  if nlp.meta.ncon > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == one(T) ? y : y / obj_weight
     csh(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, z, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
@@ -557,14 +567,14 @@ function NLPModels.hprod!(
   @lencheck nlp.meta.nvar x v hv
   @lencheck nlp.meta.ncon y
   goth = cutest_false
-  if obj_weight == zero(T) && (nlp.ncon[] > 0)
+  if obj_weight == zero(T) && (nlp.meta.ncon > 0)
     chcprod(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, goth, x, y, v, hv)
     cutest_error(nlp.status[])
     increment!(nlp, :neval_hprod)
     return hv
   end
 
-  if nlp.ncon[] > 0
+  if nlp.meta.ncon > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     if obj_weight == one(T)
       z = y
