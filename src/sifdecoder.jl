@@ -149,9 +149,8 @@ function build_libsif(
           )
         end
       else
-        libcutest = joinpath(libpath, "lib$library.$dlext")
         run(
-          `gfortran -shared -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`,
+          `gfortran -shared -o $libsif.$dlext $(object_files) -Wl,-rpath,$libpath -L$libpath -l$library`,
         )
       end
       delete_temp_files(suffix)
