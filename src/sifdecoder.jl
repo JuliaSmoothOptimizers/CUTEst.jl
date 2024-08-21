@@ -149,8 +149,9 @@ function build_libsif(
           )
         end
       else
+        libgfortran = strip(read(`gfortran --print-file libgfortran.so`, String))
         run(
-          `ld -shared -o $libsif.$dlext $(object_files) -rpath=$libpath -L$libpath -l$library -lgfortran`,
+          `ld -shared -o $libsif.$dlext $(object_files) -rpath=$libpath -L$libpath -l$library $libgfortran`,
         )
       end
       delete_temp_files(suffix)
