@@ -77,9 +77,14 @@ function sifdecoder(
         stderr = errlog,
       ),
     )
-    read(errlog, String) |> println
+    error_str = read(errlog, String)
+    if length(error_str) > 0
+      println(error_str)
+      error("Unable to compile a shared library for the problem $name.")
+    end
     if verbose
-      read(outlog, String) |> println
+      output_str = read(outlog, String)
+      println(output_str)
     end
     isfile("OUTSDIF.d") && run(`mv OUTSDIF.d $outsdif`)
   end
