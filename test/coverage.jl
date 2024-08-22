@@ -1,5 +1,5 @@
 # Tests made to increase the coverage.
-function coverage_increase(nlp::CUTEstModel{T}) where T
+function coverage_increase(nlp::CUTEstModel{T}) where {T}
   status = Cint[0]
   n, m = nlp.meta.nvar, nlp.meta.ncon
   pname = Vector{Cchar}(undef, 10)
