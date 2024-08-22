@@ -18,20 +18,22 @@ end
 include("test_core.jl")
 include("test_julia.jl")
 include("coverage.jl")
-# include("multiple-precision.jl")
+include("multiple_precision.jl")
 
 for problem in problems
-  println("Testing interfaces on problem $problem")
-  nlp = CUTEstModel(problem)
-  nlp_man = eval(Symbol(problem))()
+  for (T, precision) in [(Float32, :single), (Float64, :double)]
+    println("Testing interfaces on problem $problem in $precision precision")
+    nlp = CUTEstModel(problem, precision=precision)
+    nlp_man = eval(Symbol(problem))(T)
 
-  test_nlpinterface(nlp, nlp_man)
-  test_coreinterface(nlp, nlp_man)
-  test_coreinterface(nlp, nlp_man; test_view = true)
-  coverage_increase(nlp)
+    test_nlpinterface(nlp, nlp_man)
+    test_coreinterface(nlp, nlp_man)
+    test_coreinterface(nlp, nlp_man; test_view = true)
+    coverage_increase(nlp)
 
-  println("Finalizing")
-  finalize(nlp)
+    println("Finalizing")
+    finalize(nlp)
+  end
 end
 
 include("nlpmodelstest.jl")
@@ -41,23 +43,25 @@ problems = CUTEst.select(max_var = 2, max_con = 2)
 problems = randsubseq(problems, 0.1)
 
 for p in problems
-  nlp = CUTEstModel(p)
-  x0 = nlp.meta.x0
-  nvar, ncon = nlp.meta.nvar, nlp.meta.ncon
+  for (T, precision) in [(Float32, :single), (Float64, :double)]
+    nlp = CUTEstModel(p, precision=precision)
+    x0 = nlp.meta.x0
+    nvar, ncon = nlp.meta.nvar, nlp.meta.ncon
 
-  println("$p: julia interface: f(x₀) = $(obj(nlp, x0))")
+    println("$p: julia interface: f(x₀) = $(obj(nlp, x0))")
 
-  status = Cint[0]
-  fval = [0.0]
-  if ncon > 0
-    cx = zeros(ncon)
-    cfn(Float64, status, Cint[nvar], Cint[ncon], x0, fval, cx)
-  else
-    ufn(Float64, status, Cint[nvar], x0, fval)
+    status = Cint[0]
+    fval = T[0.0]
+    if ncon > 0
+      cx = zeros(T, ncon)
+      cfn(T, status, Cint[nvar], Cint[ncon], x0, fval, cx)
+    else
+      ufn(T, status, Cint[nvar], x0, fval)
+    end
+    println("$p: core interface: f(x₀) = $(fval[1])")
+
+    finalize(nlp)
   end
-  println("$p: core interface: f(x₀) = $(fval[1])")
-
-  finalize(nlp)
 end
 
 # test arguments passed to decoder
@@ -71,15 +75,18 @@ finalize(nlp)
 
 @testset "Test decoding separately (issue #239)" begin
   problems = ["AKIVA", "ROSENBR", "ZANGWIL2"]
-  # Decoding
-  for p in problems
-    finalize(CUTEstModel(p))
-  end
-  # No decode
-  for p in problems
-    nlp = CUTEstModel(p, decode = false)
-    @test nlp.meta.nvar == 2
-    finalize(nlp)
+  for (T, precision) in [(Float32, :single), (Float64, :double)]
+    # Decoding
+    for p in problems
+      nlp = CUTEstModel(p, precision = precision)
+      finalize(nlp)
+    end
+    # No decode
+    for p in problems
+      nlp = CUTEstModel(p, precision = precision, decode = false)
+      @test nlp.meta.nvar == 2
+      finalize(nlp)
+    end
   end
 end
 
