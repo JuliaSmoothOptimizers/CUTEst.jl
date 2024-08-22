@@ -6,7 +6,7 @@ using JuliaFormatter
 
 function main()
   cd(@__DIR__)
-  include_dir = "/home/alexis/Applications/CUTEst/include"  # joinpath(CUTEst_jll.artifact_dir, "include")
+  include_dir = joinpath(CUTEst_jll.artifact_dir, "include")
   headers = map(header -> joinpath(include_dir, header), ["cutest.h"])
 
   options = load_options(joinpath(@__DIR__, "cutest.toml"))
