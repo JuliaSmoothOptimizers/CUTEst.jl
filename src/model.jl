@@ -76,8 +76,6 @@ function CUTEstModel(
     end
   end
 
-  (precision != :double) &&
-    error("The current version of CUTEst_jll.jl only supports double precision.")
   if precision == :single
     T = Float32
     global cutest_instances_single
@@ -100,7 +98,7 @@ function CUTEstModel(
   cd(cutest_problems_path) do
     if !decode
       isfile(outsdif) || error("CUTEst: no decoded problem found")
-      libsif = "lib$(pname)_double"
+      libsif = "lib$(pname)_$(precision)"
       isfile("$libsif.$dlext") || error("CUTEst: lib not found; decode problem first")
       cutest_lib = Libdl.dlopen(libsif, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
       if precision == :single
@@ -217,7 +215,7 @@ function CUTEstModel(
   clinrows = Vector{Cint}(undef, lin_nnzj)
   clincols = Vector{Cint}(undef, lin_nnzj)
   clinvals = Vector{T}(undef, lin_nnzj)
-  Jval = Vector{Cdouble}(undef, nvar[])
+  Jval = Vector{T}(undef, nvar[])
   Jvar = Vector{Cint}(undef, nvar[])
 
   # sparsity pattern of the linear constraints
@@ -225,7 +223,7 @@ function CUTEstModel(
   nnzj_tmp = Ref{Cint}(nnzj[])
   x0 = Vector{T}(undef, nvar[])
   for j in lin
-    x0 .= 0.0
+    x0 .= zero(T)
     ccifsg(
       T,
       Ref{Cint}(0),

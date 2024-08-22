@@ -3,19 +3,19 @@ function compare_cons(nlp1, cx1, nlp2, cx2, rtol)
   @test isapprox(cx1 - nlp1.meta.lcon, cx2 - nlp2.meta.lcon, rtol = rtol)
 end
 
-function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
+function test_nlpinterface(nlp::CUTEstModel{T}, comp_nlp::AbstractNLPModel{T}) where T
   x0 = nlp.meta.x0
   f(x) = obj(comp_nlp, x)
   g(x) = grad(comp_nlp, x)
-  H(x; obj_weight = 1.0) = hess(comp_nlp, x, obj_weight = obj_weight)
+  H(x; obj_weight = one(T)) = hess(comp_nlp, x, obj_weight = obj_weight)
   c(x) = cons(comp_nlp, x)
   J(x) = jac(comp_nlp, x)
-  W(x, y; obj_weight = 1.0) = hess(comp_nlp, x, y, obj_weight = obj_weight)
+  W(x, y; obj_weight = one(T)) = hess(comp_nlp, x, y, obj_weight = obj_weight)
 
-  v = ones(nlp.meta.nvar)
-  u = ones(nlp.meta.ncon)
+  v = ones(T, nlp.meta.nvar)
+  u = ones(T, nlp.meta.ncon)
 
-  rtol = 1e-8
+  rtol = eps(T) |> sqrt
 
   @testset "Julia interface" begin
     fx = obj(nlp, x0)
@@ -28,7 +28,7 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
     gx = grad(nlp, x0)
     @test isapprox(gx, g(x0), rtol = rtol)
 
-    fill!(gx, 0.0)
+    fill!(gx, zero(T))
     grad!(nlp, x0, gx)
     @test isapprox(gx, g(x0), rtol = rtol)
 
@@ -56,7 +56,7 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       cx = cons(nlp, x0) # This is here to improve coverage
       compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
 
-      fill!(cx, 0.0)
+      fill!(cx, zero(T))
       cons!(nlp, x0, cx)
       compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
 
@@ -78,8 +78,8 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       @test length(cx) == 0
     end
 
-    v = rand(nlp.meta.nvar)
-    obj_weights = [0.0, 1.0, 3.141592]
+    v = rand(T, nlp.meta.nvar)
+    obj_weights = [zero(T), one(T)]
     for obj_weight in obj_weights
       Hx = hess(nlp, x0, obj_weight = obj_weight)
       @test isapprox(Hx, H(x0, obj_weight = obj_weight), rtol = rtol)
@@ -90,12 +90,12 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         rtol = rtol,
       )
       if nlp.meta.ncon > 0
-        Wx = hess(nlp, x0, ones(nlp.meta.ncon), obj_weight = obj_weight)
-        @test isapprox(Wx, W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight), rtol = rtol)
-        hval = hess_coord(nlp, x0, ones(nlp.meta.ncon), obj_weight = obj_weight)
+        Wx = hess(nlp, x0, ones(T, nlp.meta.ncon), obj_weight = obj_weight)
+        @test isapprox(Wx, W(x0, ones(T, nlp.meta.ncon), obj_weight = obj_weight), rtol = rtol)
+        hval = hess_coord(nlp, x0, ones(T, nlp.meta.ncon), obj_weight = obj_weight)
         @test isapprox(
           sparse(nlp.hrows, nlp.hcols, hval, nlp.meta.nvar, nlp.meta.nvar),
-          tril(W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight)),
+          tril(W(x0, ones(T, nlp.meta.ncon), obj_weight = obj_weight)),
           rtol = rtol,
         )
       end
@@ -103,17 +103,17 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       hv = hprod(nlp, x0, v, obj_weight = obj_weight)
       @test isapprox(hv, H(x0, obj_weight = obj_weight) * v, rtol = rtol)
 
-      fill!(hv, 0.0)
+      fill!(hv, zero(T))
       hprod!(nlp, x0, v, hv, obj_weight = obj_weight)
       @test isapprox(hv, H(x0, obj_weight = obj_weight) * v, rtol = rtol)
 
       if nlp.meta.ncon > 0
-        hv = hprod(nlp, x0, ones(nlp.meta.ncon), v, obj_weight = obj_weight)
-        @test isapprox(hv, W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight) * v, rtol = rtol)
+        hv = hprod(nlp, x0, ones(T, nlp.meta.ncon), v, obj_weight = obj_weight)
+        @test isapprox(hv, W(x0, ones(T, nlp.meta.ncon), obj_weight = obj_weight) * v, rtol = rtol)
 
-        fill!(hv, 0.0)
-        hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv, obj_weight = obj_weight)
-        @test isapprox(hv, W(x0, ones(nlp.meta.ncon), obj_weight = obj_weight) * v, rtol = rtol)
+        fill!(hv, zero(T))
+        hprod!(nlp, x0, ones(T, nlp.meta.ncon), v, hv, obj_weight = obj_weight)
+        @test isapprox(hv, W(x0, ones(T, nlp.meta.ncon), obj_weight = obj_weight) * v, rtol = rtol)
       end
     end
 
@@ -144,7 +144,7 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
       gx = grad(nlp, x0)
       grad!(nlp, x0, gx)
       Hx = hess(nlp, x0)
-      v = rand(nlp.meta.nvar)
+      v = rand(T, nlp.meta.nvar)
       hv = hprod(nlp, x0, v)
       hprod!(nlp, x0, v, hv)
       if nlp.meta.ncon > 0
@@ -159,9 +159,9 @@ function test_nlpinterface(nlp::CUTEstModel, comp_nlp::AbstractNLPModel)
         Jx = jac(nlp, x0)
         jv = jprod(nlp, x0, v)
         jtu = jtprod(nlp, x0, u)
-        Wx = hess(nlp, x0, ones(nlp.meta.ncon))
-        hv = hprod(nlp, x0, ones(nlp.meta.ncon), v)
-        hprod!(nlp, x0, ones(nlp.meta.ncon), v, hv)
+        Wx = hess(nlp, x0, ones(T, nlp.meta.ncon))
+        hv = hprod(nlp, x0, ones(T, nlp.meta.ncon), v)
+        hprod!(nlp, x0, ones(T, nlp.meta.ncon), v, hv)
       end
     end
     println("Passed")
