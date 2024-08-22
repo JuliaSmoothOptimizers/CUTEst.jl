@@ -1,4 +1,8 @@
-function test_coreinterface(nlp::CUTEstModel{T}, comp_nlp::AbstractNLPModel{T}; test_view = false) where T
+function test_coreinterface(
+  nlp::CUTEstModel{T},
+  comp_nlp::AbstractNLPModel{T};
+  test_view = false,
+) where {T}
   x0 = nlp.meta.x0
   y0 = [(-one(T))^i for i = 1:(nlp.meta.ncon)]
   f(x) = obj(comp_nlp, x)

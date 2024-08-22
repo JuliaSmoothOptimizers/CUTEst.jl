@@ -3,7 +3,7 @@ function compare_cons(nlp1, cx1, nlp2, cx2, rtol)
   @test isapprox(cx1 - nlp1.meta.lcon, cx2 - nlp2.meta.lcon, rtol = rtol)
 end
 
-function test_nlpinterface(nlp::CUTEstModel{T}, comp_nlp::AbstractNLPModel{T}) where T
+function test_nlpinterface(nlp::CUTEstModel{T}, comp_nlp::AbstractNLPModel{T}) where {T}
   x0 = nlp.meta.x0
   f(x) = obj(comp_nlp, x)
   g(x) = grad(comp_nlp, x)

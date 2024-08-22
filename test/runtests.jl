@@ -23,7 +23,7 @@ include("multiple_precision.jl")
 for problem in problems
   for (T, precision) in [(Float32, :single), (Float64, :double)]
     println("Testing interfaces on problem $problem in $precision precision")
-    nlp = CUTEstModel(problem, precision=precision)
+    nlp = CUTEstModel(problem, precision = precision)
     nlp_man = eval(Symbol(problem))(T)
 
     test_nlpinterface(nlp, nlp_man)
@@ -44,7 +44,7 @@ problems = randsubseq(problems, 0.1)
 
 for p in problems
   for (T, precision) in [(Float32, :single), (Float64, :double)]
-    nlp = CUTEstModel(p, precision=precision)
+    nlp = CUTEstModel(p, precision = precision)
     x0 = nlp.meta.x0
     nvar, ncon = nlp.meta.nvar, nlp.meta.ncon
 
