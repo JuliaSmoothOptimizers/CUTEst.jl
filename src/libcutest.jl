@@ -1109,6 +1109,24 @@ function fortran_close_s_(funit, ierr)
   @ccall $ptr_fortran_close_s_(funit::Ptr{Cint}, ierr::Ptr{Cint})::Cvoid
 end
 
+function cutest_usetup_q_(status, funit, iout, io_buffer, n, x, bl, bu)
+  ptr_cutest_usetup_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_usetup_q_)
+  @ccall $ptr_cutest_usetup_q_(status::Ptr{Cint}, funit::Ptr{Cint}, iout::Ptr{Cint},
+                               io_buffer::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128},
+                               bl::Ptr{Cfloat128}, bu::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_csetup_q_(status, funit, iout, io_buffer, n, m, x, bl, bu, v, cl, cu, equatn,
+                               linear, e_order, l_order, v_order)
+  ptr_cutest_cint_csetup_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_csetup_q_)
+  @ccall $ptr_cutest_cint_csetup_q_(status::Ptr{Cint}, funit::Ptr{Cint}, iout::Ptr{Cint},
+                                    io_buffer::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint},
+                                    x::Ptr{Cfloat128}, bl::Ptr{Cfloat128}, bu::Ptr{Cfloat128},
+                                    v::Ptr{Cfloat128}, cl::Ptr{Cfloat128}, cu::Ptr{Cfloat128},
+                                    equatn::Ptr{Bool}, linear::Ptr{Bool}, e_order::Ptr{Cint},
+                                    l_order::Ptr{Cint}, v_order::Ptr{Cint})::Cvoid
+end
+
 function cutest_udimen_q_(status, funit, n)
   ptr_cutest_udimen_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_udimen_q_)
   @ccall $ptr_cutest_udimen_q_(status::Ptr{Cint}, funit::Ptr{Cint}, n::Ptr{Cint})::Cvoid
@@ -1134,6 +1152,11 @@ function cutest_unames_q_(status, n, pname, vnames)
   ptr_cutest_unames_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_unames_q_)
   @ccall $ptr_cutest_unames_q_(status::Ptr{Cint}, n::Ptr{Cint}, pname::Ptr{Cchar},
                                vnames::Ptr{Cchar})::Cvoid
+end
+
+function cutest_ureport_q_(status, calls, time)
+  ptr_cutest_ureport_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ureport_q_)
+  @ccall $ptr_cutest_ureport_q_(status::Ptr{Cint}, calls::Ptr{Cfloat128}, time::Ptr{Cfloat128})::Cvoid
 end
 
 function cutest_cdimen_q_(status, funit, n, m)
@@ -1198,6 +1221,11 @@ function cutest_cnames_q_(status, n, m, pname, vnames, gnames)
                                vnames::Ptr{Cchar}, gnames::Ptr{Cchar})::Cvoid
 end
 
+function cutest_creport_q_(status, calls, time)
+  ptr_cutest_creport_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_creport_q_)
+  @ccall $ptr_cutest_creport_q_(status::Ptr{Cint}, calls::Ptr{Cfloat128}, time::Ptr{Cfloat128})::Cvoid
+end
+
 function cutest_connames_q_(status, m, gname)
   ptr_cutest_connames_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_connames_q_)
   @ccall $ptr_cutest_connames_q_(status::Ptr{Cint}, m::Ptr{Cint}, gname::Ptr{Cchar})::Cvoid
@@ -1218,10 +1246,144 @@ function cutest_varnames_q_(status, n, vname)
   @ccall $ptr_cutest_varnames_q_(status::Ptr{Cint}, n::Ptr{Cint}, vname::Ptr{Cchar})::Cvoid
 end
 
+function cutest_ufn_q_(status, n, x, f)
+  ptr_cutest_ufn_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ufn_q_)
+  @ccall $ptr_cutest_ufn_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128},
+                            f::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_ugr_q_(status, n, x, g)
+  ptr_cutest_ugr_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ugr_q_)
+  @ccall $ptr_cutest_ugr_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128},
+                            g::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_uofg_q_(status, n, x, f, g, grad)
+  ptr_cutest_cint_uofg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_uofg_q_)
+  @ccall $ptr_cutest_cint_uofg_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, f::Ptr{Cfloat128},
+                                  g::Ptr{Cfloat128}, grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_udh_q_(status, n, x, lh1, h)
+  ptr_cutest_udh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_udh_q_)
+  @ccall $ptr_cutest_udh_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, lh1::Ptr{Cint},
+                            h::Ptr{Cfloat128})::Cvoid
+end
+
 function cutest_ushp_q_(status, n, nnzh, lh, irnh, icnh)
   ptr_cutest_ushp_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ushp_q_)
   @ccall $ptr_cutest_ushp_q_(status::Ptr{Cint}, n::Ptr{Cint}, nnzh::Ptr{Cint}, lh::Ptr{Cint},
                              irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_ush_q_(status, n, x, nnzh, lh, h, irnh, icnh)
+  ptr_cutest_ush_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ush_q_)
+  @ccall $ptr_cutest_ush_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, nnzh::Ptr{Cint},
+                            lh::Ptr{Cint}, h::Ptr{Cfloat128}, irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cint_ueh_q_(status, n, x, ne, le, iprnhi, iprhi, lirnhi, irnhi, lhi, hi, byrows)
+  ptr_cutest_cint_ueh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ueh_q_)
+  @ccall $ptr_cutest_cint_ueh_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, ne::Ptr{Cint},
+                                 le::Ptr{Cint}, iprnhi::Ptr{Cint}, iprhi::Ptr{Cint},
+                                 lirnhi::Ptr{Cint}, irnhi::Ptr{Cint}, lhi::Ptr{Cint},
+                                 hi::Ptr{Cfloat128}, byrows::Ptr{Bool})::Cvoid
+end
+
+function cutest_ugrdh_q_(status, n, x, g, lh1, h)
+  ptr_cutest_ugrdh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ugrdh_q_)
+  @ccall $ptr_cutest_ugrdh_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, g::Ptr{Cfloat128},
+                              lh1::Ptr{Cint}, h::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_ugrsh_q_(status, n, x, g, nnzh, lh, h, irnh, icnh)
+  ptr_cutest_ugrsh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ugrsh_q_)
+  @ccall $ptr_cutest_ugrsh_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, g::Ptr{Cfloat128},
+                              nnzh::Ptr{Cint}, lh::Ptr{Cint}, h::Ptr{Cfloat128}, irnh::Ptr{Cint},
+                              icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cint_ugreh_q_(status, n, x, g, ne, le, iprnhi, iprhi, lirnhi, irnhi, lhi, hi,
+                              byrows)
+  ptr_cutest_cint_ugreh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ugreh_q_)
+  @ccall $ptr_cutest_cint_ugreh_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128},
+                                   g::Ptr{Cfloat128}, ne::Ptr{Cint}, le::Ptr{Cint}, iprnhi::Ptr{Cint},
+                                   iprhi::Ptr{Cint}, lirnhi::Ptr{Cint}, irnhi::Ptr{Cint},
+                                   lhi::Ptr{Cint}, hi::Ptr{Cfloat128}, byrows::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_uhprod_q_(status, n, goth, x, p, r)
+  ptr_cutest_cint_uhprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_uhprod_q_)
+  @ccall $ptr_cutest_cint_uhprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, goth::Ptr{Bool},
+                                    x::Ptr{Cfloat128}, p::Ptr{Cfloat128}, r::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_ushprod_q_(status, n, goth, x, nnzp, indp, p, nnzr, indr, r)
+  ptr_cutest_cint_ushprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ushprod_q_)
+  @ccall $ptr_cutest_cint_ushprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, goth::Ptr{Bool},
+                                     x::Ptr{Cfloat128}, nnzp::Ptr{Cint}, indp::Ptr{Cint},
+                                     p::Ptr{Cfloat128}, nnzr::Ptr{Cint}, indr::Ptr{Cint},
+                                     r::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_ubandh_q_(status, n, x, nsemib, bandh, lbandh, maxsbw)
+  ptr_cutest_ubandh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_ubandh_q_)
+  @ccall $ptr_cutest_ubandh_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, nsemib::Ptr{Cint},
+                               bandh::Ptr{Cfloat128}, lbandh::Ptr{Cint}, maxsbw::Ptr{Cint})::Cvoid
+end
+
+function cutest_cfn_q_(status, n, m, x, f, c)
+  ptr_cutest_cfn_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cfn_q_)
+  @ccall $ptr_cutest_cfn_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                            f::Ptr{Cfloat128}, c::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cconst_q_(status, m, c)
+  ptr_cutest_cconst_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cconst_q_)
+  @ccall $ptr_cutest_cconst_q_(status::Ptr{Cint}, m::Ptr{Cint}, c::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_cofg_q_(status, n, x, f, g, grad)
+  ptr_cutest_cint_cofg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cofg_q_)
+  @ccall $ptr_cutest_cint_cofg_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, f::Ptr{Cfloat128},
+                                  g::Ptr{Cfloat128}, grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_cofsg_q_(status, n, x, f, nnzg, lg, sg, ivsg, grad)
+  ptr_cutest_cint_cofsg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cofsg_q_)
+  @ccall $ptr_cutest_cint_cofsg_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128},
+                                   f::Ptr{Cfloat128}, nnzg::Ptr{Cint}, lg::Ptr{Cint},
+                                   sg::Ptr{Cfloat128}, ivsg::Ptr{Cint}, grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_ccfg_q_(status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+  ptr_cutest_cint_ccfg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ccfg_q_)
+  @ccall $ptr_cutest_cint_ccfg_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                  c::Ptr{Cfloat128}, jtrans::Ptr{Bool}, lcjac1::Ptr{Cint},
+                                  lcjac2::Ptr{Cint}, cjac::Ptr{Cfloat128}, grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_clfg_q_(status, n, m, x, y, f, g, grad)
+  ptr_cutest_cint_clfg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_clfg_q_)
+  @ccall $ptr_cutest_cint_clfg_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                  y::Ptr{Cfloat128}, f::Ptr{Cfloat128}, g::Ptr{Cfloat128},
+                                  grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_cgr_q_(status, n, m, x, y, grlagf, g, jtrans, lcjac1, lcjac2, cjac)
+  ptr_cutest_cint_cgr_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cgr_q_)
+  @ccall $ptr_cutest_cint_cgr_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                 y::Ptr{Cfloat128}, grlagf::Ptr{Bool}, g::Ptr{Cfloat128},
+                                 jtrans::Ptr{Bool}, lcjac1::Ptr{Cint}, lcjac2::Ptr{Cint},
+                                 cjac::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_csgr_q_(status, n, m, x, y, grlagf, nnzj, lcjac, cjac, indvar, indfun)
+  ptr_cutest_cint_csgr_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_csgr_q_)
+  @ccall $ptr_cutest_cint_csgr_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                  y::Ptr{Cfloat128}, grlagf::Ptr{Bool}, nnzj::Ptr{Cint},
+                                  lcjac::Ptr{Cint}, cjac::Ptr{Cfloat128}, indvar::Ptr{Cint},
+                                  indfun::Ptr{Cint})::Cvoid
 end
 
 function cutest_csgrp_q_(status, n, nnzj, lj, jvar, jcon)
@@ -1236,16 +1398,138 @@ function cutest_csjp_q_(status, nnzj, lj, jvar, jcon)
                              jcon::Ptr{Cint})::Cvoid
 end
 
+function cutest_cint_ccfsg_q_(status, n, m, x, c, nnzj, lcjac, cjac, indvar, indfun, grad)
+  ptr_cutest_cint_ccfsg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ccfsg_q_)
+  @ccall $ptr_cutest_cint_ccfsg_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                   c::Ptr{Cfloat128}, nnzj::Ptr{Cint}, lcjac::Ptr{Cint},
+                                   cjac::Ptr{Cfloat128}, indvar::Ptr{Cint}, indfun::Ptr{Cint},
+                                   grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_ccifg_q_(status, n, icon, x, ci, gci, grad)
+  ptr_cutest_cint_ccifg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ccifg_q_)
+  @ccall $ptr_cutest_cint_ccifg_q_(status::Ptr{Cint}, n::Ptr{Cint}, icon::Ptr{Cint},
+                                   x::Ptr{Cfloat128}, ci::Ptr{Cfloat128}, gci::Ptr{Cfloat128},
+                                   grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_ccifsg_q_(status, n, con, x, ci, nnzsgc, lsgci, sgci, ivsgci, grad)
+  ptr_cutest_cint_ccifsg_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ccifsg_q_)
+  @ccall $ptr_cutest_cint_ccifsg_q_(status::Ptr{Cint}, n::Ptr{Cint}, con::Ptr{Cint},
+                                    x::Ptr{Cfloat128}, ci::Ptr{Cfloat128}, nnzsgc::Ptr{Cint},
+                                    lsgci::Ptr{Cint}, sgci::Ptr{Cfloat128}, ivsgci::Ptr{Cint},
+                                    grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_cgrdh_q_(status, n, m, x, y, grlagf, g, jtrans, lcjac1, lcjac2, cjac, lh1, h)
+  ptr_cutest_cint_cgrdh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cgrdh_q_)
+  @ccall $ptr_cutest_cint_cgrdh_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                   y::Ptr{Cfloat128}, grlagf::Ptr{Bool}, g::Ptr{Cfloat128},
+                                   jtrans::Ptr{Bool}, lcjac1::Ptr{Cint}, lcjac2::Ptr{Cint},
+                                   cjac::Ptr{Cfloat128}, lh1::Ptr{Cint}, h::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cdh_q_(status, n, m, x, y, lh1, h)
+  ptr_cutest_cdh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cdh_q_)
+  @ccall $ptr_cutest_cdh_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                            y::Ptr{Cfloat128}, lh1::Ptr{Cint}, h::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cdhc_q_(status, n, m, x, y, lh1, h)
+  ptr_cutest_cdhc_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cdhc_q_)
+  @ccall $ptr_cutest_cdhc_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                             y::Ptr{Cfloat128}, lh1::Ptr{Cint}, h::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cdhj_q_(status, n, m, x, y0, y, lh1, h)
+  ptr_cutest_cdhj_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cdhj_q_)
+  @ccall $ptr_cutest_cdhj_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                             y0::Ptr{Cfloat128}, y::Ptr{Cfloat128}, lh1::Ptr{Cint},
+                             h::Ptr{Cfloat128})::Cvoid
+end
+
 function cutest_cshp_q_(status, n, nnzh, lh, irnh, icnh)
   ptr_cutest_cshp_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cshp_q_)
   @ccall $ptr_cutest_cshp_q_(status::Ptr{Cint}, n::Ptr{Cint}, nnzh::Ptr{Cint}, lh::Ptr{Cint},
                              irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
 end
 
+function cutest_csh_q_(status, n, m, x, y, nnzh, lh, h, irnh, icnh)
+  ptr_cutest_csh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_csh_q_)
+  @ccall $ptr_cutest_csh_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                            y::Ptr{Cfloat128}, nnzh::Ptr{Cint}, lh::Ptr{Cint}, h::Ptr{Cfloat128},
+                            irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cshc_q_(status, n, m, x, y, nnzh, lh, h, irnh, icnh)
+  ptr_cutest_cshc_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cshc_q_)
+  @ccall $ptr_cutest_cshc_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                             y::Ptr{Cfloat128}, nnzh::Ptr{Cint}, lh::Ptr{Cint}, h::Ptr{Cfloat128},
+                             irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cshj_q_(status, n, m, x, y0, y, nnzh, lh, h, irnh, icnh)
+  ptr_cutest_cshj_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cshj_q_)
+  @ccall $ptr_cutest_cshj_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                             y0::Ptr{Cfloat128}, y::Ptr{Cfloat128}, nnzh::Ptr{Cint}, lh::Ptr{Cint},
+                             h::Ptr{Cfloat128}, irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cint_ceh_q_(status, n, m, x, y, ne, le, iprnhi, iprhi, lirnhi, irnhi, lhi, hi,
+                            byrows)
+  ptr_cutest_cint_ceh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_ceh_q_)
+  @ccall $ptr_cutest_cint_ceh_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                 y::Ptr{Cfloat128}, ne::Ptr{Cint}, le::Ptr{Cint}, iprnhi::Ptr{Cint},
+                                 iprhi::Ptr{Cint}, lirnhi::Ptr{Cint}, irnhi::Ptr{Cint},
+                                 lhi::Ptr{Cint}, hi::Ptr{Cfloat128}, byrows::Ptr{Bool})::Cvoid
+end
+
+function cutest_cifn_q_(status, n, iprob, x, f)
+  ptr_cutest_cifn_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cifn_q_)
+  @ccall $ptr_cutest_cifn_q_(status::Ptr{Cint}, n::Ptr{Cint}, iprob::Ptr{Cint}, x::Ptr{Cfloat128},
+                             f::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cigr_q_(status, n, iprob, x, g)
+  ptr_cutest_cigr_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cigr_q_)
+  @ccall $ptr_cutest_cigr_q_(status::Ptr{Cint}, n::Ptr{Cint}, iprob::Ptr{Cint}, x::Ptr{Cfloat128},
+                             g::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cisgr_q_(status, n, iprob, x, nnzg, lg, sg, ivsg)
+  ptr_cutest_cisgr_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cisgr_q_)
+  @ccall $ptr_cutest_cisgr_q_(status::Ptr{Cint}, n::Ptr{Cint}, iprob::Ptr{Cint}, x::Ptr{Cfloat128},
+                              nnzg::Ptr{Cint}, lg::Ptr{Cint}, sg::Ptr{Cfloat128},
+                              ivsg::Ptr{Cint})::Cvoid
+end
+
 function cutest_cisgrp_q_(status, n, iprob, nnzg, lg, ivsg)
   ptr_cutest_cisgrp_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cisgrp_q_)
   @ccall $ptr_cutest_cisgrp_q_(status::Ptr{Cint}, n::Ptr{Cint}, iprob::Ptr{Cint}, nnzg::Ptr{Cint},
                                lg::Ptr{Cint}, ivsg::Ptr{Cint})::Cvoid
+end
+
+function cutest_cidh_q_(status, n, x, iprob, lh1, h)
+  ptr_cutest_cidh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cidh_q_)
+  @ccall $ptr_cutest_cidh_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, iprob::Ptr{Cint},
+                             lh1::Ptr{Cint}, h::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cish_q_(status, n, x, iprob, nnzh, lh, h, irnh, icnh)
+  ptr_cutest_cish_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cish_q_)
+  @ccall $ptr_cutest_cish_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Cfloat128}, iprob::Ptr{Cint},
+                             nnzh::Ptr{Cint}, lh::Ptr{Cint}, h::Ptr{Cfloat128}, irnh::Ptr{Cint},
+                             icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cint_csgrsh_q_(status, n, m, x, y, grlagf, nnzj, lcjac, cjac, indvar, indfun, nnzh,
+                               lh, h, irnh, icnh)
+  ptr_cutest_cint_csgrsh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_csgrsh_q_)
+  @ccall $ptr_cutest_cint_csgrsh_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                    y::Ptr{Cfloat128}, grlagf::Ptr{Bool}, nnzj::Ptr{Cint},
+                                    lcjac::Ptr{Cint}, cjac::Ptr{Cfloat128}, indvar::Ptr{Cint},
+                                    indfun::Ptr{Cint}, nnzh::Ptr{Cint}, lh::Ptr{Cint},
+                                    h::Ptr{Cfloat128}, irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
 end
 
 function cutest_csgrshp_q_(status, n, nnzj, lcjac, indvar, indfun, nnzh, lh, irnh, icnh)
@@ -1255,10 +1539,91 @@ function cutest_csgrshp_q_(status, n, nnzj, lcjac, indvar, indfun, nnzh, lh, irn
                                 lh::Ptr{Cint}, irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
 end
 
+function cutest_cint_csgreh_q_(status, n, m, x, y, grlagf, nnzj, lcjac, cjac, indvar, indfun, ne,
+                               le, iprnhi, iprhi, lirnhi, irnhi, lhi, hi, byrows)
+  ptr_cutest_cint_csgreh_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_csgreh_q_)
+  @ccall $ptr_cutest_cint_csgreh_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Cfloat128},
+                                    y::Ptr{Cfloat128}, grlagf::Ptr{Bool}, nnzj::Ptr{Cint},
+                                    lcjac::Ptr{Cint}, cjac::Ptr{Cfloat128}, indvar::Ptr{Cint},
+                                    indfun::Ptr{Cint}, ne::Ptr{Cint}, le::Ptr{Cint},
+                                    iprnhi::Ptr{Cint}, iprhi::Ptr{Cint}, lirnhi::Ptr{Cint},
+                                    irnhi::Ptr{Cint}, lhi::Ptr{Cint}, hi::Ptr{Cfloat128},
+                                    byrows::Ptr{Bool})::Cvoid
+end
+
+function cutest_cint_chprod_q_(status, n, m, goth, x, y, p, q)
+  ptr_cutest_cint_chprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_chprod_q_)
+  @ccall $ptr_cutest_cint_chprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
+                                    x::Ptr{Cfloat128}, y::Ptr{Cfloat128}, p::Ptr{Cfloat128},
+                                    q::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_chsprod_q_(status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
+  ptr_cutest_cint_chsprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_chsprod_q_)
+  @ccall $ptr_cutest_cint_chsprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
+                                     x::Ptr{Cfloat128}, y::Ptr{Cfloat128}, nnzp::Ptr{Cint},
+                                     indp::Ptr{Cint}, p::Ptr{Cfloat128}, nnzr::Ptr{Cint},
+                                     indr::Ptr{Cint}, r::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_chcprod_q_(status, n, m, goth, x, y, p, q)
+  ptr_cutest_cint_chcprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_chcprod_q_)
+  @ccall $ptr_cutest_cint_chcprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
+                                     x::Ptr{Cfloat128}, y::Ptr{Cfloat128}, p::Ptr{Cfloat128},
+                                     q::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_cshcprod_q_(status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
+  ptr_cutest_cint_cshcprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cshcprod_q_)
+  @ccall $ptr_cutest_cint_cshcprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint},
+                                      goth::Ptr{Bool}, x::Ptr{Cfloat128}, y::Ptr{Cfloat128},
+                                      nnzp::Ptr{Cint}, indp::Ptr{Cint}, p::Ptr{Cfloat128},
+                                      nnzr::Ptr{Cint}, indr::Ptr{Cint}, r::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_chjprod_q_(status, n, m, goth, x, y0, y, p, q)
+  ptr_cutest_cint_chjprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_chjprod_q_)
+  @ccall $ptr_cutest_cint_chjprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
+                                     x::Ptr{Cfloat128}, y0::Ptr{Cfloat128}, y::Ptr{Cfloat128},
+                                     p::Ptr{Cfloat128}, q::Ptr{Cfloat128})::Cvoid
+end
+
+function cutest_cint_cjprod_q_(status, n, m, gotj, jtrans, x, p, lp, r, lr)
+  ptr_cutest_cint_cjprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cjprod_q_)
+  @ccall $ptr_cutest_cint_cjprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, gotj::Ptr{Bool},
+                                    jtrans::Ptr{Bool}, x::Ptr{Cfloat128}, p::Ptr{Cfloat128},
+                                    lp::Ptr{Cint}, r::Ptr{Cfloat128}, lr::Ptr{Cint})::Cvoid
+end
+
+function cutest_cint_csjprod_q_(status, n, m, gotj, jtrans, x, nnzp, indp, p, lp, nnzr, indr, r, lr)
+  ptr_cutest_cint_csjprod_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_csjprod_q_)
+  @ccall $ptr_cutest_cint_csjprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, gotj::Ptr{Bool},
+                                     jtrans::Ptr{Bool}, x::Ptr{Cfloat128}, nnzp::Ptr{Cint},
+                                     indp::Ptr{Cint}, p::Ptr{Cfloat128}, lp::Ptr{Cint},
+                                     nnzr::Ptr{Cint}, indr::Ptr{Cint}, r::Ptr{Cfloat128},
+                                     lr::Ptr{Cint})::Cvoid
+end
+
+function cutest_cint_cchprods_q_(status, n, m, goth, x, p, lchp, chpval, chpind, chpptr)
+  ptr_cutest_cint_cchprods_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cchprods_q_)
+  @ccall $ptr_cutest_cint_cchprods_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint},
+                                      goth::Ptr{Bool}, x::Ptr{Cfloat128}, p::Ptr{Cfloat128},
+                                      lchp::Ptr{Cint}, chpval::Ptr{Cfloat128}, chpind::Ptr{Cint},
+                                      chpptr::Ptr{Cint})::Cvoid
+end
+
 function cutest_cchprodsp_q_(status, m, lchp, chpind, chpptr)
   ptr_cutest_cchprodsp_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cchprodsp_q_)
   @ccall $ptr_cutest_cchprodsp_q_(status::Ptr{Cint}, m::Ptr{Cint}, lchp::Ptr{Cint},
                                   chpind::Ptr{Cint}, chpptr::Ptr{Cint})::Cvoid
+end
+
+function cutest_cint_cohprods_q_(status, n, goth, x, p, nnzohp, lohp, ohpval, ohpind)
+  ptr_cutest_cint_cohprods_q_ = Libdl.dlsym(cutest_lib_quadruple, :cutest_cint_cohprods_q_)
+  @ccall $ptr_cutest_cint_cohprods_q_(status::Ptr{Cint}, n::Ptr{Cint}, goth::Ptr{Bool},
+                                      x::Ptr{Cfloat128}, p::Ptr{Cfloat128}, nnzohp::Ptr{Cint},
+                                      lohp::Ptr{Cint}, ohpval::Ptr{Cfloat128},
+                                      ohpind::Ptr{Cint})::Cvoid
 end
 
 function cutest_cohprodsp_q_(status, nnzohp, lohp, chpind)
