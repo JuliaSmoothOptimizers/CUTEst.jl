@@ -2,6 +2,8 @@
 using LinearAlgebra, SparseArrays, Random, Test
 # jso
 using CUTEst, NLPModels, NLPModelsTest
+# external
+using Quadmath
 
 set_mastsif()
 @test ispath(ENV["MASTSIF"])
