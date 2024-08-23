@@ -6,6 +6,9 @@ import SIFDecode_jll
 using Pkg.Artifacts
 using Libdl
 
+using Quadmath
+import Quadmath.Cfloat128
+
 using NLPModels
 import Libdl.dlsym
 
