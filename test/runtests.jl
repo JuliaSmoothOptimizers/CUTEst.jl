@@ -25,7 +25,7 @@ include("coverage.jl")
 include("multiple_precision.jl")
 
 for problem in problems
-  for (T, precision) in [(Float32, :single), (Float64, :double)]
+  for (T, precision) in [(Float32, :single), (Float64, :double), (Float128, :quadruple)]
     println("Testing interfaces on problem $problem in $precision precision")
     nlp = CUTEstModel(problem, precision = precision)
     nlp_man = eval(Symbol(problem))(T)
@@ -47,7 +47,7 @@ problems = CUTEst.select(max_var = 2, max_con = 2)
 problems = randsubseq(problems, 0.1)
 
 for p in problems
-  for (T, precision) in [(Float32, :single), (Float64, :double)]
+  for (T, precision) in [(Float32, :single), (Float64, :double), (Float128, :quadruple)]
     nlp = CUTEstModel(p, precision = precision)
     x0 = nlp.meta.x0
     nvar, ncon = nlp.meta.nvar, nlp.meta.ncon
@@ -79,7 +79,7 @@ finalize(nlp)
 
 @testset "Test decoding separately (issue #239)" begin
   problems = ["AKIVA", "ROSENBR", "ZANGWIL2"]
-  for (T, precision) in [(Float32, :single), (Float64, :double)]
+  for (T, precision) in [(Float32, :single), (Float64, :double), (Float128, :quadruple)]
     # Decoding
     for p in problems
       nlp = CUTEstModel(p, precision = precision)
