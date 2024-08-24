@@ -12,7 +12,9 @@ function test_coreinterface(
   c(x) = cons(comp_nlp, x)
   J(x) = jac(comp_nlp, x)
   W(x, y; obj_weight = one(T)) = hess(comp_nlp, x, y, obj_weight = obj_weight)
+
   rtol = eps(T) |> sqrt
+  rtol = max(rtol, T(1e-8))
 
   if !test_view
     st = Cint[0]

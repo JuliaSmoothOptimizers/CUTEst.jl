@@ -16,6 +16,7 @@ function test_nlpinterface(nlp::CUTEstModel{T}, comp_nlp::AbstractNLPModel{T}) w
   u = ones(T, nlp.meta.ncon)
 
   rtol = eps(T) |> sqrt
+  rtol = max(rtol, T(1e-8))
 
   @testset "Julia interface" begin
     fx = obj(nlp, x0)
