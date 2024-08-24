@@ -312,9 +312,9 @@ function cutest_finalize(nlp::CUTEstModel{T}) where {T}
   elseif T == Float64
     global cutest_instances_double
     cutest_instances_double == 0 && return
-    else  # precision = :quadruple
-      global cutest_instances_quadruple
-      cutest_instances_quadruple == 0 && return
+  else  # precision = :quadruple
+    global cutest_instances_quadruple
+    cutest_instances_quadruple == 0 && return
   end
   status = Ref{Cint}(0)
   if nlp.meta.ncon > 0
@@ -333,11 +333,11 @@ function cutest_finalize(nlp::CUTEstModel{T}) where {T}
     Libdl.dlclose(cutest_lib_double)
     cutest_instances_double -= 1
     cutest_lib_double = C_NULL
-    else  # precision = :quadruple
-      global cutest_lib_quadruple
-      Libdl.dlclose(cutest_lib_quadruple)
-      cutest_instances_quadruple -= 1
-      cutest_lib_quadruple = C_NULL
+  else  # precision = :quadruple
+    global cutest_lib_quadruple
+    Libdl.dlclose(cutest_lib_quadruple)
+    cutest_instances_quadruple -= 1
+    cutest_lib_quadruple = C_NULL
   end
   return
 end
