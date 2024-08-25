@@ -23,54 +23,82 @@ If you use CUTEst.jl in your work, please cite using the format given in [CITATI
 
 ## Installing
 
-This package will install CUTEst binaries for your platform automatically.
-The gfortran compiler is still required to compile decoded SIF problems.
+This package will automatically install the CUTEst binaries for your platform.
+The `gfortran` compiler is required to compile decoded SIF problems, except on Windows.
 No other Fortran compiler is supported.
 
-The following command installs the CUTEst binaries and Julia interface:
-````JULIA
-pkg> add CUTEst
-````
+The following command installs the CUTEst binaries and the Julia interface:
 
-If you already have a collection of SIF problems that you wish to use, you can simply set the `MASTSIF` environment variable to point to their location.
+```julia
+pkg> add CUTEst
+```
 
 ## Usage
 
-After installing, you can create instances of
-[NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) models, with
-the name `CUTEstModel`:
+After installation, you can create instances of
+[NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) models using
+the `CUTEstModel` constructor:
 
-```jl
+```julia
 using CUTEst
 
-nlp = CUTEstModel("BYRDSPHR");
-print(nlp);
+nlp = CUTEstModel{Float64}("BYRDSPHR")
 ```
 
-This model accepts the same functions as the other NLPModels, for instance
+This model supports the same functions as other NLPModels, for example:
 
-```jl
+```julia
+using NLPModels
+
 fx = obj(nlp, nlp.meta.x0)
 gx = grad(nlp, nlp.meta.x0)
 Hx = hess(nlp, nlp.meta.x0)
+
+cx = cons(nlp, nlp.meta.x0)
+Jx = jac(nlp, nlp.meta.x0)
 ```
+
+Problems can also be instantiated in single and quadruple precision:
+
+```julia
+using CUTEst, Quadmath
+
+nlp_single = CUTEstModel{Float32}("BYRDSPHR")
+nlp_quadruple = CUTEstModel{Float128}("BYRDSPHR")
+```
+
+## SIF problems
+
+A large collection of SIF files can be found [here](https://bitbucket.org/optrove/workspace/repositories/).
+If the environment variable `MASTSIF` is not set, `CUTEst.jl` will automatically download the CUTEst
+NLP test set the first time you use `using CUTEst`.
+Thanks to the function `set_mastsif`, you can easily switch to the Maros-Meszaros QP test set
+or the Netlib LP test set.
+
+```julia
+set_mastsif("sifcollection")  # default set
+set_mastsif("maros-meszaros")
+set_mastsif("netlib-lp")
+```
+
+The constructor `CUTEstModel{Float64}(name)` will try to find the SIF file associated with the problem `name` in the current set.
 
 ### Run multiple models in parallel
 
 First, decode each of the problems in serial.
 
-```jl
+```julia
 function decodemodel(name)
     finalize(CUTEstModel(name))
 end
 
-probs = ["AKIVA", "ALLINITU", "ARGLINA", "ARGLINB", "ARGLINC","ARGTRIGLS", "ARWHEAD"]
+probs = ["AKIVA", "ALLINITU", "ARGLINA", "ARGLINB", "ARGLINC", "ARGTRIGLS", "ARWHEAD"]
 broadcast(decodemodel, probs)
 ```
 
 Then, call functions handling models in parallel. It is important to pass `decode=false` to `CUTEstModel`.
 
-```jl
+```julia
 addprocs(2)
 @everywhere using CUTEst
 @everywhere function evalmodel(name)
@@ -92,8 +120,6 @@ fvals = pmap(evalmodel, probs)
   [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
 - [NLPModelsJuMP.jl](https://github.com/JuliaSmoothOptimizers/NLPModelsJuMP.jl.git)
   provides conversion from [JuMP.jl](https://github.com/jump-dev/JuMP.jl) / [MathOptInterface.jl](https://github.com/jump-dev/MathOptInterface.jl) models to NLPModels.
-- [OptimizationProblems.jl](https://github.com/JuliaSmoothOptimizers/OptimizationProblems.jl)
-  provides a collection of optimization problems in
-  [JuMP.jl](https://github.com/jump-dev/JuMP.jl) syntax.
+- [OptimizationProblems.jl](https://github.com/JuliaSmoothOptimizers/OptimizationProblems.jl) provides a collection of optimization problems using the [NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) and [JuMP.jl](https://github.com/jump-dev/JuMP.jl) syntaxes.
 
 [![GPLv3](http://www.gnu.org/graphics/lgplv3-88x31.png)](http://www.gnu.org/licenses/lgpl.html "LGPLv3")

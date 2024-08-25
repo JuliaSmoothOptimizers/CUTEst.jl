@@ -17,9 +17,12 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
 
   Jval::Vector{T}
   Jvar::Vector{Cint}
+
+  funit::Ref{Cint}
 end
 
 """
+    nlp = CUTEstModel{T}(name, args...; kwargs...)
     nlp = CUTEstModel(name, args...; kwargs...)
 
 Creates a CUTEst model following the NLPModels API.
@@ -54,7 +57,29 @@ finalize(nlp)
 - `efirst`::Bool = true`: Equalities first?
 - `lfirst`::Bool = true`: Linear (or affine) constraints first?
 - `lvfirst::Bool = true`: Nonlinear variables should appear first?
+
+The keyword `precision` is not supported when a constructor with a data type `T` is used.
+The type `T` can be `Float32`, `Float64`, or `Float128`.
 """
+function CUTEstModel end
+
+for (T, prec) in ((:Float32, "single"), (:Float64, "double"), (:Float128, "quadruple"))
+  @eval begin
+    function CUTEstModel{$T}(
+      name::AbstractString,
+      args...;
+      decode::Bool = true,
+      verbose::Bool = false,
+      efirst::Bool = true,
+      lfirst::Bool = true,
+      lvfirst::Bool = true,
+    )
+      precision = Symbol($prec)
+      CUTEstModel(name, args...; precision, decode, verbose, efirst, lfirst, lvfirst)
+    end
+  end
+end
+
 function CUTEstModel(
   name::AbstractString,
   args...;
@@ -78,14 +103,17 @@ function CUTEstModel(
 
   if precision == :single
     T = Float32
+    funit = Ref{Cint}(41)
     global cutest_instances_single
     cutest_instances_single > 0 && error("CUTEst: call finalize on current model first")
   elseif precision == :double
     T = Float64
+    funit = Ref{Cint}(42)
     global cutest_instances_double
     cutest_instances_double > 0 && error("CUTEst: call finalize on current model first")
   elseif precision == :quadruple
     T = Float128
+    funit = Ref{Cint}(43)
     global cutest_instances_quadruple
     cutest_instances_quadruple > 0 && error("CUTEst: call finalize on current model first")
   else
@@ -113,7 +141,7 @@ function CUTEstModel(
       build_libsif(path_sifname, precision = precision)
     end
     status = Ref{Cint}(0)
-    fopen(T, Ref{Cint}(funit), outsdif, status)
+    fopen(T, funit, outsdif, status)
     cutest_error(status[])
   end
 
@@ -122,7 +150,7 @@ function CUTEstModel(
   nvar = Ref{Cint}(0)
   ncon = Ref{Cint}(0)
 
-  cdimen(T, status, Ref{Cint}(funit), nvar, ncon)
+  cdimen(T, status, funit, nvar, ncon)
   cutest_error(status[])
 
   x = Vector{T}(undef, nvar[])
@@ -142,7 +170,7 @@ function CUTEstModel(
     csetup(
       T,
       status,
-      Ref{Cint}(funit),
+      funit,
       Ref{Cint}(0),
       Ref{Cint}(6),
       nvar,
@@ -160,7 +188,7 @@ function CUTEstModel(
       v_order,
     )
   else
-    usetup(T, status, Ref{Cint}(funit), Ref{Cint}(0), Ref{Cint}(6), nvar, x, bl, bu)
+    usetup(T, status, funit, Ref{Cint}(0), Ref{Cint}(6), nvar, x, bl, bu)
   end
   cutest_error(status[])
 
@@ -256,7 +284,7 @@ function CUTEstModel(
   workspace_nvar = Vector{T}(undef, nvar)
   workspace_ncon = Vector{T}(undef, ncon)
 
-  fclose(T, Ref{Cint}(funit), status)
+  fclose(T, funit, status)
   cutest_error(status[])
 
   meta = NLPModelMeta(
@@ -291,6 +319,7 @@ function CUTEstModel(
     workspace_ncon,
     Jval,
     Jvar,
+    funit,
   )
 
   if precision == :single
