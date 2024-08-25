@@ -12,7 +12,8 @@ function main()
   options = load_options(joinpath(@__DIR__, "cutest.toml"))
   options["general"]["output_file_path"] = joinpath("..", "src", "libcutest.jl")
   options["general"]["output_ignorelist"] =
-    ["integer", "real", "doublereal", "logical", "rp_", "rpc_", "ip_", "ipc_"]
+    ["integer", "real", "doublereal", "logical", "rp_", "rpc_", "ip_", "ipc_",
+     "CUTEst_malloc", "CUTEst_calloc", "CUTEst_realloc", "CUTEst_free", "VarTypes"]
 
   args = get_default_args()
   push!(args, "-I$include_dir")
@@ -39,13 +40,8 @@ function main()
   for (index, block) in enumerate(blocks)
     if contains(block, "function")
       fname = split(split(block, "function ")[2], "(")[1]
-      if contains(block, "_s(") || contains(block, "_s_(")
-        ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib_single, :$(fname))"
-      elseif contains(block, "_q(") || contains(block, "_q_(")
-        ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib_quadruple, :$(fname))"
-      else
-        ptr = "ptr_$(fname) = Libdl.dlsym(cutest_lib_double, :$(fname))"
-      end
+      block = replace(block, "function $fname(" => "function $fname(libsif, ")
+      ptr = "ptr_$(fname) = Libdl.dlsym(libsif, :$(fname))"
       block = replace(block, "    @ccall libcutest.$fname" => "    $ptr\n    @ccall \$ptr_$(fname)")
     end
     code = code * block

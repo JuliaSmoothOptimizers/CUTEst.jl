@@ -82,24 +82,24 @@ function test_coreinterface(
 
   @testset "Core interface" begin
     if (ncon[1] > 0)
-      CUTEst.cfn(T, st, nvar, ncon, x0, fx, cx)
+      CUTEst.cfn(T, nlp.libsif, st, nvar, ncon, x0, fx, cx)
       @test isapprox(fx[1], f(x0), rtol = rtol)
       compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
 
-      CUTEst.cifn(T, st, nvar, Cint[0], x0, fx)
+      CUTEst.cifn(T, nlp.libsif, st, nvar, Cint[0], x0, fx)
       @test isapprox(fx[1], f(x0), rtol = rtol)
       for i = 1:ncon[1]
-        CUTEst.cifn(T, st, nvar, Cint[i], x0, cx)
+        CUTEst.cifn(T, nlp.libsif, st, nvar, Cint[i], x0, cx)
         #@test isapprox(cx[1], c(x0)[i], rtol = rtol)
         @test isapprox(cx[1] - nlp.meta.ucon[i], c(x0)[i] - comp_nlp.meta.ucon[i], rtol = rtol)
         @test isapprox(cx[1] - nlp.meta.lcon[i], c(x0)[i] - comp_nlp.meta.lcon[i], rtol = rtol)
       end
 
-      CUTEst.cofg(T, st, nvar, x0, fx, gx, True)
+      CUTEst.cofg(T, nlp.libsif, st, nvar, x0, fx, gx, True)
       @test isapprox(fx[1], f(x0), rtol = rtol)
       @test isapprox(gx, g(x0), rtol = rtol)
 
-      CUTEst.cofsg(T, st, nvar, x0, fx, nnzg, nvar, gval, gvar, True)
+      CUTEst.cofsg(T, nlp.libsif, st, nvar, x0, fx, nnzg, nvar, gval, gvar, True)
       @test isapprox(fx[1], f(x0), rtol = rtol)
       gx = zeros(T, nvar[1])
       for i = 1:nnzg[1]
@@ -107,44 +107,44 @@ function test_coreinterface(
       end
       @test isapprox(gx, g(x0), rtol = rtol)
 
-      CUTEst.ccfg(T, st, nvar, ncon, x0, cx, True, nvar, ncon, Jtx, True)
+      CUTEst.ccfg(T, nlp.libsif, st, nvar, ncon, x0, cx, True, nvar, ncon, Jtx, True)
       @test isapprox(Jtx, J(x0)', rtol = rtol)
-      CUTEst.ccfg(T, st, nvar, ncon, x0, cx, False, ncon, nvar, Jx, True)
+      CUTEst.ccfg(T, nlp.libsif, st, nvar, ncon, x0, cx, False, ncon, nvar, Jx, True)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
-      CUTEst.clfg(T, st, nvar, ncon, x0, y0, lx, glx, True)
+      CUTEst.clfg(T, nlp.libsif, st, nvar, ncon, x0, y0, lx, glx, True)
       @test isapprox(lx[1], f(x0) + dot(y0, cx), rtol = rtol)
       @test isapprox(glx, g(x0) + J(x0)' * y0, rtol = rtol)
 
-      CUTEst.cgr(T, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx)
+      CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx)
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jtx, J(x0)', rtol = rtol)
-      CUTEst.cgr(T, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx)
+      CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx)
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
-      CUTEst.cgr(T, st, nvar, ncon, x0, y0, True, glx, True, nvar, ncon, Jtx)
+      CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, True, glx, True, nvar, ncon, Jtx)
       @test isapprox(glx, g(x0) + J(x0)' * y0, rtol = rtol)
       @test isapprox(Jtx, J(x0)', rtol = rtol)
-      CUTEst.cgr(T, st, nvar, ncon, x0, y0, True, glx, False, ncon, nvar, Jx)
+      CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, True, glx, False, ncon, nvar, Jx)
       @test isapprox(glx, g(x0) + J(x0)' * y0, rtol = rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
-      CUTEst.cigr(T, st, nvar, Cint[0], x0, gval)
+      CUTEst.cigr(T, nlp.libsif, st, nvar, Cint[0], x0, gval)
       @test isapprox(gval, g(x0), rtol = rtol)
       for i = 1:ncon[1]
-        CUTEst.cigr(T, st, nvar, Cint[i], x0, gval)
+        CUTEst.cigr(T, nlp.libsif, st, nvar, Cint[i], x0, gval)
         @test isapprox(gval, J(x0)[i, :], rtol = rtol)
       end
 
-      CUTEst.cisgr(T, st, nvar, Cint[0], x0, nnzg, nvar, gval, gvar)
+      CUTEst.cisgr(T, nlp.libsif, st, nvar, Cint[0], x0, nnzg, nvar, gval, gvar)
       I = 1:nnzg[1]
       @test isapprox(gval[I], g(x0)[gvar[I]], rtol = rtol)
       for i = 1:ncon[1]
-        CUTEst.cisgr(T, st, nvar, Cint[i], x0, nnzg, nvar, gval, gvar)
+        CUTEst.cisgr(T, nlp.libsif, st, nvar, Cint[i], x0, nnzg, nvar, gval, gvar)
         @test isapprox(gval, J(x0)[i, gvar[1:nnzg[1]]], rtol = rtol)
       end
 
-      CUTEst.csgr(T, st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun)
+      CUTEst.csgr(T, nlp.libsif, st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun)
       glx = zeros(T, nvar[1])
       Jx = zeros(T, nvar[1], ncon[1])
       for k = 1:nnzj[1]
@@ -156,7 +156,7 @@ function test_coreinterface(
       end
       @test isapprox(glx, g(x0) + J(x0)' * y0, rtol = rtol)
       @test isapprox(Jtx, J(x0)', rtol = rtol)
-      CUTEst.csgr(T, st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun)
+      CUTEst.csgr(T, nlp.libsif, st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun)
       gx = zeros(T, nvar[1])
       Jx = zeros(T, ncon[1], nvar[1])
       for k = 1:nnzj[1]
@@ -169,7 +169,7 @@ function test_coreinterface(
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
-      CUTEst.ccfsg(T, st, nvar, ncon, x0, cx, nnzj, lj, Jval, Jvar, Jfun, True)
+      CUTEst.ccfsg(T, nlp.libsif, st, nvar, ncon, x0, cx, nnzj, lj, Jval, Jvar, Jfun, True)
       Jx = zeros(T, ncon[1], nvar[1])
       for k = 1:nnzj[1]
         Jx[Jfun[k], Jvar[k]] = Jval[k]
@@ -178,7 +178,7 @@ function test_coreinterface(
       @test isapprox(Jx, J(x0), rtol = rtol)
 
       for j = 1:ncon[1]
-        CUTEst.ccifg(T, st, nvar, Cint[j], x0, ci, gci, True)
+        CUTEst.ccifg(T, nlp.libsif, st, nvar, Cint[j], x0, ci, gci, True)
         cx[j] = ci[1]
         Jx[j, :] = gci'
       end
@@ -187,7 +187,7 @@ function test_coreinterface(
 
       Jx = zeros(T, ncon[1], nvar[1])
       for j = 1:ncon[1]
-        CUTEst.ccifsg(T, st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True)
+        CUTEst.ccifsg(T, nlp.libsif, st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True)
         cx[j] = ci[1]
         for k = 1:nnzj[1]
           Jx[j, Jvar[k]] = Jval[k]
@@ -196,27 +196,27 @@ function test_coreinterface(
       compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
-      CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar, Wx)
+      CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar, Wx)
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
-      CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar, Wx)
+      CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar, Wx)
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jtx, J(x0)', rtol = rtol)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
-      CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar, Wx)
+      CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar, Wx)
       @test isapprox(gx, g(x0) + J(x0)' * y0, rtol = rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
-      CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar, Wx)
+      CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar, Wx)
       @test isapprox(gx, g(x0) + J(x0)' * y0, rtol = rtol)
       @test isapprox(Jtx, J(x0)', rtol = rtol)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
 
-      CUTEst.cdh(T, st, nvar, ncon, x0, y0, nvar, Wx)
+      CUTEst.cdh(T, nlp.libsif, st, nvar, ncon, x0, y0, nvar, Wx)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
 
-      CUTEst.csh(T, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
+      CUTEst.csh(T, nlp.libsif, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
       Wx = zeros(T, nvar[1], nvar[1])
       for k = 1:nnzh[1]
         i = Hrow[k]
@@ -226,7 +226,7 @@ function test_coreinterface(
       end
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
 
-      CUTEst.cshc(T, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
+      CUTEst.cshc(T, nlp.libsif, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
       Cx = zeros(T, nvar[1], nvar[1])
       for k = 1:nnzh[1]
         i = Hrow[k]
@@ -236,17 +236,17 @@ function test_coreinterface(
       end
       @test isapprox(Cx, (W(x0, y0) - H(x0)), rtol = rtol)
 
-      CUTEst.cidh(T, st, nvar, x0, Cint[0], nvar, Hx)
+      CUTEst.cidh(T, nlp.libsif, st, nvar, x0, Cint[0], nvar, Hx)
       @test isapprox(Hx, H(x0), rtol = rtol)
       y1 = zeros(T, ncon[1])
       for k = 1:ncon[1]
-        CUTEst.cidh(T, st, nvar, x0, Cint[k], nvar, Cx)
+        CUTEst.cidh(T, nlp.libsif, st, nvar, x0, Cint[k], nvar, Cx)
         y1[k] = one(T)
         @test isapprox(Cx, (W(x0, y1) - H(x0)), rtol = rtol)
         y1[k] = zero(T)
       end
 
-      CUTEst.cish(T, st, nvar, x0, Cint[0], nnzh, lh, Hval, Hrow, Hcol)
+      CUTEst.cish(T, nlp.libsif, st, nvar, x0, Cint[0], nnzh, lh, Hval, Hrow, Hcol)
       Hx = zeros(T, nvar[1], nvar[1])
       for k = 1:nnzh[1]
         i = Hrow[k]
@@ -257,7 +257,7 @@ function test_coreinterface(
       @test isapprox(Hx, H(x0), rtol = rtol)
       y1 = zeros(T, ncon[1])
       for k = 1:ncon[1]
-        CUTEst.cish(T, st, nvar, x0, Cint[k], nnzh, lh, Hval, Hrow, Hcol)
+        CUTEst.cish(T, nlp.libsif, st, nvar, x0, Cint[k], nnzh, lh, Hval, Hrow, Hcol)
         Cx = zeros(T, nvar[1], nvar[1])
         for k2 = 1:nnzh[1]
           i = Hrow[k2]
@@ -272,6 +272,7 @@ function test_coreinterface(
 
       CUTEst.csgrsh(
         T,
+        nlp.libsif,
         st,
         nvar,
         ncon,
@@ -310,6 +311,7 @@ function test_coreinterface(
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
       CUTEst.csgrsh(
         T,
+        nlp.libsif,
         st,
         nvar,
         ncon,
@@ -349,32 +351,32 @@ function test_coreinterface(
 
       v = ones(T, nvar[1])
       Hv = Vector{T}(undef, nvar[1])
-      CUTEst.chprod(T, st, nvar, ncon, False, x0, y0, v, Hv)
+      CUTEst.chprod(T, nlp.libsif, st, nvar, ncon, False, x0, y0, v, Hv)
       @test isapprox(Hv, W(x0, y0) * v, rtol = rtol)
 
       Hv = Vector{T}(undef, nvar[1])
-      CUTEst.chcprod(T, st, nvar, ncon, False, x0, y0, v, Hv)
+      CUTEst.chcprod(T, nlp.libsif, st, nvar, ncon, False, x0, y0, v, Hv)
       @test isapprox(Hv, (W(x0, y0) - H(x0)) * v, rtol = rtol)
 
       v = ones(T, nvar[1])
       Jv = Vector{T}(undef, ncon[1])
-      CUTEst.cjprod(T, st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon)
+      CUTEst.cjprod(T, nlp.libsif, st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon)
       @test isapprox(Jv, J(x0) * v, rtol = rtol)
       v = ones(T, ncon[1])
       Jtv = Vector{T}(undef, nvar[1])
-      CUTEst.cjprod(T, st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar)
+      CUTEst.cjprod(T, nlp.libsif, st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar)
       @test isapprox(Jtv, J(x0)' * v, rtol = rtol)
     else
-      CUTEst.ufn(T, st, nvar, x0, fx)
+      CUTEst.ufn(T, nlp.libsif, st, nvar, x0, fx)
       @test isapprox(fx[1], f(x0), rtol = rtol)
 
-      CUTEst.ugr(T, st, nvar, x0, gx)
+      CUTEst.ugr(T, nlp.libsif, st, nvar, x0, gx)
       @test isapprox(gx, g(x0), rtol = rtol)
 
-      CUTEst.udh(T, st, nvar, x0, nvar, Hx)
+      CUTEst.udh(T, nlp.libsif, st, nvar, x0, nvar, Hx)
       @test isapprox(Hx, H(x0), rtol = rtol)
 
-      CUTEst.ush(T, st, nvar, x0, nnzh, lh, Hval, Hrow, Hcol)
+      CUTEst.ush(T, nlp.libsif, st, nvar, x0, nnzh, lh, Hval, Hrow, Hcol)
       Hx = zeros(T, nvar[1], nvar[1])
       for k = 1:nnzh[1]
         i = Hrow[k]
@@ -384,11 +386,11 @@ function test_coreinterface(
       end
       @test isapprox(Hx, H(x0), rtol = rtol)
 
-      CUTEst.ugrdh(T, st, nvar, x0, gx, nvar, Hx)
+      CUTEst.ugrdh(T, nlp.libsif, st, nvar, x0, gx, nvar, Hx)
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Hx, H(x0), rtol = rtol)
 
-      CUTEst.ugrsh(T, st, nvar, x0, gx, nnzh, lh, Hval, Hrow, Hcol)
+      CUTEst.ugrsh(T, nlp.libsif, st, nvar, x0, gx, nnzh, lh, Hval, Hrow, Hcol)
       @test isapprox(gx, g(x0), rtol = rtol)
       Hx = zeros(T, nvar[1], nvar[1])
       for k = 1:nnzh[1]
@@ -401,10 +403,10 @@ function test_coreinterface(
 
       v = ones(T, nvar[1])
       Hv = Vector{T}(undef, nvar[1])
-      CUTEst.uhprod(T, st, nvar, False, x0, v, Hv)
+      CUTEst.uhprod(T, nlp.libsif, st, nvar, False, x0, v, Hv)
       @test isapprox(Hv, H(x0) * v, rtol = rtol)
 
-      CUTEst.uofg(T, st, nvar, x0, fx, gx, True)
+      CUTEst.uofg(T, nlp.libsif, st, nvar, x0, fx, gx, True)
       @test isapprox(fx[1], f(x0), rtol = rtol)
       @test isapprox(gx, g(x0), rtol = rtol)
     end
@@ -412,42 +414,43 @@ function test_coreinterface(
     print("Core interface stress test... ")
     for i = 1:10000
       if (ncon[1] > 0)
-        CUTEst.cfn(T, st, nvar, ncon, x0, fx, cx)
-        CUTEst.cofg(T, st, nvar, x0, fx, gx, True)
-        CUTEst.cofsg(T, st, nvar, x0, fx, nnzg, nvar, gval, gvar, True)
-        CUTEst.ccfg(T, st, nvar, ncon, x0, cx, True, nvar, ncon, Jtx, True)
-        CUTEst.ccfg(T, st, nvar, ncon, x0, cx, False, ncon, nvar, Jx, True)
-        CUTEst.clfg(T, st, nvar, ncon, x0, y0, lx, glx, True)
-        CUTEst.cgr(T, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx)
-        CUTEst.cgr(T, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx)
-        CUTEst.cgr(T, st, nvar, ncon, x0, y0, True, glx, True, nvar, ncon, Jtx)
-        CUTEst.cgr(T, st, nvar, ncon, x0, y0, True, glx, False, ncon, nvar, Jx)
-        CUTEst.csgr(T, st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun)
-        CUTEst.csgr(T, st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun)
-        CUTEst.ccfsg(T, st, nvar, ncon, x0, cx, nnzj, lj, Jval, Jvar, Jfun, True)
+        CUTEst.cfn(T, nlp.libsif, st, nvar, ncon, x0, fx, cx)
+        CUTEst.cofg(T, nlp.libsif, st, nvar, x0, fx, gx, True)
+        CUTEst.cofsg(T, nlp.libsif, st, nvar, x0, fx, nnzg, nvar, gval, gvar, True)
+        CUTEst.ccfg(T, nlp.libsif, st, nvar, ncon, x0, cx, True, nvar, ncon, Jtx, True)
+        CUTEst.ccfg(T, nlp.libsif, st, nvar, ncon, x0, cx, False, ncon, nvar, Jx, True)
+        CUTEst.clfg(T, nlp.libsif, st, nvar, ncon, x0, y0, lx, glx, True)
+        CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx)
+        CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx)
+        CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, True, glx, True, nvar, ncon, Jtx)
+        CUTEst.cgr(T, nlp.libsif, st, nvar, ncon, x0, y0, True, glx, False, ncon, nvar, Jx)
+        CUTEst.csgr(T, nlp.libsif, st, nvar, ncon, x0, y0, True, nnzj, lj, Jval, Jvar, Jfun)
+        CUTEst.csgr(T, nlp.libsif, st, nvar, ncon, x0, y0, False, nnzj, lj, Jval, Jvar, Jfun)
+        CUTEst.ccfsg(T, nlp.libsif, st, nvar, ncon, x0, cx, nnzj, lj, Jval, Jvar, Jfun, True)
         for j = 1:ncon[1]
-          CUTEst.ccifg(T, st, nvar, Cint[j], x0, ci, gci, True)
+          CUTEst.ccifg(T, nlp.libsif, st, nvar, Cint[j], x0, ci, gci, True)
         end
         for j = 1:ncon[1]
-          CUTEst.ccifsg(T, st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True)
+          CUTEst.ccifsg(T, nlp.libsif, st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True)
         end
-        CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar, Wx)
-        CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar, Wx)
-        CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar, Wx)
-        CUTEst.cgrdh(T, st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar, Wx)
-        CUTEst.cdh(T, st, nvar, ncon, x0, y0, nvar, Wx)
-        CUTEst.csh(T, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
-        CUTEst.cshc(T, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
-        CUTEst.cidh(T, st, nvar, x0, Cint[0], nvar, Hx)
+        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar, Wx)
+        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar, Wx)
+        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar, Wx)
+        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar, Wx)
+        CUTEst.cdh(T, nlp.libsif, st, nvar, ncon, x0, y0, nvar, Wx)
+        CUTEst.csh(T, nlp.libsif, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
+        CUTEst.cshc(T, nlp.libsif, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
+        CUTEst.cidh(T, nlp.libsif, st, nvar, x0, Cint[0], nvar, Hx)
         for k = 1:ncon[1]
-          CUTEst.cidh(T, st, nvar, x0, Cint[k], nvar, Cx)
+          CUTEst.cidh(T, nlp.libsif, st, nvar, x0, Cint[k], nvar, Cx)
         end
-        CUTEst.cish(T, st, nvar, x0, Cint[0], nnzh, lh, Hval, Hrow, Hcol)
+        CUTEst.cish(T, nlp.libsif, st, nvar, x0, Cint[0], nnzh, lh, Hval, Hrow, Hcol)
         for k = 1:ncon[1]
-          CUTEst.cish(T, st, nvar, x0, Cint[k], nnzh, lh, Hval, Hrow, Hcol)
+          CUTEst.cish(T, nlp.libsif, st, nvar, x0, Cint[k], nnzh, lh, Hval, Hrow, Hcol)
         end
         CUTEst.csgrsh(
           T,
+          nlp.libsif,
           st,
           nvar,
           ncon,
@@ -467,6 +470,7 @@ function test_coreinterface(
         )
         CUTEst.csgrsh(
           T,
+          nlp.libsif,
           st,
           nvar,
           ncon,
@@ -484,19 +488,19 @@ function test_coreinterface(
           Hrow,
           Hcol,
         )
-        CUTEst.chprod(T, st, nvar, ncon, False, x0, y0, v, Hv)
-        CUTEst.chcprod(T, st, nvar, ncon, False, x0, y0, v, Hv)
-        CUTEst.cjprod(T, st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon)
-        CUTEst.cjprod(T, st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar)
+        CUTEst.chprod(T, nlp.libsif, st, nvar, ncon, False, x0, y0, v, Hv)
+        CUTEst.chcprod(T, nlp.libsif, st, nvar, ncon, False, x0, y0, v, Hv)
+        CUTEst.cjprod(T, nlp.libsif, st, nvar, ncon, False, False, x0, v, nvar, Jv, ncon)
+        CUTEst.cjprod(T, nlp.libsif, st, nvar, ncon, False, True, x0, v, ncon, Jtv, nvar)
       else
-        CUTEst.ufn(T, st, nvar, x0, fx)
-        CUTEst.ugr(T, st, nvar, x0, gx)
-        CUTEst.udh(T, st, nvar, x0, nvar, Hx)
-        CUTEst.ush(T, st, nvar, x0, nnzh, lh, Hval, Hrow, Hcol)
-        CUTEst.ugrdh(T, st, nvar, x0, gx, nvar, Hx)
-        CUTEst.ugrsh(T, st, nvar, x0, gx, nnzh, lh, Hval, Hrow, Hcol)
-        CUTEst.uhprod(T, st, nvar, False, x0, v, Hv)
-        CUTEst.uofg(T, st, nvar, x0, fx, gx, True)
+        CUTEst.ufn(T, nlp.libsif, st, nvar, x0, fx)
+        CUTEst.ugr(T, nlp.libsif, st, nvar, x0, gx)
+        CUTEst.udh(T, nlp.libsif, st, nvar, x0, nvar, Hx)
+        CUTEst.ush(T, nlp.libsif, st, nvar, x0, nnzh, lh, Hval, Hrow, Hcol)
+        CUTEst.ugrdh(T, nlp.libsif, st, nvar, x0, gx, nvar, Hx)
+        CUTEst.ugrsh(T, nlp.libsif, st, nvar, x0, gx, nnzh, lh, Hval, Hrow, Hcol)
+        CUTEst.uhprod(T, nlp.libsif, st, nvar, False, x0, v, Hv)
+        CUTEst.uofg(T, nlp.libsif, st, nvar, x0, fx, gx, True)
       end
     end
     println("passed")

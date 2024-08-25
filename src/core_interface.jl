@@ -1,5 +1,5 @@
 """
-    usetup(T, status, input, out, io_buffer, n, x, x_l, x_u)
+    usetup(T, libsif, status, input, out, io_buffer, n, x, x_l, x_u)
 
 The usetup subroutine sets up the correct data structures for
 subsequent computations in the case where the only possible
@@ -24,6 +24,7 @@ for (cutest_usetup, T) in
   @eval begin
     function usetup(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       input::StrideOneVector{Cint},
       out::StrideOneVector{Cint},
@@ -33,13 +34,13 @@ for (cutest_usetup, T) in
       x_l::StrideOneVector{$T},
       x_u::StrideOneVector{$T},
     )
-      $cutest_usetup(status, input, out, io_buffer, n, x, x_l, x_u)
+      $cutest_usetup(libsif, status, input, out, io_buffer, n, x, x_l, x_u)
     end
   end
 end
 
 """
-    csetup(status, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
+    csetup(libsif, status, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
 
 The csetup subroutine sets up the correct data structures for
 subsequent computations on the problem decoded from a SIF file by the
@@ -78,6 +79,7 @@ for (cutest_cint_csetup, T) in (
   @eval begin
     function csetup(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       input::StrideOneVector{Cint},
       out::StrideOneVector{Cint},
@@ -97,6 +99,7 @@ for (cutest_cint_csetup, T) in (
       v_order::StrideOneVector{Cint},
     )
       $cutest_cint_csetup(
+        libsif,
         status,
         input,
         out,
@@ -120,7 +123,7 @@ for (cutest_cint_csetup, T) in (
 end
 
 """
-    udimen(T, status, input, n)
+    udimen(T, libsif, status, input, n)
 
 The udimen subroutine discovers how many variables are involved in the
 problem decoded from a SIF file by the script sifdecoder. The problem
@@ -139,17 +142,18 @@ for (cutest_udimen, T) in
   @eval begin
     function udimen(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       input::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
     )
-      $cutest_udimen(status, input, n)
+      $cutest_udimen(libsif, status, input, n)
     end
   end
 end
 
 """
-    udimsh(T, status, nnzh)
+    udimsh(T, libsif, status, nnzh)
 
 The udimsh subroutine determine the number of nonzeros required to
 store the Hessian matrix of the objective function of the problem
@@ -167,14 +171,14 @@ function udimsh end
 for (cutest_udimsh, T) in
     ((:cutest_udimsh_s_, :Float32), (:cutest_udimsh_, :Float64), (:cutest_udimsh_q_, :Float128))
   @eval begin
-    function udimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-      $cutest_udimsh(status, nnzh)
+    function udimsh(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+      $cutest_udimsh(libsif, status, nnzh)
     end
   end
 end
 
 """
-    udimse(T, status, ne, he_val_ne, he_row_ne)
+    udimse(T, libsif, status, ne, he_val_ne, he_row_ne)
 
 The udimse subroutine determine the number of nonzeros required to
 store the Hessian matrix of the objective function of the problem
@@ -198,18 +202,19 @@ for (cutest_udimse, T) in
   @eval begin
     function udimse(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       ne::StrideOneVector{Cint},
       he_val_ne::StrideOneVector{Cint},
       he_row_ne::StrideOneVector{Cint},
     )
-      $cutest_udimse(status, ne, he_val_ne, he_row_ne)
+      $cutest_udimse(libsif, status, ne, he_val_ne, he_row_ne)
     end
   end
 end
 
 """
-    uvartype(T, status, n, x_type)
+    uvartype(T, libsif, status, n, x_type)
 
 The uvartype subroutine determines the type (continuous, 0-1, integer)
 of each variable involved in the problem decoded from a SIF file by
@@ -232,17 +237,18 @@ for (cutest_uvartype, T) in (
   @eval begin
     function uvartype(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x_type::StrideOneVector{Cint},
     )
-      $cutest_uvartype(status, n, x_type)
+      $cutest_uvartype(libsif, status, n, x_type)
     end
   end
 end
 
 """
-    unames(T, status, n, pname, vname)
+    unames(T, libsif, status, n, pname, vname)
 
 The unames subroutine obtains the names of the problem and its
 variables. The problem under consideration is to minimize or maximize
@@ -263,18 +269,19 @@ for (cutest_unames, T) in
   @eval begin
     function unames(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       pname::StrideOneVector{Cchar},
       vname::Matrix{Cchar},
     )
-      $cutest_unames(status, n, pname, vname)
+      $cutest_unames(libsif, status, n, pname, vname)
     end
   end
 end
 
 """
-    ureport(T, status, calls, time)
+    ureport(T, libsif, status, calls, time)
 
 The ureport subroutine obtains statistics concerning function
 evaluation and CPU time used for unconstrained or bound-constrained
@@ -294,17 +301,18 @@ for (cutest_ureport, T) in
   @eval begin
     function ureport(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       calls::StrideOneVector{$T},
       time::StrideOneVector{$T},
     )
-      $cutest_ureport(status, calls, time)
+      $cutest_ureport(libsif, status, calls, time)
     end
   end
 end
 
 """
-    cdimen(T, status, input, n, m)
+    cdimen(T, libsif, status, input, n, m)
 
 The cdimen subroutine discovers how many variables and constraints are
 involved in the problem decoded from a SIF file by the script
@@ -327,18 +335,19 @@ for (cutest_cdimen, T) in
   @eval begin
     function cdimen(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       input::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
     )
-      $cutest_cdimen(status, input, n, m)
+      $cutest_cdimen(libsif, status, input, n, m)
     end
   end
 end
 
 """
-    cdimsj(T, status, nnzj)
+    cdimsj(T, libsif, status, nnzj)
 
 The cdimsj subroutine determines the number of nonzero elements
 required to store the matrix of gradients of the objective function
@@ -359,14 +368,14 @@ function cdimsj end
 for (cutest_cdimsj, T) in
     ((:cutest_cdimsj_s_, :Float32), (:cutest_cdimsj_, :Float64), (:cutest_cdimsj_q_, :Float128))
   @eval begin
-    function cdimsj(::Type{$T}, status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
-      $cutest_cdimsj(status, nnzj)
+    function cdimsj(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
+      $cutest_cdimsj(libsif, status, nnzj)
     end
   end
 end
 
 """
-    cdimsh(T, status, nnzh)
+    cdimsh(T, libsif, status, nnzh)
 
 The cdimsh subroutine determines the number of nonzero elements
 required to store the Hessian matrix of the Lagrangian function for
@@ -386,14 +395,14 @@ function cdimsh end
 for (cutest_cdimsh, T) in
     ((:cutest_cdimsh_s_, :Float32), (:cutest_cdimsh_, :Float64), (:cutest_cdimsh_q_, :Float128))
   @eval begin
-    function cdimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
-      $cutest_cdimsh(status, nnzh)
+    function cdimsh(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+      $cutest_cdimsh(libsif, status, nnzh)
     end
   end
 end
 
 """
-    cdimchp(T, status, nnzchp)
+    cdimchp(T, libsif, status, nnzchp)
 
 The cdimchp subroutine determines the number of nonzero elements
 required to store the products of the Hessian matrices of the
@@ -413,14 +422,14 @@ function cdimchp end
 for (cutest_cdimchp, T) in
     ((:cutest_cdimchp_s_, :Float32), (:cutest_cdimchp_, :Float64), (:cutest_cdimchp_q_, :Float128))
   @eval begin
-    function cdimchp(::Type{$T}, status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
-      $cutest_cdimchp(status, nnzchp)
+    function cdimchp(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
+      $cutest_cdimchp(libsif, status, nnzchp)
     end
   end
 end
 
 """
-    cdimse(T, status, ne, he_val_ne, he_row_ne)
+    cdimse(T, libsif, status, ne, he_val_ne, he_row_ne)
 
 The cdimse subroutine determines the number of nonzero elements
 required to store the Hessian matrix of the Lagrangian function for
@@ -446,18 +455,19 @@ for (cutest_cdimse, T) in
   @eval begin
     function cdimse(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       ne::StrideOneVector{Cint},
       he_val_ne::StrideOneVector{Cint},
       he_row_ne::StrideOneVector{Cint},
     )
-      $cutest_cdimse(status, ne, he_val_ne, he_row_ne)
+      $cutest_cdimse(libsif, status, ne, he_val_ne, he_row_ne)
     end
   end
 end
 
 """
-    cstats(T, status, nonlinear_variables_objective, nonlinear_variables_constraints, equality_constraints, linear_constraints)
+    cstats(T, libsif, status, nonlinear_variables_objective, nonlinear_variables_constraints, equality_constraints, linear_constraints)
 
   - status:                          [OUT] Vector{Cint}
   - nonlinear_variables_objective:   [OUT] Vector{Cint}
@@ -472,6 +482,7 @@ for (cutest_cstats, T) in
   @eval begin
     function cstats(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       nonlinear_variables_objective::StrideOneVector{Cint},
       nonlinear_variables_constraints::StrideOneVector{Cint},
@@ -479,6 +490,7 @@ for (cutest_cstats, T) in
       linear_constraints::StrideOneVector{Cint},
     )
       $cutest_cstats(
+        libsif,
         status,
         nonlinear_variables_objective,
         nonlinear_variables_constraints,
@@ -490,7 +502,7 @@ for (cutest_cstats, T) in
 end
 
 """
-    cvartype(T, status, n, x_type)
+    cvartype(T, libsif, status, n, x_type)
 
 The cvartype subroutine determines the type (continuous, 0-1, integer)
 of each variable involved in the problem decoded from a SIF file by
@@ -515,17 +527,18 @@ for (cutest_cvartype, T) in (
   @eval begin
     function cvartype(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x_type::StrideOneVector{Cint},
     )
-      $cutest_cvartype(status, n, x_type)
+      $cutest_cvartype(libsif, status, n, x_type)
     end
   end
 end
 
 """
-    cnames(T, status, n, m, pname, vname, cname)
+    cnames(T, libsif, status, n, m, pname, vname, cname)
 
 The cnames subroutine obtains the names of the problem, its variables
 and general constraints. The problem under consideration is to
@@ -552,6 +565,7 @@ for (cutest_cnames, T) in
   @eval begin
     function cnames(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -559,13 +573,13 @@ for (cutest_cnames, T) in
       vname::Matrix{Cchar},
       cname::Matrix{Cchar},
     )
-      $cutest_cnames(status, n, m, pname, vname, cname)
+      $cutest_cnames(libsif, status, n, m, pname, vname, cname)
     end
   end
 end
 
 """
-    creport(T, status, calls, time)
+    creport(T, libsif, status, calls, time)
 
 The creport subroutine obtains statistics concerning function
 evaluation and CPU time used for constrained optimization in a
@@ -587,17 +601,18 @@ for (cutest_creport, T) in
   @eval begin
     function creport(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       calls::StrideOneVector{$T},
       time::StrideOneVector{$T},
     )
-      $cutest_creport(status, calls, time)
+      $cutest_creport(libsif, status, calls, time)
     end
   end
 end
 
 """
-    connames(T, status, m, cname)
+    connames(T, libsif, status, m, cname)
 
 The connames subroutine obtains the names of the general constraints
 of the problem. The problem under consideration is to minimize or
@@ -623,17 +638,18 @@ for (cutest_connames, T) in (
   @eval begin
     function connames(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
       cname::Matrix{Cchar},
     )
-      $cutest_connames(status, m, cname)
+      $cutest_connames(libsif, status, m, cname)
     end
   end
 end
 
 """
-    pname(T, status, input, pname)
+    pname(T, libsif, status, input, pname)
 
 The pname subroutine obtains the name of the problem directly from the
 datafile OUTSDIF.d that was created by the script sifdecoder when
@@ -655,17 +671,18 @@ for (cutest_pname, T) in
   @eval begin
     function pname(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       input::StrideOneVector{Cint},
       pname::StrideOneVector{Cchar},
     )
-      $cutest_pname(status, input, pname)
+      $cutest_pname(libsif, status, input, pname)
     end
   end
 end
 
 """
-    probname(T, status, pname)
+    probname(T, libsif, status, pname)
 
 The probname subroutine obtains the name of the problem. The problem
 under consideration is to minimize or maximize an objective function
@@ -687,14 +704,14 @@ for (cutest_probname, T) in (
   (:cutest_probname_q_, :Float128),
 )
   @eval begin
-    function probname(::Type{$T}, status::StrideOneVector{Cint}, pname::StrideOneVector{Cchar})
-      $cutest_probname(status, pname)
+    function probname(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, pname::StrideOneVector{Cchar})
+      $cutest_probname(libsif, status, pname)
     end
   end
 end
 
 """
-    varnames(T, status, n, vname)
+    varnames(T, libsif, status, n, vname)
 
 The varnames subroutine obtains the names of the problem variables.
 The problem under consideration is to minimize or maximize an
@@ -720,17 +737,18 @@ for (cutest_varnames, T) in (
   @eval begin
     function varnames(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       vname::Matrix{Cchar},
     )
-      $cutest_varnames(status, n, vname)
+      $cutest_varnames(libsif, status, n, vname)
     end
   end
 end
 
 """
-    ufn(T, status, n, x, f)
+    ufn(T, libsif, status, n, x, f)
 
 The ufn subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
@@ -750,18 +768,19 @@ for (cutest_ufn, T) in
   @eval begin
     function ufn(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
       f::StrideOneVector{$T},
     )
-      $cutest_ufn(status, n, x, f)
+      $cutest_ufn(libsif, status, n, x, f)
     end
   end
 end
 
 """
-    ugr(T, status, n, x, g)
+    ugr(T, libsif, status, n, x, g)
 
 The ugr subroutine evaluates the gradient of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
@@ -781,18 +800,19 @@ for (cutest_ugr, T) in
   @eval begin
     function ugr(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
       g::StrideOneVector{$T},
     )
-      $cutest_ugr(status, n, x, g)
+      $cutest_ugr(libsif, status, n, x, g)
     end
   end
 end
 
 """
-    uofg(T, status, n, x, f, g, grad)
+    uofg(T, libsif, status, n, x, f, g, grad)
 
 The uofg subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
@@ -818,6 +838,7 @@ for (cutest_cint_uofg, T) in (
   @eval begin
     function uofg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -825,13 +846,13 @@ for (cutest_cint_uofg, T) in (
       g::StrideOneVector{$T},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_uofg(status, n, x, f, g, grad)
+      $cutest_cint_uofg(libsif, status, n, x, f, g, grad)
     end
   end
 end
 
 """
-    udh(T, status, n, x, lh1, h)
+    udh(T, libsif, status, n, x, lh1, h)
 
 The udh subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
@@ -853,19 +874,20 @@ for (cutest_udh, T) in
   @eval begin
     function udh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
       lh1::StrideOneVector{Cint},
       h::Matrix{$T},
     )
-      $cutest_udh(status, n, x, lh1, h)
+      $cutest_udh(libsif, status, n, x, lh1, h)
     end
   end
 end
 
 """
-    ushp(T, status, n, nnzh, lh, h_row, h_col)
+    ushp(T, libsif, status, n, nnzh, lh, h_row, h_col)
 
 The ushp subroutine evaluates the sparsity pattern of the Hessian
 matrix of the objective function of the problem, decoded from a SIF
@@ -888,6 +910,7 @@ for (cutest_ushp, T) in
   @eval begin
     function ushp(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       nnzh::StrideOneVector{Cint},
@@ -895,13 +918,13 @@ for (cutest_ushp, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_ushp(status, n, nnzh, lh, h_row, h_col)
+      $cutest_ushp(libsif, status, n, nnzh, lh, h_row, h_col)
     end
   end
 end
 
 """
-    ush(T, status, n, x, nnzh, lh, h_val, h_row, h_col)
+    ush(T, libsif, status, n, x, nnzh, lh, h_val, h_row, h_col)
 
 The ush subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
@@ -927,6 +950,7 @@ for (cutest_ush, T) in
   @eval begin
     function ush(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -936,13 +960,13 @@ for (cutest_ush, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_ush(status, n, x, nnzh, lh, h_val, h_row, h_col)
+      $cutest_ush(libsif, status, n, x, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
 
 """
-    ueh(T, status, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ueh(T, libsif, status, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
 The ueh subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
@@ -976,6 +1000,7 @@ for (cutest_cint_ueh, T) in (
   @eval begin
     function ueh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -990,6 +1015,7 @@ for (cutest_cint_ueh, T) in (
       byrows::StrideOneVector{Bool},
     )
       $cutest_cint_ueh(
+        libsif,
         status,
         n,
         x,
@@ -1008,7 +1034,7 @@ for (cutest_cint_ueh, T) in (
 end
 
 """
-    ugrdh(T, status, n, x, g, lh1, h)
+    ugrdh(T, libsif, status, n, x, g, lh1, h)
 
 The ugrdh subroutine evaluates the gradient and Hessian matrix of the
 objective function of the problem decoded from a SIF file by the
@@ -1032,6 +1058,7 @@ for (cutest_ugrdh, T) in
   @eval begin
     function ugrdh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -1039,13 +1066,13 @@ for (cutest_ugrdh, T) in
       lh1::StrideOneVector{Cint},
       h::Matrix{$T},
     )
-      $cutest_ugrdh(status, n, x, g, lh1, h)
+      $cutest_ugrdh(libsif, status, n, x, g, lh1, h)
     end
   end
 end
 
 """
-    ugrsh(T, status, n, x, g, nnzh, lh, h_val, h_row, h_col)
+    ugrsh(T, libsif, status, n, x, g, nnzh, lh, h_val, h_row, h_col)
 
 The ugrsh subroutine evaluates the gradient and Hessian matrix of the
 objective function of the problem decoded from a SIF file by the
@@ -1072,6 +1099,7 @@ for (cutest_ugrsh, T) in
   @eval begin
     function ugrsh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -1082,13 +1110,13 @@ for (cutest_ugrsh, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_ugrsh(status, n, x, g, nnzh, lh, h_val, h_row, h_col)
+      $cutest_ugrsh(libsif, status, n, x, g, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
 
 """
-    ugreh(T, status, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ugreh(T, libsif, status, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
 The ugreh subroutine evaluates the gradient and Hessian matrix of the
 objective function of the problem decoded from a SIF file by the
@@ -1124,6 +1152,7 @@ for (cutest_cint_ugreh, T) in (
   @eval begin
     function ugreh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -1139,6 +1168,7 @@ for (cutest_cint_ugreh, T) in (
       byrows::StrideOneVector{Bool},
     )
       $cutest_cint_ugreh(
+        libsif,
         status,
         n,
         x,
@@ -1158,7 +1188,7 @@ for (cutest_cint_ugreh, T) in (
 end
 
 """
-    uhprod(T, status, n, goth, x, vector, result)
+    uhprod(T, libsif, status, n, goth, x, vector, result)
 
 The uhprod subroutine forms the product of a vector with the Hessian
 matrix of the objective function of the problem decoded from a SIF
@@ -1184,6 +1214,7 @@ for (cutest_cint_uhprod, T) in (
   @eval begin
     function uhprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       goth::StrideOneVector{Bool},
@@ -1191,13 +1222,13 @@ for (cutest_cint_uhprod, T) in (
       vector::StrideOneVector{$T},
       result::StrideOneVector{$T},
     )
-      $cutest_cint_uhprod(status, n, goth, x, vector, result)
+      $cutest_cint_uhprod(libsif, status, n, goth, x, vector, result)
     end
   end
 end
 
 """
-    ushprod(T, status, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
+    ushprod(T, libsif, status, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
 
 The ushprod subroutine forms the product of a sparse vector with the
 Hessian matrix of the objective function of the problem decoded from a
@@ -1229,6 +1260,7 @@ for (cutest_cint_ushprod, T) in (
   @eval begin
     function ushprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       goth::StrideOneVector{Bool},
@@ -1241,6 +1273,7 @@ for (cutest_cint_ushprod, T) in (
       result::StrideOneVector{$T},
     )
       $cutest_cint_ushprod(
+        libsif,
         status,
         n,
         goth,
@@ -1257,7 +1290,7 @@ for (cutest_cint_ushprod, T) in (
 end
 
 """
-    ubandh(T, status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+    ubandh(T, libsif, status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
 
 The ubandh subroutine extracts the elements which lie within a band of
 given semi-bandwidth out of the Hessian matrix of the objective
@@ -1282,6 +1315,7 @@ for (cutest_ubandh, T) in
   @eval begin
     function ubandh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -1290,13 +1324,13 @@ for (cutest_ubandh, T) in
       lbandh::StrideOneVector{Cint},
       max_semibandwidth::StrideOneVector{Cint},
     )
-      $cutest_ubandh(status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+      $cutest_ubandh(libsif, status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
     end
   end
 end
 
 """
-    cfn(T, status, n, m, x, f, c)
+    cfn(T, libsif, status, n, m, x, f, c)
 
 The cfn subroutine evaluates the value of the objective function and
 general constraint functions of the problem decoded from a SIF file by
@@ -1321,6 +1355,7 @@ for (cutest_cfn, T) in
   @eval begin
     function cfn(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1328,13 +1363,13 @@ for (cutest_cfn, T) in
       f::StrideOneVector{$T},
       c::StrideOneVector{$T},
     )
-      $cutest_cfn(status, n, m, x, f, c)
+      $cutest_cfn(libsif, status, n, m, x, f, c)
     end
   end
 end
 
 """
-    cofg(T, status, n, x, f, g, grad)
+    cofg(T, libsif, status, n, x, f, g, grad)
 
 The cofg subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
@@ -1362,6 +1397,7 @@ for (cutest_cint_cofg, T) in (
   @eval begin
     function cofg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -1369,13 +1405,13 @@ for (cutest_cint_cofg, T) in (
       g::StrideOneVector{$T},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_cofg(status, n, x, f, g, grad)
+      $cutest_cint_cofg(libsif, status, n, x, f, g, grad)
     end
   end
 end
 
 """
-    cofsg(T, status, n, x, f, nnzg, lg, g_val, g_var, grad)
+    cofsg(T, libsif, status, n, x, f, nnzg, lg, g_val, g_var, grad)
 
 The cofsg subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
@@ -1406,6 +1442,7 @@ for (cutest_cint_cofsg, T) in (
   @eval begin
     function cofsg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -1416,13 +1453,13 @@ for (cutest_cint_cofsg, T) in (
       g_var::StrideOneVector{Cint},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_cofsg(status, n, x, f, nnzg, lg, g_val, g_var, grad)
+      $cutest_cint_cofsg(libsif, status, n, x, f, nnzg, lg, g_val, g_var, grad)
     end
   end
 end
 
 """
-    ccfg(T, status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+    ccfg(T, libsif, status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
 
 The ccfg subroutine evaluates the values of the constraint functions
 of the problem decoded from a SIF file by the script sifdecoder at the
@@ -1454,6 +1491,7 @@ for (cutest_cint_ccfg, T) in (
   @eval begin
     function ccfg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1465,13 +1503,13 @@ for (cutest_cint_ccfg, T) in (
       cjac::Matrix{$T},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccfg(status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+      $cutest_cint_ccfg(libsif, status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
     end
   end
 end
 
 """
-    clfg(T, status, n, m, x, y, f, g, grad)
+    clfg(T, libsif, status, n, m, x, y, f, g, grad)
 
 The clfg subroutine evaluates the value of the Lagrangian function
 l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the
@@ -1501,6 +1539,7 @@ for (cutest_cint_clfg, T) in (
   @eval begin
     function clfg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1510,13 +1549,13 @@ for (cutest_cint_clfg, T) in (
       g::StrideOneVector{$T},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_clfg(status, n, m, x, y, f, g, grad)
+      $cutest_cint_clfg(libsif, status, n, m, x, y, f, g, grad)
     end
   end
 end
 
 """
-    cgr(T, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+    cgr(T, libsif, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
 
 The cgr subroutine evaluates the gradients of the general constraints
 and of either the objective function f(x) or the Lagrangian function
@@ -1550,6 +1589,7 @@ for (cutest_cint_cgr, T) in (
   @eval begin
     function cgr(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1562,13 +1602,13 @@ for (cutest_cint_cgr, T) in (
       lj2::StrideOneVector{Cint},
       j_val::Matrix{$T},
     )
-      $cutest_cint_cgr(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+      $cutest_cint_cgr(libsif, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
     end
   end
 end
 
 """
-    csgr(T, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
+    csgr(T, libsif, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
 
 The csgr subroutine evaluates the gradients of the general constraints
 and of either the objective function or the Lagrangian function
@@ -1604,6 +1644,7 @@ for (cutest_cint_csgr, T) in (
   @eval begin
     function csgr(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1616,13 +1657,13 @@ for (cutest_cint_csgr, T) in (
       j_var::StrideOneVector{Cint},
       j_fun::StrideOneVector{Cint},
     )
-      $cutest_cint_csgr(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
+      $cutest_cint_csgr(libsif, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
     end
   end
 end
 
 """
-    ccfsg(T, status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
+    ccfsg(T, libsif, status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
 
 The ccfsg subroutine evaluates the values of the constraint functions
 of the problem decoded from a SIF file by the script sifdecoder at the
@@ -1656,6 +1697,7 @@ for (cutest_cint_ccfsg, T) in (
   @eval begin
     function ccfsg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1668,13 +1710,13 @@ for (cutest_cint_ccfsg, T) in (
       j_fun::StrideOneVector{Cint},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccfsg(status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
+      $cutest_cint_ccfsg(libsif, status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
     end
   end
 end
 
 """
-    ccifg(T, status, n, icon, x, ci, gci, grad)
+    ccifg(T, libsif, status, n, icon, x, ci, gci, grad)
 
 The ccifg subroutine evaluates the value of a particular constraint
 function of the problem decoded from a SIF file by the script
@@ -1704,6 +1746,7 @@ for (cutest_cint_ccifg, T) in (
   @eval begin
     function ccifg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       icon::StrideOneVector{Cint},
@@ -1712,13 +1755,13 @@ for (cutest_cint_ccifg, T) in (
       gci::StrideOneVector{$T},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccifg(status, n, icon, x, ci, gci, grad)
+      $cutest_cint_ccifg(libsif, status, n, icon, x, ci, gci, grad)
     end
   end
 end
 
 """
-    ccifsg(T, status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
+    ccifsg(T, libsif, status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
 
 The ccifsg subroutine evaluates the value of a particular constraint
 function of the problem decoded from a SIF file by the script
@@ -1752,6 +1795,7 @@ for (cutest_cint_ccifsg, T) in (
   @eval begin
     function ccifsg(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       icon::StrideOneVector{Cint},
@@ -1763,13 +1807,13 @@ for (cutest_cint_ccifsg, T) in (
       gci_var::StrideOneVector{Cint},
       grad::StrideOneVector{Bool},
     )
-      $cutest_cint_ccifsg(status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
+      $cutest_cint_ccifsg(libsif, status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
     end
   end
 end
 
 """
-    cgrdh(T, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+    cgrdh(T, libsif, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
 
 The cgrdh subroutine evaluates the gradients of the general
 constraints and of either the objective function f(x) or the
@@ -1807,6 +1851,7 @@ for (cutest_cint_cgrdh, T) in (
   @eval begin
     function cgrdh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1821,13 +1866,13 @@ for (cutest_cint_cgrdh, T) in (
       lh1::StrideOneVector{Cint},
       h_val::Matrix{$T},
     )
-      $cutest_cint_cgrdh(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+      $cutest_cint_cgrdh(libsif, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
     end
   end
 end
 
 """
-    cdh(T, status, n, m, x, y, lh1, h_val)
+    cdh(T, libsif, status, n, m, x, y, lh1, h_val)
 
 The cdh subroutine evaluates the Hessian matrix of the Lagrangian
 function l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by
@@ -1854,6 +1899,7 @@ for (cutest_cdh, T) in
   @eval begin
     function cdh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1862,13 +1908,13 @@ for (cutest_cdh, T) in
       lh1::StrideOneVector{Cint},
       h_val::Matrix{$T},
     )
-      $cutest_cdh(status, n, m, x, y, lh1, h_val)
+      $cutest_cdh(libsif, status, n, m, x, y, lh1, h_val)
     end
   end
 end
 
 """
-    cdhc(T, status, n, m, x, y, lh1, h_val)
+    cdhc(T, libsif, status, n, m, x, y, lh1, h_val)
 
 The cdhc subroutine evaluates the Hessian matrix of the constraint
 part of the Lagrangian function yTc(x) for the problem decoded from a
@@ -1895,6 +1941,7 @@ for (cutest_cdhc, T) in
   @eval begin
     function cdhc(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1903,13 +1950,13 @@ for (cutest_cdhc, T) in
       lh1::StrideOneVector{Cint},
       h_val::Matrix{$T},
     )
-      $cutest_cdhc(status, n, m, x, y, lh1, h_val)
+      $cutest_cdhc(libsif, status, n, m, x, y, lh1, h_val)
     end
   end
 end
 
 """
-    cshp(T, status, n, nnzh, lh, h_row, h_col)
+    cshp(T, libsif, status, n, nnzh, lh, h_row, h_col)
 
 The cshp subroutine evaluates the sparsity pattern of the Hessian of
 the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem, decoded
@@ -1934,6 +1981,7 @@ for (cutest_cshp, T) in
   @eval begin
     function cshp(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       nnzh::StrideOneVector{Cint},
@@ -1941,13 +1989,13 @@ for (cutest_cshp, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_cshp(status, n, nnzh, lh, h_row, h_col)
+      $cutest_cshp(libsif, status, n, nnzh, lh, h_row, h_col)
     end
   end
 end
 
 """
-    csh(T, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+    csh(T, libsif, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
 The csh subroutine evaluates the Hessian of the Lagrangian function
 l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the
@@ -1977,6 +2025,7 @@ for (cutest_csh, T) in
   @eval begin
     function csh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -1988,13 +2037,13 @@ for (cutest_csh, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_csh(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+      $cutest_csh(libsif, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
 
 """
-    cshc(T, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+    cshc(T, libsif, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
 
 The cshc subroutine evaluates the Hessian matrix of the constraint
 part of the Lagrangian function yTc(x) for the problem decoded from a
@@ -2024,6 +2073,7 @@ for (cutest_cshc, T) in
   @eval begin
     function cshc(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2035,13 +2085,13 @@ for (cutest_cshc, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_cshc(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+      $cutest_cshc(libsif, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
 
 """
-    ceh(T, status, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    ceh(T, libsif, status, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
 The ceh subroutine evaluates the Hessian matrix of the Lagrangian
 function l(x,y)=f(x)+yTc(x) for the problem decoded into OUTSDIF.d at
@@ -2077,6 +2127,7 @@ for (cutest_ceh, T) in
   @eval begin
     function ceh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2093,6 +2144,7 @@ for (cutest_ceh, T) in
       byrows::StrideOneVector{Cint},
     )
       $cutest_ceh(
+        libsif,
         status,
         n,
         m,
@@ -2113,7 +2165,7 @@ for (cutest_ceh, T) in
 end
 
 """
-    cidh(T, status, n, x, iprob, lh1, h)
+    cidh(T, libsif, status, n, x, iprob, lh1, h)
 
 The cidh subroutine evaluates the Hessian matrix of either the
 objective function or a constraint function for the problem decoded
@@ -2139,6 +2191,7 @@ for (cutest_cidh, T) in
   @eval begin
     function cidh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -2146,13 +2199,13 @@ for (cutest_cidh, T) in
       lh1::StrideOneVector{Cint},
       h::Matrix{$T},
     )
-      $cutest_cidh(status, n, x, iprob, lh1, h)
+      $cutest_cidh(libsif, status, n, x, iprob, lh1, h)
     end
   end
 end
 
 """
-    cish(T, status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
+    cish(T, libsif, status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
 
 The cish subroutine evaluates the Hessian of a particular constraint
 function or the objective function for the problem decoded from a SIF
@@ -2181,6 +2234,7 @@ for (cutest_cish, T) in
   @eval begin
     function cish(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       x::StrideOneVector{$T},
@@ -2191,13 +2245,13 @@ for (cutest_cish, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_cish(status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
+      $cutest_cish(libsif, status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
     end
   end
 end
 
 """
-    csgrsh(T, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh, h_val, h_row, h_col)
+    csgrsh(T, libsif, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh, h_val, h_row, h_col)
 
 The csgrsh subroutine evaluates the gradients of the general
 constraints, the Hessian matrix of the Lagrangian function
@@ -2238,6 +2292,7 @@ for (cutest_cint_csgrsh, T) in (
   @eval begin
     function csgrsh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2256,6 +2311,7 @@ for (cutest_cint_csgrsh, T) in (
       h_col::StrideOneVector{Cint},
     )
       $cutest_cint_csgrsh(
+        libsif,
         status,
         n,
         m,
@@ -2278,7 +2334,7 @@ for (cutest_cint_csgrsh, T) in (
 end
 
 """
-    csgreh(T, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+    csgreh(T, libsif, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
 
 The csgreh subroutine evaluates both the gradients of the general
 constraint functions and the Hessian matrix of the Lagrangian function
@@ -2326,6 +2382,7 @@ for (cutest_cint_csgreh, T) in (
   @eval begin
     function csgreh(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2348,6 +2405,7 @@ for (cutest_cint_csgreh, T) in (
       byrows::StrideOneVector{Bool},
     )
       $cutest_cint_csgreh(
+        libsif,
         status,
         n,
         m,
@@ -2374,7 +2432,7 @@ for (cutest_cint_csgreh, T) in (
 end
 
 """
-    chprod(T, status, n, m, goth, x, y, vector, result)
+    chprod(T, libsif, status, n, m, goth, x, y, vector, result)
 
 The chprod subroutine forms the product of a vector with the Hessian
 matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to
@@ -2405,6 +2463,7 @@ for (cutest_cint_chprod, T) in (
   @eval begin
     function chprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2414,13 +2473,13 @@ for (cutest_cint_chprod, T) in (
       vector::StrideOneVector{$T},
       result::StrideOneVector{$T},
     )
-      $cutest_cint_chprod(status, n, m, goth, x, y, vector, result)
+      $cutest_cint_chprod(libsif, status, n, m, goth, x, y, vector, result)
     end
   end
 end
 
 """
-    cshprod(T, status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
+    cshprod(T, libsif, status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
 
 The cshprod subroutine forms the product of a sparse vector with the
 Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x)
@@ -2454,6 +2513,7 @@ for (cutest_cshprod, T) in
   @eval begin
     function cshprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2468,6 +2528,7 @@ for (cutest_cshprod, T) in
       result::StrideOneVector{$T},
     )
       $cutest_cshprod(
+        libsif,
         status,
         n,
         m,
@@ -2486,7 +2547,7 @@ for (cutest_cshprod, T) in
 end
 
 """
-    chcprod(T, status, n, m, goth, x, y, vector, result)
+    chcprod(T, libsif, status, n, m, goth, x, y, vector, result)
 
 The chcprod subroutine forms the product of a vector with the Hessian
 matrix of the constraint part of the Lagrangian function yTc(x) of the
@@ -2517,6 +2578,7 @@ for (cutest_cint_chcprod, T) in (
   @eval begin
     function chcprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2526,13 +2588,13 @@ for (cutest_cint_chcprod, T) in (
       vector::StrideOneVector{$T},
       result::StrideOneVector{$T},
     )
-      $cutest_cint_chcprod(status, n, m, goth, x, y, vector, result)
+      $cutest_cint_chcprod(libsif, status, n, m, goth, x, y, vector, result)
     end
   end
 end
 
 """
-    cshcprod(T, status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
+    cshcprod(T, libsif, status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
 
 The cshcprod subroutine forms the product of a sparse vector with the
 Hessian matrix of the constraint part of the Lagrangian function
@@ -2567,6 +2629,7 @@ for (cutest_cint_cshcprod, T) in (
   @eval begin
     function cshcprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2581,6 +2644,7 @@ for (cutest_cint_cshcprod, T) in (
       result::StrideOneVector{$T},
     )
       $cutest_cint_cshcprod(
+        libsif,
         status,
         n,
         m,
@@ -2599,7 +2663,7 @@ for (cutest_cint_cshcprod, T) in (
 end
 
 """
-    cjprod(T, status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+    cjprod(T, libsif, status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
 
 The cjprod subroutine forms the product of a vector with the Jacobian
 matrix, or with its transpose, of the constraint functions of the
@@ -2632,6 +2696,7 @@ for (cutest_cint_cjprod, T) in (
   @eval begin
     function cjprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2643,13 +2708,13 @@ for (cutest_cint_cjprod, T) in (
       result::StrideOneVector{$T},
       lresult::StrideOneVector{Cint},
     )
-      $cutest_cint_cjprod(status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+      $cutest_cint_cjprod(libsif, status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
     end
   end
 end
 
 """
-    csjprod(T, status, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, nnz_result, index_nz_result, result, lresult)
+    csjprod(T, libsif, status, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, nnz_result, index_nz_result, result, lresult)
 
 The csjprod subroutine forms the product of a sparse vector with the
 Jacobian matrix, or with its transpose, of the constraint functions of
@@ -2686,6 +2751,7 @@ for (cutest_cint_csjprod, T) in (
   @eval begin
     function csjprod(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2702,6 +2768,7 @@ for (cutest_cint_csjprod, T) in (
       lresult::StrideOneVector{Cint},
     )
       $cutest_cint_csjprod(
+        libsif,
         status,
         n,
         m,
@@ -2722,7 +2789,7 @@ for (cutest_cint_csjprod, T) in (
 end
 
 """
-    cchprods(T, status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+    cchprods(T, libsif, status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
 
 The cchprods subroutine forms the product of a vector with each of the
 Hessian matrix of the constraint functions c(x) corresponding to the
@@ -2755,6 +2822,7 @@ for (cutest_cint_cchprods, T) in (
   @eval begin
     function cchprods(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
@@ -2766,13 +2834,13 @@ for (cutest_cint_cchprods, T) in (
       chp_ind::StrideOneVector{Cint},
       chp_ptr::StrideOneVector{Cint},
     )
-      $cutest_cint_cchprods(status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+      $cutest_cint_cchprods(libsif, status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
     end
   end
 end
 
 """
-    cchprodsp(T, status, m, lchp, chp_ind, chp_ptr)
+    cchprodsp(T, libsif, status, m, lchp, chp_ind, chp_ptr)
 
 The cchprodsp subroutine obtains the sparsity structure used when forming the
 product of a vector with each of the Hessian matrices of the constraint
@@ -2795,19 +2863,20 @@ for (cutest_cchprodsp, T) in (
   @eval begin
     function cchprodsp(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       m::StrideOneVector{Cint},
       lchp::StrideOneVector{Cint},
       chp_ind::StrideOneVector{Cint},
       chp_ptr::StrideOneVector{Cint},
     )
-      $cutest_cchprodsp(status, m, lchp, chp_ind, chp_ptr)
+      $cutest_cchprodsp(libsif, status, m, lchp, chp_ind, chp_ptr)
     end
   end
 end
 
 """
-    uterminate(T, status)
+    uterminate(T, libsif, status)
 
 The uterminate subroutine deallocates all workspace arrays created
 since the last call to usetup.
@@ -2822,14 +2891,14 @@ for (cutest_uterminate, T) in (
   (:cutest_uterminate_q_, :Float128),
 )
   @eval begin
-    function uterminate(::Type{$T}, status::StrideOneVector{Cint})
-      $cutest_uterminate(status)
+    function uterminate(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint})
+      $cutest_uterminate(libsif, status)
     end
   end
 end
 
 """
-    cterminate(T, status)
+    cterminate(T, libsif, status)
 
 The uterminate subroutine deallocates all workspace arrays created
 since the last call to csetup.
@@ -2844,14 +2913,14 @@ for (cutest_cterminate, T) in (
   (:cutest_cterminate_q_, :Float128),
 )
   @eval begin
-    function cterminate(::Type{$T}, status::StrideOneVector{Cint})
-      $cutest_cterminate(status)
+    function cterminate(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint})
+      $cutest_cterminate(libsif, status)
     end
   end
 end
 
 """
-    cifn(T, status, n, iprob, x, f)
+    cifn(T, libsif, status, n, iprob, x, f)
 
 The cifn subroutine evaluates the value of either the objective function or a
 constrainted function of the problem decoded from a SIF file by the script
@@ -2870,19 +2939,20 @@ for (cutest_cifn, T) in
   @eval begin
     function cifn(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       iprob::StrideOneVector{Cint},
       x::StrideOneVector{$T},
       f::StrideOneVector{$T},
     )
-      $cutest_cifn(status, n, iprob, x, f)
+      $cutest_cifn(libsif, status, n, iprob, x, f)
     end
   end
 end
 
 """
-    cisgr(T, status, n, iprod, x, nnzg, lg, g_val, g_var)
+    cisgr(T, libsif, status, n, iprod, x, nnzg, lg, g_val, g_var)
 
 The cisgr subroutine evaluates the gradient of either the objective function or
 a constraint function of the problem decoded from a SIF file by the script
@@ -2905,6 +2975,7 @@ for (cutest_cisgr, T) in
   @eval begin
     function cisgr(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       iprod::StrideOneVector{Cint},
@@ -2914,13 +2985,13 @@ for (cutest_cisgr, T) in
       g_val::StrideOneVector{$T},
       g_var::StrideOneVector{Cint},
     )
-      $cutest_cisgr(status, n, iprod, x, nnzg, lg, g_val, g_var)
+      $cutest_cisgr(libsif, status, n, iprod, x, nnzg, lg, g_val, g_var)
     end
   end
 end
 
 """
-    csgrp(T, status, n, nnzj, lj, j_var, j_fun)
+    csgrp(T, libsif, status, n, nnzj, lj, j_var, j_fun)
 
 The csgrp subroutine evaluates sparsity pattern used when storing the gradients
 of the general constraints and of either the objective function or the
@@ -2941,6 +3012,7 @@ for (cutest_csgrp, T) in
   @eval begin
     function csgrp(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       nnzj::StrideOneVector{Cint},
@@ -2948,13 +3020,13 @@ for (cutest_csgrp, T) in
       j_var::StrideOneVector{Cint},
       j_fun::StrideOneVector{Cint},
     )
-      $cutest_csgrp(status, n, nnzj, lj, j_var, j_fun)
+      $cutest_csgrp(libsif, status, n, nnzj, lj, j_var, j_fun)
     end
   end
 end
 
 """
-    cigr(T, status, n, iprob, x, g_val)
+    cigr(T, libsif, status, n, iprob, x, g_val)
 
 The cigr subroutine evaluates the gradient of either the objective function or
 a constraint function of the problem decoded from a SIF file by the script
@@ -2973,19 +3045,20 @@ for (cutest_cigr, T) in
   @eval begin
     function cigr(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       iprob::StrideOneVector{Cint},
       x::StrideOneVector{$T},
       g_val::StrideOneVector{$T},
     )
-      $cutest_cigr(status, n, iprob, x, g_val)
+      $cutest_cigr(libsif, status, n, iprob, x, g_val)
     end
   end
 end
 
 """
-    csgrshp(T, status, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
+    csgrshp(T, libsif, status, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
 
 The csgrshp subroutine evaluates sparsity pattern used when storing the
 gradients of the general constraints and of either the objective function or
@@ -3011,6 +3084,7 @@ for (cutest_csgrshp, T) in
   @eval begin
     function csgrshp(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       n::StrideOneVector{Cint},
       nnzj::StrideOneVector{Cint},
@@ -3022,13 +3096,13 @@ for (cutest_csgrshp, T) in
       h_row::StrideOneVector{Cint},
       h_col::StrideOneVector{Cint},
     )
-      $cutest_csgrshp(status, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
+      $cutest_csgrshp(libsif, status, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
     end
   end
 end
 
 """
-    csjp(T, status, nnzj, lj, jvar, jcon)
+    csjp(T, libsif, status, nnzj, lj, jvar, jcon)
 
 The csjp subroutine evaluates the sparsity pattern of the Jacobian of the
 constraints for a problem decoded from a SIF file by the script sifdecoder.
@@ -3046,55 +3120,56 @@ for (cutest_csjp, T) in
   @eval begin
     function csjp(
       ::Type{$T},
+      libsif::Ptr{Cvoid},
       status::StrideOneVector{Cint},
       nnzj::StrideOneVector{Cint},
       lj::StrideOneVector{Cint},
       jvar::StrideOneVector{Cint},
       jcon::StrideOneVector{Cint},
     )
-      $cutest_csjp(status, nnzj, lj, jvar, jcon)
+      $cutest_csjp(libsif, status, nnzj, lj, jvar, jcon)
     end
   end
 end
 
 """
-    fopen(T, funit, outsdif, status)
+    fopen(T, libsif, funit, outsdif, status)
 """
 function fopen end
 
 for (fortran_open, T) in
     ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64), (:fortran_open_q_, :Float128))
   @eval begin
-    function fopen(::Type{$T}, funit, outsdif, status)
-      $fortran_open(funit, outsdif, status)
+    function fopen(::Type{$T}, libsif::Ptr{Cvoid}, funit, outsdif, status)
+      $fortran_open(libsif, funit, outsdif, status)
     end
   end
 end
 
 """
-    fclose(T, funit, status)
+    fclose(T, libsif, funit, status)
 """
 function fclose end
 
 for (fortran_close, T) in
     ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64), (:fortran_close_q_, :Float128))
   @eval begin
-    function fclose(::Type{$T}, funit, status)
-      $fortran_close(funit, status)
+    function fclose(::Type{$T}, libsif::Ptr{Cvoid}, funit, status)
+      $fortran_close(libsif, funit, status)
     end
   end
 end
 
 """
-    cconst(T, status, m, c)
+    cconst(T, libsif, status, m, c)
 """
 function cconst end
 
 for (cutest_cconst, T) in
     ((:cutest_cconst_s_, :Float32), (:cutest_cconst_, :Float64), (:cutest_cconst_q_, :Float128))
   @eval begin
-    function cconst(::Type{$T}, status, m, c)
-      $cutest_cconst(status, m, c)
+    function cconst(::Type{$T}, libsif::Ptr{Cvoid}, status, m, c)
+      $cutest_cconst(libsif, status, m, c)
     end
   end
 end
