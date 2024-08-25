@@ -20,10 +20,10 @@ function NLPModels.objcons!(
   status = Ref{Cint}(0)
   f = Ref{T}(0)
   if ncon[] > 0
-    cfn(T, status, nvar, ncon, x, f, c)
+    cfn(T, nlp.libsif, status, nvar, ncon, x, f, c)
     increment!(nlp, :neval_cons)
   else
-    ufn(T, status, nvar, x, f)
+    ufn(T, nlp.libsif, status, nvar, x, f)
   end
   increment!(nlp, :neval_obj)
   cutest_error(status[])
@@ -68,9 +68,9 @@ function NLPModels.objgrad!(
   status = Ref{Cint}(0)
   get_grad = Ref{Bool}(true)
   if nlp.meta.ncon > 0
-    cofg(T, status, nvar, x, f, g, get_grad)
+    cofg(T, nlp.libsif, status, nvar, x, f, g, get_grad)
   else
-    uofg(T, status, nvar, x, f, g, get_grad)
+    uofg(T, nlp.libsif, status, nvar, x, f, g, get_grad)
   end
   increment!(nlp, :neval_obj)
   increment!(nlp, :neval_grad)
@@ -142,7 +142,7 @@ function cons_coord!(
   jsize = Ref{Cint}(nlp.meta.nnzj)
   get_j = Ref{Bool}(true)
 
-  ccfsg(T, status, nvar, ncon, x, c, nnzj, jsize, vals, cols, rows, get_j)
+  ccfsg(T, nlp.libsif, status, nvar, ncon, x, c, nnzj, jsize, vals, cols, rows, get_j)
   cutest_error(status[])
   increment!(nlp, :neval_cons)
   increment!(nlp, :neval_jac)
@@ -254,7 +254,7 @@ function NLPModels.cons_nln!(nlp::CUTEstModel{T}, x::AbstractVector, c::StrideOn
   nvar = Ref{Cint}(nlp.meta.nvar)
   k = 1
   for j in nlp.meta.nln
-    cifn(T, Ref{Cint}(0), nvar, Ref{Cint}(j), x, view(c, k:k))
+    cifn(T, nlp.libsif, Ref{Cint}(0), nvar, Ref{Cint}(j), x, view(c, k:k))
     k += 1
   end
   increment!(nlp, :neval_cons_nln)
@@ -335,7 +335,7 @@ function NLPModels.jac_nln_coord!(
   bool = Ref{Bool}(true)
   i = 1
   for j in nlp.meta.nln
-    ccifsg(T, Ref{Cint}(0), nvar, Ref{Cint}(j), x, ci, nnzj, nvar, nlp.Jval, nlp.Jvar, bool)
+    ccifsg(T, nlp.libsif, Ref{Cint}(0), nvar, Ref{Cint}(j), x, ci, nnzj, nvar, nlp.Jval, nlp.Jvar, bool)
     for k = 1:nnzj[]
       vals[i] = nlp.Jval[k]
       i += 1
@@ -359,7 +359,7 @@ function NLPModels.jprod!(
   got_j = Ref{Bool}(false)
   jtrans = Ref{Bool}(false)
   status = Ref{Cint}(0)
-  cjprod(T, status, nvar, ncon, got_j, jtrans, x, v, nvar, jv, ncon)
+  cjprod(T, nlp.libsif, status, nvar, ncon, got_j, jtrans, x, v, nvar, jv, ncon)
   cutest_error(status[])
   increment!(nlp, :neval_jprod)
   return jv
@@ -430,7 +430,7 @@ function NLPModels.jtprod!(
   got_j = Ref{Bool}(false)
   jtrans = Ref{Bool}(true)
   status = Ref{Cint}(0)
-  cjprod(T, status, nvar, ncon, got_j, jtrans, x, v, ncon, jtv, nvar)
+  cjprod(T, nlp.libsif, status, nvar, ncon, got_j, jtrans, x, v, ncon, jtv, nvar)
   cutest_error(status[])
   increment!(nlp, :neval_jtprod)
   return jtv
@@ -518,7 +518,7 @@ function NLPModels.hess_coord!(
   this_nnzh = Ref{Cint}(0)
 
   if obj_weight == zero(T) && (ncon[] > 0)
-    cshc(T, status, nvar, ncon, x, y, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
+    cshc(T, nlp.libsif, status, nvar, ncon, x, y, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
     cutest_error(status[])
     increment!(nlp, :neval_hess)
     return vals
@@ -528,9 +528,9 @@ function NLPModels.hess_coord!(
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == one(T) ? y : y / obj_weight
 
-    csh(T, status, nvar, ncon, x, z, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
+    csh(T, nlp.libsif, status, nvar, ncon, x, z, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
   else
-    ush(T, status, nvar, x, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
+    ush(T, nlp.libsif, status, nvar, x, this_nnzh, nnzh, vals, nlp.hcols, nlp.hrows)
   end
   cutest_error(status[])
 
@@ -583,7 +583,7 @@ function NLPModels.hprod!(
   status = Ref{Cint}(0)
   goth = Ref{Bool}(0)
   if obj_weight == zero(T) && (ncon[] > 0)
-    chcprod(T, status, nvar, ncon, goth, x, y, v, hv)
+    chcprod(T, nlp.libsif, status, nvar, ncon, goth, x, y, v, hv)
     cutest_error(status[])
     increment!(nlp, :neval_hprod)
     return hv
@@ -597,9 +597,9 @@ function NLPModels.hprod!(
       z = nlp.workspace_ncon
       z .= y ./ obj_weight
     end
-    chprod(T, status, nvar, ncon, goth, x, z, v, hv)
+    chprod(T, nlp.libsif, status, nvar, ncon, goth, x, z, v, hv)
   else
-    uhprod(T, status, nvar, goth, x, v, hv)
+    uhprod(T, nlp.libsif, status, nvar, goth, x, v, hv)
   end
   cutest_error(status[])
 
@@ -672,6 +672,6 @@ function NLPModels.jth_hess_coord!(
   ncon = Ref{Cint}(nlp.meta.ncon)
   nnzh = Ref{Cint}(nlp.meta.nnzh)
   status = Ref{Cint}(0)
-  cish(T, status, nvar, x, Ref{Cint}(j), nnzh, nnzh, vals, nlp.hrows, nlp.hcols)
+  cish(T, nlp.libsif, status, nvar, x, Ref{Cint}(j), nnzh, nnzh, vals, nlp.hrows, nlp.hcols)
   return vals
 end

@@ -60,9 +60,9 @@ for p in problems
     fval = T[0.0]
     if ncon > 0
       cx = zeros(T, ncon)
-      CUTEst.cfn(T, status, Cint[nvar], Cint[ncon], x0, fval, cx)
+      CUTEst.cfn(T, nlp.libsif, status, Cint[nvar], Cint[ncon], x0, fval, cx)
     else
-      CUTEst.ufn(T, status, Cint[nvar], x0, fval)
+      CUTEst.ufn(T, nlp.libsif, status, Cint[nvar], x0, fval)
     end
     println("$p: core interface: f(x₀) = $(fval[1])")
 
