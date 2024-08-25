@@ -90,7 +90,7 @@ function sifdecoder(
       output_str = read(outlog, String)
       println(output_str)
     end
-    isfile("OUTSDIF.d") && mv("OUTSDIF.d", outsdif)
+    isfile("OUTSDIF.d") && mv("OUTSDIF.d", outsdif, force=true)
   end
   rm(outlog)
   rm(errlog)
