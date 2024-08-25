@@ -1,76 +1,6 @@
-export usetup,
-  csetup,
-  udimen,
-  udimsh,
-  udimse,
-  uvartype,
-  unames,
-  ureport,
-  cdimen,
-  cdimsj,
-  cdimsh,
-  cdimchp,
-  cdimse,
-  cstats,
-  cvartype,
-  cnames,
-  creport,
-  connames,
-  pname,
-  probname,
-  varnames,
-  ufn,
-  ugr,
-  uofg,
-  udh,
-  ushp,
-  ush,
-  ueh,
-  ugrdh,
-  ugrsh,
-  ugreh,
-  uhprod,
-  ushprod,
-  ubandh,
-  cfn,
-  cofg,
-  cofsg,
-  ccfg,
-  clfg,
-  cgr,
-  csgr,
-  ccfsg,
-  ccifg,
-  ccifsg,
-  cgrdh,
-  cdh,
-  cdhc,
-  cshp,
-  csh,
-  cshc,
-  ceh,
-  cidh,
-  cish,
-  csgrsh,
-  csgreh,
-  chprod,
-  cshprod,
-  chcprod,
-  cshcprod,
-  cjprod,
-  csjprod,
-  cchprods,
-  cchprodsp,
-  uterminate,
-  cterminate,
-  cifn,
-  cisgr,
-  csgrp,
-  cigr,
-  csgrshp,
-  csjp
+"""
+    usetup(T, status, input, out, io_buffer, n, x, x_l, x_u)
 
-"""# usetup
 The usetup subroutine sets up the correct data structures for
 subsequent computations in the case where the only possible
 constraints are bound constraints. The problem under consideration is
@@ -78,27 +8,18 @@ to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-For more information, run the shell command
-
-    man cutest_usetup
-
-Usage:
-
-    usetup(status, input, out, io_buffer, n, x, x_l, x_u)
-
   - status:    [OUT] Vector{Cint}
-  - input:     [IN] Vector{Cint}
-  - out:       [IN] Vector{Cint}
-  - io_buffer: [IN] Vector{Cint}
-  - n:         [IN] Vector{Cint}
+  - input:     [IN]  Vector{Cint}
+  - out:       [IN]  Vector{Cint}
+  - io_buffer: [IN]  Vector{Cint}
+  - n:         [IN]  Vector{Cint}
   - x:         [OUT] Vector{T}
   - x_l:       [OUT] Vector{T}
   - x_u:       [OUT] Vector{T}
 """
 function usetup end
 
-for (cutest_usetup, T) in
-    ((:cutest_usetup_s_, :Float32), (:cutest_usetup_, :Float64), (:cutest_usetup_q_, :Float128))
+for (cutest_usetup, T) in ((:cutest_usetup_s_, :Float32), (:cutest_usetup_, :Float64), (:cutest_usetup_q_, :Float128))
   @eval begin
     function usetup(
       ::Type{$T},
@@ -116,7 +37,9 @@ for (cutest_usetup, T) in
   end
 end
 
-"""# csetup
+"""
+    csetup(status, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn, linear, e_order, l_order, v_order)
+
 The csetup subroutine sets up the correct data structures for
 subsequent computations on the problem decoded from a SIF file by the
 script sifdecoder. The problem under consideration is to minimize or
@@ -126,21 +49,12 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_csetup
-
-Usage:
-
-    csetup(status, input, out, io_buffer, n, m, x, x_l, x_u, y, c_l, c_u, equatn,
-linear, e_order, l_order, v_order)
-
   - status:    [OUT] Vector{Cint}
-  - input:     [IN] Vector{Cint}
-  - out:       [IN] Vector{Cint}
-  - io_buffer: [IN] Vector{Cint}
-  - n:         [IN] Vector{Cint}
-  - m:         [IN] Vector{Cint}
+  - input:     [IN]  Vector{Cint}
+  - out:       [IN]  Vector{Cint}
+  - io_buffer: [IN]  Vector{Cint}
+  - n:         [IN]  Vector{Cint}
+  - m:         [IN]  Vector{Cint}
   - x:         [OUT] Vector{T}
   - x_l:       [OUT] Vector{T}
   - x_u:       [OUT] Vector{T}
@@ -149,17 +63,14 @@ linear, e_order, l_order, v_order)
   - c_u:       [OUT] Vector{T}
   - equatn:    [OUT] Vector{Bool}
   - linear:    [OUT] Vector{Bool}
-  - e_order:   [IN] Vector{Cint}
-  - l_order:   [IN] Vector{Cint}
-  - v_order:   [IN] Vector{Cint}
+  - e_order:   [IN]  Vector{Cint}
+  - l_order:   [IN]  Vector{Cint}
+  - v_order:   [IN]  Vector{Cint}
 """
 function csetup end
 
-for (cutest_cint_csetup, T) in (
-  (:cutest_cint_csetup_s_, :Float32),
-  (:cutest_cint_csetup_, :Float64),
-  (:cutest_cint_csetup_q_, :Float128),
-)
+for (cutest_cint_csetup, T) in
+    ((:cutest_cint_csetup_s_, :Float32), (:cutest_cint_csetup_, :Float64), (:cutest_cint_csetup_q_, :Float128))
   @eval begin
     function csetup(
       ::Type{$T},
@@ -204,29 +115,22 @@ for (cutest_cint_csetup, T) in (
   end
 end
 
-"""# udimen
+"""
+    udimen(T, status, input, n)
+
 The udimen subroutine discovers how many variables are involved in the
 problem decoded from a SIF file by the script sifdecoder. The problem
 under consideration is to minimize or maximize an objective function
 f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The
 objective function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_udimen
-
-Usage:
-
-    udimen(status, input, n)
-
   - status:  [OUT] Vector{Cint}
-  - input:   [IN] Vector{Cint}
+  - input:   [IN]  Vector{Cint}
   - n:       [OUT] Vector{Cint}
 """
 function udimen end
 
-for (cutest_udimen, T) in
-    ((:cutest_udimen_s_, :Float32), (:cutest_udimen_, :Float64), (:cutest_udimen_q_, :Float128))
+for (cutest_udimen, T) in ((:cutest_udimen_s_, :Float32), (:cutest_udimen_, :Float64), (:cutest_udimen_q_, :Float128))
   @eval begin
     function udimen(
       ::Type{$T},
@@ -239,7 +143,9 @@ for (cutest_udimen, T) in
   end
 end
 
-"""# udimsh
+"""
+    udimsh(T, status, nnzh)
+
 The udimsh subroutine determine the number of nonzeros required to
 store the Hessian matrix of the objective function of the problem
 decoded from a SIF file by the script sifdecoder at the point X. This
@@ -248,21 +154,12 @@ problem under consideration is to minimize or maximize an objective
 function f(x) over all x ∈ Rn subject to the simple bounds xl≤x≤xu.
 The objective function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_udimsh
-
-Usage:
-
-    udimsh(status, nnzh)
-
   - status:  [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
 """
 function udimsh end
 
-for (cutest_udimsh, T) in
-    ((:cutest_udimsh_s_, :Float32), (:cutest_udimsh_, :Float64), (:cutest_udimsh_q_, :Float128))
+for (cutest_udimsh, T) in ((:cutest_udimsh_s_, :Float32), (:cutest_udimsh_, :Float64), (:cutest_udimsh_q_, :Float128))
   @eval begin
     function udimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
       $cutest_udimsh(status, nnzh)
@@ -270,7 +167,9 @@ for (cutest_udimsh, T) in
   end
 end
 
-"""# udimse
+"""
+    udimse(T, status, ne, he_val_ne, he_row_ne)
+
 The udimse subroutine determine the number of nonzeros required to
 store the Hessian matrix of the objective function of the problem
 decoded from a SIF file by the script sifdecoder at the point X. This
@@ -281,14 +180,6 @@ consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
 function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_udimse
-
-Usage:
-
-    udimse(status, ne, he_val_ne, he_row_ne)
-
   - status:    [OUT] Vector{Cint}
   - ne:        [OUT] Vector{Cint}
   - he_val_ne: [OUT] Vector{Cint}
@@ -296,8 +187,7 @@ Usage:
 """
 function udimse end
 
-for (cutest_udimse, T) in
-    ((:cutest_udimse_s_, :Float32), (:cutest_udimse_, :Float64), (:cutest_udimse_q_, :Float128))
+for (cutest_udimse, T) in ((:cutest_udimse_s_, :Float32), (:cutest_udimse_, :Float64), (:cutest_udimse_q_, :Float128))
   @eval begin
     function udimse(
       ::Type{$T},
@@ -311,7 +201,9 @@ for (cutest_udimse, T) in
   end
 end
 
-"""# uvartype
+"""
+    uvartype(T, status, n, x_type)
+
 The uvartype subroutine determines the type (continuous, 0-1, integer)
 of each variable involved in the problem decoded from a SIF file by
 the script sifdecoder. The problem under consideration is to minimize
@@ -319,25 +211,13 @@ or maximize an objective function f(x) over all x ∈ Rn subject to the
 simple bounds xl≤x≤xu. The objective function is group-partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_uvartype
-
-Usage:
-
-    uvartype(status, n, x_type)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
 function uvartype end
 
-for (cutest_uvartype, T) in (
-  (:cutest_uvartype_s_, :Float32),
-  (:cutest_uvartype_, :Float64),
-  (:cutest_uvartype_q_, :Float128),
-)
+for (cutest_uvartype, T) in ((:cutest_uvartype_s_, :Float32), (:cutest_uvartype_, :Float64), (:cutest_uvartype_q_, :Float128))
   @eval begin
     function uvartype(
       ::Type{$T},
@@ -350,22 +230,16 @@ for (cutest_uvartype, T) in (
   end
 end
 
-"""# unames
+"""
+    unames(T, status, n, pname, vname)
+
 The unames subroutine obtains the names of the problem and its
 variables. The problem under consideration is to minimize or maximize
 an objective function f(x) over all x ∈ Rn subject to the simple
 bounds xl≤x≤xu. The objective function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_unames
-
-Usage:
-
-    unames(status, n, pname, vname)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
   - pname:   [OUT] Vector{Cchar}
   - vname:   [OUT] Vector{Cchar}
 
@@ -373,8 +247,7 @@ To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
 function unames end
 
-for (cutest_unames, T) in
-    ((:cutest_unames_s_, :Float32), (:cutest_unames_, :Float64), (:cutest_unames_q_, :Float128))
+for (cutest_unames, T) in ((:cutest_unames_s_, :Float32), (:cutest_unames_, :Float64), (:cutest_unames_q_, :Float128))
   @eval begin
     function unames(
       ::Type{$T},
@@ -388,7 +261,9 @@ for (cutest_unames, T) in
   end
 end
 
-"""# ureport
+"""
+    ureport(T, status, calls, time)
+
 The ureport subroutine obtains statistics concerning function
 evaluation and CPU time used for unconstrained or bound-constrained
 optimization in a standardized format. The problem under consideration
@@ -396,22 +271,13 @@ is to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-For more information, run the shell command
-
-    man cutest_ureport
-
-Usage:
-
-    ureport(status, calls, time)
-
   - status:  [OUT] Vector{Cint}
   - calls:   [OUT] Vector{T}
   - time:    [OUT] Vector{T}
 """
 function ureport end
 
-for (cutest_ureport, T) in
-    ((:cutest_ureport_s_, :Float32), (:cutest_ureport_, :Float64), (:cutest_ureport_q_, :Float128))
+for (cutest_ureport, T) in ((:cutest_ureport_s_, :Float32), (:cutest_ureport_, :Float64), (:cutest_ureport_q_, :Float128))
   @eval begin
     function ureport(
       ::Type{$T},
@@ -424,7 +290,9 @@ for (cutest_ureport, T) in
   end
 end
 
-"""# cdimen
+"""
+    cdimen(T, status, input, n, m)
+
 The cdimen subroutine discovers how many variables and constraints are
 involved in the problem decoded from a SIF file by the script
 sifdecoder. The problem under consideration is to minimize or maximize
@@ -434,23 +302,14 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cdimen
-
-Usage:
-
-    cdimen(status, input, n, m)
-
   - status:  [OUT] Vector{Cint}
-  - input:   [IN] Vector{Cint}
+  - input:   [IN]  Vector{Cint}
   - n:       [OUT] Vector{Cint}
   - m:       [OUT] Vector{Cint}
 """
 function cdimen end
 
-for (cutest_cdimen, T) in
-    ((:cutest_cdimen_s_, :Float32), (:cutest_cdimen_, :Float64), (:cutest_cdimen_q_, :Float128))
+for (cutest_cdimen, T) in ((:cutest_cdimen_s_, :Float32), (:cutest_cdimen_, :Float64), (:cutest_cdimen_q_, :Float128))
   @eval begin
     function cdimen(
       ::Type{$T},
@@ -464,7 +323,9 @@ for (cutest_cdimen, T) in
   end
 end
 
-"""# cdimsj
+"""
+    cdimsj(T, status, nnzj)
+
 The cdimsj subroutine determines the number of nonzero elements
 required to store the matrix of gradients of the objective function
 and constraint functions for the problem decoded into OUTSDIF.d in the
@@ -476,21 +337,12 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_cdimsj
-
-Usage:
-
-    cdimsj(status, nnzj)
-
   - status:  [OUT] Vector{Cint}
   - nnzj:    [OUT] Vector{Cint}
 """
 function cdimsj end
 
-for (cutest_cdimsj, T) in
-    ((:cutest_cdimsj_s_, :Float32), (:cutest_cdimsj_, :Float64), (:cutest_cdimsj_q_, :Float128))
+for (cutest_cdimsj, T) in ((:cutest_cdimsj_s_, :Float32), (:cutest_cdimsj_, :Float64), (:cutest_cdimsj_q_, :Float128))
   @eval begin
     function cdimsj(::Type{$T}, status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
       $cutest_cdimsj(status, nnzj)
@@ -498,7 +350,9 @@ for (cutest_cdimsj, T) in
   end
 end
 
-"""# cdimsh
+"""
+    cdimsh(T, status, nnzh)
+
 The cdimsh subroutine determines the number of nonzero elements
 required to store the Hessian matrix of the Lagrangian function for
 the problem decoded into OUTSDIF.d in the constrained minimization
@@ -509,21 +363,12 @@ f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cdimsh
-
-Usage:
-
-    cdimsh(status, nnzh)
-
   - status:  [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
 """
 function cdimsh end
 
-for (cutest_cdimsh, T) in
-    ((:cutest_cdimsh_s_, :Float32), (:cutest_cdimsh_, :Float64), (:cutest_cdimsh_q_, :Float128))
+for (cutest_cdimsh, T) in ((:cutest_cdimsh_s_, :Float32), (:cutest_cdimsh_, :Float64), (:cutest_cdimsh_q_, :Float128))
   @eval begin
     function cdimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
       $cutest_cdimsh(status, nnzh)
@@ -531,7 +376,9 @@ for (cutest_cdimsh, T) in
   end
 end
 
-"""# cdimchp
+"""
+    cdimchp(T, status, nnzchp)
+
 The cdimchp subroutine determines the number of nonzero elements
 required to store the products of the Hessian matrices of the
 constraint functions with a specified vector for the problem decoded
@@ -542,21 +389,12 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cdimchp
-
-Usage:
-
-    cdimchp(status, nnzchp)
-
   - status:  [OUT] Vector{Cint}
   - nnzchp:  [OUT] Vector{Cint}
 """
 function cdimchp end
 
-for (cutest_cdimchp, T) in
-    ((:cutest_cdimchp_s_, :Float32), (:cutest_cdimchp_, :Float64), (:cutest_cdimchp_q_, :Float128))
+for (cutest_cdimchp, T) in ((:cutest_cdimchp_s_, :Float32), (:cutest_cdimchp_, :Float64), (:cutest_cdimchp_q_, :Float128))
   @eval begin
     function cdimchp(::Type{$T}, status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
       $cutest_cdimchp(status, nnzchp)
@@ -564,7 +402,9 @@ for (cutest_cdimchp, T) in
   end
 end
 
-"""# cdimse
+"""
+    cdimse(T, status, ne, he_val_ne, he_row_ne)
+
 The cdimse subroutine determines the number of nonzero elements
 required to store the Hessian matrix of the Lagrangian function for
 the problem decoded from a SIF file by the script sifdecoder. The
@@ -577,14 +417,6 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cdimse
-
-Usage:
-
-    cdimse(status, ne, he_val_ne, he_row_ne)
-
   - status:    [OUT] Vector{Cint}
   - ne:        [OUT] Vector{Cint}
   - he_val_ne: [OUT] Vector{Cint}
@@ -592,8 +424,7 @@ Usage:
 """
 function cdimse end
 
-for (cutest_cdimse, T) in
-    ((:cutest_cdimse_s_, :Float32), (:cutest_cdimse_, :Float64), (:cutest_cdimse_q_, :Float128))
+for (cutest_cdimse, T) in ((:cutest_cdimse_s_, :Float32), (:cutest_cdimse_, :Float64), (:cutest_cdimse_q_, :Float128))
   @eval begin
     function cdimse(
       ::Type{$T},
@@ -607,10 +438,8 @@ for (cutest_cdimse, T) in
   end
 end
 
-"""# cstats
-    cstats(status, nonlinear_variables_objective,
-nonlinear_variables_constraints, equality_constraints,
-linear_constraints)
+"""
+    cstats(T, status, nonlinear_variables_objective, nonlinear_variables_constraints, equality_constraints, linear_constraints)
 
   - status:                          [OUT] Vector{Cint}
   - nonlinear_variables_objective:   [OUT] Vector{Cint}
@@ -620,8 +449,7 @@ linear_constraints)
 """
 function cstats end
 
-for (cutest_cstats, T) in
-    ((:cutest_cstats_s_, :Float32), (:cutest_cstats_, :Float64), (:cutest_cstats_q_, :Float128))
+for (cutest_cstats, T) in ((:cutest_cstats_s_, :Float32), (:cutest_cstats_, :Float64), (:cutest_cstats_q_, :Float128))
   @eval begin
     function cstats(
       ::Type{$T},
@@ -642,7 +470,9 @@ for (cutest_cstats, T) in
   end
 end
 
-"""# cvartype
+"""
+    cvartype(T, status, n, x_type)
+
 The cvartype subroutine determines the type (continuous, 0-1, integer)
 of each variable involved in the problem decoded from a SIF file by
 the script sifdecoder. The problem under consideration is to minimize
@@ -652,25 +482,13 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cvartype
-
-Usage:
-
-    cvartype(status, n, x_type)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
   - x_type:  [OUT] Vector{Cint}
 """
 function cvartype end
 
-for (cutest_cvartype, T) in (
-  (:cutest_cvartype_s_, :Float32),
-  (:cutest_cvartype_, :Float64),
-  (:cutest_cvartype_q_, :Float128),
-)
+for (cutest_cvartype, T) in ((:cutest_cvartype_s_, :Float32), (:cutest_cvartype_, :Float64), (:cutest_cvartype_q_, :Float128))
   @eval begin
     function cvartype(
       ::Type{$T},
@@ -683,7 +501,9 @@ for (cutest_cvartype, T) in (
   end
 end
 
-"""# cnames
+"""
+    cnames(T, status, n, m, pname, vname, cname)
+
 The cnames subroutine obtains the names of the problem, its variables
 and general constraints. The problem under consideration is to
 minimize or maximize an objective function f(x) over all x ∈ Rn
@@ -692,17 +512,9 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cnames
-
-Usage:
-
-    cnames(status, n, m, pname, vname, cname)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
   - pname:   [OUT] Vector{Cchar}
   - vname:   [OUT] Vector{Cchar}
   - cname:   [OUT] Vector{Cchar}
@@ -712,8 +524,7 @@ or `cname[:,i]`.
 """
 function cnames end
 
-for (cutest_cnames, T) in
-    ((:cutest_cnames_s_, :Float32), (:cutest_cnames_, :Float64), (:cutest_cnames_q_, :Float128))
+for (cutest_cnames, T) in ((:cutest_cnames_s_, :Float32), (:cutest_cnames_, :Float64), (:cutest_cnames_q_, :Float128))
   @eval begin
     function cnames(
       ::Type{$T},
@@ -729,7 +540,9 @@ for (cutest_cnames, T) in
   end
 end
 
-"""# creport
+"""
+    creport(T, status, calls, time)
+
 The creport subroutine obtains statistics concerning function
 evaluation and CPU time used for constrained optimization in a
 standardized format. The problem under consideration is to minimize or
@@ -739,22 +552,13 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_creport
-
-Usage:
-
-    creport(status, calls, time)
-
   - status:  [OUT] Vector{Cint}
   - calls:   [OUT] Vector{T}
   - time:    [OUT] Vector{T}
 """
 function creport end
 
-for (cutest_creport, T) in
-    ((:cutest_creport_s_, :Float32), (:cutest_creport_, :Float64), (:cutest_creport_q_, :Float128))
+for (cutest_creport, T) in ((:cutest_creport_s_, :Float32), (:cutest_creport_, :Float64), (:cutest_creport_q_, :Float128))
   @eval begin
     function creport(
       ::Type{$T},
@@ -767,7 +571,9 @@ for (cutest_creport, T) in
   end
 end
 
-"""# connames
+"""
+    connames(T, status, m, cname)
+
 The connames subroutine obtains the names of the general constraints
 of the problem. The problem under consideration is to minimize or
 maximize an objective function f(x) over all x ∈ Rn subject to general
@@ -776,27 +582,15 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_connames
-
-Usage:
-
-    connames(status, m, cname)
-
   - status:  [OUT] Vector{Cint}
-  - m:       [IN] Vector{Cint}
+  - m:       [IN]  Vector{Cint}
   - cname:   [OUT] Vector{Cchar}
 
 To get useful names, use `String(cname[:,i])`.
 """
 function connames end
 
-for (cutest_connames, T) in (
-  (:cutest_connames_s_, :Float32),
-  (:cutest_connames_, :Float64),
-  (:cutest_connames_q_, :Float128),
-)
+for (cutest_connames, T) in ((:cutest_connames_s_, :Float32), (:cutest_connames_, :Float64), (:cutest_connames_q_, :Float128))
   @eval begin
     function connames(
       ::Type{$T},
@@ -809,7 +603,9 @@ for (cutest_connames, T) in (
   end
 end
 
-"""# pname
+"""
+    pname(T, status, input, pname)
+
 The pname subroutine obtains the name of the problem directly from the
 datafile OUTSDIF.d that was created by the script sifdecoder when
 decoding a SIF file. The problem under consideration is to minimize or
@@ -819,22 +615,13 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_pname
-
-Usage:
-
-    pname(status, input, pname)
-
   - status:  [OUT] Vector{Cint}
-  - input:   [IN] Vector{Cint}
+  - input:   [IN]  Vector{Cint}
   - pname:   [OUT] Vector{Cchar}
 """
 function pname end
 
-for (cutest_pname, T) in
-    ((:cutest_pname_s_, :Float32), (:cutest_pname_, :Float64), (:cutest_pname_q_, :Float128))
+for (cutest_pname, T) in ((:cutest_pname_s_, :Float32), (:cutest_pname_, :Float64), (:cutest_pname_q_, :Float128))
   @eval begin
     function pname(
       ::Type{$T},
@@ -847,21 +634,15 @@ for (cutest_pname, T) in
   end
 end
 
-"""# probname
+"""
+    probname(T, status, pname)
+
 The probname subroutine obtains the name of the problem. The problem
 under consideration is to minimize or maximize an objective function
 f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 1,...,mE), general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m),
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
-
-For more information, run the shell command
-
-    man cutest_probname
-
-Usage:
-
-    probname(status, pname)
 
   - status:  [OUT] Vector{Cint}
   - pname:   [OUT] Vector{Cchar}
@@ -870,11 +651,7 @@ To get a useful name, use `String(pname)`.
 """
 function probname end
 
-for (cutest_probname, T) in (
-  (:cutest_probname_s_, :Float32),
-  (:cutest_probname_, :Float64),
-  (:cutest_probname_q_, :Float128),
-)
+for (cutest_probname, T) in ((:cutest_probname_s_, :Float32), (:cutest_probname_, :Float64), (:cutest_probname_q_, :Float128))
   @eval begin
     function probname(::Type{$T}, status::StrideOneVector{Cint}, pname::StrideOneVector{Cchar})
       $cutest_probname(status, pname)
@@ -882,7 +659,9 @@ for (cutest_probname, T) in (
   end
 end
 
-"""# varnames
+"""
+    varnames(T, status, n, vname)
+
 The varnames subroutine obtains the names of the problem variables.
 The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to general equations
@@ -891,27 +670,15 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_varnames
-
-Usage:
-
-    varnames(status, n, vname)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
   - vname:   [OUT] Vector{Cchar}
 
 To get useful names, use `String(vname[:, i])`.
 """
 function varnames end
 
-for (cutest_varnames, T) in (
-  (:cutest_varnames_s_, :Float32),
-  (:cutest_varnames_, :Float64),
-  (:cutest_varnames_q_, :Float128),
-)
+for (cutest_varnames, T) in ((:cutest_varnames_s_, :Float32), (:cutest_varnames_, :Float64), (:cutest_varnames_q_, :Float128))
   @eval begin
     function varnames(
       ::Type{$T},
@@ -924,30 +691,23 @@ for (cutest_varnames, T) in (
   end
 end
 
-"""# ufn
+"""
+    ufn(T, status, n, x, f)
+
 The ufn subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
 point X. The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_ufn
-
-Usage:
-
-    ufn(status, n, x, f)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - f:       [OUT] Vector{T}
 """
 function ufn end
 
-for (cutest_ufn, T) in
-    ((:cutest_ufn_s_, :Float32), (:cutest_ufn_, :Float64), (:cutest_ufn_q_, :Float128))
+for (cutest_ufn, T) in ((:cutest_ufn_s_, :Float32), (:cutest_ufn_, :Float64), (:cutest_ufn_q_, :Float128))
   @eval begin
     function ufn(
       ::Type{$T},
@@ -961,30 +721,23 @@ for (cutest_ufn, T) in
   end
 end
 
-"""# ugr
+"""
+    ugr(T, status, n, x, g)
+
 The ugr subroutine evaluates the gradient of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
 point X. The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_ugr
-
-Usage:
-
-    ugr(status, n, x, g)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - g:       [OUT] Vector{T}
 """
 function ugr end
 
-for (cutest_ugr, T) in
-    ((:cutest_ugr_s_, :Float32), (:cutest_ugr_, :Float64), (:cutest_ugr_q_, :Float128))
+for (cutest_ugr, T) in ((:cutest_ugr_s_, :Float32), (:cutest_ugr_, :Float64), (:cutest_ugr_q_, :Float128))
   @eval begin
     function ugr(
       ::Type{$T},
@@ -998,7 +751,9 @@ for (cutest_ugr, T) in
   end
 end
 
-"""# uofg
+"""
+    uofg(T, status, n, x, f, g, grad)
+
 The uofg subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
 point X, and possibly its gradient. The problem under consideration is
@@ -1006,28 +761,16 @@ to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-For more information, run the shell command
-
-    man cutest_uofg
-
-Usage:
-
-    uofg(status, n, x, f, g, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - f:       [OUT] Vector{T}
   - g:       [OUT] Vector{T}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function uofg end
 
-for (cutest_cint_uofg, T) in (
-  (:cutest_cint_uofg_s_, :Float32),
-  (:cutest_cint_uofg_, :Float64),
-  (:cutest_cint_uofg_q_, :Float128),
-)
+for (cutest_cint_uofg, T) in ((:cutest_cint_uofg_s_, :Float32), (:cutest_cint_uofg_, :Float64), (:cutest_cint_uofg_q_, :Float128))
   @eval begin
     function uofg(
       ::Type{$T},
@@ -1043,7 +786,9 @@ for (cutest_cint_uofg, T) in (
   end
 end
 
-"""# udh
+"""
+    udh(T, status, n, x, lh1, h)
+
 The udh subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X. This Hessian matrix is stored as a dense
@@ -1051,24 +796,15 @@ matrix. The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_udh
-
-Usage:
-
-    udh(status, n, x, lh1, h)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - lh1:     [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - lh1:     [IN]  Vector{Cint}
   - h:       [OUT] Matrix{T}
 """
 function udh end
 
-for (cutest_udh, T) in
-    ((:cutest_udh_s_, :Float32), (:cutest_udh_, :Float64), (:cutest_udh_q_, :Float128))
+for (cutest_udh, T) in ((:cutest_udh_s_, :Float32), (:cutest_udh_, :Float64), (:cutest_udh_q_, :Float128))
   @eval begin
     function udh(
       ::Type{$T},
@@ -1083,7 +819,9 @@ for (cutest_udh, T) in
   end
 end
 
-"""# ushp
+"""
+    ushp(T, status, n, nnzh, lh, h_row, h_col)
+
 The ushp subroutine evaluates the sparsity pattern of the Hessian
 matrix of the objective function of the problem, decoded from a SIF
 file by the script sifdecoder, in coordinate format. The problem under
@@ -1091,25 +829,16 @@ consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
 function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_ushp
-
-Usage:
-
-    ushp(status, n, nnzh, lh, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function ushp end
 
-for (cutest_ushp, T) in
-    ((:cutest_ushp_s_, :Float32), (:cutest_ushp_, :Float64), (:cutest_ushp_q_, :Float128))
+for (cutest_ushp, T) in ((:cutest_ushp_s_, :Float32), (:cutest_ushp_, :Float64), (:cutest_ushp_q_, :Float128))
   @eval begin
     function ushp(
       ::Type{$T},
@@ -1125,7 +854,9 @@ for (cutest_ushp, T) in
   end
 end
 
-"""# ush
+"""
+    ush(T, status, n, x, nnzh, lh, h_val, h_row, h_col)
+
 The ush subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X. This Hessian matrix is stored as a sparse
@@ -1134,27 +865,18 @@ minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-For more information, run the shell command
-
-    man cutest_ush
-
-Usage:
-
-    ush(status, n, x, nnzh, lh, h_val, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_val:   [OUT] Vector{T}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function ush end
 
-for (cutest_ush, T) in
-    ((:cutest_ush_s_, :Float32), (:cutest_ush_, :Float64), (:cutest_ush_q_, :Float128))
+for (cutest_ush, T) in ((:cutest_ush_s_, :Float32), (:cutest_ush_, :Float64), (:cutest_ush_q_, :Float128))
   @eval begin
     function ush(
       ::Type{$T},
@@ -1172,7 +894,9 @@ for (cutest_ush, T) in
   end
 end
 
-"""# ueh
+"""
+    ueh(T, status, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
 The ueh subroutine evaluates the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X. This Hessian matrix is stored as a sparse
@@ -1182,35 +906,22 @@ The problem under consideration is to minimize or maximize an
 objective function f(x) over all x ∈ Rn subject to the simple bounds
 xl≤x≤xu. The objective function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_ueh
-
-Usage:
-
-    ueh(status, n, x, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-lhe_val, he_val, byrows)
-
   - status:     [OUT] Vector{Cint}
-  - n:          [IN] Vector{Cint}
-  - x:          [IN] Vector{T}
+  - n:          [IN]  Vector{Cint}
+  - x:          [IN]  Vector{T}
   - ne:         [OUT] Vector{Cint}
-  - lhe_ptr:    [IN] Vector{Cint}
+  - lhe_ptr:    [IN]  Vector{Cint}
   - he_row_ptr: [OUT] Vector{Cint}
   - he_val_ptr: [OUT] Vector{Cint}
-  - lhe_row:    [IN] Vector{Cint}
+  - lhe_row:    [IN]  Vector{Cint}
   - he_row:     [OUT] Vector{Cint}
-  - lhe_val:    [IN] Vector{Cint}
+  - lhe_val:    [IN]  Vector{Cint}
   - he_val:     [OUT] Vector{T}
-  - byrows:     [IN] Vector{Bool}
+  - byrows:     [IN]  Vector{Bool}
 """
 function ueh end
 
-for (cutest_cint_ueh, T) in (
-  (:cutest_cint_ueh_s_, :Float32),
-  (:cutest_cint_ueh_, :Float64),
-  (:cutest_cint_ueh_q_, :Float128),
-)
+for (cutest_cint_ueh, T) in ((:cutest_cint_ueh_s_, :Float32), (:cutest_cint_ueh_, :Float64), (:cutest_cint_ueh_q_, :Float128))
   @eval begin
     function ueh(
       ::Type{$T},
@@ -1245,7 +956,9 @@ for (cutest_cint_ueh, T) in (
   end
 end
 
-"""# ugrdh
+"""
+    ugrdh(T, status, n, x, g, lh1, h)
+
 The ugrdh subroutine evaluates the gradient and Hessian matrix of the
 objective function of the problem decoded from a SIF file by the
 script sifdecoder at the point X. This Hessian matrix is stored as a
@@ -1254,25 +967,16 @@ maximize an objective function f(x) over all x ∈ Rn subject to the
 simple bounds xl≤x≤xu. The objective function is group-partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_ugrdh
-
-Usage:
-
-    ugrdh(status, n, x, g, lh1, h)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - g:       [OUT] Vector{T}
-  - lh1:     [IN] Vector{Cint}
+  - lh1:     [IN]  Vector{Cint}
   - h:       [OUT] Matrix{T}
 """
 function ugrdh end
 
-for (cutest_ugrdh, T) in
-    ((:cutest_ugrdh_s_, :Float32), (:cutest_ugrdh_, :Float64), (:cutest_ugrdh_q_, :Float128))
+for (cutest_ugrdh, T) in ((:cutest_ugrdh_s_, :Float32), (:cutest_ugrdh_, :Float64), (:cutest_ugrdh_q_, :Float128))
   @eval begin
     function ugrdh(
       ::Type{$T},
@@ -1288,7 +992,9 @@ for (cutest_ugrdh, T) in
   end
 end
 
-"""# ugrsh
+"""
+    ugrsh(T, status, n, x, g, nnzh, lh, h_val, h_row, h_col)
+
 The ugrsh subroutine evaluates the gradient and Hessian matrix of the
 objective function of the problem decoded from a SIF file by the
 script sifdecoder at the point X. This Hessian matrix is stored as a
@@ -1297,28 +1003,19 @@ to minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-For more information, run the shell command
-
-    man cutest_ugrsh
-
-Usage:
-
-    ugrsh(status, n, x, g, nnzh, lh, h_val, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - g:       [OUT] Vector{T}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_val:   [OUT] Vector{T}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function ugrsh end
 
-for (cutest_ugrsh, T) in
-    ((:cutest_ugrsh_s_, :Float32), (:cutest_ugrsh_, :Float64), (:cutest_ugrsh_q_, :Float128))
+for (cutest_ugrsh, T) in ((:cutest_ugrsh_s_, :Float32), (:cutest_ugrsh_, :Float64), (:cutest_ugrsh_q_, :Float128))
   @eval begin
     function ugrsh(
       ::Type{$T},
@@ -1337,7 +1034,9 @@ for (cutest_ugrsh, T) in
   end
 end
 
-"""# ugreh
+"""
+    ugreh(T, status, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
 The ugreh subroutine evaluates the gradient and Hessian matrix of the
 objective function of the problem decoded from a SIF file by the
 script sifdecoder at the point X. This Hessian matrix is stored as a
@@ -1348,36 +1047,23 @@ maximize an objective function f(x) over all x ∈ Rn subject to the
 simple bounds xl≤x≤xu. The objective function is group-partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_ugreh
-
-Usage:
-
-    ugreh(status, n, x, g, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row,
-lhe_val, he_val, byrows)
-
   - status:     [OUT] Vector{Cint}
-  - n:          [IN] Vector{Cint}
-  - x:          [IN] Vector{T}
+  - n:          [IN]  Vector{Cint}
+  - x:          [IN]  Vector{T}
   - g:          [OUT] Vector{T}
   - ne:         [OUT] Vector{Cint}
-  - lhe_ptr:    [IN] Vector{Cint}
+  - lhe_ptr:    [IN]  Vector{Cint}
   - he_row_ptr: [OUT] Vector{Cint}
   - he_val_ptr: [OUT] Vector{Cint}
-  - lhe_row:    [IN] Vector{Cint}
+  - lhe_row:    [IN]  Vector{Cint}
   - he_row:     [OUT] Vector{Cint}
-  - lhe_val:    [IN] Vector{Cint}
+  - lhe_val:    [IN]  Vector{Cint}
   - he_val:     [OUT] Vector{T}
-  - byrows:     [IN] Vector{Bool}
+  - byrows:     [IN]  Vector{Bool}
 """
 function ugreh end
 
-for (cutest_cint_ugreh, T) in (
-  (:cutest_cint_ugreh_s_, :Float32),
-  (:cutest_cint_ugreh_, :Float64),
-  (:cutest_cint_ugreh_q_, :Float128),
-)
+for (cutest_cint_ugreh, T) in ((:cutest_cint_ugreh_s_, :Float32), (:cutest_cint_ugreh_, :Float64), (:cutest_cint_ugreh_q_, :Float128))
   @eval begin
     function ugreh(
       ::Type{$T},
@@ -1414,7 +1100,9 @@ for (cutest_cint_ugreh, T) in (
   end
 end
 
-"""# uhprod
+"""
+    uhprod(T, status, n, goth, x, vector, result)
+
 The uhprod subroutine forms the product of a vector with the Hessian
 matrix of the objective function of the problem decoded from a SIF
 file by the script sifdecoder at the point X. The problem under
@@ -1422,28 +1110,17 @@ consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
 function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_uhprod
-
-Usage:
-
-    uhprod(status, n, goth, x, vector, result)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Bool}
-  - x:       [IN] Vector{T}
-  - vector:  [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - goth:    [IN]  Vector{Bool}
+  - x:       [IN]  Vector{T}
+  - vector:  [IN]  Vector{T}
   - result:  [OUT] Vector{T}
 """
 function uhprod end
 
-for (cutest_cint_uhprod, T) in (
-  (:cutest_cint_uhprod_s_, :Float32),
-  (:cutest_cint_uhprod_, :Float64),
-  (:cutest_cint_uhprod_q_, :Float128),
-)
+for (cutest_cint_uhprod, T) in
+    ((:cutest_cint_uhprod_s_, :Float32), (:cutest_cint_uhprod_, :Float64), (:cutest_cint_uhprod_q_, :Float128))
   @eval begin
     function uhprod(
       ::Type{$T},
@@ -1459,7 +1136,9 @@ for (cutest_cint_uhprod, T) in (
   end
 end
 
-"""# ushprod
+"""
+    ushprod(T, status, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
+
 The ushprod subroutine forms the product of a sparse vector with the
 Hessian matrix of the objective function of the problem decoded from a
 SIF file by the script sifdecoder at the point X. The problem under
@@ -1467,22 +1146,13 @@ consideration is to minimize or maximize an objective function f(x)
 over all x ∈ Rn subject to the simple bounds xl≤x≤xu. The objective
 function is group-partially separable.
 
-For more information, run the shell command
-
-    man cutest_ushprod
-
-Usage:
-
-    ushprod(status, n, goth, x, nnz_vector, index_nz_vector, vector, nnz_result,
-index_nz_result, result)
-
   - status:          [OUT] Vector{Cint}
-  - n:               [IN] Vector{Cint}
-  - goth:            [IN] Vector{Bool}
-  - x:               [IN] Vector{T}
-  - nnz_vector:      [IN] Vector{Cint}
-  - index_nz_vector: [IN] Vector{Cint}
-  - vector:          [IN] Vector{T}
+  - n:               [IN]  Vector{Cint}
+  - goth:            [IN]  Vector{Bool}
+  - x:               [IN]  Vector{T}
+  - nnz_vector:      [IN]  Vector{Cint}
+  - index_nz_vector: [IN]  Vector{Cint}
+  - vector:          [IN]  Vector{T}
   - nnz_result:      [OUT] Vector{Cint}
   - index_nz_result: [OUT] Vector{Cint}
   - result:          [OUT] Vector{T}
@@ -1491,11 +1161,8 @@ Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function ushprod end
 
-for (cutest_cint_ushprod, T) in (
-  (:cutest_cint_ushprod_s_, :Float32),
-  (:cutest_cint_ushprod_, :Float64),
-  (:cutest_cint_ushprod_q_, :Float128),
-)
+for (cutest_cint_ushprod, T) in
+    ((:cutest_cint_ushprod_s_, :Float32), (:cutest_cint_ushprod_, :Float64), (:cutest_cint_ushprod_q_, :Float128))
   @eval begin
     function ushprod(
       ::Type{$T},
@@ -1526,7 +1193,9 @@ for (cutest_cint_ushprod, T) in (
   end
 end
 
-"""# ubandh
+"""
+    ubandh(T, status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
+
 The ubandh subroutine extracts the elements which lie within a band of
 given semi-bandwidth out of the Hessian matrix of the objective
 function of the problem decoded from a SIF file by the script
@@ -1535,26 +1204,17 @@ minimize or maximize an objective function f(x) over all x ∈ Rn
 subject to the simple bounds xl≤x≤xu. The objective function is group-
 partially separable.
 
-For more information, run the shell command
-
-    man cutest_ubandh
-
-Usage:
-
-    ubandh(status, n, x, semibandwidth, h_band, lbandh, max_semibandwidth)
-
   - status:            [OUT] Vector{Cint}
-  - n:                 [IN] Vector{Cint}
-  - x:                 [IN] Vector{T}
-  - semibandwidth:     [IN] Vector{Cint}
+  - n:                 [IN]  Vector{Cint}
+  - x:                 [IN]  Vector{T}
+  - semibandwidth:     [IN]  Vector{Cint}
   - h_band:            [OUT] Matrix{T}
-  - lbandh:            [IN] Vector{Cint}
+  - lbandh:            [IN]  Vector{Cint}
   - max_semibandwidth: [OUT] Vector{Cint}
 """
 function ubandh end
 
-for (cutest_ubandh, T) in
-    ((:cutest_ubandh_s_, :Float32), (:cutest_ubandh_, :Float64), (:cutest_ubandh_q_, :Float128))
+for (cutest_ubandh, T) in ((:cutest_ubandh_s_, :Float32), (:cutest_ubandh_, :Float64), (:cutest_ubandh_q_, :Float128))
   @eval begin
     function ubandh(
       ::Type{$T},
@@ -1571,7 +1231,9 @@ for (cutest_ubandh, T) in
   end
 end
 
-"""# cfn
+"""
+    cfn(T, status, n, m, x, f, c)
+
 The cfn subroutine evaluates the value of the objective function and
 general constraint functions of the problem decoded from a SIF file by
 the script sifdecoder at the point X. The problem under consideration
@@ -1581,25 +1243,16 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cfn
-
-Usage:
-
-    cfn(status, n, m, x, f, c)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - f:       [OUT] Vector{T}
   - c:       [OUT] Vector{T}
 """
 function cfn end
 
-for (cutest_cfn, T) in
-    ((:cutest_cfn_s_, :Float32), (:cutest_cfn_, :Float64), (:cutest_cfn_q_, :Float128))
+for (cutest_cfn, T) in ((:cutest_cfn_s_, :Float32), (:cutest_cfn_, :Float64), (:cutest_cfn_q_, :Float128))
   @eval begin
     function cfn(
       ::Type{$T},
@@ -1615,7 +1268,9 @@ for (cutest_cfn, T) in
   end
 end
 
-"""# cofg
+"""
+    cofg(T, status, n, x, f, g, grad)
+
 The cofg subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
 point X, and possibly its gradient. The problem under consideration is
@@ -1625,28 +1280,16 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cofg
-
-Usage:
-
-    cofg(status, n, x, f, g, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - f:       [OUT] Vector{T}
   - g:       [OUT] Vector{T}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function cofg end
 
-for (cutest_cint_cofg, T) in (
-  (:cutest_cint_cofg_s_, :Float32),
-  (:cutest_cint_cofg_, :Float64),
-  (:cutest_cint_cofg_q_, :Float128),
-)
+for (cutest_cint_cofg, T) in ((:cutest_cint_cofg_s_, :Float32), (:cutest_cint_cofg_, :Float64), (:cutest_cint_cofg_q_, :Float128))
   @eval begin
     function cofg(
       ::Type{$T},
@@ -1662,7 +1305,9 @@ for (cutest_cint_cofg, T) in (
   end
 end
 
-"""# cofsg
+"""
+    cofsg(T, status, n, x, f, nnzg, lg, g_val, g_var, grad)
+
 The cofsg subroutine evaluates the value of the objective function of
 the problem decoded from a SIF file by the script sifdecoder at the
 point X, and possibly its gradient in sparse format. The problem under
@@ -1672,31 +1317,19 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cofsg
-
-Usage:
-
-    cofsg(status, n, x, f, nnzg, lg, g_val, g_var, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - f:       [OUT] Vector{T}
   - nnzg:    [OUT] Vector{Cint}
-  - lg:      [IN] Vector{Cint}
+  - lg:      [IN]  Vector{Cint}
   - g_val:   [OUT] Vector{T}
   - g_var:   [OUT] Vector{Cint}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function cofsg end
 
-for (cutest_cint_cofsg, T) in (
-  (:cutest_cint_cofsg_s_, :Float32),
-  (:cutest_cint_cofsg_, :Float64),
-  (:cutest_cint_cofsg_q_, :Float128),
-)
+for (cutest_cint_cofsg, T) in ((:cutest_cint_cofsg_s_, :Float32), (:cutest_cint_cofsg_, :Float64), (:cutest_cint_cofsg_q_, :Float128))
   @eval begin
     function cofsg(
       ::Type{$T},
@@ -1715,7 +1348,9 @@ for (cutest_cint_cofsg, T) in (
   end
 end
 
-"""# ccfg
+"""
+    ccfg(T, status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
+
 The ccfg subroutine evaluates the values of the constraint functions
 of the problem decoded from a SIF file by the script sifdecoder at the
 point X, and possibly their gradients. The problem under consideration
@@ -1725,32 +1360,20 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_ccfg
-
-Usage:
-
-    ccfg(status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - c:       [OUT] Vector{T}
-  - jtrans:  [IN] Vector{Bool}
-  - lcjac1:  [IN] Vector{Cint}
-  - lcjac2:  [IN] Vector{Cint}
+  - jtrans:  [IN]  Vector{Bool}
+  - lcjac1:  [IN]  Vector{Cint}
+  - lcjac2:  [IN]  Vector{Cint}
   - cjac:    [OUT] Matrix{T}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function ccfg end
 
-for (cutest_cint_ccfg, T) in (
-  (:cutest_cint_ccfg_s_, :Float32),
-  (:cutest_cint_ccfg_, :Float64),
-  (:cutest_cint_ccfg_q_, :Float128),
-)
+for (cutest_cint_ccfg, T) in ((:cutest_cint_ccfg_s_, :Float32), (:cutest_cint_ccfg_, :Float64), (:cutest_cint_ccfg_q_, :Float128))
   @eval begin
     function ccfg(
       ::Type{$T},
@@ -1770,7 +1393,9 @@ for (cutest_cint_ccfg, T) in (
   end
 end
 
-"""# clfg
+"""
+    clfg(T, status, n, m, x, y, f, g, grad)
+
 The clfg subroutine evaluates the value of the Lagrangian function
 l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the
 script sifdecoder at the point (X,Y), and possibly its gradient. The
@@ -1780,30 +1405,18 @@ function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_clfg
-
-Usage:
-
-    clfg(status, n, m, x, y, f, g, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
   - f:       [OUT] Vector{T}
   - g:       [OUT] Vector{T}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function clfg end
 
-for (cutest_cint_clfg, T) in (
-  (:cutest_cint_clfg_s_, :Float32),
-  (:cutest_cint_clfg_, :Float64),
-  (:cutest_cint_clfg_q_, :Float128),
-)
+for (cutest_cint_clfg, T) in ((:cutest_cint_clfg_s_, :Float32), (:cutest_cint_clfg_, :Float64), (:cutest_cint_clfg_q_, :Float128))
   @eval begin
     function clfg(
       ::Type{$T},
@@ -1821,7 +1434,9 @@ for (cutest_cint_clfg, T) in (
   end
 end
 
-"""# cgr
+"""
+    cgr(T, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
+
 The cgr subroutine evaluates the gradients of the general constraints
 and of either the objective function f(x) or the Lagrangian function
 l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF
@@ -1832,33 +1447,21 @@ f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cgr
-
-Usage:
-
-    cgr(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - grlagf:  [IN] Vector{Bool}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - grlagf:  [IN]  Vector{Bool}
   - g:       [OUT] Vector{T}
-  - jtrans:  [IN] Vector{Bool}
-  - lj1:     [IN] Vector{Cint}
-  - lj2:     [IN] Vector{Cint}
+  - jtrans:  [IN]  Vector{Bool}
+  - lj1:     [IN]  Vector{Cint}
+  - lj2:     [IN]  Vector{Cint}
   - j_val:   [OUT] Matrix{T}
 """
 function cgr end
 
-for (cutest_cint_cgr, T) in (
-  (:cutest_cint_cgr_s_, :Float32),
-  (:cutest_cint_cgr_, :Float64),
-  (:cutest_cint_cgr_q_, :Float128),
-)
+for (cutest_cint_cgr, T) in ((:cutest_cint_cgr_s_, :Float32), (:cutest_cint_cgr_, :Float64), (:cutest_cint_cgr_q_, :Float128))
   @eval begin
     function cgr(
       ::Type{$T},
@@ -1879,7 +1482,9 @@ for (cutest_cint_cgr, T) in (
   end
 end
 
-"""# csgr
+"""
+    csgr(T, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
+
 The csgr subroutine evaluates the gradients of the general constraints
 and of either the objective function or the Lagrangian function
 l(x,y)=f(x)+yTc(x) corresponding to the problem decoded from a SIF
@@ -1892,33 +1497,21 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_csgr
-
-Usage:
-
-    csgr(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - grlagf:  [IN] Vector{Bool}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - grlagf:  [IN]  Vector{Bool}
   - nnzj:    [OUT] Vector{Cint}
-  - lj:      [IN] Vector{Cint}
+  - lj:      [IN]  Vector{Cint}
   - j_val:   [OUT] Vector{T}
   - j_var:   [OUT] Vector{Cint}
   - j_fun:   [OUT] Vector{Cint}
 """
 function csgr end
 
-for (cutest_cint_csgr, T) in (
-  (:cutest_cint_csgr_s_, :Float32),
-  (:cutest_cint_csgr_, :Float64),
-  (:cutest_cint_csgr_q_, :Float128),
-)
+for (cutest_cint_csgr, T) in ((:cutest_cint_csgr_s_, :Float32), (:cutest_cint_csgr_, :Float64), (:cutest_cint_csgr_q_, :Float128))
   @eval begin
     function csgr(
       ::Type{$T},
@@ -1939,7 +1532,9 @@ for (cutest_cint_csgr, T) in (
   end
 end
 
-"""# ccfsg
+"""
+    ccfsg(T, status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
+
 The ccfsg subroutine evaluates the values of the constraint functions
 of the problem decoded from a SIF file by the script sifdecoder at the
 point X, and possibly their gradients in the constrained minimization
@@ -1950,33 +1545,21 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_ccfsg
-
-Usage:
-
-    ccfsg(status, n, m, x, c, nnzj, lj, j_val, j_var, j_fun, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - c:       [OUT] Vector{T}
   - nnzj:    [OUT] Vector{Cint}
-  - lj:      [IN] Vector{Cint}
+  - lj:      [IN]  Vector{Cint}
   - j_val:   [OUT] Vector{T}
   - j_var:   [OUT] Vector{Cint}
   - j_fun:   [OUT] Vector{Cint}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function ccfsg end
 
-for (cutest_cint_ccfsg, T) in (
-  (:cutest_cint_ccfsg_s_, :Float32),
-  (:cutest_cint_ccfsg_, :Float64),
-  (:cutest_cint_ccfsg_q_, :Float128),
-)
+for (cutest_cint_ccfsg, T) in ((:cutest_cint_ccfsg_s_, :Float32), (:cutest_cint_ccfsg_, :Float64), (:cutest_cint_ccfsg_q_, :Float128))
   @eval begin
     function ccfsg(
       ::Type{$T},
@@ -1997,7 +1580,9 @@ for (cutest_cint_ccfsg, T) in (
   end
 end
 
-"""# ccifg
+"""
+    ccifg(T, status, n, icon, x, ci, gci, grad)
+
 The ccifg subroutine evaluates the value of a particular constraint
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X, and possibly its gradient in the
@@ -2008,29 +1593,17 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_ccifg
-
-Usage:
-
-    ccifg(status, n, icon, x, ci, gci, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - icon:    [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - icon:    [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - ci:      [OUT] Vector{T}
   - gci:     [OUT] Vector{T}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function ccifg end
 
-for (cutest_cint_ccifg, T) in (
-  (:cutest_cint_ccifg_s_, :Float32),
-  (:cutest_cint_ccifg_, :Float64),
-  (:cutest_cint_ccifg_q_, :Float128),
-)
+for (cutest_cint_ccifg, T) in ((:cutest_cint_ccifg_s_, :Float32), (:cutest_cint_ccifg_, :Float64), (:cutest_cint_ccifg_q_, :Float128))
   @eval begin
     function ccifg(
       ::Type{$T},
@@ -2047,7 +1620,9 @@ for (cutest_cint_ccifg, T) in (
   end
 end
 
-"""# ccifsg
+"""
+    ccifsg(T, status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
+
 The ccifsg subroutine evaluates the value of a particular constraint
 function of the problem decoded from a SIF file by the script
 sifdecoder at the point X, and possibly its gradient in the
@@ -2059,32 +1634,21 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_ccifsg
-
-Usage:
-
-    ccifsg(status, n, icon, x, ci, nnzgci, lgci, gci_val, gci_var, grad)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - icon:    [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - icon:    [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - ci:      [OUT] Vector{T}
   - nnzgci:  [OUT] Vector{Cint}
-  - lgci:    [IN] Vector{Cint}
+  - lgci:    [IN]  Vector{Cint}
   - gci_val: [OUT] Vector{T}
   - gci_var: [OUT] Vector{Cint}
-  - grad:    [IN] Vector{Bool}
+  - grad:    [IN]  Vector{Bool}
 """
 function ccifsg end
 
-for (cutest_cint_ccifsg, T) in (
-  (:cutest_cint_ccifsg_s_, :Float32),
-  (:cutest_cint_ccifsg_, :Float64),
-  (:cutest_cint_ccifsg_q_, :Float128),
-)
+for (cutest_cint_ccifsg, T) in
+    ((:cutest_cint_ccifsg_s_, :Float32), (:cutest_cint_ccifsg_, :Float64), (:cutest_cint_ccifsg_q_, :Float128))
   @eval begin
     function ccifsg(
       ::Type{$T},
@@ -2104,7 +1668,9 @@ for (cutest_cint_ccifsg, T) in (
   end
 end
 
-"""# cgrdh
+"""
+    cgrdh(T, status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
+
 The cgrdh subroutine evaluates the gradients of the general
 constraints and of either the objective function f(x) or the
 Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem
@@ -2117,35 +1683,23 @@ function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cgrdh
-
-Usage:
-
-    cgrdh(status, n, m, x, y, grlagf, g, jtrans, lj1, lj2, j_val, lh1, h_val)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - grlagf:  [IN] Vector{Bool}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - grlagf:  [IN]  Vector{Bool}
   - g:       [OUT] Vector{T}
-  - jtrans:  [IN] Vector{Bool}
-  - lj1:     [IN] Vector{Cint}
-  - lj2:     [IN] Vector{Cint}
+  - jtrans:  [IN]  Vector{Bool}
+  - lj1:     [IN]  Vector{Cint}
+  - lj2:     [IN]  Vector{Cint}
   - j_val:   [OUT] Matrix{T}
-  - lh1:     [IN] Vector{Cint}
+  - lh1:     [IN]  Vector{Cint}
   - h_val:   [OUT] Matrix{T}
 """
 function cgrdh end
 
-for (cutest_cint_cgrdh, T) in (
-  (:cutest_cint_cgrdh_s_, :Float32),
-  (:cutest_cint_cgrdh_, :Float64),
-  (:cutest_cint_cgrdh_q_, :Float128),
-)
+for (cutest_cint_cgrdh, T) in ((:cutest_cint_cgrdh_s_, :Float32), (:cutest_cint_cgrdh_, :Float64), (:cutest_cint_cgrdh_q_, :Float128))
   @eval begin
     function cgrdh(
       ::Type{$T},
@@ -2168,7 +1722,9 @@ for (cutest_cint_cgrdh, T) in (
   end
 end
 
-"""# cdh
+"""
+    cdh(T, status, n, m, x, y, lh1, h_val)
+
 The cdh subroutine evaluates the Hessian matrix of the Lagrangian
 function l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by
 the script sifdecoder at the point (x,y)= (X,Y). The matrix is stored
@@ -2179,26 +1735,17 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cdh
-
-Usage:
-
-    cdh(status, n, m, x, y, lh1, h_val)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - lh1:     [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - lh1:     [IN]  Vector{Cint}
   - h_val:   [OUT] Matrix{T}
 """
 function cdh end
 
-for (cutest_cdh, T) in
-    ((:cutest_cdh_s_, :Float32), (:cutest_cdh_, :Float64), (:cutest_cdh_q_, :Float128))
+for (cutest_cdh, T) in ((:cutest_cdh_s_, :Float32), (:cutest_cdh_, :Float64), (:cutest_cdh_q_, :Float128))
   @eval begin
     function cdh(
       ::Type{$T},
@@ -2215,7 +1762,9 @@ for (cutest_cdh, T) in
   end
 end
 
-"""# cdhc
+"""
+    cdhc(T, status, n, m, x, y, lh1, h_val)
+
 The cdhc subroutine evaluates the Hessian matrix of the constraint
 part of the Lagrangian function yTc(x) for the problem decoded from a
 SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
@@ -2226,26 +1775,17 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cdhc
-
-Usage:
-
-    cdhc(status, n, m, x, y, lh1, h_val)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - lh1:     [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - lh1:     [IN]  Vector{Cint}
   - h_val:   [OUT] Matrix{T}
 """
 function cdhc end
 
-for (cutest_cdhc, T) in
-    ((:cutest_cdhc_s_, :Float32), (:cutest_cdhc_, :Float64), (:cutest_cdhc_q_, :Float128))
+for (cutest_cdhc, T) in ((:cutest_cdhc_s_, :Float32), (:cutest_cdhc_, :Float64), (:cutest_cdhc_q_, :Float128))
   @eval begin
     function cdhc(
       ::Type{$T},
@@ -2262,7 +1802,9 @@ for (cutest_cdhc, T) in
   end
 end
 
-"""# cshp
+"""
+    cshp(T, status, n, nnzh, lh, h_row, h_col)
+
 The cshp subroutine evaluates the sparsity pattern of the Hessian of
 the Lagrangian function l(x,y)=f(x)+yTc(x) for the problem, decoded
 from a SIF file by the script sifdecoder, in coordinate format. The
@@ -2272,25 +1814,16 @@ function f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cshp
-
-Usage:
-
-    cshp(status, n, nnzh, lh, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function cshp end
 
-for (cutest_cshp, T) in
-    ((:cutest_cshp_s_, :Float32), (:cutest_cshp_, :Float64), (:cutest_cshp_q_, :Float128))
+for (cutest_cshp, T) in ((:cutest_cshp_s_, :Float32), (:cutest_cshp_, :Float64), (:cutest_cshp_q_, :Float128))
   @eval begin
     function cshp(
       ::Type{$T},
@@ -2306,7 +1839,9 @@ for (cutest_cshp, T) in
   end
 end
 
-"""# csh
+"""
+    csh(T, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+
 The csh subroutine evaluates the Hessian of the Lagrangian function
 l(x,y)=f(x)+yTc(x) for the problem decoded from a SIF file by the
 script sifdecoder at the point (x,y)= (X,Y). The matrix is stored in
@@ -2317,29 +1852,20 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_csh
-
-Usage:
-
-    csh(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_val:   [OUT] Vector{T}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function csh end
 
-for (cutest_csh, T) in
-    ((:cutest_csh_s_, :Float32), (:cutest_csh_, :Float64), (:cutest_csh_q_, :Float128))
+for (cutest_csh, T) in ((:cutest_csh_s_, :Float32), (:cutest_csh_, :Float64), (:cutest_csh_q_, :Float128))
   @eval begin
     function csh(
       ::Type{$T},
@@ -2359,7 +1885,9 @@ for (cutest_csh, T) in
   end
 end
 
-"""# cshc
+"""
+    cshc(T, status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
+
 The cshc subroutine evaluates the Hessian matrix of the constraint
 part of the Lagrangian function yTc(x) for the problem decoded from a
 SIF file by the script sifdecoder at the point (x,y)= (X,Y). The
@@ -2370,29 +1898,20 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cshc
-
-Usage:
-
-    cshc(status, n, m, x, y, nnzh, lh, h_val, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_val:   [OUT] Vector{T}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function cshc end
 
-for (cutest_cshc, T) in
-    ((:cutest_cshc_s_, :Float32), (:cutest_cshc_, :Float64), (:cutest_cshc_q_, :Float128))
+for (cutest_cshc, T) in ((:cutest_cshc_s_, :Float32), (:cutest_cshc_, :Float64), (:cutest_cshc_q_, :Float128))
   @eval begin
     function cshc(
       ::Type{$T},
@@ -2412,7 +1931,9 @@ for (cutest_cshc, T) in
   end
 end
 
-"""# ceh
+"""
+    ceh(T, status, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
 The ceh subroutine evaluates the Hessian matrix of the Lagrangian
 function l(x,y)=f(x)+yTc(x) for the problem decoded into OUTSDIF.d at
 the point (x,y)= (X,Y). This Hessian matrix is stored as a sparse
@@ -2425,34 +1946,24 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_ceh
-
-Usage:
-
-    ceh(status, n, m, x, y, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row,
-he_row, lhe_val, he_val, byrows)
-
   - status:     [OUT] Vector{Cint}
-  - n:          [IN] Vector{Cint}
-  - m:          [IN] Vector{Cint}
-  - x:          [IN] Vector{T}
-  - y:          [IN] Vector{T}
+  - n:          [IN]  Vector{Cint}
+  - m:          [IN]  Vector{Cint}
+  - x:          [IN]  Vector{T}
+  - y:          [IN]  Vector{T}
   - ne:         [OUT] Vector{Cint}
-  - lhe_ptr:    [IN] Vector{Cint}
+  - lhe_ptr:    [IN]  Vector{Cint}
   - he_row_ptr: [OUT] Vector{Cint}
   - he_val_ptr: [OUT] Vector{Cint}
-  - lhe_row:    [IN] Vector{Cint}
+  - lhe_row:    [IN]  Vector{Cint}
   - he_row:     [OUT] Vector{Cint}
-  - lhe_val:    [IN] Vector{Cint}
+  - lhe_val:    [IN]  Vector{Cint}
   - he_val:     [OUT] Vector{T}
-  - byrows:     [IN] Vector{Cint}
+  - byrows:     [IN]  Vector{Cint}
 """
 function ceh end
 
-for (cutest_ceh, T) in
-    ((:cutest_ceh_s_, :Float32), (:cutest_ceh_, :Float64), (:cutest_ceh_q_, :Float128))
+for (cutest_ceh, T) in ((:cutest_ceh_s_, :Float32), (:cutest_ceh_, :Float64), (:cutest_ceh_q_, :Float128))
   @eval begin
     function ceh(
       ::Type{$T},
@@ -2491,7 +2002,9 @@ for (cutest_ceh, T) in
   end
 end
 
-"""# cidh
+"""
+    cidh(T, status, n, x, iprob, lh1, h)
+
 The cidh subroutine evaluates the Hessian matrix of either the
 objective function or a constraint function for the problem decoded
 from a SIF file by the script sifdecoder at the point X, and possibly
@@ -2502,25 +2015,16 @@ f(x) over all x ∈ Rn subject to general equations ci(x)=0, (i ∈
 and simple bounds xl≤x≤xu. The objective function is group-partially
 separable and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cidh
-
-Usage:
-
-    cidh(status, n, x, iprob, lh1, h)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - iprob:   [IN] Vector{Cint}
-  - lh1:     [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - iprob:   [IN]  Vector{Cint}
+  - lh1:     [IN]  Vector{Cint}
   - h:       [OUT] Matrix{T}
 """
 function cidh end
 
-for (cutest_cidh, T) in
-    ((:cutest_cidh_s_, :Float32), (:cutest_cidh_, :Float64), (:cutest_cidh_q_, :Float128))
+for (cutest_cidh, T) in ((:cutest_cidh_s_, :Float32), (:cutest_cidh_, :Float64), (:cutest_cidh_q_, :Float128))
   @eval begin
     function cidh(
       ::Type{$T},
@@ -2536,7 +2040,9 @@ for (cutest_cidh, T) in
   end
 end
 
-"""# cish
+"""
+    cish(T, status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
+
 The cish subroutine evaluates the Hessian of a particular constraint
 function or the objective function for the problem decoded from a SIF
 file by the script sifdecoder at the point X, and possibly its
@@ -2547,28 +2053,19 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cish
-
-Usage:
-
-    cish(status, n, x, iprob, nnzh, lh, h_val, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - iprob:   [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - iprob:   [IN]  Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_val:   [OUT] Vector{T}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function cish end
 
-for (cutest_cish, T) in
-    ((:cutest_cish_s_, :Float32), (:cutest_cish_, :Float64), (:cutest_cish_q_, :Float128))
+for (cutest_cish, T) in ((:cutest_cish_s_, :Float32), (:cutest_cish_, :Float64), (:cutest_cish_q_, :Float128))
   @eval begin
     function cish(
       ::Type{$T},
@@ -2587,7 +2084,9 @@ for (cutest_cish, T) in
   end
 end
 
-"""# csgrsh
+"""
+    csgrsh(T, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh, h_val, h_row, h_col)
+
 The csgrsh subroutine evaluates the gradients of the general
 constraints, the Hessian matrix of the Lagrangian function
 l(x,y)=f(x)+yTc(x) and the gradient of either the objective function
@@ -2600,39 +2099,27 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_csgrsh
-
-Usage:
-
-    csgrsh(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh,
-h_val, h_row, h_col)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - grlagf:  [IN] Vector{Bool}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - grlagf:  [IN]  Vector{Bool}
   - nnzj:    [OUT] Vector{Cint}
-  - lj:      [IN] Vector{Cint}
+  - lj:      [IN]  Vector{Cint}
   - j_val:   [OUT] Vector{T}
   - j_var:   [OUT] Vector{Cint}
   - j_fun:   [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_val:   [OUT] Vector{T}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function csgrsh end
 
-for (cutest_cint_csgrsh, T) in (
-  (:cutest_cint_csgrsh_s_, :Float32),
-  (:cutest_cint_csgrsh_, :Float64),
-  (:cutest_cint_csgrsh_q_, :Float128),
-)
+for (cutest_cint_csgrsh, T) in
+    ((:cutest_cint_csgrsh_s_, :Float32), (:cutest_cint_csgrsh_, :Float64), (:cutest_cint_csgrsh_q_, :Float128))
   @eval begin
     function csgrsh(
       ::Type{$T},
@@ -2675,7 +2162,9 @@ for (cutest_cint_csgrsh, T) in (
   end
 end
 
-"""# csgreh
+"""
+    csgreh(T, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne, lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val, byrows)
+
 The csgreh subroutine evaluates both the gradients of the general
 constraint functions and the Hessian matrix of the Lagrangian function
 l(x,y)=f(x)+yTc(x) for the problem decoded into OUTSDIF.d at the point
@@ -2691,44 +2180,31 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_csgreh
-
-Usage:
-
-    csgreh(status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, ne,
-lhe_ptr, he_row_ptr, he_val_ptr, lhe_row, he_row, lhe_val, he_val,
-byrows)
-
   - status:     [OUT] Vector{Cint}
-  - n:          [IN] Vector{Cint}
-  - m:          [IN] Vector{Cint}
-  - x:          [IN] Vector{T}
-  - y:          [IN] Vector{T}
-  - grlagf:     [IN] Vector{Bool}
+  - n:          [IN]  Vector{Cint}
+  - m:          [IN]  Vector{Cint}
+  - x:          [IN]  Vector{T}
+  - y:          [IN]  Vector{T}
+  - grlagf:     [IN]  Vector{Bool}
   - nnzj:       [OUT] Vector{Cint}
-  - lj:         [IN] Vector{Cint}
+  - lj:         [IN]  Vector{Cint}
   - j_val:      [OUT] Vector{T}
   - j_var:      [OUT] Vector{Cint}
   - j_fun:      [OUT] Vector{Cint}
   - ne:         [OUT] Vector{Cint}
-  - lhe_ptr:    [IN] Vector{Cint}
+  - lhe_ptr:    [IN]  Vector{Cint}
   - he_row_ptr: [OUT] Vector{Cint}
   - he_val_ptr: [OUT] Vector{Cint}
-  - lhe_row:    [IN] Vector{Cint}
+  - lhe_row:    [IN]  Vector{Cint}
   - he_row:     [OUT] Vector{Cint}
-  - lhe_val:    [IN] Vector{Cint}
+  - lhe_val:    [IN]  Vector{Cint}
   - he_val:     [OUT] Vector{T}
-  - byrows:     [IN] Vector{Bool}
+  - byrows:     [IN]  Vector{Bool}
 """
 function csgreh end
 
-for (cutest_cint_csgreh, T) in (
-  (:cutest_cint_csgreh_s_, :Float32),
-  (:cutest_cint_csgreh_, :Float64),
-  (:cutest_cint_csgreh_q_, :Float128),
-)
+for (cutest_cint_csgreh, T) in
+    ((:cutest_cint_csgreh_s_, :Float32), (:cutest_cint_csgreh_, :Float64), (:cutest_cint_csgreh_q_, :Float128))
   @eval begin
     function csgreh(
       ::Type{$T},
@@ -2779,7 +2255,9 @@ for (cutest_cint_csgreh, T) in (
   end
 end
 
-"""# chprod
+"""
+    chprod(T, status, n, m, goth, x, y, vector, result)
+
 The chprod subroutine forms the product of a vector with the Hessian
 matrix of the Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to
 the problem decoded from a SIF file by the script sifdecoder at the
@@ -2790,30 +2268,19 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_chprod
-
-Usage:
-
-    chprod(status, n, m, goth, x, y, vector, result)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Bool}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - vector:  [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - goth:    [IN]  Vector{Bool}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - vector:  [IN]  Vector{T}
   - result:  [OUT] Vector{T}
 """
 function chprod end
 
-for (cutest_cint_chprod, T) in (
-  (:cutest_cint_chprod_s_, :Float32),
-  (:cutest_cint_chprod_, :Float64),
-  (:cutest_cint_chprod_q_, :Float128),
-)
+for (cutest_cint_chprod, T) in
+    ((:cutest_cint_chprod_s_, :Float32), (:cutest_cint_chprod_, :Float64), (:cutest_cint_chprod_q_, :Float128))
   @eval begin
     function chprod(
       ::Type{$T},
@@ -2831,7 +2298,9 @@ for (cutest_cint_chprod, T) in (
   end
 end
 
-"""# cshprod
+"""
+    cshprod(T, status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
+
 The cshprod subroutine forms the product of a sparse vector with the
 Hessian matrix of the Lagrangian function l(x,y)=f(x)+yTc(x)
 corresponding to the problem decoded from a SIF file by the script
@@ -2842,24 +2311,15 @@ inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds
 xl≤x≤xu. The objective function is group-partially separable and all
 constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cshprod
-
-Usage:
-
-    cshprod(status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
-nnz_result, index_nz_result, result)
-
   - status:          [OUT] Vector{Cint}
-  - n:               [IN] Vector{Cint}
-  - m:               [IN] Vector{Cint}
-  - goth:            [IN] Vector{Cint}
-  - x:               [IN] Vector{T}
-  - y:               [IN] Vector{T}
-  - nnz_vector:      [IN] Vector{Cint}
-  - index_nz_vector: [IN] Vector{Cint}
-  - vector:          [IN] Vector{T}
+  - n:               [IN]  Vector{Cint}
+  - m:               [IN]  Vector{Cint}
+  - goth:            [IN]  Vector{Cint}
+  - x:               [IN]  Vector{T}
+  - y:               [IN]  Vector{T}
+  - nnz_vector:      [IN]  Vector{Cint}
+  - index_nz_vector: [IN]  Vector{Cint}
+  - vector:          [IN]  Vector{T}
   - nnz_result:      [OUT] Vector{Cint}
   - index_nz_result: [OUT] Vector{Cint}
   - result:          [OUT] Vector{T}
@@ -2868,8 +2328,7 @@ Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function cshprod end
 
-for (cutest_cshprod, T) in
-    ((:cutest_cshprod_s_, :Float32), (:cutest_cshprod_, :Float64), (:cutest_cshprod_q_, :Float128))
+for (cutest_cshprod, T) in ((:cutest_cshprod_s_, :Float32), (:cutest_cshprod_, :Float64), (:cutest_cshprod_q_, :Float128))
   @eval begin
     function cshprod(
       ::Type{$T},
@@ -2904,7 +2363,9 @@ for (cutest_cshprod, T) in
   end
 end
 
-"""# chcprod
+"""
+    chcprod(T, status, n, m, goth, x, y, vector, result)
+
 The chcprod subroutine forms the product of a vector with the Hessian
 matrix of the constraint part of the Lagrangian function yTc(x) of the
 problem decoded from a SIF file by the script sifdecoder at the point
@@ -2915,30 +2376,19 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_chcprod
-
-Usage:
-
-    chcprod(status, n, m, goth, x, y, vector, result)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Bool}
-  - x:       [IN] Vector{T}
-  - y:       [IN] Vector{T}
-  - vector:  [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - goth:    [IN]  Vector{Bool}
+  - x:       [IN]  Vector{T}
+  - y:       [IN]  Vector{T}
+  - vector:  [IN]  Vector{T}
   - result:  [OUT] Vector{T}
 """
 function chcprod end
 
-for (cutest_cint_chcprod, T) in (
-  (:cutest_cint_chcprod_s_, :Float32),
-  (:cutest_cint_chcprod_, :Float64),
-  (:cutest_cint_chcprod_q_, :Float128),
-)
+for (cutest_cint_chcprod, T) in
+    ((:cutest_cint_chcprod_s_, :Float32), (:cutest_cint_chcprod_, :Float64), (:cutest_cint_chcprod_q_, :Float128))
   @eval begin
     function chcprod(
       ::Type{$T},
@@ -2956,7 +2406,9 @@ for (cutest_cint_chcprod, T) in (
   end
 end
 
-"""# cshcprod
+"""
+    cshcprod(T, status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector, nnz_result, index_nz_result, result)
+
 The cshcprod subroutine forms the product of a sparse vector with the
 Hessian matrix of the constraint part of the Lagrangian function
 yTc(x) corresponding to the problem decoded from a SIF file by the
@@ -2967,35 +2419,23 @@ general inequalities ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple
 bounds xl≤x≤xu. The objective function is group-partially separable
 and all constraint functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cshcprod
-
-Usage:
-
-    cshcprod(status, n, m, goth, x, y, nnz_vector, index_nz_vector, vector,
-nnz_result, index_nz_result, result)
-
   - status:          [OUT] Vector{Cint}
-  - n:               [IN] Vector{Cint}
-  - m:               [IN] Vector{Cint}
-  - goth:            [IN] Vector{Bool}
-  - x:               [IN] Vector{T}
-  - y:               [IN] Vector{T}
-  - nnz_vector:      [IN] Vector{Cint}
-  - index_nz_vector: [IN] Vector{Cint}
-  - vector:          [IN] Vector{T}
+  - n:               [IN]  Vector{Cint}
+  - m:               [IN]  Vector{Cint}
+  - goth:            [IN]  Vector{Bool}
+  - x:               [IN]  Vector{T}
+  - y:               [IN]  Vector{T}
+  - nnz_vector:      [IN]  Vector{Cint}
+  - index_nz_vector: [IN]  Vector{Cint}
+  - vector:          [IN]  Vector{T}
   - nnz_result:      [OUT] Vector{Cint}
   - index_nz_result: [OUT] Vector{Cint}
   - result:          [OUT] Vector{T}
 """
 function cshcprod end
 
-for (cutest_cint_cshcprod, T) in (
-  (:cutest_cint_cshcprod_s_, :Float32),
-  (:cutest_cint_cshcprod_, :Float64),
-  (:cutest_cint_cshcprod_q_, :Float128),
-)
+for (cutest_cint_cshcprod, T) in
+    ((:cutest_cint_cshcprod_s_, :Float32), (:cutest_cint_cshcprod_, :Float64), (:cutest_cint_cshcprod_q_, :Float128))
   @eval begin
     function cshcprod(
       ::Type{$T},
@@ -3030,7 +2470,9 @@ for (cutest_cint_cshcprod, T) in (
   end
 end
 
-"""# cjprod
+"""
+    cjprod(T, status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
+
 The cjprod subroutine forms the product of a vector with the Jacobian
 matrix, or with its transpose, of the constraint functions of the
 problem decoded from a SIF file by the script sifdecoder evaluated at
@@ -3041,32 +2483,21 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_cjprod
-
-Usage:
-
-    cjprod(status, n, m, gotj, jtrans, x, vector, lvector, result, lresult)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - gotj:    [IN] Vector{Bool}
-  - jtrans:  [IN] Vector{Bool}
-  - x:       [IN] Vector{T}
-  - vector:  [IN] Vector{T}
-  - lvector: [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - gotj:    [IN]  Vector{Bool}
+  - jtrans:  [IN]  Vector{Bool}
+  - x:       [IN]  Vector{T}
+  - vector:  [IN]  Vector{T}
+  - lvector: [IN]  Vector{Cint}
   - result:  [OUT] Vector{T}
-  - lresult: [IN] Vector{Cint}
+  - lresult: [IN]  Vector{Cint}
 """
 function cjprod end
 
-for (cutest_cint_cjprod, T) in (
-  (:cutest_cint_cjprod_s_, :Float32),
-  (:cutest_cint_cjprod_, :Float64),
-  (:cutest_cint_cjprod_q_, :Float128),
-)
+for (cutest_cint_cjprod, T) in
+    ((:cutest_cint_cjprod_s_, :Float32), (:cutest_cint_cjprod_, :Float64), (:cutest_cint_cjprod_q_, :Float128))
   @eval begin
     function cjprod(
       ::Type{$T},
@@ -3086,7 +2517,9 @@ for (cutest_cint_cjprod, T) in (
   end
 end
 
-"""# csjprod
+"""
+    csjprod(T, status, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector, lvector, nnz_result, index_nz_result, result, lresult)
+
 The csjprod subroutine forms the product of a sparse vector with the
 Jacobian matrix, or with its transpose, of the constraint functions of
 the problem decoded from a SIF file by the script sifdecoder evaluated
@@ -3097,37 +2530,25 @@ ci(x)≤ci(x)≤ci(x), (i ∈ mE+1,...,m), and simple bounds xl≤x≤xu. The
 objective function is group-partially separable and all constraint
 functions are partially separable.
 
-For more information, run the shell command
-
-    man cutest_csjprod
-
-Usage:
-
-    csjprod(status, n, m, gotj, jtrans, x, nnz_vector, index_nz_vector, vector,
-lvector, nnz_result, index_nz_result, result, lresult)
-
   - status:          [OUT] Vector{Cint}
-  - n:               [IN] Vector{Cint}
-  - m:               [IN] Vector{Cint}
-  - gotj:            [IN] Vector{Bool}
-  - jtrans:          [IN] Vector{Bool}
-  - x:               [IN] Vector{T}
-  - nnz_vector:      [IN] Vector{Cint}
-  - index_nz_vector: [IN] Vector{Cint}
-  - vector:          [IN] Vector{T}
-  - lvector:         [IN] Vector{Cint}
+  - n:               [IN]  Vector{Cint}
+  - m:               [IN]  Vector{Cint}
+  - gotj:            [IN]  Vector{Bool}
+  - jtrans:          [IN]  Vector{Bool}
+  - x:               [IN]  Vector{T}
+  - nnz_vector:      [IN]  Vector{Cint}
+  - index_nz_vector: [IN]  Vector{Cint}
+  - vector:          [IN]  Vector{T}
+  - lvector:         [IN]  Vector{Cint}
   - nnz_result:      [OUT] Vector{Cint}
   - index_nz_result: [OUT] Vector{Cint}
   - result:          [OUT] Vector{T}
-  - lresult:         [IN] Vector{Cint}
+  - lresult:         [IN]  Vector{Cint}
 """
 function csjprod end
 
-for (cutest_cint_csjprod, T) in (
-  (:cutest_cint_csjprod_s_, :Float32),
-  (:cutest_cint_csjprod_, :Float64),
-  (:cutest_cint_csjprod_q_, :Float128),
-)
+for (cutest_cint_csjprod, T) in
+    ((:cutest_cint_csjprod_s_, :Float32), (:cutest_cint_csjprod_, :Float64), (:cutest_cint_csjprod_q_, :Float128))
   @eval begin
     function csjprod(
       ::Type{$T},
@@ -3166,7 +2587,9 @@ for (cutest_cint_csjprod, T) in (
   end
 end
 
-"""# cchprods
+"""
+    cchprods(T, status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
+
 The cchprods subroutine forms the product of a vector with each of the
 Hessian matrix of the constraint functions c(x) corresponding to the
 problem decoded from a SIF file by the script sifdecoder at the point
@@ -3177,32 +2600,21 @@ mE+1,...,m), and simple bounds xl≤x≤xu. The objective function is
 group-partially separable and all constraint functions are partially
 separable.
 
-For more information, run the shell command
-
-    man cutest_cchprods
-
-Usage:
-
-    cchprods(status, n, m, goth, x, vector, lchp, chp_val, chp_ind, chp_ptr)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - goth:    [IN] Vector{Bool}
-  - x:       [IN] Vector{T}
-  - vector:  [IN] Vector{T}
-  - lchp:    [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - goth:    [IN]  Vector{Bool}
+  - x:       [IN]  Vector{T}
+  - vector:  [IN]  Vector{T}
+  - lchp:    [IN]  Vector{Cint}
   - chp_val: [OUT] Vector{T}
-  - chp_ind: [IN] Vector{Cint}
-  - chp_ptr: [IN] Vector{Cint}
+  - chp_ind: [IN]  Vector{Cint}
+  - chp_ptr: [IN]  Vector{Cint}
 """
 function cchprods end
 
-for (cutest_cint_cchprods, T) in (
-  (:cutest_cint_cchprods_s_, :Float32),
-  (:cutest_cint_cchprods_, :Float64),
-  (:cutest_cint_cchprods_q_, :Float128),
-)
+for (cutest_cint_cchprods, T) in
+    ((:cutest_cint_cchprods_s_, :Float32), (:cutest_cint_cchprods_, :Float64), (:cutest_cint_cchprods_q_, :Float128))
   @eval begin
     function cchprods(
       ::Type{$T},
@@ -3222,29 +2634,23 @@ for (cutest_cint_cchprods, T) in (
   end
 end
 
-"""# cchprodsp
+"""
+    cchprodsp(T, status, m, lchp, chp_ind, chp_ptr)
+
 The cchprodsp subroutine obtains the sparsity structure used when forming the
 product of a vector with each of the Hessian matrices of the constraint
 functions c(x) corresponding to the problem decoded from a SIF file by the
 script sifdecoder at the point x= X.
 
-Usage:
-
-    cchprodsp(status, m, lchp, chp_ind, chp_ptr)
-
   - status:  [OUT] Vector{Cint}
-  - m:       [IN] Vector{Cint}
-  - lchp:    [IN] Vector{Cint}
-  - chp_ind: [IN] Vector{Cint}
-  - chp_ptr: [IN] Vector{Cint}
+  - m:       [IN]  Vector{Cint}
+  - lchp:    [IN]  Vector{Cint}
+  - chp_ind: [IN]  Vector{Cint}
+  - chp_ptr: [IN]  Vector{Cint}
 """
 function cchprodsp end
 
-for (cutest_cchprodsp, T) in (
-  (:cutest_cchprodsp_s_, :Float32),
-  (:cutest_cchprodsp_, :Float64),
-  (:cutest_cchprodsp_q_, :Float128),
-)
+for (cutest_cchprodsp, T) in ((:cutest_cchprodsp_s_, :Float32), (:cutest_cchprodsp_, :Float64), (:cutest_cchprodsp_q_, :Float128))
   @eval begin
     function cchprodsp(
       ::Type{$T},
@@ -3259,27 +2665,17 @@ for (cutest_cchprodsp, T) in (
   end
 end
 
-"""# uterminate
+"""
+    uterminate(T, status)
+
 The uterminate subroutine deallocates all workspace arrays created
 since the last call to usetup.
-
-For more information, run the shell command
-
-    man cutest_uterminate
-
-Usage:
-
-    uterminate(status)
 
   - status:  [OUT] Vector{Cint}
 """
 function uterminate end
 
-for (cutest_uterminate, T) in (
-  (:cutest_uterminate_s_, :Float32),
-  (:cutest_uterminate_, :Float64),
-  (:cutest_uterminate_q_, :Float128),
-)
+for (cutest_uterminate, T) in ((:cutest_uterminate_s_, :Float32), (:cutest_uterminate_, :Float64), (:cutest_uterminate_q_, :Float128))
   @eval begin
     function uterminate(::Type{$T}, status::StrideOneVector{Cint})
       $cutest_uterminate(status)
@@ -3287,27 +2683,17 @@ for (cutest_uterminate, T) in (
   end
 end
 
-"""# cterminate
+"""
+    cterminate(T, status)
+
 The uterminate subroutine deallocates all workspace arrays created
 since the last call to csetup.
-
-For more information, run the shell command
-
-    man cutest_cterminate
-
-Usage:
-
-    cterminate(status)
 
   - status:  [OUT] Vector{Cint}
 """
 function cterminate end
 
-for (cutest_cterminate, T) in (
-  (:cutest_cterminate_s_, :Float32),
-  (:cutest_cterminate_, :Float64),
-  (:cutest_cterminate_q_, :Float128),
-)
+for (cutest_cterminate, T) in ((:cutest_cterminate_s_, :Float32), (:cutest_cterminate_, :Float64), (:cutest_cterminate_q_, :Float128))
   @eval begin
     function cterminate(::Type{$T}, status::StrideOneVector{Cint})
       $cutest_cterminate(status)
@@ -3315,29 +2701,22 @@ for (cutest_cterminate, T) in (
   end
 end
 
-"""# cifn
+"""
+    cifn(T, status, n, iprob, x, f)
+
 The cifn subroutine evaluates the value of either the objective function or a
 constrainted function of the problem decoded from a SIF file by the script
 sifdecoder at the point X, in the constrained minimization case.
 
-For more information, run the shell command
-
-    man cutest_cifn
-
-Usage:
-
-
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - iprob:   [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - iprob:   [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - f:       [OUT] Vector{T}
 """
 function cifn end
 
-for (cutest_cifn, T) in
-    ((:cutest_cifn_s_, :Float32), (:cutest_cifn_, :Float64), (:cutest_cifn_q_, :Float128))
+for (cutest_cifn, T) in ((:cutest_cifn_s_, :Float32), (:cutest_cifn_, :Float64), (:cutest_cifn_q_, :Float128))
   @eval begin
     function cifn(
       ::Type{$T},
@@ -3352,31 +2731,26 @@ for (cutest_cifn, T) in
   end
 end
 
-"""# cisgr
+"""
+    cisgr(T, status, n, iprod, x, nnzg, lg, g_val, g_var)
+
 The cisgr subroutine evaluates the gradient of either the objective function or
 a constraint function of the problem decoded from a SIF file by the script
 sifdecoder at the point X, in the constrained minimization case. The gradient
 is stored in sparse format.
 
-For more information, run the shell command
-
-    man cutest_cisgr
-
-Usage:
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - iprob:   [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - iprob:   [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - nnzg:    [OUT] Vector{Cint}
-  - lg:      [IN] Vector{Cint}
+  - lg:      [IN]  Vector{Cint}
   - g_val:   [OUT] Vector{T}
   - g_var:   [OUT] Vector{Cint}
 """
 function cisgr end
 
-for (cutest_cisgr, T) in
-    ((:cutest_cisgr_s_, :Float32), (:cutest_cisgr_, :Float64), (:cutest_cisgr_q_, :Float128))
+for (cutest_cisgr, T) in ((:cutest_cisgr_s_, :Float32), (:cutest_cisgr_, :Float64), (:cutest_cisgr_q_, :Float128))
   @eval begin
     function cisgr(
       ::Type{$T},
@@ -3394,31 +2768,24 @@ for (cutest_cisgr, T) in
   end
 end
 
-"""# csgrp
+"""
+    csgrp(T, status, n, nnzj, lj, j_var, j_fun)
+
 The csgrp subroutine evaluates sparsity pattern used when storing the gradients
 of the general constraints and of either the objective function or the
 Lagrangian function l(x,y)=f(x)+yTc(x) corresponding to the problem decoded
 from a SIF file by the script sifdecoder.
 
-For more information, run the shell command
-
-    man cutest_csgrp
-
-Usage:
-
-    csgrp(status, n, nnzj, lj, j_var, j_fun)
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - nnzj:       [OUT] Vector{Cint}
-  - lj:         [IN] Vector{Cint}
-  - j_var:      [OUT] Vector{Cint}
-  - j_fun:      [OUT] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
+  - nnzj:    [OUT] Vector{Cint}
+  - lj:      [IN]  Vector{Cint}
+  - j_var:   [OUT] Vector{Cint}
+  - j_fun:   [OUT] Vector{Cint}
 """
 function csgrp end
 
-for (cutest_csgrp, T) in
-    ((:cutest_csgrp_s_, :Float32), (:cutest_csgrp_, :Float64), (:cutest_csgrp_q_, :Float128))
+for (cutest_csgrp, T) in ((:cutest_csgrp_s_, :Float32), (:cutest_csgrp_, :Float64), (:cutest_csgrp_q_, :Float128))
   @eval begin
     function csgrp(
       ::Type{$T},
@@ -3434,25 +2801,22 @@ for (cutest_csgrp, T) in
   end
 end
 
-"""# cigr
+"""
+    cigr(T, status, n, iprob, x, g_val)
+
 The cigr subroutine evaluates the gradient of either the objective function or
 a constraint function of the problem decoded from a SIF file by the script
 sifdecoder at the point X, in the constrained minimization case.
 
-For more information, run the shell command
-
-    man cutest_cigr
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
-  - iprob:   [IN] Vector{Cint}
-  - x:       [IN] Vector{T}
+  - n:       [IN]  Vector{Cint}
+  - iprob:   [IN]  Vector{Cint}
+  - x:       [IN]  Vector{T}
   - g_val:   [OUT] Vector{T}
 """
 function cigr end
 
-for (cutest_cigr, T) in
-    ((:cutest_cigr_s_, :Float32), (:cutest_cigr_, :Float64), (:cutest_cigr_q_, :Float128))
+for (cutest_cigr, T) in ((:cutest_cigr_s_, :Float32), (:cutest_cigr_, :Float64), (:cutest_cigr_q_, :Float128))
   @eval begin
     function cigr(
       ::Type{$T},
@@ -3467,32 +2831,29 @@ for (cutest_cigr, T) in
   end
 end
 
-"""# csgrshp
+"""
+    csgrshp(T, status, n, nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
+
 The csgrshp subroutine evaluates sparsity pattern used when storing the
 gradients of the general constraints and of either the objective function or
 the Lagrangian function l(x,y)=f(x)+yTc(x), as well as the Hessian of the
 Lagrangian function, corresponding to the problem decoded from a SIF file by
 the script sifdecoder.
 
-For more information, run the shell command
-
-    man cutest_csgrshp
-
   - status:  [OUT] Vector{Cint}
-  - n:       [IN] Vector{Cint}
+  - n:       [IN]  Vector{Cint}
   - nnzj:    [OUT] Vector{Cint}
-  - lj:      [IN] Vector{Cint}
+  - lj:      [IN]  Vector{Cint}
   - j_var:   [OUT] Vector{Cint}
   - j_fun:   [OUT] Vector{Cint}
   - nnzh:    [OUT] Vector{Cint}
-  - lh:      [IN] Vector{Cint}
+  - lh:      [IN]  Vector{Cint}
   - h_row:   [OUT] Vector{Cint}
   - h_col:   [OUT] Vector{Cint}
 """
 function csgrshp end
 
-for (cutest_csgrshp, T) in
-    ((:cutest_csgrshp_s_, :Float32), (:cutest_csgrshp_, :Float64), (:cutest_csgrshp_q_, :Float128))
+for (cutest_csgrshp, T) in ((:cutest_csgrshp_s_, :Float32), (:cutest_csgrshp_, :Float64), (:cutest_csgrshp_q_, :Float128))
   @eval begin
     function csgrshp(
       ::Type{$T},
@@ -3512,24 +2873,21 @@ for (cutest_csgrshp, T) in
   end
 end
 
-"""# csjp
+"""
+    csjp(T, status, nnzj, lj, jvar, jcon)
+
 The csjp subroutine evaluates the sparsity pattern of the Jacobian of the
 constraints for a problem decoded from a SIF file by the script sifdecoder.
 
-For more information, run the shell command
-
-    man cutest_csjp
-
   - status:  [OUT] Vector{Cint}
   - nnzj:    [OUT] Vector{Cint}
-  - lj:      [IN] Vector{Cint}
+  - lj:      [IN]  Vector{Cint}
   - jvar:    [OUT] Vector{Cint}
   - jcon:    [OUT] Vector{Cint}
 """
 function csjp end
 
-for (cutest_csjp, T) in
-    ((:cutest_csjp_s_, :Float32), (:cutest_csjp_, :Float64), (:cutest_csjp_q_, :Float128))
+for (cutest_csjp, T) in ((:cutest_csjp_s_, :Float32), (:cutest_csjp_, :Float64), (:cutest_csjp_q_, :Float128))
   @eval begin
     function csjp(
       ::Type{$T},
@@ -3544,8 +2902,12 @@ for (cutest_csjp, T) in
   end
 end
 
-for (fortran_open, T) in
-    ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64), (:fortran_open_q_, :Float128))
+"""
+    fopen(T, funit, outsdif, status)
+"""
+function fopen end
+
+for (fortran_open, T) in ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64), (:fortran_open_q_, :Float128))
   @eval begin
     function fopen(::Type{$T}, funit, outsdif, status)
       $fortran_open(funit, outsdif, status)
@@ -3553,8 +2915,12 @@ for (fortran_open, T) in
   end
 end
 
-for (fortran_close, T) in
-    ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64), (:fortran_close_q_, :Float128))
+"""
+    fclose(T, funit, status)
+"""
+function fclose end
+
+for (fortran_close, T) in ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64), (:fortran_close_q_, :Float128))
   @eval begin
     function fclose(::Type{$T}, funit, status)
       $fortran_close(funit, status)
@@ -3562,8 +2928,12 @@ for (fortran_close, T) in
   end
 end
 
-for (cutest_cconst, T) in
-    ((:cutest_cconst_s_, :Float32), (:cutest_cconst_, :Float64), (:cutest_cconst_q_, :Float128))
+"""
+    cconst(T, status, m, c)
+"""
+function cconst end
+
+for (cutest_cconst, T) in ((:cutest_cconst_s_, :Float32), (:cutest_cconst_, :Float64), (:cutest_cconst_q_, :Float128))
   @eval begin
     function cconst(::Type{$T}, status, m, c)
       $cutest_cconst(status, m, c)
