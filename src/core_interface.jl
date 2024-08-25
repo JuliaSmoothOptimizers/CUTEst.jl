@@ -19,7 +19,8 @@ partially separable.
 """
 function usetup end
 
-for (cutest_usetup, T) in ((:cutest_usetup_s_, :Float32), (:cutest_usetup_, :Float64), (:cutest_usetup_q_, :Float128))
+for (cutest_usetup, T) in
+    ((:cutest_usetup_s_, :Float32), (:cutest_usetup_, :Float64), (:cutest_usetup_q_, :Float128))
   @eval begin
     function usetup(
       ::Type{$T},
@@ -69,8 +70,11 @@ functions are partially separable.
 """
 function csetup end
 
-for (cutest_cint_csetup, T) in
-    ((:cutest_cint_csetup_s_, :Float32), (:cutest_cint_csetup_, :Float64), (:cutest_cint_csetup_q_, :Float128))
+for (cutest_cint_csetup, T) in (
+  (:cutest_cint_csetup_s_, :Float32),
+  (:cutest_cint_csetup_, :Float64),
+  (:cutest_cint_csetup_q_, :Float128),
+)
   @eval begin
     function csetup(
       ::Type{$T},
@@ -130,7 +134,8 @@ objective function is group-partially separable.
 """
 function udimen end
 
-for (cutest_udimen, T) in ((:cutest_udimen_s_, :Float32), (:cutest_udimen_, :Float64), (:cutest_udimen_q_, :Float128))
+for (cutest_udimen, T) in
+    ((:cutest_udimen_s_, :Float32), (:cutest_udimen_, :Float64), (:cutest_udimen_q_, :Float128))
   @eval begin
     function udimen(
       ::Type{$T},
@@ -159,7 +164,8 @@ The objective function is group-partially separable.
 """
 function udimsh end
 
-for (cutest_udimsh, T) in ((:cutest_udimsh_s_, :Float32), (:cutest_udimsh_, :Float64), (:cutest_udimsh_q_, :Float128))
+for (cutest_udimsh, T) in
+    ((:cutest_udimsh_s_, :Float32), (:cutest_udimsh_, :Float64), (:cutest_udimsh_q_, :Float128))
   @eval begin
     function udimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
       $cutest_udimsh(status, nnzh)
@@ -187,7 +193,8 @@ function is group-partially separable.
 """
 function udimse end
 
-for (cutest_udimse, T) in ((:cutest_udimse_s_, :Float32), (:cutest_udimse_, :Float64), (:cutest_udimse_q_, :Float128))
+for (cutest_udimse, T) in
+    ((:cutest_udimse_s_, :Float32), (:cutest_udimse_, :Float64), (:cutest_udimse_q_, :Float128))
   @eval begin
     function udimse(
       ::Type{$T},
@@ -217,7 +224,11 @@ separable.
 """
 function uvartype end
 
-for (cutest_uvartype, T) in ((:cutest_uvartype_s_, :Float32), (:cutest_uvartype_, :Float64), (:cutest_uvartype_q_, :Float128))
+for (cutest_uvartype, T) in (
+  (:cutest_uvartype_s_, :Float32),
+  (:cutest_uvartype_, :Float64),
+  (:cutest_uvartype_q_, :Float128),
+)
   @eval begin
     function uvartype(
       ::Type{$T},
@@ -247,7 +258,8 @@ To get useful names, use `String(x)` where `x` can be `pname` or `vname[:,i]`.
 """
 function unames end
 
-for (cutest_unames, T) in ((:cutest_unames_s_, :Float32), (:cutest_unames_, :Float64), (:cutest_unames_q_, :Float128))
+for (cutest_unames, T) in
+    ((:cutest_unames_s_, :Float32), (:cutest_unames_, :Float64), (:cutest_unames_q_, :Float128))
   @eval begin
     function unames(
       ::Type{$T},
@@ -277,7 +289,8 @@ partially separable.
 """
 function ureport end
 
-for (cutest_ureport, T) in ((:cutest_ureport_s_, :Float32), (:cutest_ureport_, :Float64), (:cutest_ureport_q_, :Float128))
+for (cutest_ureport, T) in
+    ((:cutest_ureport_s_, :Float32), (:cutest_ureport_, :Float64), (:cutest_ureport_q_, :Float128))
   @eval begin
     function ureport(
       ::Type{$T},
@@ -309,7 +322,8 @@ functions are partially separable.
 """
 function cdimen end
 
-for (cutest_cdimen, T) in ((:cutest_cdimen_s_, :Float32), (:cutest_cdimen_, :Float64), (:cutest_cdimen_q_, :Float128))
+for (cutest_cdimen, T) in
+    ((:cutest_cdimen_s_, :Float32), (:cutest_cdimen_, :Float64), (:cutest_cdimen_q_, :Float128))
   @eval begin
     function cdimen(
       ::Type{$T},
@@ -342,7 +356,8 @@ separable.
 """
 function cdimsj end
 
-for (cutest_cdimsj, T) in ((:cutest_cdimsj_s_, :Float32), (:cutest_cdimsj_, :Float64), (:cutest_cdimsj_q_, :Float128))
+for (cutest_cdimsj, T) in
+    ((:cutest_cdimsj_s_, :Float32), (:cutest_cdimsj_, :Float64), (:cutest_cdimsj_q_, :Float128))
   @eval begin
     function cdimsj(::Type{$T}, status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
       $cutest_cdimsj(status, nnzj)
@@ -368,7 +383,8 @@ separable and all constraint functions are partially separable.
 """
 function cdimsh end
 
-for (cutest_cdimsh, T) in ((:cutest_cdimsh_s_, :Float32), (:cutest_cdimsh_, :Float64), (:cutest_cdimsh_q_, :Float128))
+for (cutest_cdimsh, T) in
+    ((:cutest_cdimsh_s_, :Float32), (:cutest_cdimsh_, :Float64), (:cutest_cdimsh_q_, :Float128))
   @eval begin
     function cdimsh(::Type{$T}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
       $cutest_cdimsh(status, nnzh)
@@ -394,7 +410,8 @@ and all constraint functions are partially separable.
 """
 function cdimchp end
 
-for (cutest_cdimchp, T) in ((:cutest_cdimchp_s_, :Float32), (:cutest_cdimchp_, :Float64), (:cutest_cdimchp_q_, :Float128))
+for (cutest_cdimchp, T) in
+    ((:cutest_cdimchp_s_, :Float32), (:cutest_cdimchp_, :Float64), (:cutest_cdimchp_q_, :Float128))
   @eval begin
     function cdimchp(::Type{$T}, status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
       $cutest_cdimchp(status, nnzchp)
@@ -424,7 +441,8 @@ functions are partially separable.
 """
 function cdimse end
 
-for (cutest_cdimse, T) in ((:cutest_cdimse_s_, :Float32), (:cutest_cdimse_, :Float64), (:cutest_cdimse_q_, :Float128))
+for (cutest_cdimse, T) in
+    ((:cutest_cdimse_s_, :Float32), (:cutest_cdimse_, :Float64), (:cutest_cdimse_q_, :Float128))
   @eval begin
     function cdimse(
       ::Type{$T},
@@ -449,7 +467,8 @@ end
 """
 function cstats end
 
-for (cutest_cstats, T) in ((:cutest_cstats_s_, :Float32), (:cutest_cstats_, :Float64), (:cutest_cstats_q_, :Float128))
+for (cutest_cstats, T) in
+    ((:cutest_cstats_s_, :Float32), (:cutest_cstats_, :Float64), (:cutest_cstats_q_, :Float128))
   @eval begin
     function cstats(
       ::Type{$T},
@@ -488,7 +507,11 @@ functions are partially separable.
 """
 function cvartype end
 
-for (cutest_cvartype, T) in ((:cutest_cvartype_s_, :Float32), (:cutest_cvartype_, :Float64), (:cutest_cvartype_q_, :Float128))
+for (cutest_cvartype, T) in (
+  (:cutest_cvartype_s_, :Float32),
+  (:cutest_cvartype_, :Float64),
+  (:cutest_cvartype_q_, :Float128),
+)
   @eval begin
     function cvartype(
       ::Type{$T},
@@ -524,7 +547,8 @@ or `cname[:,i]`.
 """
 function cnames end
 
-for (cutest_cnames, T) in ((:cutest_cnames_s_, :Float32), (:cutest_cnames_, :Float64), (:cutest_cnames_q_, :Float128))
+for (cutest_cnames, T) in
+    ((:cutest_cnames_s_, :Float32), (:cutest_cnames_, :Float64), (:cutest_cnames_q_, :Float128))
   @eval begin
     function cnames(
       ::Type{$T},
@@ -558,7 +582,8 @@ functions are partially separable.
 """
 function creport end
 
-for (cutest_creport, T) in ((:cutest_creport_s_, :Float32), (:cutest_creport_, :Float64), (:cutest_creport_q_, :Float128))
+for (cutest_creport, T) in
+    ((:cutest_creport_s_, :Float32), (:cutest_creport_, :Float64), (:cutest_creport_q_, :Float128))
   @eval begin
     function creport(
       ::Type{$T},
@@ -590,7 +615,11 @@ To get useful names, use `String(cname[:,i])`.
 """
 function connames end
 
-for (cutest_connames, T) in ((:cutest_connames_s_, :Float32), (:cutest_connames_, :Float64), (:cutest_connames_q_, :Float128))
+for (cutest_connames, T) in (
+  (:cutest_connames_s_, :Float32),
+  (:cutest_connames_, :Float64),
+  (:cutest_connames_q_, :Float128),
+)
   @eval begin
     function connames(
       ::Type{$T},
@@ -621,7 +650,8 @@ functions are partially separable.
 """
 function pname end
 
-for (cutest_pname, T) in ((:cutest_pname_s_, :Float32), (:cutest_pname_, :Float64), (:cutest_pname_q_, :Float128))
+for (cutest_pname, T) in
+    ((:cutest_pname_s_, :Float32), (:cutest_pname_, :Float64), (:cutest_pname_q_, :Float128))
   @eval begin
     function pname(
       ::Type{$T},
@@ -651,7 +681,11 @@ To get a useful name, use `String(pname)`.
 """
 function probname end
 
-for (cutest_probname, T) in ((:cutest_probname_s_, :Float32), (:cutest_probname_, :Float64), (:cutest_probname_q_, :Float128))
+for (cutest_probname, T) in (
+  (:cutest_probname_s_, :Float32),
+  (:cutest_probname_, :Float64),
+  (:cutest_probname_q_, :Float128),
+)
   @eval begin
     function probname(::Type{$T}, status::StrideOneVector{Cint}, pname::StrideOneVector{Cchar})
       $cutest_probname(status, pname)
@@ -678,7 +712,11 @@ To get useful names, use `String(vname[:, i])`.
 """
 function varnames end
 
-for (cutest_varnames, T) in ((:cutest_varnames_s_, :Float32), (:cutest_varnames_, :Float64), (:cutest_varnames_q_, :Float128))
+for (cutest_varnames, T) in (
+  (:cutest_varnames_s_, :Float32),
+  (:cutest_varnames_, :Float64),
+  (:cutest_varnames_q_, :Float128),
+)
   @eval begin
     function varnames(
       ::Type{$T},
@@ -707,7 +745,8 @@ xl≤x≤xu. The objective function is group-partially separable.
 """
 function ufn end
 
-for (cutest_ufn, T) in ((:cutest_ufn_s_, :Float32), (:cutest_ufn_, :Float64), (:cutest_ufn_q_, :Float128))
+for (cutest_ufn, T) in
+    ((:cutest_ufn_s_, :Float32), (:cutest_ufn_, :Float64), (:cutest_ufn_q_, :Float128))
   @eval begin
     function ufn(
       ::Type{$T},
@@ -737,7 +776,8 @@ xl≤x≤xu. The objective function is group-partially separable.
 """
 function ugr end
 
-for (cutest_ugr, T) in ((:cutest_ugr_s_, :Float32), (:cutest_ugr_, :Float64), (:cutest_ugr_q_, :Float128))
+for (cutest_ugr, T) in
+    ((:cutest_ugr_s_, :Float32), (:cutest_ugr_, :Float64), (:cutest_ugr_q_, :Float128))
   @eval begin
     function ugr(
       ::Type{$T},
@@ -770,7 +810,11 @@ partially separable.
 """
 function uofg end
 
-for (cutest_cint_uofg, T) in ((:cutest_cint_uofg_s_, :Float32), (:cutest_cint_uofg_, :Float64), (:cutest_cint_uofg_q_, :Float128))
+for (cutest_cint_uofg, T) in (
+  (:cutest_cint_uofg_s_, :Float32),
+  (:cutest_cint_uofg_, :Float64),
+  (:cutest_cint_uofg_q_, :Float128),
+)
   @eval begin
     function uofg(
       ::Type{$T},
@@ -804,7 +848,8 @@ xl≤x≤xu. The objective function is group-partially separable.
 """
 function udh end
 
-for (cutest_udh, T) in ((:cutest_udh_s_, :Float32), (:cutest_udh_, :Float64), (:cutest_udh_q_, :Float128))
+for (cutest_udh, T) in
+    ((:cutest_udh_s_, :Float32), (:cutest_udh_, :Float64), (:cutest_udh_q_, :Float128))
   @eval begin
     function udh(
       ::Type{$T},
@@ -838,7 +883,8 @@ function is group-partially separable.
 """
 function ushp end
 
-for (cutest_ushp, T) in ((:cutest_ushp_s_, :Float32), (:cutest_ushp_, :Float64), (:cutest_ushp_q_, :Float128))
+for (cutest_ushp, T) in
+    ((:cutest_ushp_s_, :Float32), (:cutest_ushp_, :Float64), (:cutest_ushp_q_, :Float128))
   @eval begin
     function ushp(
       ::Type{$T},
@@ -876,7 +922,8 @@ partially separable.
 """
 function ush end
 
-for (cutest_ush, T) in ((:cutest_ush_s_, :Float32), (:cutest_ush_, :Float64), (:cutest_ush_q_, :Float128))
+for (cutest_ush, T) in
+    ((:cutest_ush_s_, :Float32), (:cutest_ush_, :Float64), (:cutest_ush_q_, :Float128))
   @eval begin
     function ush(
       ::Type{$T},
@@ -921,7 +968,11 @@ xl≤x≤xu. The objective function is group-partially separable.
 """
 function ueh end
 
-for (cutest_cint_ueh, T) in ((:cutest_cint_ueh_s_, :Float32), (:cutest_cint_ueh_, :Float64), (:cutest_cint_ueh_q_, :Float128))
+for (cutest_cint_ueh, T) in (
+  (:cutest_cint_ueh_s_, :Float32),
+  (:cutest_cint_ueh_, :Float64),
+  (:cutest_cint_ueh_q_, :Float128),
+)
   @eval begin
     function ueh(
       ::Type{$T},
@@ -976,7 +1027,8 @@ separable.
 """
 function ugrdh end
 
-for (cutest_ugrdh, T) in ((:cutest_ugrdh_s_, :Float32), (:cutest_ugrdh_, :Float64), (:cutest_ugrdh_q_, :Float128))
+for (cutest_ugrdh, T) in
+    ((:cutest_ugrdh_s_, :Float32), (:cutest_ugrdh_, :Float64), (:cutest_ugrdh_q_, :Float128))
   @eval begin
     function ugrdh(
       ::Type{$T},
@@ -1015,7 +1067,8 @@ partially separable.
 """
 function ugrsh end
 
-for (cutest_ugrsh, T) in ((:cutest_ugrsh_s_, :Float32), (:cutest_ugrsh_, :Float64), (:cutest_ugrsh_q_, :Float128))
+for (cutest_ugrsh, T) in
+    ((:cutest_ugrsh_s_, :Float32), (:cutest_ugrsh_, :Float64), (:cutest_ugrsh_q_, :Float128))
   @eval begin
     function ugrsh(
       ::Type{$T},
@@ -1063,7 +1116,11 @@ separable.
 """
 function ugreh end
 
-for (cutest_cint_ugreh, T) in ((:cutest_cint_ugreh_s_, :Float32), (:cutest_cint_ugreh_, :Float64), (:cutest_cint_ugreh_q_, :Float128))
+for (cutest_cint_ugreh, T) in (
+  (:cutest_cint_ugreh_s_, :Float32),
+  (:cutest_cint_ugreh_, :Float64),
+  (:cutest_cint_ugreh_q_, :Float128),
+)
   @eval begin
     function ugreh(
       ::Type{$T},
@@ -1119,8 +1176,11 @@ function is group-partially separable.
 """
 function uhprod end
 
-for (cutest_cint_uhprod, T) in
-    ((:cutest_cint_uhprod_s_, :Float32), (:cutest_cint_uhprod_, :Float64), (:cutest_cint_uhprod_q_, :Float128))
+for (cutest_cint_uhprod, T) in (
+  (:cutest_cint_uhprod_s_, :Float32),
+  (:cutest_cint_uhprod_, :Float64),
+  (:cutest_cint_uhprod_q_, :Float128),
+)
   @eval begin
     function uhprod(
       ::Type{$T},
@@ -1161,8 +1221,11 @@ Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function ushprod end
 
-for (cutest_cint_ushprod, T) in
-    ((:cutest_cint_ushprod_s_, :Float32), (:cutest_cint_ushprod_, :Float64), (:cutest_cint_ushprod_q_, :Float128))
+for (cutest_cint_ushprod, T) in (
+  (:cutest_cint_ushprod_s_, :Float32),
+  (:cutest_cint_ushprod_, :Float64),
+  (:cutest_cint_ushprod_q_, :Float128),
+)
   @eval begin
     function ushprod(
       ::Type{$T},
@@ -1214,7 +1277,8 @@ partially separable.
 """
 function ubandh end
 
-for (cutest_ubandh, T) in ((:cutest_ubandh_s_, :Float32), (:cutest_ubandh_, :Float64), (:cutest_ubandh_q_, :Float128))
+for (cutest_ubandh, T) in
+    ((:cutest_ubandh_s_, :Float32), (:cutest_ubandh_, :Float64), (:cutest_ubandh_q_, :Float128))
   @eval begin
     function ubandh(
       ::Type{$T},
@@ -1252,7 +1316,8 @@ constraint functions are partially separable.
 """
 function cfn end
 
-for (cutest_cfn, T) in ((:cutest_cfn_s_, :Float32), (:cutest_cfn_, :Float64), (:cutest_cfn_q_, :Float128))
+for (cutest_cfn, T) in
+    ((:cutest_cfn_s_, :Float32), (:cutest_cfn_, :Float64), (:cutest_cfn_q_, :Float128))
   @eval begin
     function cfn(
       ::Type{$T},
@@ -1289,7 +1354,11 @@ constraint functions are partially separable.
 """
 function cofg end
 
-for (cutest_cint_cofg, T) in ((:cutest_cint_cofg_s_, :Float32), (:cutest_cint_cofg_, :Float64), (:cutest_cint_cofg_q_, :Float128))
+for (cutest_cint_cofg, T) in (
+  (:cutest_cint_cofg_s_, :Float32),
+  (:cutest_cint_cofg_, :Float64),
+  (:cutest_cint_cofg_q_, :Float128),
+)
   @eval begin
     function cofg(
       ::Type{$T},
@@ -1329,7 +1398,11 @@ and all constraint functions are partially separable.
 """
 function cofsg end
 
-for (cutest_cint_cofsg, T) in ((:cutest_cint_cofsg_s_, :Float32), (:cutest_cint_cofsg_, :Float64), (:cutest_cint_cofsg_q_, :Float128))
+for (cutest_cint_cofsg, T) in (
+  (:cutest_cint_cofsg_s_, :Float32),
+  (:cutest_cint_cofsg_, :Float64),
+  (:cutest_cint_cofsg_q_, :Float128),
+)
   @eval begin
     function cofsg(
       ::Type{$T},
@@ -1373,7 +1446,11 @@ constraint functions are partially separable.
 """
 function ccfg end
 
-for (cutest_cint_ccfg, T) in ((:cutest_cint_ccfg_s_, :Float32), (:cutest_cint_ccfg_, :Float64), (:cutest_cint_ccfg_q_, :Float128))
+for (cutest_cint_ccfg, T) in (
+  (:cutest_cint_ccfg_s_, :Float32),
+  (:cutest_cint_ccfg_, :Float64),
+  (:cutest_cint_ccfg_q_, :Float128),
+)
   @eval begin
     function ccfg(
       ::Type{$T},
@@ -1416,7 +1493,11 @@ separable and all constraint functions are partially separable.
 """
 function clfg end
 
-for (cutest_cint_clfg, T) in ((:cutest_cint_clfg_s_, :Float32), (:cutest_cint_clfg_, :Float64), (:cutest_cint_clfg_q_, :Float128))
+for (cutest_cint_clfg, T) in (
+  (:cutest_cint_clfg_s_, :Float32),
+  (:cutest_cint_clfg_, :Float64),
+  (:cutest_cint_clfg_q_, :Float128),
+)
   @eval begin
     function clfg(
       ::Type{$T},
@@ -1461,7 +1542,11 @@ separable and all constraint functions are partially separable.
 """
 function cgr end
 
-for (cutest_cint_cgr, T) in ((:cutest_cint_cgr_s_, :Float32), (:cutest_cint_cgr_, :Float64), (:cutest_cint_cgr_q_, :Float128))
+for (cutest_cint_cgr, T) in (
+  (:cutest_cint_cgr_s_, :Float32),
+  (:cutest_cint_cgr_, :Float64),
+  (:cutest_cint_cgr_q_, :Float128),
+)
   @eval begin
     function cgr(
       ::Type{$T},
@@ -1511,7 +1596,11 @@ and all constraint functions are partially separable.
 """
 function csgr end
 
-for (cutest_cint_csgr, T) in ((:cutest_cint_csgr_s_, :Float32), (:cutest_cint_csgr_, :Float64), (:cutest_cint_csgr_q_, :Float128))
+for (cutest_cint_csgr, T) in (
+  (:cutest_cint_csgr_s_, :Float32),
+  (:cutest_cint_csgr_, :Float64),
+  (:cutest_cint_csgr_q_, :Float128),
+)
   @eval begin
     function csgr(
       ::Type{$T},
@@ -1559,7 +1648,11 @@ and all constraint functions are partially separable.
 """
 function ccfsg end
 
-for (cutest_cint_ccfsg, T) in ((:cutest_cint_ccfsg_s_, :Float32), (:cutest_cint_ccfsg_, :Float64), (:cutest_cint_ccfsg_q_, :Float128))
+for (cutest_cint_ccfsg, T) in (
+  (:cutest_cint_ccfsg_s_, :Float32),
+  (:cutest_cint_ccfsg_, :Float64),
+  (:cutest_cint_ccfsg_q_, :Float128),
+)
   @eval begin
     function ccfsg(
       ::Type{$T},
@@ -1603,7 +1696,11 @@ constraint functions are partially separable.
 """
 function ccifg end
 
-for (cutest_cint_ccifg, T) in ((:cutest_cint_ccifg_s_, :Float32), (:cutest_cint_ccifg_, :Float64), (:cutest_cint_ccifg_q_, :Float128))
+for (cutest_cint_ccifg, T) in (
+  (:cutest_cint_ccifg_s_, :Float32),
+  (:cutest_cint_ccifg_, :Float64),
+  (:cutest_cint_ccifg_q_, :Float128),
+)
   @eval begin
     function ccifg(
       ::Type{$T},
@@ -1647,8 +1744,11 @@ separable.
 """
 function ccifsg end
 
-for (cutest_cint_ccifsg, T) in
-    ((:cutest_cint_ccifsg_s_, :Float32), (:cutest_cint_ccifsg_, :Float64), (:cutest_cint_ccifsg_q_, :Float128))
+for (cutest_cint_ccifsg, T) in (
+  (:cutest_cint_ccifsg_s_, :Float32),
+  (:cutest_cint_ccifsg_, :Float64),
+  (:cutest_cint_ccifsg_q_, :Float128),
+)
   @eval begin
     function ccifsg(
       ::Type{$T},
@@ -1699,7 +1799,11 @@ separable and all constraint functions are partially separable.
 """
 function cgrdh end
 
-for (cutest_cint_cgrdh, T) in ((:cutest_cint_cgrdh_s_, :Float32), (:cutest_cint_cgrdh_, :Float64), (:cutest_cint_cgrdh_q_, :Float128))
+for (cutest_cint_cgrdh, T) in (
+  (:cutest_cint_cgrdh_s_, :Float32),
+  (:cutest_cint_cgrdh_, :Float64),
+  (:cutest_cint_cgrdh_q_, :Float128),
+)
   @eval begin
     function cgrdh(
       ::Type{$T},
@@ -1745,7 +1849,8 @@ functions are partially separable.
 """
 function cdh end
 
-for (cutest_cdh, T) in ((:cutest_cdh_s_, :Float32), (:cutest_cdh_, :Float64), (:cutest_cdh_q_, :Float128))
+for (cutest_cdh, T) in
+    ((:cutest_cdh_s_, :Float32), (:cutest_cdh_, :Float64), (:cutest_cdh_q_, :Float128))
   @eval begin
     function cdh(
       ::Type{$T},
@@ -1785,7 +1890,8 @@ constraint functions are partially separable.
 """
 function cdhc end
 
-for (cutest_cdhc, T) in ((:cutest_cdhc_s_, :Float32), (:cutest_cdhc_, :Float64), (:cutest_cdhc_q_, :Float128))
+for (cutest_cdhc, T) in
+    ((:cutest_cdhc_s_, :Float32), (:cutest_cdhc_, :Float64), (:cutest_cdhc_q_, :Float128))
   @eval begin
     function cdhc(
       ::Type{$T},
@@ -1823,7 +1929,8 @@ separable and all constraint functions are partially separable.
 """
 function cshp end
 
-for (cutest_cshp, T) in ((:cutest_cshp_s_, :Float32), (:cutest_cshp_, :Float64), (:cutest_cshp_q_, :Float128))
+for (cutest_cshp, T) in
+    ((:cutest_cshp_s_, :Float32), (:cutest_cshp_, :Float64), (:cutest_cshp_q_, :Float128))
   @eval begin
     function cshp(
       ::Type{$T},
@@ -1865,7 +1972,8 @@ functions are partially separable.
 """
 function csh end
 
-for (cutest_csh, T) in ((:cutest_csh_s_, :Float32), (:cutest_csh_, :Float64), (:cutest_csh_q_, :Float128))
+for (cutest_csh, T) in
+    ((:cutest_csh_s_, :Float32), (:cutest_csh_, :Float64), (:cutest_csh_q_, :Float128))
   @eval begin
     function csh(
       ::Type{$T},
@@ -1911,7 +2019,8 @@ constraint functions are partially separable.
 """
 function cshc end
 
-for (cutest_cshc, T) in ((:cutest_cshc_s_, :Float32), (:cutest_cshc_, :Float64), (:cutest_cshc_q_, :Float128))
+for (cutest_cshc, T) in
+    ((:cutest_cshc_s_, :Float32), (:cutest_cshc_, :Float64), (:cutest_cshc_q_, :Float128))
   @eval begin
     function cshc(
       ::Type{$T},
@@ -1963,7 +2072,8 @@ functions are partially separable.
 """
 function ceh end
 
-for (cutest_ceh, T) in ((:cutest_ceh_s_, :Float32), (:cutest_ceh_, :Float64), (:cutest_ceh_q_, :Float128))
+for (cutest_ceh, T) in
+    ((:cutest_ceh_s_, :Float32), (:cutest_ceh_, :Float64), (:cutest_ceh_q_, :Float128))
   @eval begin
     function ceh(
       ::Type{$T},
@@ -2024,7 +2134,8 @@ separable and all constraint functions are partially separable.
 """
 function cidh end
 
-for (cutest_cidh, T) in ((:cutest_cidh_s_, :Float32), (:cutest_cidh_, :Float64), (:cutest_cidh_q_, :Float128))
+for (cutest_cidh, T) in
+    ((:cutest_cidh_s_, :Float32), (:cutest_cidh_, :Float64), (:cutest_cidh_q_, :Float128))
   @eval begin
     function cidh(
       ::Type{$T},
@@ -2065,7 +2176,8 @@ and all constraint functions are partially separable.
 """
 function cish end
 
-for (cutest_cish, T) in ((:cutest_cish_s_, :Float32), (:cutest_cish_, :Float64), (:cutest_cish_q_, :Float128))
+for (cutest_cish, T) in
+    ((:cutest_cish_s_, :Float32), (:cutest_cish_, :Float64), (:cutest_cish_q_, :Float128))
   @eval begin
     function cish(
       ::Type{$T},
@@ -2118,8 +2230,11 @@ functions are partially separable.
 """
 function csgrsh end
 
-for (cutest_cint_csgrsh, T) in
-    ((:cutest_cint_csgrsh_s_, :Float32), (:cutest_cint_csgrsh_, :Float64), (:cutest_cint_csgrsh_q_, :Float128))
+for (cutest_cint_csgrsh, T) in (
+  (:cutest_cint_csgrsh_s_, :Float32),
+  (:cutest_cint_csgrsh_, :Float64),
+  (:cutest_cint_csgrsh_q_, :Float128),
+)
   @eval begin
     function csgrsh(
       ::Type{$T},
@@ -2203,8 +2318,11 @@ separable.
 """
 function csgreh end
 
-for (cutest_cint_csgreh, T) in
-    ((:cutest_cint_csgreh_s_, :Float32), (:cutest_cint_csgreh_, :Float64), (:cutest_cint_csgreh_q_, :Float128))
+for (cutest_cint_csgreh, T) in (
+  (:cutest_cint_csgreh_s_, :Float32),
+  (:cutest_cint_csgreh_, :Float64),
+  (:cutest_cint_csgreh_q_, :Float128),
+)
   @eval begin
     function csgreh(
       ::Type{$T},
@@ -2279,8 +2397,11 @@ functions are partially separable.
 """
 function chprod end
 
-for (cutest_cint_chprod, T) in
-    ((:cutest_cint_chprod_s_, :Float32), (:cutest_cint_chprod_, :Float64), (:cutest_cint_chprod_q_, :Float128))
+for (cutest_cint_chprod, T) in (
+  (:cutest_cint_chprod_s_, :Float32),
+  (:cutest_cint_chprod_, :Float64),
+  (:cutest_cint_chprod_q_, :Float128),
+)
   @eval begin
     function chprod(
       ::Type{$T},
@@ -2328,7 +2449,8 @@ Notice that `vector` and `result` should have allocated dimension of `n`.
 """
 function cshprod end
 
-for (cutest_cshprod, T) in ((:cutest_cshprod_s_, :Float32), (:cutest_cshprod_, :Float64), (:cutest_cshprod_q_, :Float128))
+for (cutest_cshprod, T) in
+    ((:cutest_cshprod_s_, :Float32), (:cutest_cshprod_, :Float64), (:cutest_cshprod_q_, :Float128))
   @eval begin
     function cshprod(
       ::Type{$T},
@@ -2387,8 +2509,11 @@ functions are partially separable.
 """
 function chcprod end
 
-for (cutest_cint_chcprod, T) in
-    ((:cutest_cint_chcprod_s_, :Float32), (:cutest_cint_chcprod_, :Float64), (:cutest_cint_chcprod_q_, :Float128))
+for (cutest_cint_chcprod, T) in (
+  (:cutest_cint_chcprod_s_, :Float32),
+  (:cutest_cint_chcprod_, :Float64),
+  (:cutest_cint_chcprod_q_, :Float128),
+)
   @eval begin
     function chcprod(
       ::Type{$T},
@@ -2434,8 +2559,11 @@ and all constraint functions are partially separable.
 """
 function cshcprod end
 
-for (cutest_cint_cshcprod, T) in
-    ((:cutest_cint_cshcprod_s_, :Float32), (:cutest_cint_cshcprod_, :Float64), (:cutest_cint_cshcprod_q_, :Float128))
+for (cutest_cint_cshcprod, T) in (
+  (:cutest_cint_cshcprod_s_, :Float32),
+  (:cutest_cint_cshcprod_, :Float64),
+  (:cutest_cint_cshcprod_q_, :Float128),
+)
   @eval begin
     function cshcprod(
       ::Type{$T},
@@ -2496,8 +2624,11 @@ functions are partially separable.
 """
 function cjprod end
 
-for (cutest_cint_cjprod, T) in
-    ((:cutest_cint_cjprod_s_, :Float32), (:cutest_cint_cjprod_, :Float64), (:cutest_cint_cjprod_q_, :Float128))
+for (cutest_cint_cjprod, T) in (
+  (:cutest_cint_cjprod_s_, :Float32),
+  (:cutest_cint_cjprod_, :Float64),
+  (:cutest_cint_cjprod_q_, :Float128),
+)
   @eval begin
     function cjprod(
       ::Type{$T},
@@ -2547,8 +2678,11 @@ functions are partially separable.
 """
 function csjprod end
 
-for (cutest_cint_csjprod, T) in
-    ((:cutest_cint_csjprod_s_, :Float32), (:cutest_cint_csjprod_, :Float64), (:cutest_cint_csjprod_q_, :Float128))
+for (cutest_cint_csjprod, T) in (
+  (:cutest_cint_csjprod_s_, :Float32),
+  (:cutest_cint_csjprod_, :Float64),
+  (:cutest_cint_csjprod_q_, :Float128),
+)
   @eval begin
     function csjprod(
       ::Type{$T},
@@ -2613,8 +2747,11 @@ separable.
 """
 function cchprods end
 
-for (cutest_cint_cchprods, T) in
-    ((:cutest_cint_cchprods_s_, :Float32), (:cutest_cint_cchprods_, :Float64), (:cutest_cint_cchprods_q_, :Float128))
+for (cutest_cint_cchprods, T) in (
+  (:cutest_cint_cchprods_s_, :Float32),
+  (:cutest_cint_cchprods_, :Float64),
+  (:cutest_cint_cchprods_q_, :Float128),
+)
   @eval begin
     function cchprods(
       ::Type{$T},
@@ -2650,7 +2787,11 @@ script sifdecoder at the point x= X.
 """
 function cchprodsp end
 
-for (cutest_cchprodsp, T) in ((:cutest_cchprodsp_s_, :Float32), (:cutest_cchprodsp_, :Float64), (:cutest_cchprodsp_q_, :Float128))
+for (cutest_cchprodsp, T) in (
+  (:cutest_cchprodsp_s_, :Float32),
+  (:cutest_cchprodsp_, :Float64),
+  (:cutest_cchprodsp_q_, :Float128),
+)
   @eval begin
     function cchprodsp(
       ::Type{$T},
@@ -2675,7 +2816,11 @@ since the last call to usetup.
 """
 function uterminate end
 
-for (cutest_uterminate, T) in ((:cutest_uterminate_s_, :Float32), (:cutest_uterminate_, :Float64), (:cutest_uterminate_q_, :Float128))
+for (cutest_uterminate, T) in (
+  (:cutest_uterminate_s_, :Float32),
+  (:cutest_uterminate_, :Float64),
+  (:cutest_uterminate_q_, :Float128),
+)
   @eval begin
     function uterminate(::Type{$T}, status::StrideOneVector{Cint})
       $cutest_uterminate(status)
@@ -2693,7 +2838,11 @@ since the last call to csetup.
 """
 function cterminate end
 
-for (cutest_cterminate, T) in ((:cutest_cterminate_s_, :Float32), (:cutest_cterminate_, :Float64), (:cutest_cterminate_q_, :Float128))
+for (cutest_cterminate, T) in (
+  (:cutest_cterminate_s_, :Float32),
+  (:cutest_cterminate_, :Float64),
+  (:cutest_cterminate_q_, :Float128),
+)
   @eval begin
     function cterminate(::Type{$T}, status::StrideOneVector{Cint})
       $cutest_cterminate(status)
@@ -2716,7 +2865,8 @@ sifdecoder at the point X, in the constrained minimization case.
 """
 function cifn end
 
-for (cutest_cifn, T) in ((:cutest_cifn_s_, :Float32), (:cutest_cifn_, :Float64), (:cutest_cifn_q_, :Float128))
+for (cutest_cifn, T) in
+    ((:cutest_cifn_s_, :Float32), (:cutest_cifn_, :Float64), (:cutest_cifn_q_, :Float128))
   @eval begin
     function cifn(
       ::Type{$T},
@@ -2750,7 +2900,8 @@ is stored in sparse format.
 """
 function cisgr end
 
-for (cutest_cisgr, T) in ((:cutest_cisgr_s_, :Float32), (:cutest_cisgr_, :Float64), (:cutest_cisgr_q_, :Float128))
+for (cutest_cisgr, T) in
+    ((:cutest_cisgr_s_, :Float32), (:cutest_cisgr_, :Float64), (:cutest_cisgr_q_, :Float128))
   @eval begin
     function cisgr(
       ::Type{$T},
@@ -2785,7 +2936,8 @@ from a SIF file by the script sifdecoder.
 """
 function csgrp end
 
-for (cutest_csgrp, T) in ((:cutest_csgrp_s_, :Float32), (:cutest_csgrp_, :Float64), (:cutest_csgrp_q_, :Float128))
+for (cutest_csgrp, T) in
+    ((:cutest_csgrp_s_, :Float32), (:cutest_csgrp_, :Float64), (:cutest_csgrp_q_, :Float128))
   @eval begin
     function csgrp(
       ::Type{$T},
@@ -2816,7 +2968,8 @@ sifdecoder at the point X, in the constrained minimization case.
 """
 function cigr end
 
-for (cutest_cigr, T) in ((:cutest_cigr_s_, :Float32), (:cutest_cigr_, :Float64), (:cutest_cigr_q_, :Float128))
+for (cutest_cigr, T) in
+    ((:cutest_cigr_s_, :Float32), (:cutest_cigr_, :Float64), (:cutest_cigr_q_, :Float128))
   @eval begin
     function cigr(
       ::Type{$T},
@@ -2853,7 +3006,8 @@ the script sifdecoder.
 """
 function csgrshp end
 
-for (cutest_csgrshp, T) in ((:cutest_csgrshp_s_, :Float32), (:cutest_csgrshp_, :Float64), (:cutest_csgrshp_q_, :Float128))
+for (cutest_csgrshp, T) in
+    ((:cutest_csgrshp_s_, :Float32), (:cutest_csgrshp_, :Float64), (:cutest_csgrshp_q_, :Float128))
   @eval begin
     function csgrshp(
       ::Type{$T},
@@ -2887,7 +3041,8 @@ constraints for a problem decoded from a SIF file by the script sifdecoder.
 """
 function csjp end
 
-for (cutest_csjp, T) in ((:cutest_csjp_s_, :Float32), (:cutest_csjp_, :Float64), (:cutest_csjp_q_, :Float128))
+for (cutest_csjp, T) in
+    ((:cutest_csjp_s_, :Float32), (:cutest_csjp_, :Float64), (:cutest_csjp_q_, :Float128))
   @eval begin
     function csjp(
       ::Type{$T},
@@ -2907,7 +3062,8 @@ end
 """
 function fopen end
 
-for (fortran_open, T) in ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64), (:fortran_open_q_, :Float128))
+for (fortran_open, T) in
+    ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64), (:fortran_open_q_, :Float128))
   @eval begin
     function fopen(::Type{$T}, funit, outsdif, status)
       $fortran_open(funit, outsdif, status)
@@ -2920,7 +3076,8 @@ end
 """
 function fclose end
 
-for (fortran_close, T) in ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64), (:fortran_close_q_, :Float128))
+for (fortran_close, T) in
+    ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64), (:fortran_close_q_, :Float128))
   @eval begin
     function fclose(::Type{$T}, funit, status)
       $fortran_close(funit, status)
@@ -2933,7 +3090,8 @@ end
 """
 function cconst end
 
-for (cutest_cconst, T) in ((:cutest_cconst_s_, :Float32), (:cutest_cconst_, :Float64), (:cutest_cconst_q_, :Float128))
+for (cutest_cconst, T) in
+    ((:cutest_cconst_s_, :Float32), (:cutest_cconst_, :Float64), (:cutest_cconst_q_, :Float128))
   @eval begin
     function cconst(::Type{$T}, status, m, c)
       $cutest_cconst(status, m, c)
