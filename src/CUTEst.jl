@@ -19,7 +19,6 @@ global cutest_lib_quadruple = C_NULL
 
 export CUTEstModel, sifdecoder, build_libsif, set_mastsif
 
-const funit = Int32(42)
 const cutest_problems_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 

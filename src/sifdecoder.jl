@@ -24,11 +24,15 @@ end
 
 _name_outsdif(name::AbstractString, precision::Symbol) = "OUTSDIF_$(basename(name))_$(precision).d"
 
-"""Decode a SIF problem.
+"""
+    sifdecoder(name, args...; verbose, precision, outsdif, libsif_folder)
 
+Decode a SIF problem.
 Optional arguments are passed directly to the SIF decoder.
+`precision` can be `:single`, `:double` (default) or `:quadruple`.
+
 Example:
-    `sifdecoder("DIXMAANJ", "-param", "M=30")`.
+    sifdecoder("DIXMAANJ", "-param", "M=30"; precision=:double)
 """
 function sifdecoder(
   name::AbstractString,
@@ -94,10 +98,13 @@ function sifdecoder(
 end
 
 """
+    build_libsif(name; precision, libsif_folder)
+
 Build a shared library from a decoded SIF problem.
+`precision` can be `:single`, `:double` (default) or `:quadruple`.
 
 Example:
-    `build_libsif("DIXMAANJ")`.
+    `build_libsif("DIXMAANJ", precision=:double)`.
 """
 function build_libsif(
   name::AbstractString;
