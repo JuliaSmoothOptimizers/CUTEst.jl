@@ -17,28 +17,29 @@ It also offers access to the problem's information, such as the number of variab
 
 ## Prerequisites
 
-On Linux, you'll need to install `gfortran`.
+On all platforms except Windows, you'll need to install `gfortran`.
+On Windows, everything is installed for you thanks to Julia artifacts.
 
 On Ubuntu, you can do this with:
 ```shell
 sudo apt-get install gfortran
 ```
+
 On Arch Linux, use:
 ```shell
 sudo pacman -S gfortran
 ```
 
-On macOS, you can install `gfortran` with Homebrew:
+On macOS, use Homebrew:
 ```shell
 brew install gfortran
 ```
 
-On Windows, everything is installed for you thanks to Julia artifacts.
-
 ## Installation
 
-The following command should automatically download and install CUTEst and its dependencies. (Use `]` to enter `pkg>` mode.)
+The following command should automatically download and install CUTEst and its dependencies.
 ```julia
+julia> ]
 pkg> add CUTEst
 ```
 
