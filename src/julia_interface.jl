@@ -5,7 +5,8 @@ using NLPModels, SparseArrays
 function NLPModels.obj(nlp::CUTEstModel{T}, x::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x
   if nlp.meta.ncon > 0
-    iprob = Ref{Cint}(0)
+    iprob = nlp.index
+    iprob[] = 0
     cifn(T, nlp.libsif, nlp.status, nlp.nvar, iprob, x, nlp.f)
   else
     ufn(T, nlp.libsif, nlp.status, nlp.nvar, x, nlp.f)
@@ -23,7 +24,8 @@ end
 function NLPModels.grad!(nlp::CUTEstModel{T}, x::StrideOneVector{T}, g::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x g
   if nlp.meta.ncon > 0
-    iprob = Ref{Cint}(0)
+    iprob = nlp.index
+    iprob[] = 0
     cigr(T, nlp.libsif, nlp.status, nlp.nvar, iprob, x, g)
   else
     ugr(T, nlp.libsif, nlp.status, nlp.nvar, x, g)
@@ -137,7 +139,8 @@ function cons_coord!(
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
   @lencheck nlp.meta.nnzj rows cols vals
-  jsize = Ref{Cint}(nlp.meta.nnzj)
+  jsize = nlp.index
+  jsize[] = nlp.meta.nnzj
   get_j = cutest_true
 
   ccfsg(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, c, nlp.nnzj, jsize, vals, cols, rows, get_j)
@@ -220,11 +223,21 @@ function consjac(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
   return c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
 end
 
+function NLPModels.cons!(nlp::CUTEstModel{T}, x::StrideOneVector{T}, c::StrideOneVector{T}) where {T}
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.ncon c
+  cconst(T, nlp.libsif, nlp.status, nlp.ncon, c)
+  increment!(nlp, :neval_cons)
+  return c
+end
+
 function NLPModels.cons!(nlp::CUTEstModel{T}, x::AbstractVector, c::AbstractVector) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
-  objcons!(nlp, x, c)
-  decrement!(nlp, :neval_obj)  # does not really count as a objective eval
+  x_ = Vector{T}(x)
+  c_ = Vector{T}(c)
+  cons!(nlp, x_, c_)
+  c .= c_
   return c
 end
 
@@ -250,7 +263,7 @@ function NLPModels.cons_nln!(nlp::CUTEstModel{T}, x::AbstractVector, c::StrideOn
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnln c
   k = 1
-  ref_j = Ref{Cint}(0)
+  ref_j = nlp.index
   for j in nlp.meta.nln
     ref_j[] = j
     cifn(T, nlp.libsif, nlp.status, nlp.nvar, ref_j, x, view(c, k:k))
@@ -328,10 +341,11 @@ function NLPModels.jac_nln_coord!(
 ) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nln_nnzj vals
-  ci = Ref{T}(zero(T))
+  ci = nlp.f
+  ci[] = zero(T)
   bool = cutest_true
   i = 1
-  ref_j = Ref{Cint}(0)
+  ref_j = nlp.index
   for j in nlp.meta.nln
     ref_j[] = j
     ccifsg(T, nlp.libsif, nlp.status, nlp.nvar, ref_j, x, ci, nlp.nnzj, nlp.nvar, nlp.Jval, nlp.Jvar, bool)
@@ -504,7 +518,8 @@ function NLPModels.hess_coord!(
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon y
   @lencheck nlp.meta.nnzh vals
-  this_nnzh = Ref{Cint}(0)
+  this_nnzh = nlp.index
+  this_nnzh[] = 0
 
   if obj_weight == zero(T) && (nlp.meta.ncon > 0)
     cshc(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, y, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
@@ -623,6 +638,19 @@ end
 
 function NLPModels.hprod!(
   nlp::CUTEstModel{T},
+  x::StrideOneVector{T},
+  v::StrideOneVector{T},
+  hv::StrideOneVector{T};
+  obj_weight::T = one(T),
+) where {T}
+  @lencheck nlp.meta.nvar x v hv
+  λ = nlp.workspace_ncon
+  λ .= zero(T)  # Lagrange multipliers
+  hprod!(nlp, x, λ, v, hv, obj_weight = obj_weight)
+end
+
+function NLPModels.hprod!(
+  nlp::CUTEstModel{T},
   x::AbstractVector,
   v::AbstractVector,
   hv::StrideOneVector{T};
@@ -653,6 +681,8 @@ function NLPModels.jth_hess_coord!(
   j::Integer,
   vals::AbstractVector,
 ) where {T}
-  cish(T, nlp.libsif, nlp.status, nlp.nvar, x, Ref{Cint}(j), nlp.nnzh, nlp.nnzh, vals, nlp.hrows, nlp.hcols)
+  ref_j = nlp.index
+  ref_j[] = j
+  cish(T, nlp.libsif, nlp.status, nlp.nvar, x, ref_j, nlp.nnzh, nlp.nnzh, vals, nlp.hrows, nlp.hcols)
   return vals
 end

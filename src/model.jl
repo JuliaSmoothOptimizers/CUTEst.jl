@@ -20,6 +20,7 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
 
   libsif::Ptr{Cvoid}
   funit::Ref{Cint}
+  index::Ref{Cint}
   nvar::Ref{Cint}
   ncon::Ref{Cint}
   nnzj::Ref{Cint}
@@ -311,6 +312,7 @@ function CUTEstModel(
     Jvar,
     libsif,
     funit,
+    Ref{Cint}(),
     Ref{Cint}(nvar),
     Ref{Cint}(ncon),
     Ref{Cint}(nnzj),
