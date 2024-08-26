@@ -145,10 +145,14 @@ function build_libsif(
       if Sys.isapple()
         if VERSION < v"1.10"
           libcutest = joinpath(libpath, "lib$library.$dlext")
-          run(`gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`)
+          run(
+            `gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`,
+          )
         else
           libcutest = joinpath(libpath, "lib$library.a")
-          run(`gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-all_load $libcutest`)
+          run(
+            `gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-all_load $libcutest`,
+          )
         end
       elseif Sys.iswindows()
         @static if Sys.iswindows()

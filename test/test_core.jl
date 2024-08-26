@@ -196,11 +196,43 @@ function test_coreinterface(
       compare_cons(nlp, cx, comp_nlp, c(x0), rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
 
-      CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar, Wx)
+      CUTEst.cgrdh(
+        T,
+        nlp.libsif,
+        st,
+        nvar,
+        ncon,
+        x0,
+        y0,
+        False,
+        gx,
+        False,
+        ncon,
+        nvar,
+        Jx,
+        nvar,
+        Wx,
+      )
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jx, J(x0), rtol = rtol)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
-      CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar, Wx)
+      CUTEst.cgrdh(
+        T,
+        nlp.libsif,
+        st,
+        nvar,
+        ncon,
+        x0,
+        y0,
+        False,
+        gx,
+        True,
+        nvar,
+        ncon,
+        Jtx,
+        nvar,
+        Wx,
+      )
       @test isapprox(gx, g(x0), rtol = rtol)
       @test isapprox(Jtx, J(x0)', rtol = rtol)
       @test isapprox(Wx, W(x0, y0), rtol = rtol)
@@ -433,10 +465,74 @@ function test_coreinterface(
         for j = 1:ncon[1]
           CUTEst.ccifsg(T, nlp.libsif, st, nvar, Cint[j], x0, ci, nnzj, lj, Jval, Jvar, True)
         end
-        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, False, ncon, nvar, Jx, nvar, Wx)
-        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, False, gx, True, nvar, ncon, Jtx, nvar, Wx)
-        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, True, gx, False, ncon, nvar, Jx, nvar, Wx)
-        CUTEst.cgrdh(T, nlp.libsif, st, nvar, ncon, x0, y0, True, gx, True, nvar, ncon, Jtx, nvar, Wx)
+        CUTEst.cgrdh(
+          T,
+          nlp.libsif,
+          st,
+          nvar,
+          ncon,
+          x0,
+          y0,
+          False,
+          gx,
+          False,
+          ncon,
+          nvar,
+          Jx,
+          nvar,
+          Wx,
+        )
+        CUTEst.cgrdh(
+          T,
+          nlp.libsif,
+          st,
+          nvar,
+          ncon,
+          x0,
+          y0,
+          False,
+          gx,
+          True,
+          nvar,
+          ncon,
+          Jtx,
+          nvar,
+          Wx,
+        )
+        CUTEst.cgrdh(
+          T,
+          nlp.libsif,
+          st,
+          nvar,
+          ncon,
+          x0,
+          y0,
+          True,
+          gx,
+          False,
+          ncon,
+          nvar,
+          Jx,
+          nvar,
+          Wx,
+        )
+        CUTEst.cgrdh(
+          T,
+          nlp.libsif,
+          st,
+          nvar,
+          ncon,
+          x0,
+          y0,
+          True,
+          gx,
+          True,
+          nvar,
+          ncon,
+          Jtx,
+          nvar,
+          Wx,
+        )
         CUTEst.cdh(T, nlp.libsif, st, nvar, ncon, x0, y0, nvar, Wx)
         CUTEst.csh(T, nlp.libsif, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
         CUTEst.cshc(T, nlp.libsif, st, nvar, ncon, x0, y0, nnzh, lh, Hval, Hrow, Hcol)
