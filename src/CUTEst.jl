@@ -11,6 +11,8 @@ import Libdl.dlsym
 
 export CUTEstModel, sifdecoder, build_libsif, set_mastsif
 
+const cutest_false = Ref{Bool}(false)
+const cutest_true = Ref{Bool}(true)
 const cutest_problems_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
 isdir(cutest_problems_path) || mkpath(cutest_problems_path)
 
