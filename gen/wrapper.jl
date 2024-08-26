@@ -11,9 +11,21 @@ function main()
 
   options = load_options(joinpath(@__DIR__, "cutest.toml"))
   options["general"]["output_file_path"] = joinpath("..", "src", "libcutest.jl")
-  options["general"]["output_ignorelist"] =
-    ["integer", "real", "doublereal", "logical", "rp_", "rpc_", "ip_", "ipc_",
-     "CUTEst_malloc", "CUTEst_calloc", "CUTEst_realloc", "CUTEst_free", "VarTypes"]
+  options["general"]["output_ignorelist"] = [
+    "integer",
+    "real",
+    "doublereal",
+    "logical",
+    "rp_",
+    "rpc_",
+    "ip_",
+    "ipc_",
+    "CUTEst_malloc",
+    "CUTEst_calloc",
+    "CUTEst_realloc",
+    "CUTEst_free",
+    "VarTypes",
+  ]
 
   args = get_default_args()
   push!(args, "-I$include_dir")

@@ -171,7 +171,12 @@ function udimsh end
 for (cutest_udimsh, T) in
     ((:cutest_udimsh_s_, :Float32), (:cutest_udimsh_, :Float64), (:cutest_udimsh_q_, :Float128))
   @eval begin
-    function udimsh(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+    function udimsh(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+    )
       $cutest_udimsh(libsif, status, nnzh)
     end
   end
@@ -368,7 +373,12 @@ function cdimsj end
 for (cutest_cdimsj, T) in
     ((:cutest_cdimsj_s_, :Float32), (:cutest_cdimsj_, :Float64), (:cutest_cdimsj_q_, :Float128))
   @eval begin
-    function cdimsj(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzj::StrideOneVector{Cint})
+    function cdimsj(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      nnzj::StrideOneVector{Cint},
+    )
       $cutest_cdimsj(libsif, status, nnzj)
     end
   end
@@ -395,7 +405,12 @@ function cdimsh end
 for (cutest_cdimsh, T) in
     ((:cutest_cdimsh_s_, :Float32), (:cutest_cdimsh_, :Float64), (:cutest_cdimsh_q_, :Float128))
   @eval begin
-    function cdimsh(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzh::StrideOneVector{Cint})
+    function cdimsh(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+    )
       $cutest_cdimsh(libsif, status, nnzh)
     end
   end
@@ -422,7 +437,12 @@ function cdimchp end
 for (cutest_cdimchp, T) in
     ((:cutest_cdimchp_s_, :Float32), (:cutest_cdimchp_, :Float64), (:cutest_cdimchp_q_, :Float128))
   @eval begin
-    function cdimchp(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, nnzchp::StrideOneVector{Cint})
+    function cdimchp(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      nnzchp::StrideOneVector{Cint},
+    )
       $cutest_cdimchp(libsif, status, nnzchp)
     end
   end
@@ -704,7 +724,12 @@ for (cutest_probname, T) in (
   (:cutest_probname_q_, :Float128),
 )
   @eval begin
-    function probname(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint}, pname::StrideOneVector{Cchar})
+    function probname(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      pname::StrideOneVector{Cchar},
+    )
       $cutest_probname(libsif, status, pname)
     end
   end

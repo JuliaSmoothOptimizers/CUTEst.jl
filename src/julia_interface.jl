@@ -21,7 +21,11 @@ function NLPModels.obj(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
   obj(nlp, x_)
 end
 
-function NLPModels.grad!(nlp::CUTEstModel{T}, x::StrideOneVector{T}, g::StrideOneVector{T}) where {T}
+function NLPModels.grad!(
+  nlp::CUTEstModel{T},
+  x::StrideOneVector{T},
+  g::StrideOneVector{T},
+) where {T}
   @lencheck nlp.meta.nvar x g
   if nlp.meta.ncon > 0
     iprob = nlp.index
@@ -143,7 +147,21 @@ function cons_coord!(
   jsize[] = nlp.meta.nnzj
   get_j = cutest_true
 
-  ccfsg(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, c, nlp.nnzj, jsize, vals, cols, rows, get_j)
+  ccfsg(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    nlp.ncon,
+    x,
+    c,
+    nlp.nnzj,
+    jsize,
+    vals,
+    cols,
+    rows,
+    get_j,
+  )
   cutest_error(nlp.status[])
   increment!(nlp, :neval_cons)
   increment!(nlp, :neval_jac)
@@ -223,13 +241,31 @@ function consjac(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
   return c, sparse(jrow, jcol, jval, nlp.meta.ncon, nlp.meta.nvar)
 end
 
-function NLPModels.cons!(nlp::CUTEstModel{T}, x::StrideOneVector{T}, c::StrideOneVector{T}) where {T}
+function NLPModels.cons!(
+  nlp::CUTEstModel{T},
+  x::StrideOneVector{T},
+  c::StrideOneVector{T},
+) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
   jsize = nlp.index
   jsize[] = 0
   get_jacobian = cutest_false
-  ccfsg(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, c, nlp.nnzj, jsize, T[], nlp.jcols, nlp.jrows, get_jacobian)
+  ccfsg(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    nlp.ncon,
+    x,
+    c,
+    nlp.nnzj,
+    jsize,
+    T[],
+    nlp.jcols,
+    nlp.jrows,
+    get_jacobian,
+  )
   increment!(nlp, :neval_cons)
   return c
 end
@@ -351,7 +387,20 @@ function NLPModels.jac_nln_coord!(
   ref_j = nlp.index
   for j in nlp.meta.nln
     ref_j[] = j
-    ccifsg(T, nlp.libsif, nlp.status, nlp.nvar, ref_j, x, ci, nlp.nnzj, nlp.nvar, nlp.Jval, nlp.Jvar, bool)
+    ccifsg(
+      T,
+      nlp.libsif,
+      nlp.status,
+      nlp.nvar,
+      ref_j,
+      x,
+      ci,
+      nlp.nnzj,
+      nlp.nvar,
+      nlp.Jval,
+      nlp.Jvar,
+      bool,
+    )
     for k = 1:nlp.nnzj[]
       vals[i] = nlp.Jval[k]
       i += 1
@@ -440,7 +489,20 @@ function NLPModels.jtprod!(
   @lencheck nlp.meta.ncon v
   got_j = cutest_false
   jtrans = cutest_true
-  cjprod(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, got_j, jtrans, x, v, nlp.ncon, jtv, nlp.nvar)
+  cjprod(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    nlp.ncon,
+    got_j,
+    jtrans,
+    x,
+    v,
+    nlp.ncon,
+    jtv,
+    nlp.nvar,
+  )
   cutest_error(nlp.status[])
   increment!(nlp, :neval_jtprod)
   return jtv
@@ -525,7 +587,20 @@ function NLPModels.hess_coord!(
   this_nnzh[] = 0
 
   if obj_weight == zero(T) && (nlp.meta.ncon > 0)
-    cshc(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, y, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
+    cshc(
+      T,
+      nlp.libsif,
+      nlp.status,
+      nlp.nvar,
+      nlp.ncon,
+      x,
+      y,
+      this_nnzh,
+      nlp.nnzh,
+      vals,
+      nlp.hcols,
+      nlp.hrows,
+    )
     cutest_error(nlp.status[])
     increment!(nlp, :neval_hess)
     return vals
@@ -534,7 +609,20 @@ function NLPModels.hess_coord!(
   if nlp.meta.ncon > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == one(T) ? y : y / obj_weight
-    csh(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, z, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
+    csh(
+      T,
+      nlp.libsif,
+      nlp.status,
+      nlp.nvar,
+      nlp.ncon,
+      x,
+      z,
+      this_nnzh,
+      nlp.nnzh,
+      vals,
+      nlp.hcols,
+      nlp.hrows,
+    )
   else
     ush(T, nlp.libsif, nlp.status, nlp.nvar, x, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
   end
@@ -686,6 +774,18 @@ function NLPModels.jth_hess_coord!(
 ) where {T}
   ref_j = nlp.index
   ref_j[] = j
-  cish(T, nlp.libsif, nlp.status, nlp.nvar, x, ref_j, nlp.nnzh, nlp.nnzh, vals, nlp.hrows, nlp.hcols)
+  cish(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    x,
+    ref_j,
+    nlp.nnzh,
+    nlp.nnzh,
+    vals,
+    nlp.hrows,
+    nlp.hcols,
+  )
   return vals
 end
