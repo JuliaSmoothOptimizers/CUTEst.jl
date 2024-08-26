@@ -226,7 +226,10 @@ end
 function NLPModels.cons!(nlp::CUTEstModel{T}, x::StrideOneVector{T}, c::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
-  cconst(T, nlp.libsif, nlp.status, nlp.ncon, c)
+  jsize = nlp.index
+  jsize[] = 0
+  get_jacobian = cutest_false
+  ccfsg(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, c, nlp.nnzj, jsize, T[], nlp.jcols, nlp.jrows, get_jacobian)
   increment!(nlp, :neval_cons)
   return c
 end
