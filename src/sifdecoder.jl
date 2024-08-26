@@ -143,8 +143,13 @@ function build_libsif(
         end
       end
       if Sys.isapple()
-        libcutest = joinpath(libpath, "lib$library.a")
-        run(`gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-all_load $libcutest`)
+        if VERSION < v"1.10"
+          libcutest = joinpath(libpath, "lib$library.$dlext")
+          run(`gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-rpath,$libpath $libcutest`)
+        else
+          libcutest = joinpath(libpath, "lib$library.a")
+          run(`gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-all_load $libcutest`)
+        end
       elseif Sys.iswindows()
         @static if Sys.iswindows()
           mingw = Int == Int64 ? "mingw64" : "mingw32"
@@ -155,10 +160,17 @@ function build_libsif(
           )
         end
       else
-        libcutest = joinpath(libpath, "lib$library.a")
-        run(
-          `gfortran -shared -o $(libsif_name).$dlext $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
-        )
+        if VERSION < v"1.10"
+          libgfortran = strip(read(`gfortran --print-file libgfortran.so`, String))
+          run(
+            `ld -shared -o $(libsif_name).$dlext $(object_files) -rpath=$libpath -L$libpath -l$library $libgfortran`,
+          )
+        else
+          libcutest = joinpath(libpath, "lib$library.a")
+          run(
+            `gfortran -shared -o $(libsif_name).$dlext $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
+          )
+        end
       end
       delete_temp_files(suffix)
       libsif = Libdl.dlopen(libsif_name, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
