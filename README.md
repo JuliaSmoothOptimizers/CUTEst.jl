@@ -5,17 +5,29 @@ constrained and unconstrained nonlinear programming problems for testing and
 comparing optimization algorithms, derived from the abstract model on
 [NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
 
-### Stable release [![Github release](https://img.shields.io/github/release/JuliaSmoothOptimizers/CUTEst.jl.svg)](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest) [![DOI](https://zenodo.org/badge/30661559.svg)](https://zenodo.org/badge/latestdoi/30661559)
+### Stable release [![Github release](https://img.shields.io/github/release/JuliaSmoothOptimizers/CUTEst.jl.svg)](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest) [![DOI][doi-img]][doi-url]
 
-- Documentation: [![Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://jso.dev/CUTEst.jl/stable)
+- Documentation: [![docs-stable][docs-stable-img]][docs-stable-url]
 - Chat: [![Gitter](https://img.shields.io/gitter/room/JuliaSmoothOptimizers/JuliaSmoothOptimizers.svg)](https://gitter.im/JuliaSmoothOptimizers/JuliaSmoothOptimizers)
 
 ### Development version
 
-- Documentation: [![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://jso.dev/CUTEst.jl/latest)
-- Tests:
-[![Build Status](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl.svg?branch=main)](https://travis-ci.org/JuliaSmoothOptimizers/CUTEst.jl)
-[![Coverage Status](https://coveralls.io/repos/JuliaSmoothOptimizers/CUTEst.jl/badge.svg?branch=main)](https://coveralls.io/r/JuliaSmoothOptimizers/CUTEst.jl?branch=main)
+- Documentation: [![docs-dev][docs-dev-img]][docs-dev-url]
+- Tests: [![build-gh][build-gh-img]][build-gh-url] [![codecov][codecov-img]][codecov-url]
+- Downloads: [![downloads][downloads-img]][downloads-url]
+
+[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-stable-url]: https://JuliaSmoothOptimizers.github.io/Krylov.jl/stable
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-purple.svg
+[docs-dev-url]: https://JuliaSmoothOptimizers.github.io/Krylov.jl/dev
+[build-gh-img]: https://github.com/JuliaSmoothOptimizers/Krylov.jl/workflows/CI/badge.svg?branch=main
+[build-gh-url]: https://github.com/JuliaSmoothOptimizers/Krylov.jl/actions
+[codecov-img]: https://codecov.io/gh/JuliaSmoothOptimizers/Krylov.jl/branch/main/graph/badge.svg
+[codecov-url]: https://app.codecov.io/gh/JuliaSmoothOptimizers/Krylov.jl
+[doi-img]: https://zenodo.org/badge/30661559.svg
+[doi-url]: https://zenodo.org/badge/latestdoi/30661559
+[downloads-img]: https://img.shields.io/badge/dynamic/json?url=http%3A%2F%2Fjuliapkgstats.com%2Fapi%2Fv1%2Fmonthly_downloads%2FCUTEst&query=total_requests&suffix=%2Fmonth&label=Downloads
+[downloads-url]: https://juliapkgstats.com/pkg/CUTEst
 
 ## How to Cite
 
@@ -73,7 +85,7 @@ nlp_quadruple = CUTEstModel{Float128}("BYRDSPHR")
 
 A large collection of SIF files can be found [here](https://bitbucket.org/optrove/workspace/repositories/).
 If the environment variable `MASTSIF` is not set, `CUTEst.jl` will automatically download the CUTEst
-NLP test set the first time you use `using CUTEst`.
+NLP test set the first time you invoke `using CUTEst`.
 Thanks to the function `set_mastsif`, you can easily switch to the Maros-Meszaros QP test set
 or the Netlib LP test set.
 
