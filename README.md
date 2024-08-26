@@ -24,7 +24,8 @@ If you use CUTEst.jl in your work, please cite using the format given in [CITATI
 ## Installing
 
 This package will automatically install the CUTEst binaries for your platform.
-The `gfortran` compiler is required to compile decoded SIF problems, except on Windows.
+The `gfortran` compiler is required to compile decoded SIF problems. Users on all platforms except Windows must install it to use CUTEst.jl.
+For Windows users, a small artifact containing `gfortran.exe` is installed automatically.
 No other Fortran compiler is supported.
 
 The following command installs the CUTEst binaries and the Julia interface:
@@ -82,34 +83,6 @@ set_mastsif("netlib-lp")
 ```
 
 The constructor `CUTEstModel{Float64}(name)` will try to find the SIF file associated with the problem `name` in the current set.
-
-### Run multiple models in parallel
-
-First, decode each of the problems in serial.
-
-```julia
-function decodemodel(name)
-    finalize(CUTEstModel(name))
-end
-
-probs = ["AKIVA", "ALLINITU", "ARGLINA", "ARGLINB", "ARGLINC", "ARGTRIGLS", "ARWHEAD"]
-broadcast(decodemodel, probs)
-```
-
-Then, call functions handling models in parallel. It is important to pass `decode=false` to `CUTEstModel`.
-
-```julia
-addprocs(2)
-@everywhere using CUTEst
-@everywhere function evalmodel(name)
-   nlp = CUTEstModel(name; decode=false)
-   retval = obj(nlp, nlp.meta.x0)
-   finalize(nlp)
-   retval
-end
-
-fvals = pmap(evalmodel, probs)
-```
 
 ## Related Packages
 
