@@ -24,7 +24,8 @@ If you use CUTEst.jl in your work, please cite using the format given in [CITATI
 ## Installing
 
 This package will automatically install the CUTEst binaries for your platform.
-The `gfortran` compiler is required to compile decoded SIF problems. Users on all platforms except Windows must install it to use CUTEst.jl.
+The `gfortran` compiler is required to compile decoded SIF problems.
+Users on all platforms except Windows must install it to use CUTEst.jl.
 For Windows users, a small artifact containing `gfortran.exe` is installed automatically.
 No other Fortran compiler is supported.
 

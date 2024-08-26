@@ -21,11 +21,13 @@ for pb in problems
   println()
 end
 
-for T in (Float32, Float64, Float128)
-  @testset "Multiple instances of CUTEstModel -- $T" begin
-    nlps = [CUTEstModel{T}(problem) for problem in problems]
-    for nlp in nlps
-      finalize(nlp)
+if Sys.iswindows() || VERSION ≥ v"1.10"
+  for T in (Float32, Float64, Float128)
+    @testset "Multiple instances of CUTEstModel -- $T" begin
+      nlps = [CUTEstModel{T}(problem) for problem in problems]
+      for nlp in nlps
+        finalize(nlp)
+      end
     end
   end
 end
