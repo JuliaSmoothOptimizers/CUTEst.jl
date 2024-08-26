@@ -335,7 +335,20 @@ function NLPModels.jac_nln_coord!(
   bool = Ref{Bool}(true)
   i = 1
   for j in nlp.meta.nln
-    ccifsg(T, nlp.libsif, Ref{Cint}(0), nvar, Ref{Cint}(j), x, ci, nnzj, nvar, nlp.Jval, nlp.Jvar, bool)
+    ccifsg(
+      T,
+      nlp.libsif,
+      Ref{Cint}(0),
+      nvar,
+      Ref{Cint}(j),
+      x,
+      ci,
+      nnzj,
+      nvar,
+      nlp.Jval,
+      nlp.Jvar,
+      bool,
+    )
     for k = 1:nnzj[]
       vals[i] = nlp.Jval[k]
       i += 1
