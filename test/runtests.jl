@@ -21,6 +21,15 @@ for pb in problems
   println()
 end
 
+for T in (Float32, Float64, Float128)
+  @testset "Multiple instances of CUTEstModel -- $T" begin
+    nlps = [CUTEstModel{T}(problem) for problem in problems]
+    for nlp in nlps
+      finalize(nlp)
+    end
+  end
+end
+
 include("test_core.jl")
 include("test_julia.jl")
 include("coverage.jl")
