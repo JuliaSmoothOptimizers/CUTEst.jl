@@ -130,7 +130,21 @@ function cons_coord!(
   jsize = Ref{Cint}(nlp.meta.nnzj)
   get_j = cutest_true
 
-  ccfsg(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, c, nlp.nnzj, jsize, vals, cols, rows, get_j)
+  ccfsg(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    nlp.ncon,
+    x,
+    c,
+    nlp.nnzj,
+    jsize,
+    vals,
+    cols,
+    rows,
+    get_j,
+  )
   cutest_error(nlp.status[])
   increment!(nlp, :neval_cons)
   increment!(nlp, :neval_jac)
@@ -324,7 +338,20 @@ function NLPModels.jac_nln_coord!(
   ref_j = Ref{Cint}(0)
   for j in nlp.meta.nln
     ref_j[] = j
-    ccifsg(T, nlp.libsif, nlp.status, nlp.nvar, ref_j, x, ci, nlp.nnzj, nlp.nvar, nlp.Jval, nlp.Jvar, bool)
+    ccifsg(
+      T,
+      nlp.libsif,
+      nlp.status,
+      nlp.nvar,
+      ref_j,
+      x,
+      ci,
+      nlp.nnzj,
+      nlp.nvar,
+      nlp.Jval,
+      nlp.Jvar,
+      bool,
+    )
     for k = 1:nlp.nnzj[]
       vals[i] = nlp.Jval[k]
       i += 1
@@ -413,7 +440,20 @@ function NLPModels.jtprod!(
   @lencheck nlp.meta.ncon v
   got_j = cutest_false
   jtrans = cutest_true
-  cjprod(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, got_j, jtrans, x, v, nlp.ncon, jtv, nlp.nvar)
+  cjprod(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    nlp.ncon,
+    got_j,
+    jtrans,
+    x,
+    v,
+    nlp.ncon,
+    jtv,
+    nlp.nvar,
+  )
   cutest_error(nlp.status[])
   increment!(nlp, :neval_jtprod)
   return jtv
@@ -497,7 +537,20 @@ function NLPModels.hess_coord!(
   this_nnzh = Ref{Cint}(0)
 
   if obj_weight == zero(T) && (nlp.ncon[] > 0)
-    cshc(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, y, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
+    cshc(
+      T,
+      nlp.libsif,
+      nlp.status,
+      nlp.nvar,
+      nlp.ncon,
+      x,
+      y,
+      this_nnzh,
+      nlp.nnzh,
+      vals,
+      nlp.hcols,
+      nlp.hrows,
+    )
     cutest_error(nlp.status[])
     increment!(nlp, :neval_hess)
     return vals
@@ -506,7 +559,20 @@ function NLPModels.hess_coord!(
   if nlp.ncon[] > 0
     # σ H₀ + ∑ᵢ yᵢ Hᵢ = σ (H₀ + ∑ᵢ (yᵢ/σ) Hᵢ)
     z = obj_weight == one(T) ? y : y / obj_weight
-    csh(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, z, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
+    csh(
+      T,
+      nlp.libsif,
+      nlp.status,
+      nlp.nvar,
+      nlp.ncon,
+      x,
+      z,
+      this_nnzh,
+      nlp.nnzh,
+      vals,
+      nlp.hcols,
+      nlp.hrows,
+    )
   else
     ush(T, nlp.libsif, nlp.status, nlp.nvar, x, this_nnzh, nlp.nnzh, vals, nlp.hcols, nlp.hrows)
   end
@@ -643,6 +709,18 @@ function NLPModels.jth_hess_coord!(
   j::Integer,
   vals::AbstractVector,
 ) where {T}
-  cish(T, nlp.libsif, nlp.status, nlp.nvar, x, Ref{Cint}(j), nlp.nnzh, nlp.nnzh, vals, nlp.hrows, nlp.hcols)
+  cish(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    x,
+    Ref{Cint}(j),
+    nlp.nnzh,
+    nlp.nnzh,
+    vals,
+    nlp.hrows,
+    nlp.hcols,
+  )
   return vals
 end
