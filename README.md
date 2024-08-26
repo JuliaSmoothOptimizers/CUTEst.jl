@@ -17,13 +17,13 @@ comparing optimization algorithms, derived from the abstract model on
 - Downloads: [![downloads][downloads-img]][downloads-url]
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://JuliaSmoothOptimizers.github.io/Krylov.jl/stable
+[docs-stable-url]: https://JuliaSmoothOptimizers.github.io/CUTEst.jl/stable
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-purple.svg
-[docs-dev-url]: https://JuliaSmoothOptimizers.github.io/Krylov.jl/dev
-[build-gh-img]: https://github.com/JuliaSmoothOptimizers/Krylov.jl/workflows/CI/badge.svg?branch=main
-[build-gh-url]: https://github.com/JuliaSmoothOptimizers/Krylov.jl/actions
-[codecov-img]: https://codecov.io/gh/JuliaSmoothOptimizers/Krylov.jl/branch/main/graph/badge.svg
-[codecov-url]: https://app.codecov.io/gh/JuliaSmoothOptimizers/Krylov.jl
+[docs-dev-url]: https://JuliaSmoothOptimizers.github.io/CUTEst.jl/dev
+[build-gh-img]: https://github.com/JuliaSmoothOptimizers/CUTEst.jl/workflows/CI/badge.svg?branch=main
+[build-gh-url]: https://github.com/JuliaSmoothOptimizers/CUTEst.jl/actions
+[codecov-img]: https://codecov.io/gh/JuliaSmoothOptimizers/CUTEst.jl/branch/main/graph/badge.svg
+[codecov-url]: https://app.codecov.io/gh/JuliaSmoothOptimizers/CUTEst.jl
 [doi-img]: https://zenodo.org/badge/30661559.svg
 [doi-url]: https://zenodo.org/badge/latestdoi/30661559
 [downloads-img]: https://img.shields.io/badge/dynamic/json?url=http%3A%2F%2Fjuliapkgstats.com%2Fapi%2Fv1%2Fmonthly_downloads%2FCUTEst&query=total_requests&suffix=%2Fmonth&label=Downloads
