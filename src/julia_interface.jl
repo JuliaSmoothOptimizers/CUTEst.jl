@@ -751,12 +751,15 @@ end
 
 function NLPModels.jth_hess_coord!(
   nlp::CUTEstModel{T},
-  x::AbstractVector,
+  x::StrideOneVector{T},
   j::Integer,
-  vals::AbstractVector,
+  vals::StrideOneVector{T},
 ) where {T}
+  increment!(nlp, :neval_jhess)
+  @rangecheck 1 nlp.meta.ncon j
   ref_j = nlp.index
   ref_j[] = j
+  nnzh_output = Ref{Cint}()
   cish(
     T,
     nlp.libsif,
@@ -764,11 +767,11 @@ function NLPModels.jth_hess_coord!(
     nlp.nvar,
     x,
     ref_j,
-    nlp.nnzh,
+    nnzh_output,
     nlp.nnzh,
     vals,
-    nlp.hrows,
     nlp.hcols,
+    nlp.hrows,
   )
   return vals
 end
