@@ -1,15 +1,19 @@
 function multiple_precision()
   @testset "Test multiple precision models" begin
-    for (T, precision) in [(Float32, :single), (Float64, :double)]
+    for T in (Float32, Float64, Float128)
       for p in ["ROSENBR", "HS35", "ALLINITA"]
-        nlp = CUTEstModel(p, precision = precision)
+        nlp = CUTEstModel{T}(p)
         x = T.(nlp.meta.x0)
         fx = obj(nlp, x)
-        @test typeof(obj(nlp, x)) == T
-        @test eltype(grad(nlp, x)) == T
-        @test eltype(hess(nlp, x)) == T
-        @test eltype(cons(nlp, x)) == T
-        @test eltype(jac(nlp, x)) == T
+        gx = grad(nlp, x)
+        Hx = hess(nlp, x)
+        cx = cons(nlp, x)
+        Jx = jac(nlp, x)
+        @test typeof(fx) == T
+        @test eltype(gx) == T
+        @test eltype(Hx) == T
+        @test eltype(cx) == T
+        @test eltype(Jx) == T
         finalize(nlp)
       end
     end
