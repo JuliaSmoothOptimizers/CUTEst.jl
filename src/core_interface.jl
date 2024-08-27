@@ -3198,3 +3198,17 @@ for (cutest_cconst, T) in
     end
   end
 end
+
+"""
+    ccf(T, libsif, status, n, m, x, c)
+"""
+function ccf end
+
+for (cutest_ccf, T) in
+    ((:cutest_ccf_s_, :Float32), (:cutest_ccf_, :Float64), (:cutest_ccf_q_, :Float128))
+  @eval begin
+    function ccf(::Type{$T}, libsif::Ptr{Cvoid}, status, n, m, x, c)
+      $cutest_ccf(libsif, status, n, m, x, c)
+    end
+  end
+end

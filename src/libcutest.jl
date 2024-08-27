@@ -243,6 +243,12 @@ function cutest_cint_cofsg_(libsif, status, n, x, f, nnzg, lg, sg, ivsg, grad)
                                  grad::Ptr{Bool})::Cvoid
 end
 
+function cutest_ccf_(libsif, status, n, m, x, c)
+  ptr_cutest_ccf_ = Libdl.dlsym(libsif, :cutest_ccf_)
+  @ccall $ptr_cutest_ccf_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Float64},
+                          c::Ptr{Float64})::Cvoid
+end
+
 function cutest_cint_ccfg_(libsif, status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
   ptr_cutest_cint_ccfg_ = Libdl.dlsym(libsif, :cutest_cint_ccfg_)
   @ccall $ptr_cutest_cint_ccfg_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Float64},
@@ -783,6 +789,12 @@ function cutest_cint_cofsg_s_(libsif, status, n, x, f, nnzg, lg, sg, ivsg, grad)
   @ccall $ptr_cutest_cint_cofsg_s_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Float32},
                                    f::Ptr{Float32}, nnzg::Ptr{Cint}, lg::Ptr{Cint},
                                    sg::Ptr{Float32}, ivsg::Ptr{Cint}, grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_ccf_s_(libsif, status, n, m, x, c)
+  ptr_cutest_ccf_s_ = Libdl.dlsym(libsif, :cutest_ccf_s_)
+  @ccall $ptr_cutest_ccf_s_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Float32},
+                            c::Ptr{Float32})::Cvoid
 end
 
 function cutest_cint_ccfg_s_(libsif, status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
@@ -1329,6 +1341,12 @@ function cutest_cint_cofsg_q_(libsif, status, n, x, f, nnzg, lg, sg, ivsg, grad)
   @ccall $ptr_cutest_cint_cofsg_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Float128},
                                    f::Ptr{Float128}, nnzg::Ptr{Cint}, lg::Ptr{Cint},
                                    sg::Ptr{Float128}, ivsg::Ptr{Cint}, grad::Ptr{Bool})::Cvoid
+end
+
+function cutest_ccf_q_(libsif, status, n, m, x, c)
+  ptr_cutest_ccf_q_ = Libdl.dlsym(libsif, :cutest_ccf_q_)
+  @ccall $ptr_cutest_ccf_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, x::Ptr{Float128},
+                            c::Ptr{Float128})::Cvoid
 end
 
 function cutest_cint_ccfg_q_(libsif, status, n, m, x, c, jtrans, lcjac1, lcjac2, cjac, grad)
