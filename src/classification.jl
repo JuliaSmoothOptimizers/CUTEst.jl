@@ -132,7 +132,7 @@ function select(;
 
   data = JSON.parsefile(joinpath(dirname(@__FILE__), "classf.json"))
   problems = keys(data)
-  selection = Array{String, 1}()
+  selection = Vector{String}()
   for p in problems
     pv = data[p]["variables"]
     pc = data[p]["constraints"]

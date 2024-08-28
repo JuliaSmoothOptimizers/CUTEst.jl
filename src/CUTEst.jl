@@ -7,9 +7,13 @@ using Pkg.Artifacts
 using Libdl
 using Quadmath
 using NLPModels
-import Libdl.dlsym
 
-export CUTEstModel, sifdecoder, build_libsif, set_mastsif
+import Libdl.dlsym
+import REPL.TerminalMenus
+import Base.format_bytes
+import Printf.@sprintf
+
+export CUTEstModel, sifdecoder, build_libsif, set_mastsif, clear_libsif, manage_libsif
 
 const cutest_false = Ref{Bool}(false)
 const cutest_true = Ref{Bool}(true)
@@ -28,9 +32,9 @@ function __init__()
   if !haskey(ENV, "MASTSIF")
     set_mastsif()
   else
-    @info "call set_mastsif() to use the full SIF collection"
+    @info "Using local problem directory: $(ENV["MASTSIF"])"
+    @info "Call set_mastsif() if you want to use the full SIF collection."
   end
-  @info "using problem repository" ENV["MASTSIF"]
 
   global libpath = joinpath(CUTEst_jll.artifact_dir, "lib")
   push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
