@@ -1,10 +1,10 @@
 [sifcollection]
-git-tree-sha1 = "86aa6af9586c1b3d172420975f226838f45b8f11"
+git-tree-sha1 = "447005f21c5764d18f6ace9915318fb802f6c548"
 lazy = true
 
     [[sifcollection.download]]
-    url = "https://bitbucket.org/optrove/sif/get/9c590588cccadddeb887513e3fe6bb6dde95ee6e.tar.gz"
-    sha256 = "efaa035c44cba82259c0baf4f30a364aa6cb094c93a5afcf42a497f1f9743e91"
+    url = "https://bitbucket.org/optrove/sif/get/0b335a4b1a3c779ac121f272d6381e7621979d62.tar.gz"
+    sha256 = "22fa46dece0c2d1d00ad1816accb7427b9c9e33f40e140cd3869b43f4de4bf19"
 
 [maros-meszaros]
 git-tree-sha1 = "0eff5ae5b345db85386f55f672a19c90f23257b2"
