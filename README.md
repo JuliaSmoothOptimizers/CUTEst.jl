@@ -3,7 +3,7 @@
 This package provides an interface to CUTEst, a repository of
 constrained and unconstrained nonlinear programming problems for testing and
 comparing optimization algorithms, derived from the abstract model on
-[NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
+[NLPModels.jl](https://github.com/JuliaSmoothOptimizers/NLPModels.jl).
 
 ### Stable release [![Github release](https://img.shields.io/github/release/JuliaSmoothOptimizers/CUTEst.jl.svg)](https://github.com/JuliaSmoothOptimizers/CUTEst.jl/releases/latest) [![DOI][doi-img]][doi-url]
 
@@ -78,6 +78,14 @@ using CUTEst, Quadmath
 
 nlp_single = CUTEstModel{Float32}("BYRDSPHR")
 nlp_quadruple = CUTEstModel{Float128}("BYRDSPHR")
+```
+
+To retrieve the list of available SIF problems, use the function `list_sif_problems`:
+
+```julia
+using CUTEst
+
+available_problems = list_sif_problems()
 ```
 
 ## Tutorial
