@@ -13,10 +13,9 @@ makedocs(
   sitename = "CUTEst.jl",
   pages = [
     "Home" => "index.md",
-    "Tutorial" => "tutorial.md",
-    "CUTEstModel" => "model.md",
-    "SIF decoder" => "sifdecoder.md",
-    "Core" => "core.md",
+    "Overview of CUTEst.jl and CUTEstModel" => "model.md",
+    "Managing SIF files" => "sifdecoder.md",
+    "Using CUTEst core functions" => "core.md",
     "Reference" => "reference.md",
   ],
 )

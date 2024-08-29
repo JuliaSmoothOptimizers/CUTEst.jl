@@ -54,6 +54,7 @@ Finalize the current model by calling `finalize(nlp)` to avoid conflicts.
 
 ```julia
 using CUTEst
+
 # Create a CUTEstModel with the name "CHAIN" and a parameter adjustment
 nlp = CUTEstModel("CHAIN", "-param", "NH=50")
 display(nlp)

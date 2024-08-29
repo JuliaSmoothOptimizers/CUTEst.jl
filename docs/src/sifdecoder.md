@@ -1,6 +1,6 @@
 `CUTEst.jl` relies on SIF files to create a `CUTEstModel`.
 Three sets of SIF files are available on [Bitbucket](https://bitbucket.org/optrove/workspace/repositories/).
-We can easily switch between these sets using the `set_mastsif` function.
+We can easily switch between these sets using the function `set_mastsif`.
 
 ```@docs
 set_mastsif
@@ -8,6 +8,12 @@ set_mastsif
 
 !!! note
     If the environment variable `MASTSIF` is not set, `using CUTEst` will automatically load the set `"sifcollection"`.
+
+To have the list of SIF problems available in the current set, use the function `list_sif_problems`.
+
+```@docs
+list_sif_problems
+```
 
 Given a problem `name` in the defined set, we need to decode the SIF files, which will generate corresponding Fortran files.
 
@@ -30,6 +36,6 @@ The path to this folder is available via `CUTEst.libsif_path`.
 We provide two functions to delete these files:
 
 ```@docs
-clear_libsif
 manage_libsif
+clear_libsif
 ```

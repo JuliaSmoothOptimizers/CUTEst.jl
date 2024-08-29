@@ -13,7 +13,7 @@ import REPL.TerminalMenus
 import Base.format_bytes
 import Printf.@sprintf
 
-export CUTEstModel, sifdecoder, build_libsif, set_mastsif, clear_libsif, manage_libsif
+export CUTEstModel, sifdecoder, build_libsif, set_mastsif, clear_libsif, manage_libsif, list_sif_problems
 
 const cutest_false = Ref{Bool}(false)
 const cutest_true = Ref{Bool}(true)
