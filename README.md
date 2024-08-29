@@ -37,7 +37,7 @@ If you use CUTEst.jl in your work, please cite using the format given in [CITATI
 
 This package will automatically install the CUTEst binaries for your platform.
 The `gfortran` compiler is required to compile decoded SIF problems.
-Users on all platforms except Windows must install it to use CUTEst.jl.
+Users on all platforms except Windows must install it to use `CUTEst.jl`.
 For Windows users, a small artifact containing `gfortran.exe` is installed automatically.
 No other Fortran compiler is supported.
 
@@ -49,9 +49,8 @@ pkg> add CUTEst
 
 ## Usage
 
-After installation, you can create instances of
-[NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl) models using
-the `CUTEstModel` constructor:
+After installation, you can create instances of [NLPModels](https://github.com/JuliaSmoothOptimizers/NLPModels.jl)
+models using the `CUTEstModel` constructor:
 
 ```julia
 using CUTEst
@@ -81,21 +80,9 @@ nlp_single = CUTEstModel{Float32}("BYRDSPHR")
 nlp_quadruple = CUTEstModel{Float128}("BYRDSPHR")
 ```
 
-## SIF problems
+## Tutorial
 
-A large collection of SIF files can be found [here](https://bitbucket.org/optrove/workspace/repositories/).
-If the environment variable `MASTSIF` is not set, `CUTEst.jl` will automatically download the CUTEst
-NLP test set the first time you invoke `using CUTEst`.
-Thanks to the function `set_mastsif`, you can easily switch to the Maros-Meszaros QP test set
-or the Netlib LP test set.
-
-```julia
-set_mastsif("sifcollection")  # default set
-set_mastsif("maros-meszaros")
-set_mastsif("netlib-lp")
-```
-
-The constructor `CUTEstModel{Float64}(name)` will try to find the SIF file associated with the problem `name` in the current set.
+You can check an [Introduction to CUTEst.jl](https://jso.dev/tutorials/introduction-to-cutest/) on our [site](https://jso.dev/).
 
 ## Related Packages
 

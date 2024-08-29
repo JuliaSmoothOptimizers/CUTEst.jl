@@ -121,16 +121,16 @@ function CUTEstModel(
   funit = rand(1000:10000) |> Ref{Cint}
   status = Ref{Cint}(0)
 
-  cd(cutest_problems_path) do
+  cd(libsif_path) do
+    libsif_name = "lib$(pname)_$(precision)"
     if !decode
       isfile(outsdif) || error("CUTEst: no decoded problem found")
-      libsif_name = "lib$(pname)_$(precision)"
       isfile("$(libsif_name).$dlext") || error("CUTEst: lib not found; decode problem first")
-      libsif = Libdl.dlopen(libsif_name, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     else
       sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = precision)
-      libsif = build_libsif(path_sifname, precision = precision)
+      build_libsif(path_sifname, precision = precision)
     end
+    libsif = Libdl.dlopen(libsif_name, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     fopen(T, libsif, funit, outsdif, status)
     cutest_error(status[])
   end

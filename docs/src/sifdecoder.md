@@ -1,0 +1,35 @@
+`CUTEst.jl` relies on SIF files to create a `CUTEstModel`.
+Three sets of SIF files are available on [Bitbucket](https://bitbucket.org/optrove/workspace/repositories/).
+We can easily switch between these sets using the `set_mastsif` function.
+
+```@docs
+set_mastsif
+```
+
+!!! note
+    If the environment variable `MASTSIF` is not set, `using CUTEst` will automatically load the set `"sifcollection"`.
+
+Given a problem `name` in the defined set, we need to decode the SIF files, which will generate corresponding Fortran files.
+
+```@docs
+sifdecoder
+```
+
+Next, we need to compile these Fortran files and create a shared library linked with a CUTEst library for a given precision (single, double, or quadruple).
+The CUTEst library provides generic routines to evaluate objectives, constraints, gradients, Jacobians, Hessians, etc.
+
+```@docs
+build_libsif
+```
+
+!!! note
+    When creating a `CUTEstModel`, the functions `sifdecoder` and `build_libsif` are called automatically.
+
+These additional files are generated in the `deps/files` folder at the root of the `CUTEst.jl` installation directory.
+The path to this folder is available via `CUTEst.libsif_path`.
+We provide two functions to delete these files:
+
+```@docs
+clear_libsif
+manage_libsif
+```
