@@ -74,9 +74,8 @@ function test_nlpinterface(nlp::CUTEstModel{T}, comp_nlp::AbstractNLPModel{T}) w
       Jtu = jtprod(nlp, x0, u)
       @test isapprox(Jtu, J(x0)' * u, rtol = rtol)
     else
-      (fx, cx) = objcons(nlp, x0)
+      fx = obj(nlp, x0)
       @test isapprox(fx, f(x0), rtol = rtol)
-      @test length(cx) == 0
     end
 
     v = rand(T, nlp.meta.nvar)

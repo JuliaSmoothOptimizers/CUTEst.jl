@@ -55,11 +55,11 @@ function NLPModels.objcons!(
   @lencheck nlp.meta.ncon c
   if nlp.meta.ncon > 0
     cfn(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, nlp.f, c)
-    increment!(nlp, :neval_cons)
   else
     ufn(T, nlp.libsif, nlp.status, nlp.nvar, x, nlp.f)
   end
   increment!(nlp, :neval_obj)
+  increment!(nlp, :neval_cons)
   cutest_error(nlp.status[])
 
   return nlp.f[], c
