@@ -133,7 +133,18 @@ function build_libsif(
   cd(libsif_folder) do
     if isfile("ELFUN$suffix.f")
       object_files = String[]
-      for file in ("ELFUN", "GROUP", "RANGE", "ELFUNF", "ELFUND", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
+      for file in (
+        "ELFUN",
+        "GROUP",
+        "RANGE",
+        "ELFUNF",
+        "ELFUND",
+        "GROUPF",
+        "GROUPD",
+        "SETTYP",
+        "EXTER",
+        "EXTERA",
+      )
         if isfile("$file$suffix.f")
           @static if Sys.iswindows()
             mingw = Int == Int64 ? "mingw64" : "mingw32"
