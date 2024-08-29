@@ -20,6 +20,26 @@ function set_mastsif(set::String = "sifcollection")
   return nothing
 end
 
+"""
+    problems = list_sif_problems()
+
+# Output
+- `problems::Vector{String}`: A list of SIF problems (without the extension `.SIF`) available in the current set.
+
+See [`set_mastsif`](@ref) for more details about how to change the set of SIF files.
+"""
+function list_sif_problems()
+  problems = String[]
+  files = readdir(ENV["MASTSIF"])
+  for file in files
+    name, ext = splitext(file)
+    if ext == ".SIF"
+      push!(problems, name)
+    end
+  end
+  return problems
+end
+
 function _name_outsdif(name::String, precision::Symbol)
   sifname, extension = basename(name) |> splitext
   name = "OUTSDIF_$(sifname)_$(precision).d"

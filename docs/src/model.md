@@ -4,3 +4,5 @@ The main goal of `CUTEst.jl` is to create a `CUTEstModel`, which rely on the
 ```@docs
 CUTEstModel
 ```
+
+You can check an [Introduction to CUTEst.jl](https://jso.dev/tutorials/introduction-to-cutest/) on our [site](https://jso.dev/).

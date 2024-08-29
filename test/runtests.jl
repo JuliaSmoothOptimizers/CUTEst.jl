@@ -105,7 +105,10 @@ finalize(nlp)
   end
 end
 
-# test set_mastsif
-for set in ("sifcollection", "maros-meszaros", "netlib-lp")
-  set_mastsif(set)
+@testset "set_mastsif / list_sif_problems" begin
+  for (set, nsif) in [("sifcollection", 1539), ("maros-meszaros", 138), ("netlib-lp", 114)]
+    set_mastsif(set)
+    sif_problems = list_sif_problems()
+    @test length(sif_problems) == nsif
+  end
 end
