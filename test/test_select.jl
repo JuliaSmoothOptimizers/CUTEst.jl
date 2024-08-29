@@ -23,49 +23,49 @@ ENV["MASTSIF"] = mastsif_backup
 @testset "CUTEst selection tool" begin
   problems = filter(x -> occursin(r"SIF$", x), readdir(mastsif))
   np = length(problems)
-  @test np == length(CUTEst.select())
+  @test np == (select_sif_problems() |> length)
   @testset "Variables" begin
-    selection = CUTEst.select(max_var = 10)
+    selection = select_sif_problems(max_var = 10)
     n = length(selection)
     @test small_problem in selection
     @test !(large_problem in selection)
-    selection = CUTEst.select(min_var = 11)
+    selection = select_sif_problems(min_var = 11)
     @test !(small_problem in selection)
     @test large_problem in selection
     @test np == n + length(selection)
-    selection = CUTEst.select(only_free_var = true)
+    selection = select_sif_problems(only_free_var = true)
     @test free_problem in selection
     @test !(bnd_problem in selection)
-    selection = CUTEst.select(only_bnd_var = true)
+    selection = select_sif_problems(only_bnd_var = true)
     @test !(free_problem in selection)
     @test bnd_problem in selection
   end
 
   @testset "Constraints" begin
-    selection = CUTEst.select(max_con = 0)
+    selection = select_sif_problems(max_con = 0)
     n = length(selection)
     @test unc_problem in selection
     @test !(con_problem in selection)
     @test !(equ_problem in selection)
     @test !(ineq_problem in selection)
-    selection = CUTEst.select(min_con = 1)
+    selection = select_sif_problems(min_con = 1)
     @test !(unc_problem in selection)
     @test con_problem in selection
     @test equ_problem in selection
     @test ineq_problem in selection
     @test np == n + length(selection)
 
-    selection = CUTEst.select(only_equ_con = true)
+    selection = select_sif_problems(only_equ_con = true)
     @test equ_problem in selection
     @test !(ineq_problem in selection)
-    selection = CUTEst.select(only_ineq_con = true)
+    selection = select_sif_problems(only_ineq_con = true)
     @test !(equ_problem in selection)
     @test ineq_problem in selection
 
-    selection = CUTEst.select(only_linear_con = true)
+    selection = select_sif_problems(only_linear_con = true)
     @test lin_problem in selection
     @test !(nln_problem in selection)
-    selection = CUTEst.select(only_nonlinear_con = true)
+    selection = select_sif_problems(only_nonlinear_con = true)
     @test !(lin_problem in selection)
     @test nln_problem in selection
   end
@@ -74,21 +74,21 @@ ENV["MASTSIF"] = mastsif_backup
     n = length(CUTEst.objtypes)
     npi = 0
     for i = 1:n
-      selection = CUTEst.select(objtype = i)
+      selection = select_sif_problems(objtype = i)
       npi += length(selection)
       @test objtypes_problems[i] in selection
       for j in setdiff(1:n, i)
         @test !(objtypes_problems[j] in selection)
       end
-      selection_alt = CUTEst.select(objtype = CUTEst.objtypes[i])
+      selection_alt = select_sif_problems(objtype = CUTEst.objtypes[i])
       @test sort(selection_alt) == sort(selection)
-      selection_alt = CUTEst.select(objtype = Symbol(CUTEst.objtypes[i]))
+      selection_alt = select_sif_problems(objtype = Symbol(CUTEst.objtypes[i]))
       @test sort(selection_alt) == sort(selection)
     end
     @test npi == np
     for i = 1:(n - 1)
       for subset in combinations(1:n, i)
-        selection = CUTEst.select(objtype = subset)
+        selection = select_sif_problems(objtype = subset)
         for j in subset
           @test objtypes_problems[j] in selection
         end
@@ -103,21 +103,21 @@ ENV["MASTSIF"] = mastsif_backup
     n = length(CUTEst.contypes)
     npi = 0
     for i = 1:n
-      selection = CUTEst.select(contype = i)
+      selection = select_sif_problems(contype = i)
       npi += length(selection)
       @test contypes_problems[i] in selection
       for j in setdiff(1:n, i)
         @test !(contypes_problems[j] in selection)
       end
-      selection_alt = CUTEst.select(contype = CUTEst.contypes[i])
+      selection_alt = select_sif_problems(contype = CUTEst.contypes[i])
       @test sort(selection_alt) == sort(selection)
-      selection_alt = CUTEst.select(contype = Symbol(CUTEst.contypes[i]))
+      selection_alt = select_sif_problems(contype = Symbol(CUTEst.contypes[i]))
       @test sort(selection_alt) == sort(selection)
     end
     @test npi == np
     for i = 1:(n - 1)
       for subset in combinations(1:n, i)
-        selection = CUTEst.select(contype = subset)
+        selection = select_sif_problems(contype = subset)
         for j in subset
           @test contypes_problems[j] in selection
         end
@@ -130,22 +130,22 @@ ENV["MASTSIF"] = mastsif_backup
 
   #=
   @testset "Consistency" begin
-    set1 = CUTEst.select(contype=["unc"])
-    set2 = CUTEst.select(max_con=0, only_free_var=true)
+    set1 = select_sif_problems(contype=["unc"])
+    set2 = select_sif_problems(max_con=0, only_free_var=true)
     @test sort(set1) == sort(set2)
 
-    set1 = CUTEst.select(contype=["fixed_vars"])
-    set2 = CUTEst.select(max_con=0, custom_filter=x ->(
+    set1 = select_sif_problems(contype=["fixed_vars"])
+    set2 = select_sif_problems(max_con=0, custom_filter=x ->(
       x["variables"]["fixed"] > 0) && (x["variables"]["fixed"] +
       x["variables"]["free"] == x["variables"]["number"]))
     @test sort(set1) == sort(set2)
 
-    set1 = CUTEst.select(contype=["unc", "fixed_vars", "bounds"])
-    set2 = CUTEst.select(max_con=0)
+    set1 = select_sif_problems(contype=["unc", "fixed_vars", "bounds"])
+    set2 = select_sif_problems(max_con=0)
     @test sort(set1) == sort(set2)
 
-    set1 = CUTEst.select(contype=["linear"])
-    set2 = CUTEst.select(min_con=1, only_linear_con=true)
+    set1 = select_sif_problems(contype=["linear"])
+    set2 = select_sif_problems(min_con=1, only_linear_con=true)
     println("Mastsif says L, but decoding gives otherwise")
     println(setdiff(set1, set2))
     println("Decoding gives linear, but Mastsif disagrees")
@@ -155,7 +155,7 @@ ENV["MASTSIF"] = mastsif_backup
   =#
 
   @testset "Canonicalization" begin
-    set1 = CUTEst.select(objtype = 1:4)
+    set1 = select_sif_problems(objtype = 1:4)
     @test !(isempty(set1))
   end
 end

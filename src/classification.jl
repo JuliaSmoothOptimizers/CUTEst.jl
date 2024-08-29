@@ -27,10 +27,8 @@ const classdb_contype = Dict(
 const origins = ["academic", "modelling", "real"]
 const classdb_origin = Dict("A" => origins[1], "M" => origins[2], "R" => origins[3])
 
-include("create_class.jl")
-
 """
-    select(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
+    select_sif_problems(;min_var=1, max_var=Inf, min_con=0, max_con=Inf,
             objtype=*, contype=*,
             only_free_var=false, only_bnd_var=false,
             only_linear_con=false, only_nonlinear_con=false,
@@ -68,39 +66,48 @@ It can be a number, a symbol, a string, or an array of those.
     6, :quadratic or "quadratic" means the constraints are quadratic;
     7, :other or "other" means the constraints are more general.
 
-- `custom_filter` is a function to be applied to the problem data, which is a
-  dict with the following fields:
+- `custom_filter`: A function to apply additional filtering to the problem data. This data is provided as a dictionary with the following fields:
 
-    "objtype"           - String    one of the above objective function types
-    "contype"           - String    one of the above constraint types
-    "regular"           - Bool      whether the problem is regular or not
-    "derivative_order"  - Int       order of the highest derivative available
-    "origin"            - String    origin of the problem: "academic", "modelling" or "real"
-    "has_interval_var"  - Bool      whether it has interval variables
-    "variables"         - Dict with the following fields
-      "can_choose"      - Bool      whether you can change the number of variables via parameters
-      "number"          - Int       the number of variables (if `can_choose`, the default)
-      "fixed"           - Int       the number of fixed variables
-      "free"            - Int       the number of free variables
-      "bounded_below"   - Int       the number of variables bounded only from below
-      "bounded_above"   - Int       the number of variables bounded only from above
-      "bounded_both"    - Int       the number of variables bounded from below and above
-    "constraints"       - Dict with the following fields
-      "can_choose"      - Bool      whether you can change the number of constraints via parameters
-      "number"          - Int       the number of constraints (if `can_choose`, the default)
-      "equality"        - Int       the number of equality constraints
-      "ineq_below"      - Int       the number of inequalities of the form c(x) ≧ cl
-      "ineq_above"      - Int       the number of inequalities of the form c(x) ≦ cu
-      "ineq_both"       - Int       the number of inequalities of the form cl ≦ c(x) ≦ cu
-      "linear"          - Int       the number of linear constraints
-      "nonlinear"       - Int       the number of nonlinear constraints
+    - `"objtype"`: String representing the objective function type. It can be one of the following:
+      - `"none"`, `"constant"`, `"linear"`, `"quadratic"`, `"sum_of_squares"`, `"other"`
 
-For instance, if you'd like to choose only problems with fixed number of
-  variables, you can pass
+    - `"contype"`: String representing the constraint type. It can be one of the following:
+      - `"unc"`, `"fixed_vars"`, `"bounds"`, `"network"`, `"linear"`, `"quadratic"`, `"other"`
 
-    custom_filter=x->x["variables"]["can_choose"]==false
+    - `"regular"`: Boolean indicating whether the problem is regular or not.
+
+    - `"derivative_order"`: Integer representing the order of the highest derivative available.
+
+    - `"origin"`: String indicating the origin of the problem. Possible values are `"academic"`, `"modelling"`, or `"real"`.
+
+    - `"has_interval_var"`: Boolean indicating whether the problem includes interval variables.
+
+    - `"variables"`: Dictionary with fields related to variables:
+      - `"can_choose"`: Boolean indicating whether you can change the number of variables via parameters.
+      - `"number"`: Integer representing the number of variables (default if `"can_choose"` is true).
+      - `"fixed"`: Integer representing the number of fixed variables.
+      - `"free"`: Integer representing the number of free variables.
+      - `"bounded_below"`: Integer representing the number of variables bounded only from below.
+      - `"bounded_above"`: Integer representing the number of variables bounded only from above.
+      - `"bounded_both"`: Integer representing the number of variables bounded from both below and above.
+
+    - `"constraints"`: Dictionary with fields related to constraints:
+      - `"can_choose"`: Boolean indicating whether you can change the number of constraints via parameters.
+      - `"number"`: Integer representing the number of constraints (default if `"can_choose"` is true).
+      - `"equality"`: Integer representing the number of equality constraints.
+      - `"ineq_below"`: Integer representing the number of inequalities of the form `c(x) ≥ cl`.
+      - `"ineq_above"`: Integer representing the number of inequalities of the form `c(x) ≤ cu`.
+      - `"ineq_both"`: Integer representing the number of inequalities of the form `cl ≤ c(x) ≤ cu`.
+      - `"linear"`: Integer representing the number of linear constraints.
+      - `"nonlinear"`: Integer representing the number of nonlinear constraints.
+
+For instance, if you'd like to choose only problems with fixed number of variables, you can pass
+
+```julia
+custom_filter = x -> x["variables"]["can_choose"] == false
+```
 """
-function select(;
+function select_sif_problems(;
   min_var = 1,
   max_var = Inf,
   min_con = 0,
@@ -164,3 +171,64 @@ canonicalize_ftype(reqtype::AbstractVector{T}, allowedtypes) where {T <: Integer
   allowedtypes[reqtype]
 canonicalize_ftype(reqtype::AbstractVector{Symbol}, allowedtypes) = map(string, reqtype)
 canonicalize_ftype(reqtype, allowedtypes) = reqtype
+
+# Keep an unexported function `select` to not break the tutorial
+select(; kwargs...) = select_sif_problems(; kwargs...)
+
+"""
+    build_classification()
+
+Creates the file `classf.json`, running each problem in `CLASSF.DB` and extracting the necessary information.
+It should be left alone, unless you think it is not updated.
+If you do, please open an issue.
+"""
+function build_classification()
+  classdb = open(readlines, joinpath(ENV["MASTSIF"], "CLASSF.DB"))
+  problems = OrderedDict()
+  nlp = 0
+  for line in classdb
+    sline = split(line)
+    p = String(sline[1])
+    cl = split(sline[2], "")
+
+    print("Problem $p... ")
+    try
+      nlp = CUTEstModel(p)
+      problems[p] = Dict(
+        :objtype => classdb_objtype[cl[1]],
+        :contype => classdb_contype[cl[2]],
+        :regular => cl[3] == "R",
+        :derivative_order => Int(cl[4][1] - '0'),
+        :origin => classdb_origin[cl[6]],
+        :has_internal_var => cl[7] == "Y",
+        :variables => Dict(
+          :can_choose => sline[3][1] == "V",
+          :number => nlp.meta.nvar,
+          :fixed => length(nlp.meta.ifix),
+          :free => length(nlp.meta.ifree),
+          :bounded_below => length(nlp.meta.ilow),
+          :bounded_above => length(nlp.meta.iupp),
+          :bounded_both => length(nlp.meta.irng),
+        ),
+        :constraints => Dict(
+          :can_choose => sline[4][1] == "V",
+          :number => nlp.meta.ncon,
+          :equality => length(nlp.meta.jfix),
+          :ineq_below => length(nlp.meta.jlow),
+          :ineq_above => length(nlp.meta.jupp),
+          :ineq_both => length(nlp.meta.jrng),
+          :linear => nlp.meta.nlin,
+          :nonlinear => nlp.meta.nnln,
+        ),
+      )
+      println("done")
+    catch ex
+      println("errored: $ex")
+    finally
+      finalize(nlp)
+    end
+  end
+  open(joinpath(dirname(@__FILE__), "classf.json"), "w") do jsonfile
+    JSON.print(jsonfile, problems, 2)
+  end
+end

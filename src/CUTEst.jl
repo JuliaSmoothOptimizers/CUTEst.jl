@@ -7,13 +7,15 @@ using Pkg.Artifacts
 using Libdl
 using Quadmath
 using NLPModels
+using JSON
 
 import Libdl.dlsym
 import REPL.TerminalMenus
 import Base.format_bytes
 import Printf.@sprintf
+import DataStructures: OrderedDict
 
-export CUTEstModel, sifdecoder, build_libsif, set_mastsif, clear_libsif, manage_libsif, list_sif_problems
+export CUTEstModel, sifdecoder, build_libsif, set_mastsif, clear_libsif, manage_libsif, list_sif_problems, select_sif_problems
 
 const cutest_false = Ref{Bool}(false)
 const cutest_true = Ref{Bool}(true)
