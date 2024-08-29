@@ -17,8 +17,8 @@ export CUTEstModel, sifdecoder, build_libsif, set_mastsif, clear_libsif, manage_
 
 const cutest_false = Ref{Bool}(false)
 const cutest_true = Ref{Bool}(true)
-const cutest_problems_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
-isdir(cutest_problems_path) || mkpath(cutest_problems_path)
+const libsif_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
+isdir(libsif_path) || mkpath(libsif_path)
 
 function __init__()
   if !Sys.iswindows()
@@ -37,7 +37,7 @@ function __init__()
   end
 
   global libpath = joinpath(CUTEst_jll.artifact_dir, "lib")
-  push!(Libdl.DL_LOAD_PATH, cutest_problems_path)
+  push!(Libdl.DL_LOAD_PATH, libsif_path)
 end
 
 # to allow view inputs with stride one

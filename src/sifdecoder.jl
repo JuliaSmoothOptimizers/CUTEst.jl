@@ -1,12 +1,11 @@
 """
     set_mastsif(set::String="sifcollection")
 
-Set the MASTSIF environment variable to point to a set of SIF problems.
+Set the environment variable `MASTSIF` to point to a set of SIF problems.
 The supported sets are:
-- "sifcollection": the CUTEst NLP test set;
-- "maros-meszaros": the Maros-Meszaros QP test set;
-- "netlib-lp": the Netlib LP test set.
-
+- `"sifcollection"`: the CUTEst NLP test set;
+- `"maros-meszaros"`: the Maros-Meszaros QP test set;
+- `"netlib-lp"`: the Netlib LP test set.
 """
 function set_mastsif(set::String = "sifcollection")
   if set == "sifcollection"
@@ -21,25 +20,39 @@ function set_mastsif(set::String = "sifcollection")
   return nothing
 end
 
-_name_outsdif(name::AbstractString, precision::Symbol) = "OUTSDIF_$(basename(name))_$(precision).d"
+function _name_outsdif(name::String, precision::Symbol)
+  sifname, extension = basename(name) |> splitext
+  name = "OUTSDIF_$(sifname)_$(precision).d"
+  return name
+end
 
 """
-    sifdecoder(name, args...; verbose, precision, outsdif, libsif_folder)
+    sifdecoder(name::String, args...; verbose::Bool=false, precision::Symbol=:double,
+               outsdif::String=_name_outsdif(name, precision), libsif_folder=libsif_path)
 
-Decode a SIF problem.
-Optional arguments are passed directly to the SIF decoder.
-`precision` can be `:single`, `:double` (default) or `:quadruple`.
+Decodes a SIF problem, converting it into a format suitable for further processing.
 
-Example:
-    sifdecoder("DIXMAANJ", "-param", "M=30"; precision=:double)
+# Arguments
+- `name::String`: The path or name of the SIF problem, with or without the extension `.SIF`.
+- `args...`: Additional arguments passed directly to the SIF decoder. Relevant for problems with variable sizes.
+- `verbose::Bool`: If `true`, enables verbose output during the decoding process. Defaults to `false`.
+- `precision::Symbol`: The desired precision for the problem. Can be `:single`, `:double` (default), or `:quadruple`.
+- `outsdif::String`: The name of the file `OUTSDIF.d` required for automatic differentiation. Defaults to `"OUTSDIF_sifname_precision.d"`, where `sifname` and `precision` are replaced with the problem name and chosen precision.
+- `libsif_folder::String`: The directory where the generated files (*.f and *.d) will be stored. Defaults to `libsif_path`.
+
+```julia
+sifdecoder("HS1.SIF", precision=:single)
+sifdecoder("DIXMAANJ", "-param", "M=30"; precision=:double, verbose=true)
+sifdecoder("/home/alexis/CUTEst/BROWNDEN.SIF", precision=:quadruple)
+```
 """
 function sifdecoder(
-  name::AbstractString,
+  name::String,
   args...;
   verbose::Bool = false,
   precision::Symbol = :double,
   outsdif::String = _name_outsdif(name, precision),
-  libsif_folder::String = cutest_problems_path,
+  libsif_folder::String = libsif_path,
 )
   if precision == :single
     prec = "-sp"
@@ -93,22 +106,29 @@ function sifdecoder(
   end
   rm(outlog)
   rm(errlog)
-  nothing
+  return nothing
 end
 
 """
-    build_libsif(name; precision, libsif_folder)
+    build_libsif(name::String; precision::Symbol=:double, libsif_folder::String=libsif_path)
 
-Build a shared library from a decoded SIF problem.
-`precision` can be `:single`, `:double` (default) or `:quadruple`.
+Builds a shared library from a decoded SIF problem.
 
-Example:
-    `build_libsif("DIXMAANJ", precision=:double)`.
+# Arguments
+- `name::String`: The path or name of the SIF problem, with or without the extension `.SIF`.
+- `precision::Symbol`: The desired precision of the problem. Can be `:single`, `:double` (default), or `:quadruple`.
+- `libsif_folder::String`: The directory where the compiled library will be stored. Defaults to `libsif_path`.
+
+```julia
+build_libsif("HS1.SIF", precision=:single)
+build_libsif("DIXMAANJ", precision=:double)
+build_libsif("/home/alexis/CUTEst/BROWNDEN.SIF", precision=:quadruple)
+```
 """
 function build_libsif(
   name::AbstractString;
   precision::Symbol = :double,
-  libsif_folder::String = cutest_problems_path,
+  libsif_folder::String = libsif_path,
 )
   if precision == :single
     prec = "-sp"
@@ -128,7 +148,6 @@ function build_libsif(
 
   pname, sif = basename(name) |> splitext
   libsif_name = "lib$(pname)_$(precision)"
-  libsif = C_NULL
 
   cd(libsif_folder) do
     if isfile("ELFUN$suffix.f")
@@ -191,10 +210,9 @@ function build_libsif(
         end
       end
       delete_temp_files(suffix)
-      libsif = Libdl.dlopen(libsif_name, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     end
   end
-  return libsif
+  return nothing
 end
 
 function delete_temp_files(suffix::String)
@@ -222,11 +240,11 @@ end
 """
     clear_libsif()
 
-Remove all compiled libraries of SIF problems and associated parameters.
+Removes all compiled libraries and data files associated with SIF problems.
 """
 function clear_libsif()
   total_nbytes = 0
-  for file in readdir(cutest_problems_path, join = true, sort = false)
+  for file in readdir(libsif_path, join = true, sort = false)
     total_nbytes += filesize(file)
     rm(file, force = true)
   end
@@ -238,16 +256,19 @@ end
 """
     manage_libsif(; sort_by::Symbol=:name, rev::Bool=false)
 
-Opens a prompt allowing the user to selectively remove compiled libraries and related files for SIF problems.
-By default, the shards are sorted by name, alternatively you can sort them by file size on disk by specifying `sort_by=:size`.
-With `rev=true` you can reverse the sort order.
+Opens a prompt allowing the user to selectively remove compiled libraries for SIF problems.
+Data files `OUTSDIF_*.d`, which store preprocessed information required for automatic differentiation within CUTEst, are also removed.
+
+By default, the problems are sorted by name.
+Alternatively, you can sort them by file size on disk by specifying `sort_by=:size`.
+Use `rev=true` to reverse the sort order.
 """
 function manage_libsif(; sort_by::Symbol = :name, rev::Bool = false)
   # Get all installed libsif / outsdif
   sif_problems = Set{String}()
   sif_precision = Dict{String, Vector{String}}()
   sif_sizes = Dict{String, Int}()
-  files = readdir(cutest_problems_path)
+  files = readdir(libsif_path)
   for file in files
     for precision in ("single", "double", "quadruple")
       suffix = "_$precision.$dlext"
@@ -259,9 +280,9 @@ function manage_libsif(; sort_by::Symbol = :name, rev::Bool = false)
           sif_sizes[sif_problem] = 0
         end
         push!(sif_precision[sif_problem], precision)
-        libsif = joinpath(cutest_problems_path, file)
+        libsif = joinpath(libsif_path, file)
         name_outsdif = _name_outsdif(sif_problem, precision |> Symbol)
-        outsdif = joinpath(cutest_problems_path, name_outsdif)
+        outsdif = joinpath(libsif_path, name_outsdif)
         sif_sizes[sif_problem] += filesize(libsif)
         sif_sizes[sif_problem] += filesize(outsdif)
       end
@@ -319,10 +340,10 @@ function manage_libsif(; sort_by::Symbol = :name, rev::Bool = false)
           sif_problem = sif_problems[index_item]
           for precision in sif_precision[sif_problem]
             suffix = "_$precision.$dlext"
-            libsif = joinpath(cutest_problems_path, "lib$(sif_problem)$(suffix)")
+            libsif = joinpath(libsif_path, "lib$(sif_problem)$(suffix)")
             rm(libsif, force = true)
             name_outsdif = _name_outsdif(sif_problem, precision |> Symbol)
-            outsdif = joinpath(cutest_problems_path, name_outsdif)
+            outsdif = joinpath(libsif_path, name_outsdif)
             rm(outsdif, force = true)
           end
         end
