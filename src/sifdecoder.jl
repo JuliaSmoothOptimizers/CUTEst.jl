@@ -132,12 +132,16 @@ function build_libsif(
 
   cd(libsif_folder) do
     if isfile("ELFUN$suffix.f")
-      run(`gfortran -c -fPIC ELFUN$suffix.f`)
-      object_files = ["ELFUN$suffix.o"]
-      for file in
-          ("GROUP", "RANGE", "ELFUNF", "ELFUND", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
+      object_files = String[]
+      for file in ("ELFUN", "GROUP", "RANGE", "ELFUNF", "ELFUND", "GROUPF", "GROUPD", "SETTYP", "EXTER", "EXTERA")
         if isfile("$file$suffix.f")
-          run(`gfortran -c -fPIC $file$suffix.f`)
+          @static if Sys.iswindows()
+            mingw = Int == Int64 ? "mingw64" : "mingw32"
+            gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
+            run(`$gfortran -O3 -c -fPIC $file$suffix.f`)
+          else
+            run(`gfortran -O3 -c -fPIC $file$suffix.f`)
+          end
           push!(object_files, "$file$suffix.o")
         end
       end
