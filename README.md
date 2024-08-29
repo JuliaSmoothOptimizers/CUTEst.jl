@@ -88,6 +88,14 @@ using CUTEst
 available_problems = list_sif_problems()
 ```
 
+If you want to retrieve only problems with specific properties, you can use the function `select_sif_problems`:
+
+```julia
+using CUTEst
+
+filtered_problems = select_sif_problems(; min_var=10, max_var=100, only_linear_con=true)
+```
+
 ## Tutorial
 
 You can check an [Introduction to CUTEst.jl](https://jso.dev/tutorials/introduction-to-cutest/) on our [site](https://jso.dev/).
