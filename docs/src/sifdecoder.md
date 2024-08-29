@@ -25,7 +25,7 @@ build_libsif
 !!! note
     When creating a `CUTEstModel`, the functions `sifdecoder` and `build_libsif` are called automatically.
 
-These additional files are generated in the `deps/files` folder at the root of the `CUTEst.jl` installation directory.
+These additional files are generated in the folder `deps/files` at the root of the installation directory of `CUTEst.jl` .
 The path to this folder is available via `CUTEst.libsif_path`.
 We provide two functions to delete these files:
 

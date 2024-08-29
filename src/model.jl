@@ -30,44 +30,40 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
 end
 
 """
-    nlp = CUTEstModel{T}(name, args...; kwargs...)
-    nlp = CUTEstModel(name, args...; kwargs...)
+    CUTEstModel{T}(name, args...; kwargs...)
+    CUTEstModel(name, args...; precision::Symbol=:double, decode::Bool=true,
+                verbose::Bool=false, efirst::Bool=true, lfirst::Bool=true, lvfirst::Bool=true)
 
-Creates a CUTEst model following the NLPModels API.
-This model needs to be finalized before a new one is created (e.g., calling `finalize(nlp)`).
+Creates a `CUTEstModel` following the API of `NLPModels.jl`.
+This model must be finalized before creating a new one with the same `name` and precision `T`.
+Finalize the current model by calling `finalize(nlp)` to avoid conflicts.
 
-## Optional arguments
+## Arguments
 
-Any extra arguments will be passed to `sifdecoder`.
-You can, for instance, change parameters of the model:
-
-```jldoctest
-using CUTEst
-
-nlp = CUTEstModel("CHAIN", "-param", "NH=50")
-println(nlp.meta.nnzh)
-finalize(nlp)
-nlp = CUTEstModel("CHAIN", "-param", "NH=100")
-println(nlp.meta.nnzh)
-finalize(nlp)
-
-# output
-
-153
-303
-```
+- `name::AbstractString`: The name of the SIF problem to load.
+- `args...`: Additional arguments passed directly to `sifdecoder`. These can be used to change parameters of the model.
 
 ## Keyword arguments
 
-- `precision::Symbol = :double` : Precision of the CUTEstModel.
-- `decode::Bool = true`: Whether to call sifdecoder.
-- `verbose::Bool = false`: Passed to sifdecoder.
-- `efirst`::Bool = true`: Equalities first?
-- `lfirst`::Bool = true`: Linear (or affine) constraints first?
-- `lvfirst::Bool = true`: Nonlinear variables should appear first?
+- `precision::Symbol`: Specifies the precision of the `CUTEstModel`. Options are `:single`, `:double` (default), or `:quadruple`. This keyword argument is not supported when using a constructor with a data type `T`.
+- `decode::Bool`: Whether to call `sifdecoder`. Defaults to `true`.
+- `verbose::Bool`: If `true`, enables verbose output during the decoding process. Passed to `sifdecoder`.
+- `efirst::Bool`: If `true`, places equality constraints first.
+- `lfirst::Bool`: If `true`, places linear (or affine) constraints first.
+- `lvfirst::Bool`: If `true`, places nonlinear variables first.
 
-The keyword `precision` is not supported when a constructor with a data type `T` is used.
-The type `T` can be `Float32`, `Float64`, or `Float128`.
+```julia
+using CUTEst
+# Create a CUTEstModel with the name "CHAIN" and a parameter adjustment
+nlp = CUTEstModel("CHAIN", "-param", "NH=50")
+display(nlp)
+finalize(nlp)  # Finalize the current model
+
+# Create another CUTEstModel with different parameters
+nlp = CUTEstModel("CHAIN", "-param", "NH=100")
+display(nlp)
+finalize(nlp)  # Finalize the new model
+```
 """
 function CUTEstModel end
 

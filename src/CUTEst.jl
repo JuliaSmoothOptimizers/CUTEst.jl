@@ -17,7 +17,7 @@ export CUTEstModel, sifdecoder, build_libsif, set_mastsif, clear_libsif, manage_
 
 const cutest_false = Ref{Bool}(false)
 const cutest_true = Ref{Bool}(true)
-const libsif_path = joinpath(dirname(@__FILE__), "..", "deps", "files")
+const libsif_path = joinpath(@__DIR__, "..", "deps", "files") |> normpath
 isdir(libsif_path) || mkpath(libsif_path)
 
 function __init__()
@@ -36,7 +36,7 @@ function __init__()
     @info "Call set_mastsif() if you want to use the full SIF collection."
   end
 
-  global libpath = joinpath(CUTEst_jll.artifact_dir, "lib")
+  global libcutest_path = joinpath(CUTEst_jll.artifact_dir, "lib")
   push!(Libdl.DL_LOAD_PATH, libsif_path)
 end
 
