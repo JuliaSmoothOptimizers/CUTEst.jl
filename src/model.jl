@@ -68,23 +68,6 @@ finalize(nlp)  # Finalize the new model
 """
 function CUTEstModel end
 
-for (T, prec) in ((:Float32, "single"), (:Float64, "double"), (:Float128, "quadruple"))
-  @eval begin
-    function CUTEstModel{$T}(
-      name::AbstractString,
-      args...;
-      decode::Bool = true,
-      verbose::Bool = false,
-      efirst::Bool = true,
-      lfirst::Bool = true,
-      lvfirst::Bool = true,
-    )
-      precision = Symbol($prec)
-      CUTEstModel(name, args...; precision, decode, verbose, efirst, lfirst, lvfirst)
-    end
-  end
-end
-
 function CUTEstModel(
   name::AbstractString,
   args...;
@@ -95,6 +78,27 @@ function CUTEstModel(
   lfirst::Bool = true,
   lvfirst::Bool = true,
 )
+  if precision == :single
+    T = Float32
+  elseif precision == :double
+    T = Float64
+  elseif precision == :quadruple
+    T = Float128
+  else
+    error("The $precision precision is not supported.")
+  end
+  return CUTEstModel{T}(name, args...; decode, verbose, efirst, lfirst, lvfirst)
+end
+
+function CUTEstModel{T}(
+  name::AbstractString,
+  args...;
+  decode::Bool = true,
+  verbose::Bool = false,
+  efirst::Bool = true,
+  lfirst::Bool = true,
+  lvfirst::Bool = true,
+) where T <: Union{Float32, Float64, Float128}
   sifname = (length(name) < 4 || name[(end - 3):end] != ".SIF") ? "$name.SIF" : name
   if isfile(sifname)
     # This file is local so make sure the full path is maintained for sifdecoder
@@ -106,13 +110,9 @@ function CUTEstModel(
     end
   end
 
-  if (precision != :single) && (precision != :double) && (precision != :quadruple)
-    error("The $precision precision is not supported.")
-  end
-
+  precision = (T == Float32) ? :single : (T == Float64) ? :double : :quadruple
   pname, sif = basename(name) |> splitext
   outsdif = "OUTSDIF_$(pname)_$precision.d"
-  T = (precision == :single) ? Float32 : (precision == :double) ? Float64 : Float128
   libsif = C_NULL
 
   funit = rand(1000:10000) |> Ref{Cint}
