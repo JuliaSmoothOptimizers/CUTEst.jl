@@ -13,7 +13,7 @@ dict_precision = Dict(Float32 => :single, Float64 => :double, Float128 => :quadr
 
 # test sifdecoder
 for pb in problems
-  println("--- $pb ---")
+  println("--- sifdecoder -- $pb ---")
   for precision in (:single, :double, :quadruple)
     print("$precision ")
     sifdecoder(pb, precision = precision)
@@ -22,10 +22,21 @@ for pb in problems
   println()
 end
 
+# test build_libsif
+for pb in problems
+  println("--- build_libsif -- $pb ---")
+  for precision in (:single, :double, :quadruple)
+    print("$precision ")
+    build_libsif(pb, precision = precision)
+    println("✓")
+  end
+  println()
+end
+
 if Sys.iswindows() || VERSION ≥ v"1.10"
-  for T in (Float32, Float64, Float128)
-    @testset "Multiple instances of CUTEstModel -- $T" begin
-      nlps = [CUTEstModel{T}(problem) for problem in problems]
+  for precision in (:single, :double, :quadruple)
+    @testset "Multiple instances of CUTEstModel -- $precision precision" begin
+      nlps = [CUTEstModel(problem, precision = precision) for problem in problems]
       for nlp in nlps
         finalize(nlp)
       end
@@ -112,3 +123,5 @@ end
     @test length(sif_problems) == nsif
   end
 end
+
+clear_libsif()
