@@ -52,6 +52,9 @@ Finalize the current model by calling `finalize(nlp)` to avoid conflicts.
 - `lfirst::Bool`: If `true`, places linear (or affine) constraints first.
 - `lvfirst::Bool`: If `true`, places nonlinear variables first.
 
+!!! warning
+    The second constructor based on the keyword argument `precision` is type-unstable.
+
 ```julia
 using CUTEst
 
