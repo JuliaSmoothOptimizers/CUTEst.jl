@@ -101,7 +101,7 @@ function CUTEstModel{T}(
   efirst::Bool = true,
   lfirst::Bool = true,
   lvfirst::Bool = true,
-) where T <: Union{Float32, Float64, Float128}
+) where {T <: Union{Float32, Float64, Float128}}
   sifname = (length(name) < 4 || name[(end - 3):end] != ".SIF") ? "$name.SIF" : name
   if isfile(sifname)
     # This file is local so make sure the full path is maintained for sifdecoder
