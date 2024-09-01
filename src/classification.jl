@@ -45,21 +45,21 @@ Returns a subset of the CUTEst problems using the classification file `classf.js
 - `only_*` flags are self-explaining. Note that they appear in conflicting pairs. Both can be false, but only one can be true.
 
 - `objtype` is the classification of the objective function according to the [MASTSIF classification](https://www.cuter.rl.ac.uk/Problems/classification.shtml). It can be a number, a symbol, a string, or an array of those.
-  - 1, :none or "none" means there is no objective function;
-  - 2, :constant or "constant" means the objective function is a constant;
-  - 3, :linear or "linear" means the objective function is a linear functional;
-  - 4, :quadratic or "quadratic" means the objective function is quadratic;
-  - 5, :sum_of_squares or "sum_of_squares" means the objective function is a sum of squares;
-  - 6, :other or "other" means the objective function is none of the above.
+  - `1`, `:none` or `"none"` means there is no objective function;
+  - `2`, `:constant` or `"constant"` means the objective function is a constant;
+  - `3`, `:linear` or `"linear"` means the objective function is a linear functional;
+  - `4`, `:quadratic` or `"quadratic"` means the objective function is quadratic;
+  - `5`, `:sum_of_squares` or `"sum_of_squares"` means the objective function is a sum of squares;
+  - `6`, `:other` or `"other"` means the objective function is none of the above.
 
 - `contype` is the classification of the constraints according to the same MASTSIF classification file.
-  - 1, :unc or "unc" means there are no constraints at all;
-  - 2, :fixed_vars or "fixed_vars" means the only constraints are fixed variables;
-  - 3, :bounds or "bounds" means the only constraints are bounded variables;
-  - 4, :network or "network" means the constraints represent the adjacency matrix of a (linear) network;
-  - 5, :linear or "linear" means the constraints are linear;
-  - 6, :quadratic or "quadratic" means the constraints are quadratic;
-  - 7, :other or "other" means the constraints are more general.
+  - `1`, `:unc` or `"unc"` means there are no constraints at all;
+  - `2`, `:fixed_vars` or `"fixed_vars"` means the only constraints are fixed variables;
+  - `3`, `:bounds` or `"bounds"` means the only constraints are bounded variables;
+  - `4`, `:network` or `"network"` means the constraints represent the adjacency matrix of a (linear) network;
+  - `5`, `:linear` or `"linear"` means the constraints are linear;
+  - `6`, `:quadratic` or `"quadratic"` means the constraints are quadratic;
+  - `7`, `:other` or `"other"` means the constraints are more general.
 
 - `custom_filter`: A function to apply additional filtering to the problem data. This data is provided as a dictionary with the following fields:
   - `"objtype"`: String representing the objective function type. It can be one of the following:
