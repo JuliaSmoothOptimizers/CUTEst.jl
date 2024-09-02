@@ -59,12 +59,12 @@ Finalize the current model by calling `finalize(nlp)` to avoid conflicts.
 using CUTEst
 
 # Create a CUTEstModel with the name "CHAIN" and a parameter adjustment
-nlp = CUTEstModel("CHAIN", "-param", "NH=50")
+nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=50")
 display(nlp)
 finalize(nlp)  # Finalize the current model
 
 # Create another CUTEstModel with different parameters
-nlp = CUTEstModel("CHAIN", "-param", "NH=100")
+nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=100")
 display(nlp)
 finalize(nlp)  # Finalize the new model
 ```
