@@ -58,7 +58,7 @@ Decodes a SIF problem, converting it into a format suitable for further processi
 - `verbose::Bool`: If `true`, enables verbose output during the decoding process. Defaults to `false`.
 - `precision::Symbol`: The desired precision for the problem. Can be `:single`, `:double` (default), or `:quadruple`.
 - `outsdif::String`: The name of the file `OUTSDIF.d` required for automatic differentiation. Defaults to `"OUTSDIF_sifname_precision.d"`, where `sifname` and `precision` are replaced with the problem name and chosen precision.
-- `libsif_folder::String`: The directory where the generated files (*.f and *.d) will be stored. Defaults to `libsif_path`.
+- `libsif_folder::String`: The directory where the generated files (`*.f` and `*.d`) will be stored. Defaults to `libsif_path`.
 
 ```julia
 sifdecoder("HS1.SIF", precision=:single)
@@ -138,6 +138,9 @@ Builds a shared library from a decoded SIF problem.
 - `name::String`: The path or name of the SIF problem, with or without the extension `.SIF`.
 - `precision::Symbol`: The desired precision of the problem. Can be `:single`, `:double` (default), or `:quadruple`.
 - `libsif_folder::String`: The directory where the compiled library will be stored. Defaults to `libsif_path`.
+
+!!! warning
+    We expect that the SIF problem has been decoded in `libsif_folder` and contains the generated files (`*.f` and `*.d`).
 
 ```julia
 build_libsif("HS1.SIF", precision=:single)
