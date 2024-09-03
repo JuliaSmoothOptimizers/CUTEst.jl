@@ -346,7 +346,7 @@ function manage_libsif(; sort_by::Symbol = :name, rev::Bool = false)
 
     # Handle no selection
     if isempty(manage_sif_menu)
-      println("Removed 0 problems.")
+      println("No problems have been removed.")
     else
       # Otherwise prompt for confirmation
       println("\nThe following problems have been marked for removal:\n")
