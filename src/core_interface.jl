@@ -3218,9 +3218,11 @@ end
 """
 function classification end
 
-for (cutest_classification, T) in ((:cutest_classification_s_, :Float32),
-                                   (:cutest_classification_, :Float64),
-                                   (:cutest_classification_q_, :Float128))
+for (cutest_classification, T) in (
+  (:cutest_classification_s_, :Float32),
+  (:cutest_classification_, :Float64),
+  (:cutest_classification_q_, :Float128),
+)
   @eval begin
     function classification(::Type{$T}, libsif::Ptr{Cvoid}, status, funit, class)
       $cutest_classification(libsif, status, funit, class)

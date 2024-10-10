@@ -7,7 +7,7 @@ using JuliaFormatter
 # Support for quadruple precision
 struct JuliaCfloat128 <: Clang.Generators.AbstractJuliaSIT end
 Clang.Generators.tojulia(x::CLFloat128) = JuliaCfloat128()
-Clang.Generators.translate(jlty::JuliaCfloat128, options=Dict()) = :Float128
+Clang.Generators.translate(jlty::JuliaCfloat128, options = Dict()) = :Float128
 
 function main()
   cd(@__DIR__)
