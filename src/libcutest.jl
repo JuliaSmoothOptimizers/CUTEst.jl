@@ -38,10 +38,10 @@ function cutest_uvartype_(libsif, status, n, ivarty)
   @ccall $ptr_cutest_uvartype_(status::Ptr{Cint}, n::Ptr{Cint}, ivarty::Ptr{Cint})::Cvoid
 end
 
-function cutest_cint_unames_(libsif, status, n, pname, vnames)
-  ptr_cutest_cint_unames_ = Libdl.dlsym(libsif, :cutest_cint_unames_)
-  @ccall $ptr_cutest_cint_unames_(status::Ptr{Cint}, n::Ptr{Cint}, pname::Ptr{Cchar},
-                                  vnames::Ptr{Cchar})::Cvoid
+function cutest_unames_(libsif, status, n, pname, vnames)
+  ptr_cutest_unames_ = Libdl.dlsym(libsif, :cutest_unames_)
+  @ccall $ptr_cutest_unames_(status::Ptr{Cint}, n::Ptr{Cint}, pname::Ptr{Cchar},
+                             vnames::Ptr{Cchar})::Cvoid
 end
 
 function cutest_ureport_(libsif, status, calls, time)
@@ -103,10 +103,10 @@ function cutest_cvartype_(libsif, status, n, ivarty)
   @ccall $ptr_cutest_cvartype_(status::Ptr{Cint}, n::Ptr{Cint}, ivarty::Ptr{Cint})::Cvoid
 end
 
-function cutest_cint_cnames_(libsif, status, n, m, pname, vnames, gnames)
-  ptr_cutest_cint_cnames_ = Libdl.dlsym(libsif, :cutest_cint_cnames_)
-  @ccall $ptr_cutest_cint_cnames_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, pname::Ptr{Cchar},
-                                  vnames::Ptr{Cchar}, gnames::Ptr{Cchar})::Cvoid
+function cutest_cnames_(libsif, status, n, m, pname, vnames, gnames)
+  ptr_cutest_cnames_ = Libdl.dlsym(libsif, :cutest_cnames_)
+  @ccall $ptr_cutest_cnames_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, pname::Ptr{Cchar},
+                             vnames::Ptr{Cchar}, gnames::Ptr{Cchar})::Cvoid
 end
 
 function cutest_creport_(libsif, status, calls, time)
@@ -114,30 +114,30 @@ function cutest_creport_(libsif, status, calls, time)
   @ccall $ptr_cutest_creport_(status::Ptr{Cint}, calls::Ptr{Float64}, time::Ptr{Float64})::Cvoid
 end
 
-function cutest_cint_connames_(libsif, status, m, gname)
-  ptr_cutest_cint_connames_ = Libdl.dlsym(libsif, :cutest_cint_connames_)
-  @ccall $ptr_cutest_cint_connames_(status::Ptr{Cint}, m::Ptr{Cint}, gname::Ptr{Cchar})::Cvoid
+function cutest_connames_(libsif, status, m, gname)
+  ptr_cutest_connames_ = Libdl.dlsym(libsif, :cutest_connames_)
+  @ccall $ptr_cutest_connames_(status::Ptr{Cint}, m::Ptr{Cint}, gname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_pname_(libsif, status, funit, pname)
-  ptr_cutest_cint_pname_ = Libdl.dlsym(libsif, :cutest_cint_pname_)
-  @ccall $ptr_cutest_cint_pname_(status::Ptr{Cint}, funit::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
+function cutest_pname_(libsif, status, funit, pname)
+  ptr_cutest_pname_ = Libdl.dlsym(libsif, :cutest_pname_)
+  @ccall $ptr_cutest_pname_(status::Ptr{Cint}, funit::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_classification_(libsif, status, funit, classification)
-  ptr_cutest_cint_classification_ = Libdl.dlsym(libsif, :cutest_cint_classification_)
-  @ccall $ptr_cutest_cint_classification_(status::Ptr{Cint}, funit::Ptr{Cint},
-                                          classification::Ptr{Cchar})::Cvoid
+function cutest_classification_(libsif, status, funit, classification)
+  ptr_cutest_classification_ = Libdl.dlsym(libsif, :cutest_classification_)
+  @ccall $ptr_cutest_classification_(status::Ptr{Cint}, funit::Ptr{Cint},
+                                     classification::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_probname_(libsif, status, pname)
-  ptr_cutest_cint_probname_ = Libdl.dlsym(libsif, :cutest_cint_probname_)
-  @ccall $ptr_cutest_cint_probname_(status::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
+function cutest_probname_(libsif, status, pname)
+  ptr_cutest_probname_ = Libdl.dlsym(libsif, :cutest_probname_)
+  @ccall $ptr_cutest_probname_(status::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_varnames_(libsif, status, n, vname)
-  ptr_cutest_cint_varnames_ = Libdl.dlsym(libsif, :cutest_cint_varnames_)
-  @ccall $ptr_cutest_cint_varnames_(status::Ptr{Cint}, n::Ptr{Cint}, vname::Ptr{Cchar})::Cvoid
+function cutest_varnames_(libsif, status, n, vname)
+  ptr_cutest_varnames_ = Libdl.dlsym(libsif, :cutest_varnames_)
+  @ccall $ptr_cutest_varnames_(status::Ptr{Cint}, n::Ptr{Cint}, vname::Ptr{Cchar})::Cvoid
 end
 
 function cutest_ufn_(libsif, status, n, x, f)
@@ -588,10 +588,10 @@ function cutest_uvartype_s_(libsif, status, n, ivarty)
   @ccall $ptr_cutest_uvartype_s_(status::Ptr{Cint}, n::Ptr{Cint}, ivarty::Ptr{Cint})::Cvoid
 end
 
-function cutest_cint_unames_s_(libsif, status, n, pname, vnames)
-  ptr_cutest_cint_unames_s_ = Libdl.dlsym(libsif, :cutest_cint_unames_s_)
-  @ccall $ptr_cutest_cint_unames_s_(status::Ptr{Cint}, n::Ptr{Cint}, pname::Ptr{Cchar},
-                                    vnames::Ptr{Cchar})::Cvoid
+function cutest_unames_s_(libsif, status, n, pname, vnames)
+  ptr_cutest_unames_s_ = Libdl.dlsym(libsif, :cutest_unames_s_)
+  @ccall $ptr_cutest_unames_s_(status::Ptr{Cint}, n::Ptr{Cint}, pname::Ptr{Cchar},
+                               vnames::Ptr{Cchar})::Cvoid
 end
 
 function cutest_ureport_s_(libsif, status, calls, time)
@@ -655,11 +655,10 @@ function cutest_cvartype_s_(libsif, status, n, ivarty)
   @ccall $ptr_cutest_cvartype_s_(status::Ptr{Cint}, n::Ptr{Cint}, ivarty::Ptr{Cint})::Cvoid
 end
 
-function cutest_cint_cnames_s_(libsif, status, n, m, pname, vnames, gnames)
-  ptr_cutest_cint_cnames_s_ = Libdl.dlsym(libsif, :cutest_cint_cnames_s_)
-  @ccall $ptr_cutest_cint_cnames_s_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint},
-                                    pname::Ptr{Cchar}, vnames::Ptr{Cchar},
-                                    gnames::Ptr{Cchar})::Cvoid
+function cutest_cnames_s_(libsif, status, n, m, pname, vnames, gnames)
+  ptr_cutest_cnames_s_ = Libdl.dlsym(libsif, :cutest_cnames_s_)
+  @ccall $ptr_cutest_cnames_s_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, pname::Ptr{Cchar},
+                               vnames::Ptr{Cchar}, gnames::Ptr{Cchar})::Cvoid
 end
 
 function cutest_creport_s_(libsif, status, calls, time)
@@ -667,30 +666,30 @@ function cutest_creport_s_(libsif, status, calls, time)
   @ccall $ptr_cutest_creport_s_(status::Ptr{Cint}, calls::Ptr{Float32}, time::Ptr{Float32})::Cvoid
 end
 
-function cutest_cint_connames_s_(libsif, status, m, gname)
-  ptr_cutest_cint_connames_s_ = Libdl.dlsym(libsif, :cutest_cint_connames_s_)
-  @ccall $ptr_cutest_cint_connames_s_(status::Ptr{Cint}, m::Ptr{Cint}, gname::Ptr{Cchar})::Cvoid
+function cutest_connames_s_(libsif, status, m, gname)
+  ptr_cutest_connames_s_ = Libdl.dlsym(libsif, :cutest_connames_s_)
+  @ccall $ptr_cutest_connames_s_(status::Ptr{Cint}, m::Ptr{Cint}, gname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_pname_s_(libsif, status, funit, pname)
-  ptr_cutest_cint_pname_s_ = Libdl.dlsym(libsif, :cutest_cint_pname_s_)
-  @ccall $ptr_cutest_cint_pname_s_(status::Ptr{Cint}, funit::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
+function cutest_pname_s_(libsif, status, funit, pname)
+  ptr_cutest_pname_s_ = Libdl.dlsym(libsif, :cutest_pname_s_)
+  @ccall $ptr_cutest_pname_s_(status::Ptr{Cint}, funit::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_classification_s_(libsif, status, funit, classification)
-  ptr_cutest_cint_classification_s_ = Libdl.dlsym(libsif, :cutest_cint_classification_s_)
-  @ccall $ptr_cutest_cint_classification_s_(status::Ptr{Cint}, funit::Ptr{Cint},
-                                            classification::Ptr{Cchar})::Cvoid
+function cutest_classification_s_(libsif, status, funit, classification)
+  ptr_cutest_classification_s_ = Libdl.dlsym(libsif, :cutest_classification_s_)
+  @ccall $ptr_cutest_classification_s_(status::Ptr{Cint}, funit::Ptr{Cint},
+                                       classification::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_probname_s_(libsif, status, pname)
-  ptr_cutest_cint_probname_s_ = Libdl.dlsym(libsif, :cutest_cint_probname_s_)
-  @ccall $ptr_cutest_cint_probname_s_(status::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
+function cutest_probname_s_(libsif, status, pname)
+  ptr_cutest_probname_s_ = Libdl.dlsym(libsif, :cutest_probname_s_)
+  @ccall $ptr_cutest_probname_s_(status::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_varnames_s_(libsif, status, n, vname)
-  ptr_cutest_cint_varnames_s_ = Libdl.dlsym(libsif, :cutest_cint_varnames_s_)
-  @ccall $ptr_cutest_cint_varnames_s_(status::Ptr{Cint}, n::Ptr{Cint}, vname::Ptr{Cchar})::Cvoid
+function cutest_varnames_s_(libsif, status, n, vname)
+  ptr_cutest_varnames_s_ = Libdl.dlsym(libsif, :cutest_varnames_s_)
+  @ccall $ptr_cutest_varnames_s_(status::Ptr{Cint}, n::Ptr{Cint}, vname::Ptr{Cchar})::Cvoid
 end
 
 function cutest_ufn_s_(libsif, status, n, x, f)
@@ -1147,10 +1146,10 @@ function cutest_uvartype_q_(libsif, status, n, ivarty)
   @ccall $ptr_cutest_uvartype_q_(status::Ptr{Cint}, n::Ptr{Cint}, ivarty::Ptr{Cint})::Cvoid
 end
 
-function cutest_cint_unames_q_(libsif, status, n, pname, vnames)
-  ptr_cutest_cint_unames_q_ = Libdl.dlsym(libsif, :cutest_cint_unames_q_)
-  @ccall $ptr_cutest_cint_unames_q_(status::Ptr{Cint}, n::Ptr{Cint}, pname::Ptr{Cchar},
-                                    vnames::Ptr{Cchar})::Cvoid
+function cutest_unames_q_(libsif, status, n, pname, vnames)
+  ptr_cutest_unames_q_ = Libdl.dlsym(libsif, :cutest_unames_q_)
+  @ccall $ptr_cutest_unames_q_(status::Ptr{Cint}, n::Ptr{Cint}, pname::Ptr{Cchar},
+                               vnames::Ptr{Cchar})::Cvoid
 end
 
 function cutest_ureport_q_(libsif, status, calls, time)
@@ -1214,11 +1213,10 @@ function cutest_cvartype_q_(libsif, status, n, ivarty)
   @ccall $ptr_cutest_cvartype_q_(status::Ptr{Cint}, n::Ptr{Cint}, ivarty::Ptr{Cint})::Cvoid
 end
 
-function cutest_cint_cnames_q_(libsif, status, n, m, pname, vnames, gnames)
-  ptr_cutest_cint_cnames_q_ = Libdl.dlsym(libsif, :cutest_cint_cnames_q_)
-  @ccall $ptr_cutest_cint_cnames_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint},
-                                    pname::Ptr{Cchar}, vnames::Ptr{Cchar},
-                                    gnames::Ptr{Cchar})::Cvoid
+function cutest_cnames_q_(libsif, status, n, m, pname, vnames, gnames)
+  ptr_cutest_cnames_q_ = Libdl.dlsym(libsif, :cutest_cnames_q_)
+  @ccall $ptr_cutest_cnames_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, pname::Ptr{Cchar},
+                               vnames::Ptr{Cchar}, gnames::Ptr{Cchar})::Cvoid
 end
 
 function cutest_creport_q_(libsif, status, calls, time)
@@ -1226,30 +1224,30 @@ function cutest_creport_q_(libsif, status, calls, time)
   @ccall $ptr_cutest_creport_q_(status::Ptr{Cint}, calls::Ptr{Float128}, time::Ptr{Float128})::Cvoid
 end
 
-function cutest_cint_connames_q_(libsif, status, m, gname)
-  ptr_cutest_cint_connames_q_ = Libdl.dlsym(libsif, :cutest_cint_connames_q_)
-  @ccall $ptr_cutest_cint_connames_q_(status::Ptr{Cint}, m::Ptr{Cint}, gname::Ptr{Cchar})::Cvoid
+function cutest_connames_q_(libsif, status, m, gname)
+  ptr_cutest_connames_q_ = Libdl.dlsym(libsif, :cutest_connames_q_)
+  @ccall $ptr_cutest_connames_q_(status::Ptr{Cint}, m::Ptr{Cint}, gname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_pname_q_(libsif, status, funit, pname)
-  ptr_cutest_cint_pname_q_ = Libdl.dlsym(libsif, :cutest_cint_pname_q_)
-  @ccall $ptr_cutest_cint_pname_q_(status::Ptr{Cint}, funit::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
+function cutest_pname_q_(libsif, status, funit, pname)
+  ptr_cutest_pname_q_ = Libdl.dlsym(libsif, :cutest_pname_q_)
+  @ccall $ptr_cutest_pname_q_(status::Ptr{Cint}, funit::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_classification_q_(libsif, status, funit, classification)
-  ptr_cutest_cint_classification_q_ = Libdl.dlsym(libsif, :cutest_cint_classification_q_)
-  @ccall $ptr_cutest_cint_classification_q_(status::Ptr{Cint}, funit::Ptr{Cint},
-                                            classification::Ptr{Cchar})::Cvoid
+function cutest_classification_q_(libsif, status, funit, classification)
+  ptr_cutest_classification_q_ = Libdl.dlsym(libsif, :cutest_classification_q_)
+  @ccall $ptr_cutest_classification_q_(status::Ptr{Cint}, funit::Ptr{Cint},
+                                       classification::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_probname_q_(libsif, status, pname)
-  ptr_cutest_cint_probname_q_ = Libdl.dlsym(libsif, :cutest_cint_probname_q_)
-  @ccall $ptr_cutest_cint_probname_q_(status::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
+function cutest_probname_q_(libsif, status, pname)
+  ptr_cutest_probname_q_ = Libdl.dlsym(libsif, :cutest_probname_q_)
+  @ccall $ptr_cutest_probname_q_(status::Ptr{Cint}, pname::Ptr{Cchar})::Cvoid
 end
 
-function cutest_cint_varnames_q_(libsif, status, n, vname)
-  ptr_cutest_cint_varnames_q_ = Libdl.dlsym(libsif, :cutest_cint_varnames_q_)
-  @ccall $ptr_cutest_cint_varnames_q_(status::Ptr{Cint}, n::Ptr{Cint}, vname::Ptr{Cchar})::Cvoid
+function cutest_varnames_q_(libsif, status, n, vname)
+  ptr_cutest_varnames_q_ = Libdl.dlsym(libsif, :cutest_varnames_q_)
+  @ccall $ptr_cutest_varnames_q_(status::Ptr{Cint}, n::Ptr{Cint}, vname::Ptr{Cchar})::Cvoid
 end
 
 function cutest_ufn_q_(libsif, status, n, x, f)

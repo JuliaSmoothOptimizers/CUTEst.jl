@@ -52,6 +52,9 @@ function main()
   code = replace(code, "Ptr{rpc_}" => "Ptr{Float64}")
   code = replace(code, "Ptr{ip_}" => "Ptr{Cint}")
   code = replace(code, "Ptr{ipc_}" => "Ptr{Cint}")
+  for routine in ("classification", "probname", "pname", "varnames", "connames", "unames", "cnames")
+    code = replace(code, "cutest_cint_$routine" => "cutest_$routine")
+  end
 
   blocks = split(code, "end\n")
   nblocks = length(blocks)
