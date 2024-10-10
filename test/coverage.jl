@@ -2,8 +2,8 @@
 function coverage_increase(nlp::CUTEstModel{T}) where {T}
   status = Cint[0]
   n, m = nlp.meta.nvar, nlp.meta.ncon
-  class = Vector{Cchar}(undef, 30)
-  CUTEst.classification(T, nlp.libsif, nlp.status, nlp.funit, class)
+  # class = Vector{Cchar}(undef, 30)
+  # CUTEst.classification(T, nlp.libsif, nlp.status, nlp.funit, class)
   pname = Vector{Cchar}(undef, 10)
   CUTEst.probname(T, nlp.libsif, status, pname)
   vname = Matrix{Cchar}(undef, 10, n)
