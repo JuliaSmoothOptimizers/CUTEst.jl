@@ -4,6 +4,11 @@ using Clang
 using Clang.Generators
 using JuliaFormatter
 
+# Support for quadruple precision
+struct JuliaCfloat128 <: Clang.Generators.AbstractJuliaSIT end
+Clang.Generators.tojulia(x::CLFloat128) = JuliaCfloat128()
+Clang.Generators.translate(jlty::JuliaCfloat128, options=Dict()) = :Float128
+
 function main()
   cd(@__DIR__)
   include_dir = joinpath(CUTEst_jll.artifact_dir, "include")
@@ -15,6 +20,7 @@ function main()
     "integer",
     "real",
     "doublereal",
+    "quadreal",
     "logical",
     "rp_",
     "rpc_",
@@ -40,6 +46,7 @@ function main()
   code = replace(code, "Ptr{doublereal}" => "Ptr{Float64}")
   code = replace(code, "Ptr{real}" => "Ptr{Float32}")
   code = replace(code, "Ptr{doubleCfloat}" => "Ptr{Float64}")
+  code = replace(code, "Ptr{quadreal}" => "Ptr{Float128}")
   code = replace(code, "Ptr{logical}" => "Ptr{Bool}")
   code = replace(code, "Ptr{rp_}" => "Ptr{Float64}")
   code = replace(code, "Ptr{rpc_}" => "Ptr{Float64}")
