@@ -104,4 +104,5 @@ CUTEst.uvartype
 CUTEst.fopen
 CUTEst.csgrshp
 CUTEst.ccfsg
+CUTEst.classification
 ```
