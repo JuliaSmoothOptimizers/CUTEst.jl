@@ -44,7 +44,7 @@ Returns a subset of the CUTEst problems using the classification file `classf.js
 
 - `only_*` flags are self-explaining. Note that they appear in conflicting pairs. Both can be false, but only one can be true.
 
-- `objtype` is the classification of the objective function according to the [MASTSIF classification](https://www.cuter.rl.ac.uk/Problems/classification.shtml). It can be a number, a symbol, a string, or an array of those.
+- `objtype` is the classification of the objective function according to the [MASTSIF classification](https://ralna.github.io/SIFDecode/html/classification/). It can be a number, a symbol, a string, or an array of those.
   - `1`, `:none` or `"none"` means there is no objective function;
   - `2`, `:constant` or `"constant"` means the objective function is a constant;
   - `3`, `:linear` or `"linear"` means the objective function is a linear functional;
