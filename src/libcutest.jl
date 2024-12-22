@@ -456,9 +456,9 @@ function cutest_cint_chprod_(libsif, status, n, m, goth, x, y, p, q)
                                   q::Ptr{Float64})::Cvoid
 end
 
-function cutest_cint_chsprod_(libsif, status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
-  ptr_cutest_cint_chsprod_ = Libdl.dlsym(libsif, :cutest_cint_chsprod_)
-  @ccall $ptr_cutest_cint_chsprod_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
+function cutest_cint_cshprod_(libsif, status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
+  ptr_cutest_cint_cshprod_ = Libdl.dlsym(libsif, :cutest_cint_cshprod_)
+  @ccall $ptr_cutest_cint_cshprod_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
                                    x::Ptr{Float64}, y::Ptr{Float64}, nnzp::Ptr{Cint},
                                    indp::Ptr{Cint}, p::Ptr{Float64}, nnzr::Ptr{Cint},
                                    indr::Ptr{Cint}, r::Ptr{Float64})::Cvoid
@@ -1012,9 +1012,9 @@ function cutest_cint_chprod_s_(libsif, status, n, m, goth, x, y, p, q)
                                     q::Ptr{Float32})::Cvoid
 end
 
-function cutest_cint_chsprod_s_(libsif, status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
-  ptr_cutest_cint_chsprod_s_ = Libdl.dlsym(libsif, :cutest_cint_chsprod_s_)
-  @ccall $ptr_cutest_cint_chsprod_s_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
+function cutest_cint_cshprod_s_(libsif, status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
+  ptr_cutest_cint_cshprod_s_ = Libdl.dlsym(libsif, :cutest_cint_cshprod_s_)
+  @ccall $ptr_cutest_cint_cshprod_s_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
                                      x::Ptr{Float32}, y::Ptr{Float32}, nnzp::Ptr{Cint},
                                      indp::Ptr{Cint}, p::Ptr{Float32}, nnzr::Ptr{Cint},
                                      indr::Ptr{Cint}, r::Ptr{Float32})::Cvoid
@@ -1572,9 +1572,9 @@ function cutest_cint_chprod_q_(libsif, status, n, m, goth, x, y, p, q)
                                     q::Ptr{Float128})::Cvoid
 end
 
-function cutest_cint_chsprod_q_(libsif, status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
-  ptr_cutest_cint_chsprod_q_ = Libdl.dlsym(libsif, :cutest_cint_chsprod_q_)
-  @ccall $ptr_cutest_cint_chsprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
+function cutest_cint_cshprod_q_(libsif, status, n, m, goth, x, y, nnzp, indp, p, nnzr, indr, r)
+  ptr_cutest_cint_cshprod_q_ = Libdl.dlsym(libsif, :cutest_cint_cshprod_q_)
+  @ccall $ptr_cutest_cint_cshprod_q_(status::Ptr{Cint}, n::Ptr{Cint}, m::Ptr{Cint}, goth::Ptr{Bool},
                                      x::Ptr{Float128}, y::Ptr{Float128}, nnzp::Ptr{Cint},
                                      indp::Ptr{Cint}, p::Ptr{Float128}, nnzr::Ptr{Cint},
                                      indr::Ptr{Cint}, r::Ptr{Float128})::Cvoid
