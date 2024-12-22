@@ -17,7 +17,7 @@ SIFDecode_jll = "54dcf436-342f-53ea-8005-3708a1ae6c8c"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
-CUTEst_jll = "=2.3.0"
+CUTEst_jll = "=2.4.0"
 Combinatorics = "1.0"
 DataStructures = "0.18"
 JSON = "0.21"
