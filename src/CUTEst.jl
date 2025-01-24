@@ -34,7 +34,12 @@ function __init__()
     # gfortran is installed with an artifact on Windows
     if !success(`bash -c "type gfortran"`)
       error("gfortran is not installed. Please install it and try again.")
-    end
+    else
+      arch_julia = String(Sys.ARCH)
+      arch_gfortran = readchomp(`gfortran -dumpmachine`)
+      if !contains(arch_gfortran, arch_julia)
+        @warn "Julia ($arch_julia) was compiled for a different architecture than gfortran ($arch_gfortran)."
+      end
   end
 
   # set default MASTSIF location if the user hasn't set it already
