@@ -3,7 +3,7 @@ module CUTEst
 
 using CUTEst_jll
 import SIFDecode_jll
-using Pkg.Artifacts
+using LazyArtifacts
 using Libdl
 using Quadmath
 using NLPModels
