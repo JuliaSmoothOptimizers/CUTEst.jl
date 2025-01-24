@@ -24,7 +24,7 @@ JSON = "0.21"
 NLPModels = "0.21.3"
 Quadmath = "0.5.10"
 SIFDecode_jll = "2.6.1"
-julia = "^1.6.0"
+julia = "1.10"
 
 [extras]
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"

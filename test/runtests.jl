@@ -34,14 +34,11 @@ for pb in problems
   println()
 end
 
-if Sys.iswindows() || VERSION ≥ v"1.10"
-  for precision in (:single, :double, :quadruple)
-    (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
-    @testset "Multiple instances of CUTEstModel -- $precision precision" begin
-      nlps = [CUTEstModel(problem, precision = precision) for problem in problems]
-      for nlp in nlps
-        finalize(nlp)
-      end
+for precision in (:single, :double, :quadruple)
+  @testset "Multiple instances of CUTEstModel -- $precision precision" begin
+    nlps = [CUTEstModel(problem, precision = precision) for problem in problems]
+    for nlp in nlps
+      finalize(nlp)
     end
   end
 end
