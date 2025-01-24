@@ -26,6 +26,7 @@ end
 for pb in problems
   println("--- build_libsif -- $pb ---")
   for precision in (:single, :double, :quadruple)
+    (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
     print("$precision ")
     build_libsif(pb, precision = precision)
     println("✓")
@@ -35,6 +36,7 @@ end
 
 if Sys.iswindows() || VERSION ≥ v"1.10"
   for precision in (:single, :double, :quadruple)
+    (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
     @testset "Multiple instances of CUTEstModel -- $precision precision" begin
       nlps = [CUTEstModel(problem, precision = precision) for problem in problems]
       for nlp in nlps
@@ -51,6 +53,7 @@ include("multiple_precision.jl")
 
 for problem in problems
   for T in (Float32, Float64, Float128)
+    (T == Float128) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
     println("Testing interfaces on problem $problem in $(dict_precision[T]) precision")
     nlp = CUTEstModel{T}(problem)
     nlp_man = eval(Symbol(problem))(T)
@@ -73,6 +76,7 @@ problems = randsubseq(problems, 0.1)
 
 for p in problems
   for T in (Float32, Float64, Float128)
+    (T == Float128) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
     nlp = CUTEstModel{T}(p)
     x0 = nlp.meta.x0
     nvar, ncon = nlp.meta.nvar, nlp.meta.ncon
@@ -102,6 +106,7 @@ finalize(nlp)
 @testset "Test decoding separately (issue #239)" begin
   problems = ["AKIVA", "ROSENBR", "ZANGWIL2"]
   for T in (Float32, Float64, Float128)
+    (T == Float128) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
     # Decoding
     for p in problems
       nlp = CUTEstModel{T}(p)

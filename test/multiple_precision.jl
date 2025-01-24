@@ -1,6 +1,7 @@
 function multiple_precision()
   @testset "Test multiple precision models" begin
     for T in (Float32, Float64, Float128)
+      (T == Float128) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
       for p in ["ROSENBR", "HS35", "ALLINITA"]
         nlp = CUTEstModel{T}(p)
         x = T.(nlp.meta.x0)
