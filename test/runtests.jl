@@ -35,6 +35,7 @@ for pb in problems
 end
 
 for precision in (:single, :double, :quadruple)
+  (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
   @testset "Multiple instances of CUTEstModel -- $precision precision" begin
     nlps = [CUTEstModel(problem, precision = precision) for problem in problems]
     for nlp in nlps
