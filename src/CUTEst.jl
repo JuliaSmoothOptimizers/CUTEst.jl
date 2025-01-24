@@ -40,6 +40,7 @@ function __init__()
       if !contains(arch_gfortran, arch_julia)
         @warn "Julia ($arch_julia) was compiled for a different architecture than gfortran ($arch_gfortran)."
       end
+    end
   end
 
   # set default MASTSIF location if the user hasn't set it already
