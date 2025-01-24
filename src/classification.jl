@@ -157,9 +157,6 @@ function select_sif_problems(;
   return selection
 end
 
-# Keep an unexported function `select` to not break the tutorial
-select(; kwargs...) = select_sif_problems(; kwargs...)
-
 canonicalize_ftype(reqtype::Integer, allowedtypes) = [allowedtypes[reqtype]]
 canonicalize_ftype(reqtype::Symbol, allowedtypes) = [string(reqtype)]
 canonicalize_ftype(reqtype::AbstractString, allowedtypes) = [reqtype]
