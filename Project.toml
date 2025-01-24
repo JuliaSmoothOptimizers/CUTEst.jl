@@ -22,18 +22,23 @@ Combinatorics = "1.0"
 DataStructures = "0.18"
 JSON = "0.21"
 LazyArtifacts = "1.10"
+LinearAlgebra = "1.10"
 NLPModels = "0.21.3"
+NLPModelsTest = "0.10.2"
 Quadmath = "0.5.10"
+REPL = "1.10"
+Random = "1.10"
 SIFDecode_jll = "2.6.1"
+SparseArrays = "1.10"
+Test = "1.10"
 julia = "1.10"
 
 [extras]
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
-LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NLPModelsTest = "7998695d-6960-4d3a-85c4-e1bceb8cd856"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Combinatorics", "LinearAlgebra", "NLPModelsTest", "Random", "SparseArrays", "Test"]
+test = ["Combinatorics", "NLPModelsTest", "Random", "SparseArrays", "Test"]
