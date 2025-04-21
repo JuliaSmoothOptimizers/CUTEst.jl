@@ -113,9 +113,17 @@ function CUTEstModel{T}(
     end
   end
 
-  precision = (T == Float32) ? :single : (T == Float64) ? :double : :quadruple
+  if T == Float32
+    precision = :single
+  elseif T == Float64
+    precision = :double
+  elseif T == Float128
+    precision = :quadruple
+  else
+    error("The precision $T is not supported.")
+  end
   pname, sif = basename(name) |> splitext
-  outsdif = "OUTSDIF_$(pname)_$precision.d"
+  outsdif = _name_outsdif(pname, precision)
   libsif = C_NULL
 
   funit = rand(1000:10000) |> Ref{Cint}
@@ -125,10 +133,10 @@ function CUTEstModel{T}(
     libsif_name = "lib$(pname)_$(precision)"
     if !decode
       isfile(outsdif) || error("CUTEst: no decoded problem found")
-      isfile("$(libsif_name).$dlext") || error("CUTEst: lib not found; decode problem first")
+      isfile("$libsif_name.$dlext") || error("CUTEst: $libsif_name.$dlext not found; decode problem first")
     else
-      sifdecoder(path_sifname, args..., verbose = verbose, outsdif = outsdif, precision = precision)
-      build_libsif(path_sifname, precision = precision)
+      sifdecoder(path_sifname, args...; verbose, precision)
+      build_libsif(path_sifname; precision)
     end
     libsif = Libdl.dlopen(libsif_name, Libdl.RTLD_NOW | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL)
     fopen(T, libsif, funit, outsdif, status)
