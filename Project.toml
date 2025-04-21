@@ -1,6 +1,6 @@
 name = "CUTEst"
 uuid = "1b53aba6-35b6-5f92-a507-53c67d53f819"
-version = "1.1.2"
+version = "1.2.0"
 
 [deps]
 CUTEst_jll = "bb5f6f25-f23d-57fd-8f90-3ef7bad1d825"
