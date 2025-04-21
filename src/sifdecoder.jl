@@ -40,9 +40,34 @@ function list_sif_problems()
   return problems
 end
 
+function _suffix_precision(precision::Symbol)
+  if precision == :single
+    return "_s"
+  elseif precision == :double
+    return ""
+  elseif precision == :quadruple
+    return "_q"
+  else
+    error("The $precision precision is not supported.")
+  end
+end
+
+function _decoder_precision(precision::Symbol)
+  if precision == :single
+    return "-sp"
+  elseif precision == :double
+    return "-dp"
+  elseif precision == :quadruple
+    return "-qp"
+  else
+    error("The $precision precision is not supported.")
+  end
+end
+
 function _name_outsdif(name::String, precision::Symbol)
   sifname, extension = basename(name) |> splitext
-  name = "OUTSDIF_$(sifname)_$(precision).d"
+  suffix = _suffix_precision(precision)
+  name = "OUTSDIF_$(sifname)$(suffix).d"
   return name
 end
 
@@ -57,7 +82,6 @@ Decodes a SIF problem, converting it into a format suitable for further processi
 - `args...`: Additional arguments passed directly to the SIF decoder. Relevant for problems with variable sizes.
 - `verbose::Bool`: If `true`, enables verbose output during the decoding process. Defaults to `false`.
 - `precision::Symbol`: The desired precision for the problem. Can be `:single`, `:double` (default), or `:quadruple`.
-- `outsdif::String`: The name of the file `OUTSDIF.d` required for automatic differentiation. Defaults to `"OUTSDIF_sifname_precision.d"`, where `sifname` and `precision` are replaced with the problem name and chosen precision.
 - `libsif_folder::String`: The directory where the generated files (`*.f` and `*.d`) will be stored. Defaults to `libsif_path`.
 
 ```julia
@@ -71,21 +95,12 @@ function sifdecoder(
   args...;
   verbose::Bool = false,
   precision::Symbol = :double,
-  outsdif::String = _name_outsdif(name, precision),
   libsif_folder::String = libsif_path,
 )
-  if precision == :single
-    prec = "-sp"
-    suffix = "_s"
-  elseif precision == :double
-    prec = "-dp"
-    suffix = ""
-  elseif precision == :quadruple
-    prec = "-qp"
-    suffix = "_q"
-  else
-    error("The $precision precision is not supported.")
-  end
+  outsdif = _name_outsdif(name, precision)
+  prec = _decoder_precision(precision)
+  suffix = _suffix_precision(precision)
+  pname, sif = basename(name) |> splitext
 
   if length(name) < 4 || name[(end - 3):end] != ".SIF"
     name = "$name.SIF"
@@ -102,11 +117,12 @@ function sifdecoder(
   outlog = tempname()
   errlog = tempname()
   cd(libsif_folder) do
-    delete_temp_files(suffix)
+    delete_temp_files(pname, suffix)
+    isfile(outsdif) && rm(outsdif, force = true)
     run(
       pipeline(
         Cmd(
-          `$(SIFDecode_jll.sifdecoder_standalone()) $(args) $(prec) $(path_sifname)`,
+          `$(SIFDecode_jll.sifdecoder_standalone()) $(args) $(prec) -suffix $(path_sifname)`,
           ignorestatus = true,
         ),
         stdout = outlog,
@@ -122,7 +138,6 @@ function sifdecoder(
       output_str = read(outlog, String)
       println(output_str)
     end
-    isfile("OUTSDIF.d") && mv("OUTSDIF.d", outsdif, force = true)
   end
   rm(outlog)
   rm(errlog)
@@ -153,27 +168,13 @@ function build_libsif(
   precision::Symbol = :double,
   libsif_folder::String = libsif_path,
 )
-  if precision == :single
-    prec = "-sp"
-    suffix = "_s"
-    library = "cutest_single"
-  elseif precision == :double
-    prec = "-dp"
-    suffix = ""
-    library = "cutest_double"
-  elseif precision == :quadruple
-    prec = "-qp"
-    suffix = "_q"
-    library = "cutest_quadruple"
-  else
-    error("The $precision precision is not supported.")
-  end
-
   pname, sif = basename(name) |> splitext
   libsif_name = "lib$(pname)_$(precision)"
+  suffix = _suffix_precision(precision)
+  libcutest = joinpath(libcutest_path, "libcutest_$precision.a")
 
   cd(libsif_folder) do
-    if isfile("ELFUN$suffix.f")
+    if isfile("ELFUN_$pname$suffix.f")
       object_files = String[]
       for file in (
         "ELFUN",
@@ -187,19 +188,19 @@ function build_libsif(
         "EXTER",
         "EXTERA",
       )
-        if isfile("$file$suffix.f")
+        fname = "$(file)_$pname$suffix"
+        if isfile("$fname.f")
           @static if Sys.iswindows()
             mingw = Int == Int64 ? "mingw64" : "mingw32"
             gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
-            run(`$gfortran -O3 -c -fPIC $file$suffix.f`)
+            run(`$gfortran -O3 -c -fPIC $fname.f`)
           else
-            run(`gfortran -O3 -c -fPIC $file$suffix.f`)
+            run(`gfortran -O3 -c -fPIC $fname.f`)
           end
-          push!(object_files, "$file$suffix.o")
+          push!(object_files, "$fname.o")
         end
       end
       if Sys.isapple()
-        libcutest = joinpath(libcutest_path, "lib$library.a")
         run(
           `gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-all_load $libcutest`,
         )
@@ -207,25 +208,25 @@ function build_libsif(
         @static if Sys.iswindows()
           mingw = Int == Int64 ? "mingw64" : "mingw32"
           gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
-          libcutest = joinpath(libcutest_path, "lib$library.a")
           run(
             `$gfortran -shared -o $(libsif_name).$dlext $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
           )
         end
       else
-        libcutest = joinpath(libcutest_path, "lib$library.a")
         run(
           `gfortran -shared -o $(libsif_name).$dlext $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
         )
       end
-      delete_temp_files(suffix)
+      delete_temp_files(pname, suffix)
+    else
+      error("The file $pname.SIF was not decoded in the folder $libsif_folder.")
     end
   end
   return nothing
 end
 
-function delete_temp_files(suffix::String)
-  for f in (
+function delete_temp_files(pname::String, suffix::String)
+  for file in (
     "ELFUN",
     "ELFUNF",
     "ELFUND",
@@ -238,11 +239,10 @@ function delete_temp_files(suffix::String)
     "EXTERA",
   )
     for ext in ("f", "o")
-      fname = "$f$suffix.$ext"
+      fname = "$(file)_$pname$suffix.$ext"
       isfile(fname) && rm(fname, force = true)
     end
   end
-  isfile("OUTSDIF.d") && rm("OUTSDIF.d", force = true)
   nothing
 end
 
