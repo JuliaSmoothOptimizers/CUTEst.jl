@@ -72,8 +72,8 @@ function _name_outsdif(name::String, precision::Symbol)
 end
 
 """
-    sifdecoder(name::String, args...; verbose::Bool=false, precision::Symbol=:double,
-               outsdif::String=_name_outsdif(name, precision), libsif_folder=libsif_path)
+    sifdecoder(name::String, args...; verbose::Bool=false,
+               precision::Symbol=:double, libsif_folder=libsif_path)
 
 Decodes a SIF problem, converting it into a format suitable for further processing.
 
