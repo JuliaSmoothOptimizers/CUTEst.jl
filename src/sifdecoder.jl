@@ -71,7 +71,7 @@ function _name_outsdif(name::String, precision::Symbol)
   return name
 end
 
-function _name_libsif(name::String, precision::Symbol; standalone::Bool=false)
+function _name_libsif(name::String, precision::Symbol; standalone::Bool = false)
   sifname, extension = basename(name) |> splitext
   if standalone
     return "lib$(sifname)_$(precision)_standalone.$dlext"
