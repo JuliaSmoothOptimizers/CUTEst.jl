@@ -71,6 +71,15 @@ function _name_outsdif(name::String, precision::Symbol)
   return name
 end
 
+function _name_libsif(name::String, precision::Symbol; standalone::Bool=false)
+  sifname, extension = basename(name) |> splitext
+  if standalone
+    return "lib$(sifname)_$(precision)_standalone.$dlext"
+  else
+    return "lib$(sifname)_$(precision).$dlext"
+  end
+end
+
 """
     sifdecoder(name::String, args...; verbose::Bool=false,
                precision::Symbol=:double, libsif_folder=libsif_path)
@@ -145,13 +154,15 @@ function sifdecoder(
 end
 
 """
-    build_libsif(name::String; precision::Symbol=:double, libsif_folder::String=libsif_path)
+    build_libsif(name::String; precision::Symbol=:double, standalone::Bool=false,
+                 libsif_folder::String=libsif_path)
 
 Builds a shared library from a decoded SIF problem.
 
 # Arguments
 - `name::String`: The path or name of the SIF problem, with or without the extension `.SIF`.
 - `precision::Symbol`: The desired precision of the problem. Can be `:single`, `:double` (default), or `:quadruple`.
+- `standalone::Bool`: If `true`, creates a standalone shared library for the SIF problem without requiring CUTEst. Only relevant to GALAHAD.jl. Defaults to `false`.
 - `libsif_folder::String`: The directory where the compiled library will be stored. Defaults to `libsif_path`.
 
 !!! warning
@@ -166,10 +177,11 @@ build_libsif("/home/alexis/CUTEst/BROWNDEN.SIF", precision=:quadruple)
 function build_libsif(
   name::AbstractString;
   precision::Symbol = :double,
+  standalone::Bool = false,
   libsif_folder::String = libsif_path,
 )
   pname, sif = basename(name) |> splitext
-  libsif_name = "lib$(pname)_$(precision)"
+  libsif_name = _name_libsif(pname, precision; standalone)
   suffix = _suffix_precision(precision)
   libcutest = joinpath(libcutest_path, "libcutest_$precision.a")
 
@@ -201,21 +213,27 @@ function build_libsif(
         end
       end
       if Sys.isapple()
-        run(
-          `gfortran -dynamiclib -o $(libsif_name).$dlext $(object_files) -Wl,-all_load $libcutest`,
-        )
+        if standalone
+          run(`gfortran -dynamiclib -o $libsif_name $object_files`)
+        else
+          run(`gfortran -dynamiclib -o $libsif_name $object_files -Wl,-all_load $libcutest`)
+        end
       elseif Sys.iswindows()
         @static if Sys.iswindows()
           mingw = Int == Int64 ? "mingw64" : "mingw32"
           gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
-          run(
-            `$gfortran -shared -o $(libsif_name).$dlext $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
-          )
+          if standalone
+            run(`$gfortran -shared -o $libsif_name $object_files`)
+          else
+            run(`$gfortran -shared -o $libsif_name $object_files -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`)
+          end
         end
       else
-        run(
-          `gfortran -shared -o $(libsif_name).$dlext $(object_files) -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`,
-        )
+        if standalone
+          run(`gfortran -shared -o $libsif_name $object_files`)
+        else
+          run(`gfortran -shared -o $libsif_name $object_files -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`)
+        end
       end
       delete_temp_files(pname, suffix)
     else
@@ -271,6 +289,8 @@ Data files `OUTSDIF_*.d`, which store preprocessed information required for auto
 By default, the problems are sorted by name.
 Alternatively, you can sort them by file size on disk by specifying `sort_by=:size`.
 Use `rev=true` to reverse the sort order.
+
+Note: Shared libraries for SIF problems compiled with `standalone = true` can only be removed using the function [`clear_libsif`](@ref).
 """
 function manage_libsif(; sort_by::Symbol = :name, rev::Bool = false)
   # Get all installed libsif / outsdif
