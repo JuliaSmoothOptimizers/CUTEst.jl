@@ -28,8 +28,19 @@ for pb in problems
   for precision in (:single, :double, :quadruple)
     (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
     print("$precision ")
-    build_libsif(pb, precision = precision, standalone=true)
-    build_libsif(pb, precision = precision, standalone=false)
+    build_libsif(pb, precision = precision)
+    println("✓")
+  end
+  println()
+end
+
+for pb in problems
+    println("--- build_libsif -- $pb --- standalone")
+  for precision in (:single, :double, :quadruple)
+    (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
+    print("$precision ")
+    sifdecoder(pb, precision = precision)
+    build_libsif(pb, precision = precision, standalone = true)
     println("✓")
   end
   println()
