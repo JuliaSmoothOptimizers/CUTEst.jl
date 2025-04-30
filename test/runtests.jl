@@ -35,7 +35,7 @@ for pb in problems
 end
 
 for pb in problems
-    println("--- build_libsif -- $pb --- standalone")
+  println("--- build_libsif -- $pb --- standalone")
   for precision in (:single, :double, :quadruple)
     (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
     print("$precision ")
