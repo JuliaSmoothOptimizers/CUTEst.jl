@@ -212,6 +212,7 @@ function build_libsif(
           push!(object_files, "$fname.o")
         end
       end
+      #! format: off
       if Sys.isapple()
         if standalone
           run(`gfortran -dynamiclib -o $libsif_name $object_files`)
@@ -235,6 +236,7 @@ function build_libsif(
           run(`gfortran -shared -o $libsif_name $object_files -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`)
         end
       end
+      #! format: on
       delete_temp_files(pname, suffix)
     else
       error("The file $pname.SIF was not decoded in the folder $libsif_folder.")
