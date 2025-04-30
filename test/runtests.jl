@@ -34,6 +34,18 @@ for pb in problems
   println()
 end
 
+for pb in problems
+    println("--- build_libsif -- $pb --- standalone")
+  for precision in (:single, :double, :quadruple)
+    (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
+    print("$precision ")
+    sifdecoder(pb, precision = precision)
+    build_libsif(pb, precision = precision, standalone = true)
+    println("✓")
+  end
+  println()
+end
+
 for precision in (:single, :double, :quadruple)
   (precision == :quadruple) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
   @testset "Multiple instances of CUTEstModel -- $precision precision" begin

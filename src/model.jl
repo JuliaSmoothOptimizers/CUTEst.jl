@@ -130,11 +130,11 @@ function CUTEstModel{T}(
   status = Ref{Cint}(0)
 
   cd(libsif_path) do
-    libsif_name = "lib$(pname)_$(precision)"
+    libsif_name = _name_libsif(pname, precision)
     if !decode
-      isfile(outsdif) || error("CUTEst: no decoded problem found")
-      isfile("$libsif_name.$dlext") ||
-        error("CUTEst: $libsif_name.$dlext not found; decode problem first")
+      isfile(outsdif) || error("CUTEst: $outsdif not found; decode the problem $pname first")
+      isfile(libsif_name) ||
+        error("CUTEst: $libsif_name not found; decode the problem $pname first")
     else
       sifdecoder(path_sifname, args...; verbose, precision)
       build_libsif(path_sifname; precision)
