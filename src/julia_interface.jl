@@ -324,10 +324,14 @@ function NLPModels.jac_nln_structure!(
 ) where {T}
   @lencheck nlp.meta.nln_nnzj rows cols
   k = 1
-  for i in findall(j -> j in nlp.meta.nln, nlp.jrows)
-    rows[k] = nlp.jrows[i] - count(x < nlp.jrows[i] for x in nlp.meta.lin)
-    cols[k] = nlp.jcols[i]
-    k += 1
+  for index in eachindex(nlp.jrows)
+    jr = nlp.jrows[index]
+    if jr in nlp.meta.nln
+      offset = count(x < nlp.jrows[index] for x in nlp.meta.lin)
+      rows[k] = jr - offset
+      cols[k] = nlp.jcols[index]
+      k += 1
+    end
   end
   return rows, cols
 end
