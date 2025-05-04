@@ -12,6 +12,7 @@ using JSON
 import Libdl.dlsym
 import REPL.TerminalMenus
 import Base.format_bytes
+import Base.RefValue
 import Printf.@sprintf
 import DataStructures: OrderedDict
 

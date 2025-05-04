@@ -60,6 +60,7 @@ include("test_core.jl")
 include("test_julia.jl")
 include("coverage.jl")
 include("multiple_precision.jl")
+include("test_allocations.jl")
 
 for problem in problems
   for T in (Float32, Float64, Float128)
