@@ -25,6 +25,7 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
   ncon::RefValue{Cint}
   nnzj::RefValue{Cint}
   nnzh::RefValue{Cint}
+  nnzh_jth::RefValue{Cint}
   f::RefValue{T}
   status::RefValue{Cint}
 end
@@ -326,6 +327,7 @@ function CUTEstModel{T}(
     Ref{Cint}(ncon),
     Ref{Cint}(nnzj),
     Ref{Cint}(nnzh),
+    Ref{Cint}(),
     Ref{T}(),
     status,
   )

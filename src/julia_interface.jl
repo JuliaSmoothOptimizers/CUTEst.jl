@@ -763,7 +763,6 @@ function NLPModels.jth_hess_coord!(
   @rangecheck 1 nlp.meta.ncon j
   ref_j = nlp.index
   ref_j[] = j
-  nnzh_output = Ref{Cint}()
   cish(
     T,
     nlp.libsif,
@@ -771,7 +770,7 @@ function NLPModels.jth_hess_coord!(
     nlp.nvar,
     x,
     ref_j,
-    nnzh_output,
+    nlp.nnzh_jth,
     nlp.nnzh,
     vals,
     nlp.hcols,
