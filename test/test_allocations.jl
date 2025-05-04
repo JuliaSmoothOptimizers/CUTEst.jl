@@ -3,6 +3,8 @@
         (T == Float128) && (Sys.ARCH == :aarch64) && Sys.islinux() && continue
         nlp = CUTEstModel{T}(pb)
         NLPModelsTest.test_zero_allocations(nlp; linear_api=true)
+        mems = NLPModelsTest.test_allocs_nlpmodels(nlp; linear_api=true)
+        display(mems)
         finalize(nlp)
     end
 end
