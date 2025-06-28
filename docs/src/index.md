@@ -45,7 +45,7 @@ pkg> add CUTEst
 
 ## Usage
 
-Check the tutorial for complete usage instructions.
+You can check an [Introduction to CUTEst.jl](https://jso.dev/tutorials/introduction-to-cutest/) on our [site](https://jso.dev/).
 
 The simplest way to use CUTEst is through the interface provided by NLPModels.jl.
 
