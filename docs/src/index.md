@@ -67,9 +67,10 @@ You can pass parameters to `sifdecoder` by providing additional arguments to `CU
 using CUTEst
 
 for nh in 50:50:200
-  nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh")
-  println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
-  finalize(nlp)
+  CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh") do nlp
+    println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
+    finalize(nlp)
+  end
 end
 ```
 
