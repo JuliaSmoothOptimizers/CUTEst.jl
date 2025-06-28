@@ -47,9 +47,9 @@ pkg> add CUTEst
 
 You can check an [Introduction to CUTEst.jl](https://jso.dev/tutorials/introduction-to-cutest/) on our [site](https://jso.dev/).
 
-The simplest way to use CUTEst is through the interface provided by NLPModels.jl:
+The simplest way to use CUTEst is through the interface provided by NLPModels.jl.
 
-```julia
+```@example
 using CUTEst, NLPModels
 
 nlp = CUTEstModel{Float64}("ROSENBR")
@@ -59,18 +59,17 @@ println("gx = $( grad(nlp, nlp.meta.x0) )")
 println("Hx = $( hess(nlp, nlp.meta.x0) )")
 ```
 
-Check the NLPModels API for details.
+Check the [NLPModels API](https://jso.dev/NLPModels.jl/stable/api/) for details.
 
-You can also pass parameters to sifdecoder by providing additional arguments to CUTEstModel.
-For instance, to create the CHAIN problem with different values of NH:
+You can pass parameters to `sifdecoder` by providing additional arguments to `CUTEstModel`. For instance, to change `NH` for the model `CHAIN`, use:
 
-```julia
+```@example
 using CUTEst
 
 for nh in 50:50:200
-    nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh")
-    println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
-    finalize(nlp)
+  nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh")
+  println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
+  finalize(nlp)
 end
 ```
 
