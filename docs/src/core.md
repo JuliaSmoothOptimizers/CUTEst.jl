@@ -26,7 +26,6 @@ x = rand(T, nlp.meta.nvar)
 f = Ref{T}()
 CUTEst.ufn(T, nlp.libsif, nlp.status, nlp.nvar, x, f)
 println(f[])
-end
 ```
 
 ```@docs
