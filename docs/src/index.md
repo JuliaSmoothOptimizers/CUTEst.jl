@@ -67,14 +67,19 @@ You can pass parameters to `sifdecoder` by providing additional arguments to `CU
 using CUTEst
 
 for nh in 50:50:200
-  CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh") do nlp
-    println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
-    finalize(nlp)
-  end
+    CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh") do nlp
+        println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
+
+        # finalize(nlp) is usually called automatically by Julia's garbage collector.
+        # However, since we recreate a model with the same problem name but a different `nh`,
+        # we call finalize manually to avoid conflicts and ensure the shared library is properly unloaded.
+
+        finalize(nlp)
+    end
 end
 ```
-
-`finalize(nlp)` is automatically handled by the garbage collector; however, you may need to call it manually if you want to recreate a model with the same problem but of a different size.
+finalize(nlp) is normally handled by the garbage collector; however, we call it manually here because we may need to recreate a model
+with the same problem but a different size (`nh`). This avoids relying on the next GC cycle and ensures the shared library is safely overwritten.
 
 ## Working with CUTEst directly
 
