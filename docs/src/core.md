@@ -21,7 +21,7 @@ using CUTEst, Quadmath
 
 # Float32, Float64 and Float128 are supported
 T = Float64
-nlp = CUTEstModel{T}("PROBLEM")
+nlp = CUTEstModel{T}("CHAIN")
 x = rand(T, nlp.meta.nvar)
 f = Ref{T}()
 CUTEst.ufn(T, nlp.libsif, nlp.status, nlp.nvar, x, f)

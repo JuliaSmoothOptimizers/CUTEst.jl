@@ -13,7 +13,6 @@ makedocs(
   sitename = "CUTEst.jl",
   pages = [
     "Home" => "index.md",
-    "Overview of CUTEst.jl" => "tutorial.md",
     "CUTEstModel" => "model.md",
     "Managing SIF files" => "sifdecoder.md",
     "Classification of SIF problems" => "classification.md",

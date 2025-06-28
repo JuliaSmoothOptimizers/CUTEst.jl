@@ -45,7 +45,7 @@ pkg> add CUTEst
 
 ## Usage
 
-Check the tutorial for complete usage instructions.
+You can check an [Introduction to CUTEst.jl](https://jso.dev/tutorials/introduction-to-cutest/) on our [site](https://jso.dev/).
 
 The simplest way to use CUTEst is through the interface provided by NLPModels.jl.
 
@@ -73,7 +73,11 @@ for nh in 50:50:200
 end
 ```
 
-`finalize(nlp)` is automatically handled by the garbage collector; however, you may need to call it manually if you want to recreate a model with the same problem but of a different size.
+Each call to CUTEstModel creates an independent model.
+You do not need to call finalize(nlp) manually: the finalizer in CUTEst.jl handles unloading the shared library automatically when the model is garbage-collected.
+
+!!! note
+The finalizer is automatic, but when creating multiple models with the same problem name in the same process, you must finalize explicitly to avoid conflicts.
 
 ## Working with CUTEst directly
 
