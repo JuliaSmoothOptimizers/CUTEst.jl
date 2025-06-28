@@ -47,9 +47,9 @@ pkg> add CUTEst
 
 You can check an [Introduction to CUTEst.jl](https://jso.dev/tutorials/introduction-to-cutest/) on our [site](https://jso.dev/).
 
-The simplest way to use CUTEst is through the interface provided by NLPModels.jl.
+The simplest way to use CUTEst is through the interface provided by NLPModels.jl:
 
-```@example
+```julia
 using CUTEst, NLPModels
 
 nlp = CUTEstModel{Float64}("ROSENBR")
@@ -59,27 +59,26 @@ println("gx = $( grad(nlp, nlp.meta.x0) )")
 println("Hx = $( hess(nlp, nlp.meta.x0) )")
 ```
 
-Check the [NLPModels API](https://jso.dev/NLPModels.jl/stable/api/) for details.
+Check the NLPModels API for details.
 
-You can pass parameters to `sifdecoder` by providing additional arguments to `CUTEstModel`. For instance, to change `NH` for the model `CHAIN`, use:
+You can also pass parameters to sifdecoder by providing additional arguments to CUTEstModel.
+For instance, to create the CHAIN problem with different values of NH:
 
-```@example
+```julia
 using CUTEst
 
 for nh in 50:50:200
-    CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh") do nlp
-        println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
-
-        # finalize(nlp) is usually called automatically by Julia's garbage collector.
-        # However, since we recreate a model with the same problem name but a different `nh`,
-        # we call finalize manually to avoid conflicts and ensure the shared library is properly unloaded.
-
-        finalize(nlp)
-    end
+    nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=$nh")
+    println("nh = $nh, nnzh = $(nlp.meta.nnzh)")
+    finalize(nlp)
 end
 ```
-finalize(nlp) is normally handled by the garbage collector; however, we call it manually here because we may need to recreate a model
-with the same problem but a different size (`nh`). This avoids relying on the next GC cycle and ensures the shared library is safely overwritten.
+
+Each call to CUTEstModel creates an independent model.
+You do not need to call finalize(nlp) manually: the finalizer in CUTEst.jl handles unloading the shared library automatically when the model is garbage-collected.
+
+!!! note
+The finalizer is automatic, but when creating multiple models with the same problem name in the same process, you must finalize explicitly to avoid conflicts.
 
 ## Working with CUTEst directly
 

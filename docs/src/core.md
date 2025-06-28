@@ -21,11 +21,11 @@ using CUTEst, Quadmath
 
 # Float32, Float64 and Float128 are supported
 T = Float64
-CUTEstModel{T}("PROBLEM") do nlp
-    x = rand(T, nlp.meta.nvar)
-    f = Ref{T}()
-    CUTEst.ufn(T, nlp.libsif, nlp.status, nlp.nvar, x, f)
-    println(f[])
+nlp = CUTEstModel{T}("CHAIN")
+x = rand(T, nlp.meta.nvar)
+f = Ref{T}()
+CUTEst.ufn(T, nlp.libsif, nlp.status, nlp.nvar, x, f)
+println(f[])
 end
 ```
 
