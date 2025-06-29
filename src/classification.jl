@@ -36,69 +36,82 @@ const classdb_origin = Dict("A" => origins[1], "M" => origins[2], "R" => origins
 
 Returns a subset of the CUTEst problems using the classification file `classf.json`.
 
-## Keyword arguments
+### Keyword arguments
 
-- `min_var` and `max_var` set the number of variables in the problem;
+- `min_var` and `max_var`: set lower and upper bounds on the number of variables.
 
-- `min_con` and `max_con` set the number of constraints in the problem (use `max_con=0` for unconstrained or `min_con=1` for constrained);
+- `min_con` and `max_con`: set lower and upper bounds on the number of **linear or nonlinear constraints** (excluding simple bounds on variables).  
+  ⚠ `max_con=0` means: keep only problems with *no nonlinear or linear constraints*;  
+  **variable bounds are *not* counted as constraints** here, so bound-constrained problems will still be included.
 
-- `only_*` flags are self-explaining. Note that they appear in conflicting pairs. Both can be false, but only one can be true.
+- `only_*` flags: mutually exclusive filters to select problems with only:
+  - free variables (`only_free_var=true`)
+  - bounded variables (`only_bnd_var=true`)
+  - linear constraints (`only_linear_con=true`)
+  - nonlinear constraints (`only_nonlinear_con=true`)
+  - equality constraints (`only_equ_con=true`)
+  - inequality constraints (`only_ineq_con=true`)
+  
+  These can all be false, but at most one can be true.
 
-- `objtype` is the classification of the objective function according to the [MASTSIF classification](https://ralna.github.io/SIFDecode/html/classification/). It can be a number, a symbol, a string, or an array of those.
-  - `1`, `:none` or `"none"` means there is no objective function;
-  - `2`, `:constant` or `"constant"` means the objective function is a constant;
-  - `3`, `:linear` or `"linear"` means the objective function is a linear functional;
-  - `4`, `:quadratic` or `"quadratic"` means the objective function is quadratic;
-  - `5`, `:sum_of_squares` or `"sum_of_squares"` means the objective function is a sum of squares;
-  - `6`, `:other` or `"other"` means the objective function is none of the above.
+- `objtype`: filter by type of objective function, following the [MASTSIF classification](https://ralna.github.io/SIFDecode/html/classification/).  
+  Accepts a number, symbol, string, or an array of these:
+  - `1`, `:none` or `"none"`: no objective function
+  - `2`, `:constant` or `"constant"`
+  - `3`, `:linear` or `"linear"`
+  - `4`, `:quadratic` or `"quadratic"`
+  - `5`, `:sum_of_squares` or `"sum_of_squares"`
+  - `6`, `:other` or `"other"`
 
-- `contype` is the classification of the constraints according to the same MASTSIF classification file.
-  - `1`, `:unc` or `"unc"` means there are no constraints at all;
-  - `2`, `:fixed_vars` or `"fixed_vars"` means the only constraints are fixed variables;
-  - `3`, `:bounds` or `"bounds"` means the only constraints are bounded variables;
-  - `4`, `:network` or `"network"` means the constraints represent the adjacency matrix of a (linear) network;
-  - `5`, `:linear` or `"linear"` means the constraints are linear;
-  - `6`, `:quadratic` or `"quadratic"` means the constraints are quadratic;
-  - `7`, `:other` or `"other"` means the constraints are more general.
+- `contype`: filter by type of constraints, also from MASTSIF:
+  - `1`, `:unc` or `"unc"`: **truly unconstrained** — no linear/nonlinear constraints and no variable bounds
+  - `2`, `:fixed_vars` or `"fixed_vars"`: only fixed variables
+  - `3`, `:bounds` or `"bounds"`: only variable bounds
+  - `4`, `:network` or `"network"`
+  - `5`, `:linear` or `"linear"`: linear constraints
+  - `6`, `:quadratic` or `"quadratic"`
+  - `7`, `:other` or `"other"`
 
-- `custom_filter`: A function to apply additional filtering to the problem data. This data is provided as a dictionary with the following fields:
-  - `"objtype"`: String representing the objective function type. It can be one of the following:
-    - `"none"`, `"constant"`, `"linear"`, `"quadratic"`, `"sum_of_squares"`, `"other"`
+⚠ **Important difference**:
+- `max_con=0` keeps problems that may still have variable bounds (i.e., bound-constrained).
+- `contype="unc"` keeps *only* problems that have no constraints at all (no nonlinear constraints, no linear constraints, and no bounds).
 
-  - `"contype"`: String representing the constraint type. It can be one of the following:
-    - `"unc"`, `"fixed_vars"`, `"bounds"`, `"network"`, `"linear"`, `"quadratic"`, `"other"`
-
-  - `"regular"`: Boolean indicating whether the problem is regular or not.
-    - `"derivative_order"`: Integer representing the order of the highest derivative available.
-
-  - `"origin"`: String indicating the origin of the problem. Possible values are `"academic"`, `"modelling"`, or `"real"`.
-
-  - `"has_interval_var"`: Boolean indicating whether the problem includes interval variables.
-
-  - `"variables"`: Dictionary with fields related to variables:
-    - `"can_choose"`: Boolean indicating whether you can change the number of variables via parameters.
-    - `"number"`: Integer representing the number of variables (default if `"can_choose"` is true).
-    - `"fixed"`: Integer representing the number of fixed variables.
-    - `"free"`: Integer representing the number of free variables.
-    - `"bounded_below"`: Integer representing the number of variables bounded only from below.
-    - `"bounded_above"`: Integer representing the number of variables bounded only from above.
-    - `"bounded_both"`: Integer representing the number of variables bounded from both below and above.
-
-  - `"constraints"`: Dictionary with fields related to constraints:
-    - `"can_choose"`: Boolean indicating whether you can change the number of constraints via parameters.
-    - `"number"`: Integer representing the number of constraints (default if `"can_choose"` is true).
-    - `"equality"`: Integer representing the number of equality constraints.
-    - `"ineq_below"`: Integer representing the number of inequalities of the form `c(x) ≥ cl`.
-    - `"ineq_above"`: Integer representing the number of inequalities of the form `c(x) ≤ cu`.
-    - `"ineq_both"`: Integer representing the number of inequalities of the form `cl ≤ c(x) ≤ cu`.
-    - `"linear"`: Integer representing the number of linear constraints.
-    - `"nonlinear"`: Integer representing the number of nonlinear constraints.
-
+If you want to filter by truly unconstrained problems *after* selection, use:
 ```julia
-filtered_problems1 = select_sif_problems(; min_var=10, max_var=100, only_linear_con=true)
-filtered_problems2 = select_sif_problems(; max_con=0)
-filtered_problems3 = select_sif_problems(; min_con=1)
-```
+filter(p -> is_truly_unconstrained(p), select_sif_problems())
+
+    custom_filter: a function for additional filtering. Receives a dictionary with metadata, for example:
+
+        "objtype": "none", "constant", "linear", "quadratic", "sum_of_squares", "other"
+
+        "contype": "unc", "fixed_vars", "bounds", "network", "linear", "quadratic", "other"
+
+        "regular": Bool
+
+        "derivative_order": Int
+
+        "origin": "academic", "modelling", "real"
+
+        "has_interval_var": Bool
+
+        "variables": number and types of variables ("number", "fixed", "free", etc.)
+
+        "constraints": number and types of constraints ("number", "linear", "nonlinear", etc.)
+
+Examples
+
+# Problems with 10–100 variables and only linear constraints
+filtered1 = select_sif_problems(; min_var=10, max_var=100, only_linear_con=true)
+
+# Problems without nonlinear or linear constraints (may still have bounds)
+filtered2 = select_sif_problems(; max_con=0)
+
+# Problems that are truly unconstrained: no constraints and no variable bounds
+filtered3 = filter(is_truly_unconstrained, select_sif_problems())
+
+# Problems with at least one constraint
+filtered4 = select_sif_problems(; min_con=1)
+
 """
 function select_sif_problems(;
   min_var = 1,
