@@ -256,7 +256,7 @@ list_sif_problems(; filter=name -> startswith(name, "A"))
 """
 function list_sif_problems(; sifdir::Union{Nothing,AbstractString}=nothing, filter::Function = name -> true)
   sifdir = sifdir === nothing ? get(ENV, "SIFDIR", "") : sifdir
-  isempty(sifdir) && error("SIF directory not specified and ENV["SIFDIR"] is empty.")
+  isempty(sifdir) && error("SIF directory not specified and ENV[\"SIFDIR\"] is empty.")
   
   files = readdir(sifdir)
   sif_files = sort(f[1:end-4] for f in files if endswith(f, ".SIF") && filter(f[1:end-4]))
@@ -277,7 +277,7 @@ end
 """
 function sif_problem_generator(; sifdir::Union{Nothing,AbstractString}=nothing, filter::Function = name -> true)
   sifdir = sifdir === nothing ? get(ENV, "SIFDIR", "") : sifdir
-  isempty(sifdir) && error("SIF directory not specified and ENV["SIFDIR"] is empty.")
+  isempty(sifdir) && error("SIF directory not specified and ENV[\"SIFDIR\"] is empty.")
   
   files = readdir(sifdir)
   return (f[1:end-4] for f in sort(files) if endswith(f, ".SIF") && filter(f[1:end-4]))
