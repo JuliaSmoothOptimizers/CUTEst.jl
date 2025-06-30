@@ -249,7 +249,7 @@ function list_sif_problems(; sifdir::Union{Nothing,AbstractString}=nothing, filt
     isdir(sifdir) || error("Directory $sifdir does not exist.")
 
     files = readdir(sifdir)
-    return sort(f[1:end-4] for f in files if endswith(f, ".SIF") && filter(f[1:end-4]))
+    return sort(collect(f[1:end-4] for f in files if endswith(f, ".SIF") && filter(f[1:end-4])))
 end
 
 """
