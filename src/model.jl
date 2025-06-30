@@ -33,19 +33,11 @@ end
 """
     CUTEstModel{T}(name, args...; kwargs...)
     CUTEstModel(name, args...; precision::Symbol=:double, decode::Bool=true,
-                verbose::Bool=false, efirst::Bool=true, lfirst::Bool=true, lvfirst::Bool=true,
-                decode_name=nothing, lib_name=nothing)
+                verbose::Bool=false, efirst::Bool=true, lfirst::Bool=true, lvfirst::Bool=true)
 
 Creates a `CUTEstModel` following the API of `NLPModels.jl`.
-
-Each CUTEstModel is independent, but there is an important limitation:
-- You **must** finalize a model (by calling `finalize(nlp)`) before creating another model of the *same problem* and *same precision* **using the same decoded SIF file and shared library names**.
-- This is because the compiled shared library is named after the problem and precision; if two models use the same name, they will conflict.
-
-## To create multiple models of the same problem & precision **simultaneously**, use the keyword arguments:
-- `decode_name`: custom name for the decoded SIF file.
-- `lib_name`: custom name for the compiled shared library.
-These must be unique for each model.
+This model must be finalized before creating a new one with the same `name` and precision `T`.
+Finalize the current model by calling `finalize(nlp)` to avoid conflicts.
 
 ## Arguments
 
@@ -60,15 +52,20 @@ These must be unique for each model.
 - `efirst::Bool`: If `true`, places equality constraints first.
 - `lfirst::Bool`: If `true`, places linear (or affine) constraints first.
 - `lvfirst::Bool`: If `true`, places nonlinear variables first.
-- `decode_name::Union{Nothing,String}`: custom name to use for the decoded SIF file (must be unique to avoid conflicts).
-- `lib_name::Union{Nothing,String}`: custom name to use for the compiled shared library (must be unique if multiple models share problem & precision).
 
 !!! warning
     The second constructor based on the keyword argument `precision` is type-unstable.
 
+## Coexistance of multiple CUTEst models
+
+Each CUTEstModel is, in theory, independent, and we can create as many models as we want : 
+- all CUTEstModel instances are based on different problems
+- all CUTEstModel instances are based on the same problem but with different precisions
+
 !!! warning
-    If you create two models for the same problem and precision **with the same** `decode_name` and `lib_name` (or leave them as default), they will conflict.
-    You must call `finalize(nlp)` before creating the next model in this case.
+    If we have CUTEstModel instances for the same problem and precision, but with variable parameters (such as size), we encounter an issue
+    due to the shared library generated after decoding the problem, suffixed only with the name of the problem and its precision.
+    The user must define the names of the decoded SIF files and shared libraries so that they do not conflict.
 
 ## Examples
 
@@ -84,20 +81,6 @@ finalize(nlp)  # Finalize the current model
 nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=100")
 display(nlp)
 finalize(nlp)  # Finalize the new model
-
-# Create two models of the same problem and precision simultaneously
-# by using unique names to avoid conflicts
-nlp1 = CUTEstModel{Float64}("CHAIN", "-param", "NH=50";
-           decode_name="CHAIN_case1", lib_name="CHAIN_case1_d")
-
-nlp2 = CUTEstModel{Float64}("CHAIN", "-param", "NH=100";
-           decode_name="CHAIN_case2", lib_name="CHAIN_case2_d")
-
-display(nlp1)
-display(nlp2)
-
-finalize(nlp1)
-finalize(nlp2)
 ```
 """
 function CUTEstModel end
