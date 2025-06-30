@@ -1,4 +1,5 @@
 import JSON
+using NLPModels
 
 # Some enumerations and correspondance dicts
 # Dict comprehension isn't defined in 0.4 and isn't handled by Compat
