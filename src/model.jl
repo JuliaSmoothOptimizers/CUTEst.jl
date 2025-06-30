@@ -65,7 +65,6 @@ Each CUTEstModel is, in theory, independent, and we can create as many models as
 !!! warning
     If we have CUTEstModel instances for the same problem and precision, but with variable parameters (such as size), we encounter an issue
     due to the shared library generated after decoding the problem, suffixed only with the name of the problem and its precision.
-    The user must define the names of the decoded SIF files and shared libraries so that they do not conflict.
 
 ## Examples
 
