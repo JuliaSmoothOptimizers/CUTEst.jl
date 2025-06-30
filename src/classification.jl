@@ -1,4 +1,5 @@
 import JSON
+using Glob
 
 # Some enumerations and correspondance dicts
 # Dict comprehension isn't defined in 0.4 and isn't handled by Compat
@@ -234,4 +235,51 @@ function build_classification()
   open(joinpath(dirname(@__FILE__), "classf.json"), "w") do jsonfile
     JSON.print(jsonfile, problems, 2)
   end
+end
+
+"""
+    list_sif_problems(; sifdir=nothing, filter=name -> true)
+
+Return a sorted `Vector{String}` of CUTEst problem names found in the directory `sifdir`
+(without `.SIF` extension).  
+By default, looks in `ENV["SIFDIR"]` and keeps all names.
+
+# Keyword arguments
+- `sifdir::AbstractString`: Directory where `.SIF` files are stored.
+- `filter::Function`: Predicate applied to each problem name.
+
+# Example
+```julia
+list_sif_problems()
+list_sif_problems(; filter=name -> startswith(name, "A"))
+```
+"""
+function list_sif_problems(; sifdir::Union{Nothing,AbstractString}=nothing, filter::Function = name -> true)
+  sifdir = sifdir === nothing ? get(ENV, "SIFDIR", "") : sifdir
+  isempty(sifdir) && error("SIF directory not specified and ENV["SIFDIR"] is empty.")
+  
+  files = Glob.glob("*.SIF", sifdir)
+  names = sort(basename(f)[1:end-4] for f in files)  # strip .SIF
+  return filter(filter, names)
+end
+
+"""
+sif_problem_generator(; sifdir=nothing, filter=name -> true)
+
+Return a lazy generator over CUTEst problem names (without `.SIF`) matching the optional filter.
+
+# Example
+
+```julia
+for name in sif_problem_generator()
+    println(name)
+end
+```
+"""
+function sif_problem_generator(; sifdir::Union{Nothing,AbstractString}=nothing, filter::Function = name -> true)
+  sifdir = sifdir === nothing ? get(ENV, "SIFDIR", "") : sifdir
+  isempty(sifdir) && error("SIF directory not specified and ENV["SIFDIR"] is empty.")
+  
+  files = sort(Glob.glob("*.SIF", sifdir))
+  return (name for name in (basename(f)[1:end-4] for f in files) if filter(name))
 end
