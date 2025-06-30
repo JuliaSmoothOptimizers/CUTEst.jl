@@ -33,43 +33,71 @@ end
 """
     CUTEstModel{T}(name, args...; kwargs...)
     CUTEstModel(name, args...; precision::Symbol=:double, decode::Bool=true,
-                verbose::Bool=false, efirst::Bool=true, lfirst::Bool=true, lvfirst::Bool=true)
+                verbose::Bool=false, efirst::Bool=true, lfirst::Bool=true, lvfirst::Bool=true,
+                decode_name=nothing, lib_name=nothing)
 
 Creates a `CUTEstModel` following the API of `NLPModels.jl`.
-This model must be finalized before creating a new one with the same `name` and precision `T`.
-Finalize the current model by calling `finalize(nlp)` to avoid conflicts.
+
+Each CUTEstModel is independent, but there is an important limitation:
+- You **must** finalize a model (by calling `finalize(nlp)`) before creating another model of the *same problem* and *same precision* **using the same decoded SIF file and shared library names**.
+- This is because the compiled shared library is named after the problem and precision; if two models use the same name, they will conflict.
+
+## To create multiple models of the same problem & precision **simultaneously**, use the keyword arguments:
+- `decode_name`: custom name for the decoded SIF file.
+- `lib_name`: custom name for the compiled shared library.
+These must be unique for each model.
 
 ## Arguments
 
 - `name::AbstractString`: The name of the SIF problem to load.
-- `args...`: Additional arguments passed directly to `sifdecoder`. These can be used to change parameters of the model.
+- `args...`: Extra arguments passed to `sifdecoder` (e.g., to change problem parameters).
 
 ## Keyword arguments
 
-- `precision::Symbol`: Specifies the precision of the `CUTEstModel`. Options are `:single`, `:double` (default), or `:quadruple`. This keyword argument is not supported when using a constructor with a data type `T`.
-- `decode::Bool`: Whether to call `sifdecoder`. Defaults to `true`.
-- `verbose::Bool`: If `true`, enables verbose output during the decoding process. Passed to `sifdecoder`.
-- `efirst::Bool`: If `true`, places equality constraints first.
-- `lfirst::Bool`: If `true`, places linear (or affine) constraints first.
-- `lvfirst::Bool`: If `true`, places nonlinear variables first.
+- `precision::Symbol`: `:single`, `:double` (default), or `:quadruple`. Not supported when using the parametric constructor `{T}`.
+- `decode::Bool`: If `true` (default), call `sifdecoder` to decode the problem.
+- `verbose::Bool`: If `true`, print detailed output during decoding.
+- `efirst::Bool`: If `true` (default), place equality constraints first.
+- `lfirst::Bool`: If `true` (default), place linear constraints first.
+- `lvfirst::Bool`: If `true` (default), place nonlinear variables first.
+- `decode_name::Union{Nothing,String}`: custom name to use for the decoded SIF file (must be unique to avoid conflicts).
+- `lib_name::Union{Nothing,String}`: custom name to use for the compiled shared library (must be unique if multiple models share problem & precision).
 
-!!! warning
-    The second constructor based on the keyword argument `precision` is type-unstable.
+## Warning
+
+If you create two models for the same problem and precision **with the same** `decode_name` and `lib_name` (or leave them as default), they will conflict.
+You must call `finalize(nlp)` before creating the next model in this case.
+
+## Examples
 
 ```julia
 using CUTEst
 
-# Create a CUTEstModel with the name "CHAIN" and a parameter adjustment
+# Simple: create a model, then finalize before creating another one
 nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=50")
 display(nlp)
-finalize(nlp)  # Finalize the current model
+finalize(nlp)
 
-# Create another CUTEstModel with different parameters
-nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=100")
-display(nlp)
-finalize(nlp)  # Finalize the new model
+nlp2 = CUTEstModel{Float64}("CHAIN", "-param", "NH=100")
+display(nlp2)
+finalize(nlp2)
+
+# create two models of the same problem and precision simultaneously
+# by using unique names to avoid conflicts
+nlp1 = CUTEstModel{Float64}("CHAIN", "-param", "NH=50";
+           decode_name="CHAIN_case1", lib_name="CHAIN_case1_d")
+
+nlp2 = CUTEstModel{Float64}("CHAIN", "-param", "NH=100";
+           decode_name="CHAIN_case2", lib_name="CHAIN_case2_d")
+
+display(nlp1)
+display(nlp2)
+
+finalize(nlp1)
+finalize(nlp2)
 ```
 """
+
 function CUTEstModel end
 
 function CUTEstModel(
