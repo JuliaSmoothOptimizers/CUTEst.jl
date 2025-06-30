@@ -50,39 +50,42 @@ These must be unique for each model.
 ## Arguments
 
 - `name::AbstractString`: The name of the SIF problem to load.
-- `args...`: Extra arguments passed to `sifdecoder` (e.g., to change problem parameters).
+- `args...`: Additional arguments passed directly to `sifdecoder`. These can be used to change parameters of the model.
 
 ## Keyword arguments
 
-- `precision::Symbol`: `:single`, `:double` (default), or `:quadruple`. Not supported when using the parametric constructor `{T}`.
-- `decode::Bool`: If `true` (default), call `sifdecoder` to decode the problem.
-- `verbose::Bool`: If `true`, print detailed output during decoding.
-- `efirst::Bool`: If `true` (default), place equality constraints first.
-- `lfirst::Bool`: If `true` (default), place linear constraints first.
-- `lvfirst::Bool`: If `true` (default), place nonlinear variables first.
+- `precision::Symbol`: Specifies the precision of the `CUTEstModel`. Options are `:single`, `:double` (default), or `:quadruple`. This keyword argument is not supported when using a constructor with a data type `T`.
+- `decode::Bool`: Whether to call `sifdecoder`. Defaults to `true`.
+- `verbose::Bool`: If `true`, enables verbose output during the decoding process. Passed to `sifdecoder`.
+- `efirst::Bool`: If `true`, places equality constraints first.
+- `lfirst::Bool`: If `true`, places linear (or affine) constraints first.
+- `lvfirst::Bool`: If `true`, places nonlinear variables first.
 - `decode_name::Union{Nothing,String}`: custom name to use for the decoded SIF file (must be unique to avoid conflicts).
 - `lib_name::Union{Nothing,String}`: custom name to use for the compiled shared library (must be unique if multiple models share problem & precision).
 
-## Warning
+!!! warning
+    The second constructor based on the keyword argument `precision` is type-unstable.
 
-If you create two models for the same problem and precision **with the same** `decode_name` and `lib_name` (or leave them as default), they will conflict.
-You must call `finalize(nlp)` before creating the next model in this case.
+!!! warning
+    If you create two models for the same problem and precision **with the same** `decode_name` and `lib_name` (or leave them as default), they will conflict.
+    You must call `finalize(nlp)` before creating the next model in this case.
 
 ## Examples
 
 ```julia
 using CUTEst
 
-# Simple: create a model, then finalize before creating another one
+# Create a CUTEstModel with the name "CHAIN" and a parameter adjustment
 nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=50")
 display(nlp)
-finalize(nlp)
+finalize(nlp)  # Finalize the current model
 
-nlp2 = CUTEstModel{Float64}("CHAIN", "-param", "NH=100")
-display(nlp2)
-finalize(nlp2)
+# Create another CUTEstModel with different parameters
+nlp = CUTEstModel{Float64}("CHAIN", "-param", "NH=100")
+display(nlp)
+finalize(nlp)  # Finalize the new model
 
-# create two models of the same problem and precision simultaneously
+# Create two models of the same problem and precision simultaneously
 # by using unique names to avoid conflicts
 nlp1 = CUTEstModel{Float64}("CHAIN", "-param", "NH=50";
            decode_name="CHAIN_case1", lib_name="CHAIN_case1_d")
@@ -97,7 +100,6 @@ finalize(nlp1)
 finalize(nlp2)
 ```
 """
-
 function CUTEstModel end
 
 function CUTEstModel(
