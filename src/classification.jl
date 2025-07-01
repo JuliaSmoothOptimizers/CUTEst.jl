@@ -238,12 +238,21 @@ function build_classification()
 end
 
 """
-    list_sif_problems(; sifdir=nothing, filter=name -> true)
+    list_sif_problems(; sifdir, filter)
 
-Return sorted list of SIF problems (without `.SIF` extension) from the MASTSIF directory.
+Return a sorted list of SIF problems (without `.SIF` extension) from the MASTSIF directory.
 By default uses `ENV["MASTSIF"]`.
+
+- `sifdir`: directory to look for SIF files (default: `ENV["MASTSIF"]`)
+- `filter`: function to filter problem names (default: `name -> true`)
 """
 function list_sif_problems(; sifdir::Union{Nothing,AbstractString}=nothing, filter::Function = name -> true)
+    sifdir = sifdir === nothing ? get(ENV, "MASTSIF", "") : sifdir
+    isempty(sifdir) && error("SIF directory not specified and ENV[\"MASTSIF\"] is empty.")
+    isdir(sifdir) || error("Directory $sifdir does not exist.")
+
+    files = readdir(sifdir)
+    return sort(collect(f[1:end-4] for f in files if endswith(f, ".SIF") && filter(f[1:end-4])))
     sifdir = sifdir === nothing ? get(ENV, "MASTSIF", "") : sifdir
     isempty(sifdir) && error("SIF directory not specified and ENV[\"MASTSIF\"] is empty.")
     isdir(sifdir) || error("Directory $sifdir does not exist.")
@@ -253,12 +262,21 @@ function list_sif_problems(; sifdir::Union{Nothing,AbstractString}=nothing, filt
 end
 
 """
-    sif_problem_generator(; sifdir=nothing, filter=name -> true)
+    sif_problem_generator(; sifdir, filter)
 
-Return lazy generator over SIF problem names (without `.SIF`) from the MASTSIF directory.
+Return a lazy generator over SIF problem names (without `.SIF`) from the MASTSIF directory.
 By default uses `ENV["MASTSIF"]`.
+
+- `sifdir`: directory to look for SIF files (default: `ENV["MASTSIF"]`)
+- `filter`: function to filter problem names (default: `name -> true`)
 """
 function sif_problem_generator(; sifdir::Union{Nothing,AbstractString}=nothing, filter::Function = name -> true)
+    sifdir = sifdir === nothing ? get(ENV, "MASTSIF", "") : sifdir
+    isempty(sifdir) && error("SIF directory not specified and ENV[\"MASTSIF\"] is empty.")
+    isdir(sifdir) || error("Directory $sifdir does not exist.")
+
+    files = readdir(sifdir)
+    return (f[1:end-4] for f in sort(files) if endswith(f, ".SIF") && filter(f[1:end-4]))
     sifdir = sifdir === nothing ? get(ENV, "MASTSIF", "") : sifdir
     isempty(sifdir) && error("SIF directory not specified and ENV[\"MASTSIF\"] is empty.")
     isdir(sifdir) || error("Directory $sifdir does not exist.")
