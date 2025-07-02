@@ -56,6 +56,18 @@ Finalize the current model by calling `finalize(nlp)` to avoid conflicts.
 !!! warning
     The second constructor based on the keyword argument `precision` is type-unstable.
 
+## Coexistance of multiple CUTEst models
+
+Each CUTEstModel is, in theory, independent, and we can create as many models as we want : 
+- all CUTEstModel instances are based on different problems
+- all CUTEstModel instances are based on the same problem but with different precisions
+
+!!! warning
+    If we have CUTEstModel instances for the same problem and precision, but with variable parameters (such as size), we encounter an issue
+    due to the shared library generated after decoding the problem, suffixed only with the name of the problem and its precision.
+
+## Examples
+
 ```julia
 using CUTEst
 
