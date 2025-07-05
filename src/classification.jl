@@ -1,5 +1,4 @@
 import JSON
-using NLPModels
 
 # Some enumerations and correspondance dicts
 # Dict comprehension isn't defined in 0.4 and isn't handled by Compat
@@ -235,22 +234,4 @@ function build_classification()
   open(joinpath(dirname(@__FILE__), "classf.json"), "w") do jsonfile
     JSON.print(jsonfile, problems, 2)
   end
-end
-
-"""
-    sif_problem_generator(; sifdir, filter)
-
-Return a lazy generator over SIF problem names (without `.SIF`) from the MASTSIF directory.
-By default uses `ENV["MASTSIF"]`.
-
-- `sifdir`: directory to look for SIF files (default: `ENV["MASTSIF"]`)
-- `filter`: function to filter problem names (default: `name -> true`)
-"""
-function sif_problem_generator(; sifdir::Union{Nothing,AbstractString}=nothing, filter::Function = name -> true)
-    sifdir = sifdir === nothing ? get(ENV, "MASTSIF", "") : sifdir
-    isempty(sifdir) && error("SIF directory not specified and ENV[\"MASTSIF\"] is empty.")
-    isdir(sifdir) || error("Directory $sifdir does not exist.")
-
-    files = readdir(sifdir)
-    return (f[1:end-4] for f in sort(files) if endswith(f, ".SIF") && filter(f[1:end-4]))
 end

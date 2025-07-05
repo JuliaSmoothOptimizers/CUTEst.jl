@@ -69,5 +69,6 @@ include("sifdecoder.jl")
 include("core_interface.jl")
 include("julia_interface.jl")
 include("classification.jl")
+include("NLPModels.jl")
 
 end  # module CUTEst.
