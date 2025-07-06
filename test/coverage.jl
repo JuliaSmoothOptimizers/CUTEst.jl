@@ -36,4 +36,14 @@ function coverage_increase(nlp::CUTEstModel{T}) where {T}
     h_row, h_col = Vector{Cint}(undef, lh[1]), Vector{Cint}(undef, lh[1])
     CUTEst.csgrshp(T, nlp.libsif, status, Cint[n], nnzj, lj, j_var, j_fun, nnzh, lh, h_row, h_col)
   end
+
+  # test for generator_sif_problems
+  gen = generator_sif_problems()
+  names = collect(gen)
+  @assert isa(names, Vector)
+  @assert all(isa.(names, String))
+
+  gen_A = generator_sif_problems(filter = name -> startswith(name, "A"))
+  names_A = collect(gen_A)
+  @assert all(startswith.(names_A, "A"))
 end
