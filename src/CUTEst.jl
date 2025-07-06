@@ -23,7 +23,8 @@ export CUTEstModel,
   clear_libsif,
   manage_libsif,
   list_sif_problems,
-  select_sif_problems
+  select_sif_problems,
+  generator_sif_problems
 
 const cutest_false = Ref{Bool}(false)
 const cutest_true = Ref{Bool}(true)
