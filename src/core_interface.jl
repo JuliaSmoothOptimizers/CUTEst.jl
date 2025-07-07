@@ -2572,6 +2572,151 @@ for (cutest_cshprod, T) in
 end
 
 """
+    chsprod(T, libsif, status, n, x, mode, nnz, h_val, h_col)
+
+The `chsprod` subroutine evaluates the **product of the constraint Hessian**
+with a direction vector, for problems decoded from a SIF file using
+`libsif`. This is used for computing second-order information about the
+constraints during optimization.
+
+The constraint Hessian is defined as:
+
+    H_c(x) := ∑ λᵢ ∇²cᵢ(x)
+
+where each cᵢ(x) is a constraint function and λᵢ are multipliers.
+Given a direction vector `v`, the product `H_c(x)v` is computed
+efficiently without forming the full matrix.
+
+This routine returns the result in sparse format (value + column index).
+
+  - status:  [OUT] Vector{Cint} — status code after execution
+  - n:       [IN]  Vector{Cint} — number of variables
+  - x:       [IN]  Vector{T}    — evaluation point x ∈ ℝⁿ
+  - mode:    [IN]  Vector{Cint} — operation mode (e.g., evaluation flags)
+  - nnz:     [OUT] Vector{Cint} — number of nonzeros in result
+  - h_val:   [OUT] Vector{T}    — nonzero values of Hessian-vector product
+  - h_col:   [OUT] Vector{Cint} — corresponding column indices
+
+The vectors `h_val` and `h_col` must be preallocated. Output is given
+in sparse format (compressed column or row depending on solver).
+"""
+function chsprod end
+
+for (cutest_chsprod, T) in
+    ((:cutest_chsprod_s_, :Float32), (:cutest_chsprod_, :Float64), (:cutest_chsprod_q_, :Float128))
+  @eval begin
+    function chsprod(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{$T},
+      mode::StrideOneVector{Cint},
+      nnz::StrideOneVector{Cint},
+      h_val::StrideOneVector{$T},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_chsprod(libsif, status, n, x, mode, nnz, h_val, h_col)
+    end
+  end
+end
+
+"""
+    chjprod(T, libsif, status, m, n, x, mode, nnz, j_val, j_col)
+
+The `chjprod` subroutine evaluates the **product of the Jacobian of
+the constraints** with a vector. This is useful when computing first-order
+sensitivity or constraint violation directions in constrained optimization.
+
+The Jacobian J(x) = [∇c₁(x); ∇c₂(x); ... ; ∇cₘ(x)] is multiplied
+by a vector `v`, and the result is returned in sparse format.
+
+  - status:  [OUT] Vector{Cint} — status code after execution
+  - m:       [IN]  Vector{Cint} — number of constraints
+  - n:       [IN]  Vector{Cint} — number of variables
+  - x:       [IN]  Vector{T}    — point of evaluation x ∈ ℝⁿ
+  - mode:    [IN]  Vector{Cint} — evaluation flags or configuration
+  - nnz:     [OUT] Vector{Cint} — number of nonzero entries in output
+  - j_val:   [OUT] Vector{T}    — nonzero values of Jacobian-vector product
+  - j_col:   [OUT] Vector{Cint} — column indices of nonzero entries
+
+The output vectors `j_val` and `j_col` must be preallocated and will
+contain the result of `J(x) * v` in sparse format.
+"""
+function chjprod end
+
+for (cutest_chjprod, T) in
+    ((:cutest_chjprod_s_, :Float32), (:cutest_chjprod_, :Float64), (:cutest_chjprod_q_, :Float128))
+  @eval begin
+    function chjprod(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{$T},
+      mode::StrideOneVector{Cint},
+      nnz::StrideOneVector{Cint},
+      j_val::StrideOneVector{$T},
+      j_col::StrideOneVector{Cint},
+    )
+      $cutest_chjprod(libsif, status, m, n, x, mode, nnz, j_val, j_col)
+    end
+  end
+end
+
+"""
+    cohprods(T, libsif, status, m, x, lambda, mode, nnz, h_val, h_col)
+
+The `cohprods` subroutine evaluates the **linear combination of the
+Hessians of the constraint functions**, each weighted by its corresponding
+Lagrange multiplier.
+
+Mathematically, it computes:
+
+    H_λ(x) = ∑ λᵢ ∇²cᵢ(x)
+
+where `cᵢ(x)` are the constraints, and `λᵢ` are the Lagrange multipliers.
+This matrix is essential when forming the Hessian of the Lagrangian
+L(x,λ) = f(x) + λᵗ c(x).
+
+This call returns the nonzero structure of H_λ(x) in sparse format.
+
+  - status:  [OUT] Vector{Cint} — status code
+  - m:       [IN]  Vector{Cint} — number of constraints
+  - x:       [IN]  Vector{T}    — point of evaluation x ∈ ℝⁿ
+  - lambda:  [IN]  Vector{T}    — vector of Lagrange multipliers (length m)
+  - mode:    [IN]  Vector{Cint} — evaluation flags
+  - nnz:     [OUT] Vector{Cint} — number of nonzeros in result
+  - h_val:   [OUT] Vector{T}    — values of nonzero entries in H_λ(x)
+  - h_col:   [OUT] Vector{Cint} — corresponding column indices
+
+This subroutine is crucial for second-order constrained optimization
+and must be called with properly initialized `lambda`.
+"""
+function cohprods end
+
+for (cutest_cohprods, T) in
+    ((:cutest_cohprods_s_, :Float32), (:cutest_cohprods_, :Float64), (:cutest_cohprods_q_, :Float128))
+  @eval begin
+    function cohprods(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{$T},
+      lambda::StrideOneVector{$T},
+      mode::StrideOneVector{Cint},
+      nnz::StrideOneVector{Cint},
+      h_val::StrideOneVector{$T},
+      h_col::StrideOneVector{Cint},
+    )
+      $cutest_cohprods(libsif, status, m, x, lambda, mode, nnz, h_val, h_col)
+    end
+  end
+end
+
+"""
     chcprod(T, libsif, status, n, m, goth, x, y, vector, result)
 
 The chcprod subroutine forms the product of a vector with the Hessian
