@@ -93,6 +93,9 @@ CUTEst.cchprodsp
 CUTEst.cconst
 CUTEst.udimen
 CUTEst.pname
+CUTEst.chjprod
+CUTEst.cohprods
+CUTEst.chsprod
 CUTEst.chprod
 CUTEst.cterminate
 CUTEst.cifn
