@@ -2696,8 +2696,11 @@ and must be called with properly initialized `lambda`.
 """
 function cohprods end
 
-for (cutest_cohprods, T) in
-    ((:cutest_cohprods_s_, :Float32), (:cutest_cohprods_, :Float64), (:cutest_cohprods_q_, :Float128))
+for (cutest_cohprods, T) in (
+  (:cutest_cohprods_s_, :Float32),
+  (:cutest_cohprods_, :Float64),
+  (:cutest_cohprods_q_, :Float128),
+)
   @eval begin
     function cohprods(
       ::Type{$T},
