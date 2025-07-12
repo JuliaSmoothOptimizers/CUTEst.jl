@@ -1,9 +1,8 @@
 # Ref: https://securitylab.github.com/research/github-actions-preventing-pwn-requests
 name: Breakage
-permissions:
-  contents: read
-  pull-requests: write
 
+# read-only repo token
+# no access to secrets
 on:
   pull_request:
 
