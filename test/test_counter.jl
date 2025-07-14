@@ -47,7 +47,7 @@ Test validates eval counters against CUTEst's native reporting.
 """
 function test_counter_validation()
     @testset "NLPModels Counters validation against CUTEst native reporting" begin
-        @testset "Unconstrained problem counter validation" begin
+        @testset "Unconstrained problem counters validation" begin
             nlp = CUTEstModel{Float64}("ROSENBR")
             
             # Get baseline CUTEst counters (initialization overhead)
