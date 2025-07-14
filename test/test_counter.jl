@@ -95,7 +95,7 @@ function test_counter_validation()
             finalize(nlp)
         end
         
-        @testset "Constrained problem counter validation" begin
+        @testset "Constrained problem counters validation" begin
             nlp = CUTEstModel{Float64}("BT1")
             
             # Get baseline counters
