@@ -1,7 +1,3 @@
-using Test
-using CUTEst
-using NLPModels
-
 """
     get_cutest_counters(nlp::CUTEstModel{T}) where T
 
