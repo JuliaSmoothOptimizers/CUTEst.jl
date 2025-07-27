@@ -87,13 +87,7 @@ end
         # CUTEst's hess implementation calls internal functions, so expect 1 extra
         @test julia_increments.neval_hess == 1
         @test cutest_increments.neval_hess == 2
-        
-        # Test additional counter fields that are implemented but not validated against CUTEst
-        # These tests verify that the counters are properly incremented by their respective functions
-        
-        # Note: For unconstrained problems, constraint-related counters should remain at 0
-        # We don't test them here since they're not applicable to unconstrained problems
-        
+  
         # Test individual constraint hessian counter (should be 0 for unconstrained)
         @test nlp.counters.neval_jhess == 0
         @test nlp.counters.neval_jcon == 0
@@ -178,10 +172,7 @@ end
         
         @test julia_increments.neval_jprod == 1
         @test cutest_increments.neval_jprod == 2  # CUTEst counts 1 extra jprod call
-        
-        # Test additional counter fields that are implemented but not validated against CUTEst
-        # These tests verify that the counters are properly incremented by their respective functions
-        
+
         # Test linear/nonlinear constraint distinction counters
         if nlp.meta.nlin > 0
             c_lin = Vector{Float64}(undef, nlp.meta.nlin)
@@ -247,6 +238,8 @@ end
             vals_jhess = Vector{Float64}(undef, nlp.meta.nnzh)
             jth_hess_coord!(nlp, x0, 1, vals_jhess)
             @test nlp.counters.neval_jhess == 1
+            # CUTEst does not support jth_hprod!; counter should remain zero
+            @test nlp.counters.neval_jhprod == 0
         end
         
         finalize(nlp)
