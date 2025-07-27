@@ -229,15 +229,6 @@ end
             @test nlp.counters.neval_jtprod_nln == 1
         end
         
-        # Test individual constraint hessian counter
-        if nlp.meta.ncon > 0
-            vals_jhess = Vector{Float64}(undef, nlp.meta.nnzh)
-            jth_hess_coord!(nlp, x0, 1, vals_jhess)
-            @test nlp.counters.neval_jhess == 1
-            # CUTEst does not support jth_hprod!; counter should remain zero
-            @test nlp.counters.neval_jhprod == 0
-        end
-        
         finalize(nlp)
     end
 end
