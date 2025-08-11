@@ -1,6 +1,6 @@
 name = "CUTEst"
 uuid = "1b53aba6-35b6-5f92-a507-53c67d53f819"
-version = "1.3.2"
+version = "1.3.3"
 
 [deps]
 CUTEst_jll = "bb5f6f25-f23d-57fd-8f90-3ef7bad1d825"
@@ -24,7 +24,7 @@ JSON = "0.21"
 LazyArtifacts = "1.10"
 Libdl = "1.10"
 LinearAlgebra = "1.10"
-NLPModels = "0.21.4"
+NLPModels = "0.21.5"
 NLPModelsTest = "0.10.2"
 Printf = "1.10"
 Quadmath = "0.5.10"
