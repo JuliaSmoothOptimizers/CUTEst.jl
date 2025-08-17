@@ -80,6 +80,7 @@ Returns a subset of the CUTEst problems using the classification file `classf.js
 If you want to filter by truly unconstrained problems *after* selection, use:
 ```julia
 filter(p -> is_truly_unconstrained(p), select_sif_problems())
+```
 
     custom_filter: a function for additional filtering. Receives a dictionary with metadata, for example:
 
@@ -102,17 +103,21 @@ filter(p -> is_truly_unconstrained(p), select_sif_problems())
 Examples
 
 # Problems with 10–100 variables and only linear constraints
+```julia
 filtered1 = select_sif_problems(; min_var=10, max_var=100, only_linear_con=true)
-
+```
 # Problems without nonlinear or linear constraints (may still have bounds)
+```julia
 filtered2 = select_sif_problems(; max_con=0)
-
+```
 # Problems that are truly unconstrained: no constraints and no variable bounds
+```julia
 filtered3 = filter(is_truly_unconstrained, select_sif_problems())
-
+```
 # Problems with at least one constraint
+```julia
 filtered4 = select_sif_problems(; min_con=1)
-
+```
 """
 function select_sif_problems(;
   min_var = 1,
