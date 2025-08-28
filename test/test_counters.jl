@@ -22,7 +22,8 @@ function get_cutest_counters(nlp::CUTEstModel{T}) where T
             neval_hprod = Int(calls[4]),
             neval_cons = Int(calls[5]),
             neval_jac = Int(calls[6]),
-            neval_jprod = Int(calls[7])
+            neval_jprod = Int(calls[7]),
+            neval_jtprod = 0
         )
     else
         # Unconstrained problem - use ureport
@@ -89,18 +90,19 @@ end
         @test cutest_increments.neval_hess == 2
   
         # Test individual constraint hessian counter (should be 0 for unconstrained)
-        @test nlp.counters.neval_jhess == 0
-        @test nlp.counters.neval_jcon == 0
-        @test nlp.counters.neval_jgrad == 0
-        @test nlp.counters.neval_cons_lin == 0
-        @test nlp.counters.neval_cons_nln == 0
-        @test nlp.counters.neval_jac_lin == 0
-        @test nlp.counters.neval_jac_nln == 0
-        @test nlp.counters.neval_jprod_lin == 0
-        @test nlp.counters.neval_jprod_nln == 0
-        @test nlp.counters.neval_jtprod == 0
-        @test nlp.counters.neval_jtprod_lin == 0
-        @test nlp.counters.neval_jtprod_nln == 0
+    # For unconstrained problems, all constraint-related counters should remain zero.
+    @test nlp.counters.neval_jhess == 0
+    @test nlp.counters.neval_jcon == 0
+    @test nlp.counters.neval_jgrad == 0
+    @test nlp.counters.neval_cons_lin == 0
+    @test nlp.counters.neval_cons_nln == 0
+    @test nlp.counters.neval_jac_lin == 0
+    @test nlp.counters.neval_jac_nln == 0
+    @test nlp.counters.neval_jprod_lin == 0
+    @test nlp.counters.neval_jprod_nln == 0
+    @test nlp.counters.neval_jtprod == 0
+    @test nlp.counters.neval_jtprod_lin == 0
+    @test nlp.counters.neval_jtprod_nln == 0
         
         finalize(nlp)
     end
