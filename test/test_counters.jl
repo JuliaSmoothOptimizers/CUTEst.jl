@@ -38,7 +38,8 @@ function get_cutest_counters(nlp::CUTEstModel{T}) where T
             neval_hprod = Int(calls[4]),
             neval_cons = 0,
             neval_jac = 0,
-            neval_jprod = 0
+            neval_jprod = 0,
+            eval_jtprod = 0
         )
     end
 end
