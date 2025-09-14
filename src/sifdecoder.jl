@@ -131,7 +131,7 @@ function sifdecoder(
     run(
       pipeline(
         Cmd(
-          `$(SIFDecode_jll.sifdecoder_standalone()) $(args) $(prec) -suffix $(path_sifname)`,
+          `$(SIFDecode_jll.sifdecoder()) $(args) $(prec) -suffix $(path_sifname)`,
           ignorestatus = true,
         ),
         stdout = outlog,
