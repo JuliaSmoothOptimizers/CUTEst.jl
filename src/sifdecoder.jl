@@ -139,7 +139,7 @@ function sifdecoder(
       ),
     )
     error_str = read(errlog, String)
-    if length(error_str) > 0
+    if length(error_str) > 0 && (error_str != "STOP 0\n")
       println(error_str)
       error("Unable to compile a shared library for the problem $name.")
     end
