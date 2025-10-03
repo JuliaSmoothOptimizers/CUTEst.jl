@@ -225,14 +225,27 @@ function cons_coord!(
   @lencheck nlp.meta.ncon c
   @lencheck nlp.meta.nnzj rows cols vals
   
-  # Use preallocated vectors instead of allocating new ones (Issue #392)
-  cons_coord!(nlp, Vector{T}(x), nlp.cons_vals, nlp.jac_coord_rows, nlp.jac_coord_cols, nlp.jac_coord_vals)
+  # Resize workspace vectors on demand if needed (Issue #392 - double buffering)
+  nnzj = nlp.meta.nnzj
+  if length(nlp.jac_coord_rows) < nnzj
+    resize!(nlp.jac_coord_rows, nnzj)
+    resize!(nlp.jac_coord_cols, nnzj)
+    resize!(nlp.jac_coord_vals, nnzj)
+  end
+  if length(nlp.cons_vals) < nlp.meta.ncon
+    resize!(nlp.cons_vals, nlp.meta.ncon)
+  end
+  
+  # Use preallocated vectors instead of allocating new ones
+  cons_coord!(nlp, Vector{T}(x), view(nlp.cons_vals, 1:nlp.meta.ncon), 
+              view(nlp.jac_coord_rows, 1:nnzj), view(nlp.jac_coord_cols, 1:nnzj), 
+              view(nlp.jac_coord_vals, 1:nnzj))
   
   # Copy results to output vectors
-  rows .= nlp.jac_coord_rows
-  cols .= nlp.jac_coord_cols
-  vals .= nlp.jac_coord_vals
-  c .= nlp.cons_vals
+  rows .= view(nlp.jac_coord_rows, 1:nnzj)
+  cols .= view(nlp.jac_coord_cols, 1:nnzj)
+  vals .= view(nlp.jac_coord_vals, 1:nnzj)
+  c .= view(nlp.cons_vals, 1:nlp.meta.ncon)
   return c, rows, cols, vals
 end
 
@@ -255,14 +268,27 @@ Usage:
 function cons_coord(nlp::CUTEstModel{T}, x::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x
   
-  # Use preallocated vectors to avoid allocations (Issue #392)
-  cons_coord!(nlp, x, nlp.cons_vals, nlp.jac_coord_rows, nlp.jac_coord_cols, nlp.jac_coord_vals)
+  # Resize workspace vectors on demand if needed (Issue #392 - double buffering)
+  nnzj = nlp.meta.nnzj
+  if length(nlp.jac_coord_rows) < nnzj
+    resize!(nlp.jac_coord_rows, nnzj)
+    resize!(nlp.jac_coord_cols, nnzj)
+    resize!(nlp.jac_coord_vals, nnzj)
+  end
+  if length(nlp.cons_vals) < nlp.meta.ncon
+    resize!(nlp.cons_vals, nlp.meta.ncon)
+  end
+  
+  # Use preallocated vectors to avoid allocations
+  cons_coord!(nlp, x, view(nlp.cons_vals, 1:nlp.meta.ncon), 
+              view(nlp.jac_coord_rows, 1:nnzj), view(nlp.jac_coord_cols, 1:nnzj), 
+              view(nlp.jac_coord_vals, 1:nnzj))
   
   # Return copies of the results to maintain API compatibility
-  c = copy(nlp.cons_vals)
-  rows = copy(nlp.jac_coord_rows)
-  cols = copy(nlp.jac_coord_cols)
-  vals = copy(nlp.jac_coord_vals)
+  c = copy(view(nlp.cons_vals, 1:nlp.meta.ncon))
+  rows = copy(view(nlp.jac_coord_rows, 1:nnzj))
+  cols = copy(view(nlp.jac_coord_cols, 1:nnzj))
+  vals = copy(view(nlp.jac_coord_vals, 1:nnzj))
   
   return c, rows, cols, vals
 end
@@ -682,9 +708,15 @@ function NLPModels.hess_coord!(
   @lencheck nlp.meta.ncon y
   @lencheck nlp.meta.nnzh vals
   
-  # Use preallocated vector instead of allocating (Issue #392)
-  NLPModels.hess_coord!(nlp, Vector{T}(x), convert(Vector{T}, y), nlp.hess_coord_vals, obj_weight = obj_weight)
-  vals .= nlp.hess_coord_vals
+  # Resize workspace vector on demand if needed (Issue #392 - double buffering)
+  if length(nlp.hess_coord_vals) < nlp.meta.nnzh
+    resize!(nlp.hess_coord_vals, nlp.meta.nnzh)
+  end
+  
+  # Use preallocated vector instead of allocating
+  NLPModels.hess_coord!(nlp, Vector{T}(x), convert(Vector{T}, y), 
+                        view(nlp.hess_coord_vals, 1:nlp.meta.nnzh), obj_weight = obj_weight)
+  vals .= view(nlp.hess_coord_vals, 1:nlp.meta.nnzh)
   return vals
 end
 
