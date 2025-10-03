@@ -2,6 +2,42 @@ export cons_coord, cons_coord!, consjac
 
 using NLPModels, SparseArrays
 
+# Type conversion helpers for Issue #392: Preallocate more vectors
+"""
+    prepare_input!(workspace::Vector{T}, x::AbstractVector{S}) where {T, S}
+
+Prepare input vector `x` for use with CUTEst functions, using preallocated workspace
+to avoid allocations when type conversion is needed.
+
+Returns the input vector directly if no conversion is needed, or the workspace vector
+with converted values if type conversion is required.
+"""
+@inline function prepare_input!(workspace::Vector{T}, x::AbstractVector{S}) where {T, S}
+  if S === T && typeof(x) <: Vector{T}
+    return x  # No conversion needed
+  else
+    resize!(workspace, length(x))
+    workspace .= x
+    return workspace
+  end
+end
+
+"""
+    prepare_output!(workspace::Vector{T}, target::AbstractVector{S}, source::AbstractVector{T}) where {T, S}
+
+Prepare output by copying from source to target, using workspace for type conversion if needed.
+"""
+@inline function prepare_output!(workspace::Vector{T}, target::AbstractVector{S}, source::AbstractVector{T}) where {T, S}
+  if S === T && typeof(target) <: Vector{T}
+    target .= source
+  else
+    resize!(workspace, length(source))
+    workspace .= source
+    target .= workspace
+  end
+  return target
+end
+
 function NLPModels.obj(nlp::CUTEstModel{T}, x::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x
   if nlp.meta.ncon > 0
@@ -40,10 +76,17 @@ end
 
 function NLPModels.grad!(nlp::CUTEstModel{T}, x::AbstractVector, g::AbstractVector) where {T}
   @lencheck nlp.meta.nvar x g
-  x_ = Vector{T}(x)
-  g_ = Vector{T}(g)
-  grad!(nlp, x_, g_)
-  g .= g_
+  
+  # Use type conversion helpers to avoid allocations (Issue #392)
+  x_prepared = prepare_input!(nlp.input_workspace, x)
+  
+  if typeof(g) <: Vector{T}
+    grad!(nlp, x_prepared, g)
+  else
+    resize!(nlp.output_workspace, length(g))
+    grad!(nlp, x_prepared, view(nlp.output_workspace, 1:length(g)))
+    g .= view(nlp.output_workspace, 1:length(g))
+  end
 end
 
 function NLPModels.objcons!(
@@ -105,13 +148,15 @@ end
 
 function NLPModels.objgrad!(nlp::CUTEstModel{T}, x::AbstractVector, g::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x g
-  objgrad!(nlp, Vector{T}(x), g)
+  x_prepared = prepare_input!(nlp.input_workspace, x)
+  objgrad!(nlp, x_prepared, g)
 end
 
 function NLPModels.objgrad!(nlp::CUTEstModel{T}, x::AbstractVector, g::AbstractVector) where {T}
   @lencheck nlp.meta.nvar x g
+  x_prepared = prepare_input!(nlp.input_workspace, x)
   gc = nlp.workspace_nvar
-  f, _ = objgrad!(nlp, Vector{T}(x), gc)
+  f, _ = objgrad!(nlp, x_prepared, gc)
   g .= gc
   return f, g
 end
@@ -179,15 +224,15 @@ function cons_coord!(
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
   @lencheck nlp.meta.nnzj rows cols vals
-  rows_ = Vector{Cint}(undef, nlp.meta.nnzj)
-  cols_ = Vector{Cint}(undef, nlp.meta.nnzj)
-  vals_ = Vector{T}(undef, nlp.meta.nnzj)
-  c_ = Vector{T}(undef, nlp.meta.ncon)
-  cons_coord!(nlp, Vector{T}(x), c_, rows_, cols_, vals_)
-  rows .= rows_
-  cols .= cols_
-  vals .= vals_
-  c .= c_
+  
+  # Use preallocated vectors instead of allocating new ones (Issue #392)
+  cons_coord!(nlp, Vector{T}(x), nlp.cons_vals, nlp.jac_coord_rows, nlp.jac_coord_cols, nlp.jac_coord_vals)
+  
+  # Copy results to output vectors
+  rows .= nlp.jac_coord_rows
+  cols .= nlp.jac_coord_cols
+  vals .= nlp.jac_coord_vals
+  c .= nlp.cons_vals
   return c, rows, cols, vals
 end
 
@@ -209,11 +254,17 @@ Usage:
 """
 function cons_coord(nlp::CUTEstModel{T}, x::StrideOneVector{T}) where {T}
   @lencheck nlp.meta.nvar x
-  c = Vector{T}(undef, nlp.meta.ncon)
-  rows = Vector{Cint}(undef, nlp.meta.nnzj)
-  cols = Vector{Cint}(undef, nlp.meta.nnzj)
-  vals = Vector{T}(undef, nlp.meta.nnzj)
-  cons_coord!(nlp, x, c, rows, cols, vals)
+  
+  # Use preallocated vectors to avoid allocations (Issue #392)
+  cons_coord!(nlp, x, nlp.cons_vals, nlp.jac_coord_rows, nlp.jac_coord_cols, nlp.jac_coord_vals)
+  
+  # Return copies of the results to maintain API compatibility
+  c = copy(nlp.cons_vals)
+  rows = copy(nlp.jac_coord_rows)
+  cols = copy(nlp.jac_coord_cols)
+  vals = copy(nlp.jac_coord_vals)
+  
+  return c, rows, cols, vals
 end
 
 function cons_coord(nlp::CUTEstModel{T}, x::AbstractVector) where {T}
@@ -630,9 +681,10 @@ function NLPModels.hess_coord!(
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon y
   @lencheck nlp.meta.nnzh vals
-  vals_ = Vector{T}(undef, nlp.meta.nnzh)
-  NLPModels.hess_coord!(nlp, Vector{T}(x), convert(Vector{T}, y), vals_, obj_weight = obj_weight)
-  vals .= vals_
+  
+  # Use preallocated vector instead of allocating (Issue #392)
+  NLPModels.hess_coord!(nlp, Vector{T}(x), convert(Vector{T}, y), nlp.hess_coord_vals, obj_weight = obj_weight)
+  vals .= nlp.hess_coord_vals
   return vals
 end
 
