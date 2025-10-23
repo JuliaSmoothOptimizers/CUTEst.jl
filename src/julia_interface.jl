@@ -700,12 +700,10 @@ function NLPModels.hess_coord!(
   @lencheck nlp.meta.ncon y
   @lencheck nlp.meta.nnzh vals
   
-  # Resize workspace vector on demand if needed (Issue #392 - double buffering)
   if length(nlp.hess_coord_vals) < nlp.meta.nnzh
     resize!(nlp.hess_coord_vals, nlp.meta.nnzh)
   end
   
-  # Use preallocated vector instead of allocating
   NLPModels.hess_coord!(nlp, Vector{T}(x), convert(Vector{T}, y), 
                         view(nlp.hess_coord_vals, 1:nlp.meta.nnzh), obj_weight = obj_weight)
   vals .= view(nlp.hess_coord_vals, 1:nlp.meta.nnzh)
