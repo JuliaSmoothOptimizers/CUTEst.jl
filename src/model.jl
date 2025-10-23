@@ -15,19 +15,16 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
   workspace_nvar::Vector{T}
   workspace_ncon::Vector{T}
 
-  # Preallocated coordinate format vectors
-  jac_coord_rows::Vector{Cint}     # nnzj elements for Jacobian row indices
-  jac_coord_cols::Vector{Cint}     # nnzj elements for Jacobian column indices
-  jac_coord_vals::Vector{T}        # nnzj elements for Jacobian values
-  hess_coord_vals::Vector{T}       # nnzh elements for Hessian values
+  jac_coord_rows::Vector{Cint}
+  jac_coord_cols::Vector{Cint}
+  jac_coord_vals::Vector{T}
+  hess_coord_vals::Vector{T}
   
-  # Preallocated constraint evaluation vectors
-  cons_vals::Vector{T}             # ncon elements for constraint values
-  cons_nln_vals::Vector{T}         # nnln elements for nonlinear constraints subset
+  cons_vals::Vector{T}
+  cons_nln_vals::Vector{T}
   
-  # Type conversion workspace vectors
-  input_workspace::Vector{T}       # nvar elements for input conversion
-  output_workspace::Vector{T}      # max(nvar, ncon) elements for output conversion
+  input_workspace::Vector{T}
+  output_workspace::Vector{T}
 
   Jval::Vector{T}
   Jvar::Vector{Cint}
