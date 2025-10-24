@@ -18,7 +18,6 @@ makedocs(
     "Classification of SIF problems" => "classification.md",
     "Using CUTEst core functions" => "core.md",
     "Reference" => "reference.md",
-    "API Reference" => "api.md",
   ],
 )
 
