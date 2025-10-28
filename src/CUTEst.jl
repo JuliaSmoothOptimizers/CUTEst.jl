@@ -34,7 +34,7 @@ isdir(libsif_path) || mkpath(libsif_path)
 function __init__()
   if !Sys.iswindows()
     # gfortran is installed with an artifact on Windows
-    if !success(`bash -c "type gfortran"`)
+    if Sys.which("gfortran") |> isnothing
       error("gfortran is not installed. Please install it and try again.")
     else
       arch_julia = String(Sys.ARCH)
