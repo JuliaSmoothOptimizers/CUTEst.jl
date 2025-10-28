@@ -44,12 +44,8 @@ jobs:
         uses: fortran-lang/setup-fortran@main
         with:
           compiler: 'gcc'
-          version: '14'
+          version: '15'
         if: matrix.os == 'macos-latest' || matrix.os == 'macos-15-intel'
-      - name: Add Homebrew to PATH
-        run: |
-          echo "/usr/local/bin" >> $GITHUB_PATH
-          echo "/opt/homebrew/bin" >> $GITHUB_PATH
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}
