@@ -15,6 +15,17 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
   workspace_nvar::Vector{T}
   workspace_ncon::Vector{T}
 
+  jac_coord_rows::Vector{Cint}
+  jac_coord_cols::Vector{Cint}
+  jac_coord_vals::Vector{T}
+  hess_coord_vals::Vector{T}
+
+  cons_vals::Vector{T}
+  cons_nln_vals::Vector{T}
+
+  input_workspace::Vector{T}
+  output_workspace::Vector{T}
+
   Jval::Vector{T}
   Jvar::Vector{Cint}
 
@@ -297,6 +308,18 @@ function CUTEstModel{T}(
   workspace_nvar = Vector{T}(undef, nvar)
   workspace_ncon = Vector{T}(undef, ncon)
 
+  jac_coord_rows = Vector{Cint}(undef, nnzj)
+  jac_coord_cols = Vector{Cint}(undef, nnzj)
+  jac_coord_vals = Vector{T}(undef, nnzj)
+  hess_coord_vals = Vector{T}(undef, nnzh)
+
+  cons_vals = Vector{T}(undef, ncon)
+  nnln = count(.!linear)
+  cons_nln_vals = Vector{T}(undef, nnln)
+
+  input_workspace = Vector{T}(undef, nvar)
+  output_workspace = Vector{T}(undef, max(nvar, ncon))
+
   fclose(T, libsif, funit, status)
   cutest_error(status[])
 
@@ -330,6 +353,14 @@ function CUTEstModel{T}(
     clinvals,
     workspace_nvar,
     workspace_ncon,
+    jac_coord_rows,
+    jac_coord_cols,
+    jac_coord_vals,
+    hess_coord_vals,
+    cons_vals,
+    cons_nln_vals,
+    input_workspace,
+    output_workspace,
     Jval,
     Jvar,
     libsif,
