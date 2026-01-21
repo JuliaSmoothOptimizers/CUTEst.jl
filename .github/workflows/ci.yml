@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         version: ['lts', '1']
-        os: [ubuntu-latest, windows-latest, macos-15-intel]
+        os: [ubuntu-latest, windows-latest]
         arch: [x64]
         allow_failure: [false]
         include:
@@ -32,10 +32,6 @@ jobs:
             allow_failure: true
           - version: 'pre'
             os: windows-latest
-            arch: x64
-            allow_failure: true
-          - version: 'pre'
-            os: macos-15-intel
             arch: x64
             allow_failure: true
     steps:
