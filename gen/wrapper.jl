@@ -31,6 +31,12 @@ function main()
     "CUTEst_realloc",
     "CUTEst_free",
     "VarTypes",
+    "cutest_load_routines_",
+    "cutest_load_routines_s_",
+    "cutest_load_routines_q_",
+    "cutest_unload_routines_",
+    "cutest_unload_routines_s_",
+    "cutest_unload_routines_q_",
   ]
 
   args = get_default_args()

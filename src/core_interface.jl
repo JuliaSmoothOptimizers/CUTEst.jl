@@ -2276,6 +2276,30 @@ for (cutest_cish, T) in
 end
 
 """
+    cishp(T, libsif, status, n, iprob, nnzh, lh, irnh, icnh)
+"""
+function cishp end
+
+for (cutest_cishp, T) in
+    ((:cutest_cishp_s_, :Float32), (:cutest_cishp_, :Float64), (:cutest_cishp_q_, :Float128))
+  @eval begin
+    function cishp(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      iprob::StrideOneVector{Cint},
+      nnzh::StrideOneVector{Cint},
+      lh::StrideOneVector{Cint},
+      irnh::StrideOneVector{Cint},
+      icnh::StrideOneVector{Cint},
+    )
+      $cutest_cishp(libsif, status, n, iprob, nnzh, lh, irnh, icnh)
+    end
+  end
+end
+
+"""
     csgrsh(T, libsif, status, n, m, x, y, grlagf, nnzj, lj, j_val, j_var, j_fun, nnzh, lh, h_val, h_row, h_col)
 
 The csgrsh subroutine evaluates the gradients of the general
