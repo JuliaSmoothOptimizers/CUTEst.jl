@@ -33,6 +33,7 @@ CUTEst.cjprod
 CUTEst.ccfg
 CUTEst.ccf
 CUTEst.cish
+CUTEst.cishp
 CUTEst.ushprod
 CUTEst.cdimchp
 CUTEst.ureport
