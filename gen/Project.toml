@@ -4,5 +4,5 @@ Clang = "40e3b903-d033-50b4-a0cc-940c62c95e31"
 JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
 
 [compat]
-CUTEst_jll = "2.5.0"
+CUTEst_jll = "2.6.0"
 julia = "1.10"
