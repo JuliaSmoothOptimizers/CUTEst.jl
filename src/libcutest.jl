@@ -420,6 +420,12 @@ function cutest_cish_(libsif, status, n, x, iprob, nnzh, lh, h, irnh, icnh)
                            icnh::Ptr{Cint})::Cvoid
 end
 
+function cutest_cishp_(libsif, status, n, iprob, nnzh, lh, irnh, icnh)
+  ptr_cutest_cishp_ = Libdl.dlsym(libsif, :cutest_cishp_)
+  @ccall $ptr_cutest_cishp_(status::Ptr{Cint}, n::Ptr{Cint}, iprob::Ptr{Cint}, nnzh::Ptr{Cint},
+                            lh::Ptr{Cint}, irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
+end
+
 function cutest_cint_csgrsh_(libsif, status, n, m, x, y, grlagf, nnzj, lcjac, cjac, indvar, indfun,
                              nnzh, lh, h, irnh, icnh)
   ptr_cutest_cint_csgrsh_ = Libdl.dlsym(libsif, :cutest_cint_csgrsh_)
@@ -974,6 +980,12 @@ function cutest_cish_s_(libsif, status, n, x, iprob, nnzh, lh, h, irnh, icnh)
   @ccall $ptr_cutest_cish_s_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Float32}, iprob::Ptr{Cint},
                              nnzh::Ptr{Cint}, lh::Ptr{Cint}, h::Ptr{Float32}, irnh::Ptr{Cint},
                              icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cishp_s_(libsif, status, n, iprob, nnzh, lh, irnh, icnh)
+  ptr_cutest_cishp_s_ = Libdl.dlsym(libsif, :cutest_cishp_s_)
+  @ccall $ptr_cutest_cishp_s_(status::Ptr{Cint}, n::Ptr{Cint}, iprob::Ptr{Cint}, nnzh::Ptr{Cint},
+                              lh::Ptr{Cint}, irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
 end
 
 function cutest_cint_csgrsh_s_(libsif, status, n, m, x, y, grlagf, nnzj, lcjac, cjac, indvar,
@@ -1534,6 +1546,12 @@ function cutest_cish_q_(libsif, status, n, x, iprob, nnzh, lh, h, irnh, icnh)
   @ccall $ptr_cutest_cish_q_(status::Ptr{Cint}, n::Ptr{Cint}, x::Ptr{Float128}, iprob::Ptr{Cint},
                              nnzh::Ptr{Cint}, lh::Ptr{Cint}, h::Ptr{Float128}, irnh::Ptr{Cint},
                              icnh::Ptr{Cint})::Cvoid
+end
+
+function cutest_cishp_q_(libsif, status, n, iprob, nnzh, lh, irnh, icnh)
+  ptr_cutest_cishp_q_ = Libdl.dlsym(libsif, :cutest_cishp_q_)
+  @ccall $ptr_cutest_cishp_q_(status::Ptr{Cint}, n::Ptr{Cint}, iprob::Ptr{Cint}, nnzh::Ptr{Cint},
+                              lh::Ptr{Cint}, irnh::Ptr{Cint}, icnh::Ptr{Cint})::Cvoid
 end
 
 function cutest_cint_csgrsh_q_(libsif, status, n, m, x, y, grlagf, nnzj, lcjac, cjac, indvar,
