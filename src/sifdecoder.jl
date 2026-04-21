@@ -204,8 +204,11 @@ function build_libsif(
         if isfile("$fname.f")
           @static if Sys.iswindows()
             mingw = Int == Int64 ? "mingw64" : "mingw32"
-            gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
-            run(`$gfortran -O3 -c -fPIC $fname.f`)
+            bindir = joinpath(artifact"mingw-w64", mingw, "bin")
+            gfortran = joinpath(bindir, "gfortran.exe")
+            withenv("PATH" => string(bindir, ';', ENV["PATH"])) do
+              run(`$gfortran -O3 -c -fPIC $fname.f`)
+            end
           else
             run(`gfortran -O3 -c -fPIC $fname.f`)
           end
@@ -222,11 +225,16 @@ function build_libsif(
       elseif Sys.iswindows()
         @static if Sys.iswindows()
           mingw = Int == Int64 ? "mingw64" : "mingw32"
-          gfortran = joinpath(artifact"mingw-w64", mingw, "bin", "gfortran.exe")
+          bindir = joinpath(artifact"mingw-w64", mingw, "bin")
+          gfortran = joinpath(bindir, "gfortran.exe")
           if standalone
-            run(`$gfortran -shared -o $libsif_name $object_files`)
+            withenv("PATH" => string(bindir, ';', ENV["PATH"])) do
+              run(`$gfortran -shared -o $libsif_name $object_files`)
+            end
           else
-            run(`$gfortran -shared -o $libsif_name $object_files -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`)
+            withenv("PATH" => string(bindir, ';', ENV["PATH"])) do
+              run(`$gfortran -shared -o $libsif_name $object_files -Wl,--whole-archive $libcutest -Wl,--no-whole-archive`)
+            end
           end
         end
       else
