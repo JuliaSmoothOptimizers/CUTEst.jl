@@ -217,8 +217,7 @@ function CUTEstModel{T}(
 
   if ncon[] > 0
     cdimsh(T, libsif, status, nnzh)
-    cdimsj(T, libsif, status, nnzj)
-    nnzj[] -= nvar[]  # nnzj also counts the nonzeros in the objective gradient.
+    cdimscj(T, libsif, status, nnzj)
   else
     udimsh(T, libsif, status, nnzh)
   end

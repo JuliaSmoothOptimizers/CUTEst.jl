@@ -165,10 +165,10 @@ end
     @test cutest_increments.neval_obj == 0  # CUTEst doesn't count obj in constrained setup
 
     @test julia_increments.neval_cons == 1
-    @test cutest_increments.neval_cons == 2  # CUTEst counts 1 extra constraint call
+    @test cutest_increments.neval_cons == 1
 
     @test julia_increments.neval_jac == 1
-    @test cutest_increments.neval_jac == 2  # CUTEst counts 1 extra jacobian call
+    @test cutest_increments.neval_jac == 1
 
     @test julia_increments.neval_hess == 1
     @test cutest_increments.neval_hess == 2  # CUTEst counts 1 extra hessian call

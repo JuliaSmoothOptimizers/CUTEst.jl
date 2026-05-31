@@ -3088,7 +3088,11 @@ for (cutest_uterminate, T) in (
   (:cutest_uterminate_q_, :Float128),
 )
   @eval begin
-    function uterminate(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint})
+    function uterminate(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+    )
       $cutest_uterminate(libsif, status)
     end
   end
@@ -3110,7 +3114,11 @@ for (cutest_cterminate, T) in (
   (:cutest_cterminate_q_, :Float128),
 )
   @eval begin
-    function cterminate(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint})
+    function cterminate(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+    )
       $cutest_cterminate(libsif, status)
     end
   end
@@ -3337,7 +3345,13 @@ function fopen end
 for (fortran_open, T) in
     ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64), (:fortran_open_q_, :Float128))
   @eval begin
-    function fopen(::Type{$T}, libsif::Ptr{Cvoid}, funit, outsdif, status)
+    function fopen(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      funit,
+      outsdif,
+      status::StrideOneVector{Cint},
+    )
       $fortran_open(libsif, funit, outsdif, status)
     end
   end
@@ -3351,7 +3365,12 @@ function fclose end
 for (fortran_close, T) in
     ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64), (:fortran_close_q_, :Float128))
   @eval begin
-    function fclose(::Type{$T}, libsif::Ptr{Cvoid}, funit, status)
+    function fclose(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      funit,
+      status::StrideOneVector{Cint},
+    )
       $fortran_close(libsif, funit, status)
     end
   end
@@ -3365,7 +3384,13 @@ function cconst end
 for (cutest_cconst, T) in
     ((:cutest_cconst_s_, :Float32), (:cutest_cconst_, :Float64), (:cutest_cconst_q_, :Float128))
   @eval begin
-    function cconst(::Type{$T}, libsif::Ptr{Cvoid}, status, m, c)
+    function cconst(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      c::StrideOneVector{$T},
+    )
       $cutest_cconst(libsif, status, m, c)
     end
   end
@@ -3379,8 +3404,60 @@ function ccf end
 for (cutest_ccf, T) in
     ((:cutest_ccf_s_, :Float32), (:cutest_ccf_, :Float64), (:cutest_ccf_q_, :Float128))
   @eval begin
-    function ccf(::Type{$T}, libsif::Ptr{Cvoid}, status, n, m, x, c)
+    function ccf(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      m::StrideOneVector{Cint},
+      x::StrideOneVector{$T},
+      c::StrideOneVector{$T},
+    )
       $cutest_ccf(libsif, status, n, m, x, c)
+    end
+  end
+end
+
+"""
+    cdimscj(T, libsif, status, nnzj)
+"""
+function cdimscj end
+
+for (cutest_cdimscj, T) in
+    ((:cutest_cdimscj_s_, :Float32), (:cutest_cdimscj_, :Float64), (:cutest_cdimscj_q_, :Float128))
+  @eval begin
+    function cdimscj(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      nnzj::StrideOneVector{Cint},
+    )
+      $cutest_cdimscj(libsif, status, nnzj)
+    end
+  end
+end
+
+"""
+    csj(T, libsif, status, n, x, nnzj, lcjac, cjac, indvar, indcon)
+"""
+function csj end
+
+for (cutest_cint_csj, T) in
+    ((:cutest_cint_csj_s_, :Float32), (:cutest_cint_csj_, :Float64), (:cutest_cint_csj_q_, :Float128))
+  @eval begin
+    function csj(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      n::StrideOneVector{Cint},
+      x::StrideOneVector{$T},
+      nnzj::StrideOneVector{Cint},
+      lcjac::StrideOneVector{Cint},
+      cjac::StrideOneVector{$T},
+      indvar::StrideOneVector{Cint},
+      indcon::StrideOneVector{Cint},
+    )
+      $cutest_cint_csj(libsif, status, n, x, nnzj, lcjac, cjac, indvar, indcon)
     end
   end
 end
@@ -3396,7 +3473,13 @@ for (cutest_classification, T) in (
   (:cutest_classification_q_, :Float128),
 )
   @eval begin
-    function classification(::Type{$T}, libsif::Ptr{Cvoid}, status, funit, class)
+    function classification(
+      ::Type{$T},
+      libsif::Ptr{Cvoid},
+      status::StrideOneVector{Cint},
+      funit,
+      class,
+    )
       $cutest_classification(libsif, status, funit, class)
     end
   end
