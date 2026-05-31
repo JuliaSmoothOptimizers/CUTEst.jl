@@ -1,5 +1,5 @@
 `CUTEst.jl` relies on SIF files to create a `CUTEstModel`.
-Three sets of SIF files are available on [Bitbucket](https://bitbucket.org/optrove/workspace/repositories/).
+Three sets of SIF files are available.
 We can easily switch between these sets using the function `set_mastsif`.
 
 ```@docs
