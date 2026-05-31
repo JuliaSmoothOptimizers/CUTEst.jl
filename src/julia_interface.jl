@@ -763,6 +763,7 @@ function NLPModels.jth_hess_coord!(
   @rangecheck 1 nlp.meta.ncon j
   ref_j = nlp.index
   ref_j[] = j
+  fill!(vals, zero(T))
   cish(
     T,
     nlp.libsif,
