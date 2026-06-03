@@ -9,11 +9,11 @@ The supported sets are:
 """
 function set_mastsif(set::String = "sifcollection")
   if set == "sifcollection"
-    ENV["MASTSIF"] = joinpath(artifact"sifcollection", "optrove-sif-0b335a4b1a3c")
+    ENV["MASTSIF"] = joinpath(artifact"sifcollection")
   elseif set == "maros-meszaros"
-    ENV["MASTSIF"] = joinpath(artifact"maros-meszaros", "optrove-maros-meszaros-9adfb5707b1e")
+    ENV["MASTSIF"] = joinpath(artifact"maros-meszaros")
   elseif set == "netlib-lp"
-    ENV["MASTSIF"] = joinpath(artifact"netlib-lp", "optrove-netlib-lp-f83996fca937")
+    ENV["MASTSIF"] = joinpath(artifact"netlib-lp")
   else
     error("The set $set is not supported.")
   end

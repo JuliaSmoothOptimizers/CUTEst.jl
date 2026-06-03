@@ -357,6 +357,14 @@ function NLPModels.jac_coord!(
     nlp.jcols,
     nlp.jrows
   )
+  println(nlp.libsif)
+  println(nlp.status)
+  println(nlp.nvar)
+  println(x)
+  println(nlp.nnzj)
+  println(vals)
+  println(nlp.jcols)
+  println(nlp.jrows)
   println(nlp.meta.name)
   cutest_error(nlp.status[])
   increment!(nlp, :neval_jac)
