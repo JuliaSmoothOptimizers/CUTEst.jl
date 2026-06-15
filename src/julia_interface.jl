@@ -345,27 +345,19 @@ function NLPModels.jac_coord!(
 ) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzj vals
+  nlp.nnzj[] = nlp.meta.nnzj
   csj(
     T,
     nlp.libsif,
     nlp.status,
     nlp.nvar,
     x,
-    nlp.nnzj,
+    nlp.index,
     nlp.nnzj,
     vals,
     nlp.jcols,
     nlp.jrows
   )
-  println(nlp.libsif)
-  println(nlp.status)
-  println(nlp.nvar)
-  println(x)
-  println(nlp.nnzj)
-  println(vals)
-  println(nlp.jcols)
-  println(nlp.jrows)
-  println(nlp.meta.name)
   cutest_error(nlp.status[])
   increment!(nlp, :neval_jac)
   return vals

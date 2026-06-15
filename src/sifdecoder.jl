@@ -11,9 +11,9 @@ function set_mastsif(set::String = "sifcollection")
   if set == "sifcollection"
     ENV["MASTSIF"] = joinpath(artifact"sifcollection")
   elseif set == "maros-meszaros"
-    ENV["MASTSIF"] = joinpath(artifact"maros-meszaros")
+    ENV["MASTSIF"] = joinpath(artifact"maros-meszaros", "maros-meszaros-2026.6.2")
   elseif set == "netlib-lp"
-    ENV["MASTSIF"] = joinpath(artifact"netlib-lp")
+    ENV["MASTSIF"] = joinpath(artifact"netlib-lp", "netlib-lp-2026.6.2")
   else
     error("The set $set is not supported.")
   end

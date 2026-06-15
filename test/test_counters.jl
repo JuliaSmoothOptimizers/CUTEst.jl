@@ -168,7 +168,7 @@ end
     @test cutest_increments.neval_cons == 1
 
     @test julia_increments.neval_jac == 1
-    @test cutest_increments.neval_jac == 1
+    @test cutest_increments.neval_jac == 2  # CUTEst counts 1 extra jacobian call
 
     @test julia_increments.neval_hess == 1
     @test cutest_increments.neval_hess == 2  # CUTEst counts 1 extra hessian call

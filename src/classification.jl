@@ -234,6 +234,7 @@ function build_classification()
     finally
       finalize(nlp)
     end
+    clear_libsif()
   end
   open(joinpath(dirname(@__FILE__), "classf.json"), "w") do jsonfile
     JSON.print(jsonfile, problems, 2)
