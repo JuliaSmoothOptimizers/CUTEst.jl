@@ -1,26 +1,26 @@
 [sifcollection]
-git-tree-sha1 = "447005f21c5764d18f6ace9915318fb802f6c548"
+git-tree-sha1 = "1fa01d4c3b344b8cd32b8ef78c0abeac9bb9cce2"
 lazy = true
 
     [[sifcollection.download]]
-    url = "https://bitbucket.org/optrove/sif/get/b6e14d1eccd14a1fd8924bf171adbee337b837fd.tar.gz"
-    sha256 = "cfc7066c1e3d2026a00529aa7a857a0853fb148ee62231ea4d12e7b0044d23e8"
+    sha256 = "ed40196167b6cd07a0f37c3d7238d14c2dd3450582f83ad7e8d36318db08c7d4"
+    url = "https://github.com/ralna/SIF/releases/download/v2026.6.14/sifcollection-2026.6.14.tar.gz"
 
 [maros-meszaros]
-git-tree-sha1 = "0eff5ae5b345db85386f55f672a19c90f23257b2"
+git-tree-sha1 = "8be9528187cd8b76df8791670a1160e8c232edcd"
 lazy = true
 
     [[maros-meszaros.download]]
-    url = "https://bitbucket.org/optrove/maros-meszaros/get/9adfb5707b1e0b83a2e0a26cc8310704ff01b7c1.tar.gz"
-    sha256 = "1bdb9df59502c2f24ae23303f70b2edbdf54660c1db88a048c230e4d3ab851c3"
+    sha256 = "3b84f3a7b050568c7c4cc1ba53d8246d179339500710950f153d001ac59351e2"
+    url = "https://github.com/ralna/maros-meszaros/archive/refs/tags/v2026.6.2.tar.gz"
 
 [netlib-lp]
-git-tree-sha1 = "545f8c5577a056981a21caf3f53bd7b59cf67410"
+git-tree-sha1 = "7b46a7788727994130b434cfbfd42defdb836715"
 lazy = true
 
     [[netlib-lp.download]]
-    url = "https://bitbucket.org/optrove/netlib-lp/get/f83996fca9370b23d8896f134c4dfe7adbaca0ec.tar.gz"
-    sha256 = "e5b7d4128a0bde757ac59182228f80a33828ccc62c1764a33de722b096c0dd9a"
+    sha256 = "92b1cf7d972657a8755234890fe38b2afc3683364fcdd6824e13162b1a5e4eb8"
+    url = "https://github.com/ralna/netlib-lp/archive/refs/tags/v2026.6.2.tar.gz"
 
 [[mingw-w64]]
 arch = "x86_64"

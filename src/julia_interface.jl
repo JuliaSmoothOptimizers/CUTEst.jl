@@ -249,6 +249,7 @@ function NLPModels.cons!(
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.ncon c
   ccf(T, nlp.libsif, nlp.status, nlp.nvar, nlp.ncon, x, c)
+  cutest_error(nlp.status[])
   increment!(nlp, :neval_cons)
   return c
 end
@@ -289,6 +290,7 @@ function NLPModels.cons_nln!(nlp::CUTEstModel{T}, x::AbstractVector, c::StrideOn
   for j in nlp.meta.nln
     ref_j[] = j
     cifn(T, nlp.libsif, nlp.status, nlp.nvar, ref_j, x, view(c, k:k))
+    cutest_error(nlp.status[])
     k += 1
   end
   increment!(nlp, :neval_cons_nln)
@@ -338,13 +340,40 @@ end
 
 function NLPModels.jac_coord!(
   nlp::CUTEstModel{T},
+  x::StrideOneVector{T},
+  vals::StrideOneVector{T},
+) where {T}
+  @lencheck nlp.meta.nvar x
+  @lencheck nlp.meta.nnzj vals
+  nlp.nnzj[] = nlp.meta.nnzj
+  csj(
+    T,
+    nlp.libsif,
+    nlp.status,
+    nlp.nvar,
+    x,
+    nlp.index,
+    nlp.nnzj,
+    vals,
+    nlp.jcols,
+    nlp.jrows
+  )
+  cutest_error(nlp.status[])
+  increment!(nlp, :neval_jac)
+  return vals
+end
+
+function NLPModels.jac_coord!(
+  nlp::CUTEstModel{T},
   x::AbstractVector,
   vals::AbstractVector,
 ) where {T}
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzj vals
-  cons_coord!(nlp, x, nlp.workspace_ncon, nlp.jrows, nlp.jcols, vals)
-  decrement!(nlp, :neval_cons)  # does not really count as a constraint eval
+  x_ = Vector{T}(x)
+  vals_ = Vector{T}(vals)
+  jac_coord!(nlp, x_, vals_)
+  vals .= vals_
   return vals
 end
 
@@ -388,6 +417,7 @@ function NLPModels.jac_nln_coord!(
       nlp.Jvar,
       bool,
     )
+    cutest_error(nlp.status[])
     for k = 1:nlp.nnzj[]
       vals[i] = nlp.Jval[k]
       i += 1
@@ -777,5 +807,6 @@ function NLPModels.jth_hess_coord!(
     nlp.hcols,
     nlp.hrows,
   )
+  cutest_error(nlp.status[])
   return vals
 end

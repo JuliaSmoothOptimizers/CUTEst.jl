@@ -2,8 +2,6 @@ import JSON
 using NLPModels
 
 # Some enumerations and correspondance dicts
-# Dict comprehension isn't defined in 0.4 and isn't handled by Compat
-# See https://github.com/JuliaLang/Compat.jl/issues/231
 const objtypes = ["none", "constant", "linear", "quadratic", "sum_of_squares", "other"]
 const classdb_objtype = Dict(
   "N" => objtypes[1],
@@ -236,6 +234,7 @@ function build_classification()
     finally
       finalize(nlp)
     end
+    clear_libsif()
   end
   open(joinpath(dirname(@__FILE__), "classf.json"), "w") do jsonfile
     JSON.print(jsonfile, problems, 2)
