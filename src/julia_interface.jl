@@ -346,18 +346,7 @@ function NLPModels.jac_coord!(
   @lencheck nlp.meta.nvar x
   @lencheck nlp.meta.nnzj vals
   nlp.nnzj[] = nlp.meta.nnzj
-  csj(
-    T,
-    nlp.libsif,
-    nlp.status,
-    nlp.nvar,
-    x,
-    nlp.index,
-    nlp.nnzj,
-    vals,
-    nlp.jcols,
-    nlp.jrows
-  )
+  csj(T, nlp.libsif, nlp.status, nlp.nvar, x, nlp.index, nlp.nnzj, vals, nlp.jcols, nlp.jrows)
   cutest_error(nlp.status[])
   increment!(nlp, :neval_jac)
   return vals

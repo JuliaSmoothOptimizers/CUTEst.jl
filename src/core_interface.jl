@@ -3088,11 +3088,7 @@ for (cutest_uterminate, T) in (
   (:cutest_uterminate_q_, :Float128),
 )
   @eval begin
-    function uterminate(
-      ::Type{$T},
-      libsif::Ptr{Cvoid},
-      status::StrideOneVector{Cint},
-    )
+    function uterminate(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint})
       $cutest_uterminate(libsif, status)
     end
   end
@@ -3114,11 +3110,7 @@ for (cutest_cterminate, T) in (
   (:cutest_cterminate_q_, :Float128),
 )
   @eval begin
-    function cterminate(
-      ::Type{$T},
-      libsif::Ptr{Cvoid},
-      status::StrideOneVector{Cint},
-    )
+    function cterminate(::Type{$T}, libsif::Ptr{Cvoid}, status::StrideOneVector{Cint})
       $cutest_cterminate(libsif, status)
     end
   end
@@ -3345,13 +3337,7 @@ function fopen end
 for (fortran_open, T) in
     ((:fortran_open_s_, :Float32), (:fortran_open_, :Float64), (:fortran_open_q_, :Float128))
   @eval begin
-    function fopen(
-      ::Type{$T},
-      libsif::Ptr{Cvoid},
-      funit,
-      outsdif,
-      status::StrideOneVector{Cint},
-    )
+    function fopen(::Type{$T}, libsif::Ptr{Cvoid}, funit, outsdif, status::StrideOneVector{Cint})
       $fortran_open(libsif, funit, outsdif, status)
     end
   end
@@ -3365,12 +3351,7 @@ function fclose end
 for (fortran_close, T) in
     ((:fortran_close_s_, :Float32), (:fortran_close_, :Float64), (:fortran_close_q_, :Float128))
   @eval begin
-    function fclose(
-      ::Type{$T},
-      libsif::Ptr{Cvoid},
-      funit,
-      status::StrideOneVector{Cint},
-    )
+    function fclose(::Type{$T}, libsif::Ptr{Cvoid}, funit, status::StrideOneVector{Cint})
       $fortran_close(libsif, funit, status)
     end
   end
@@ -3442,8 +3423,11 @@ end
 """
 function csj end
 
-for (cutest_cint_csj, T) in
-    ((:cutest_cint_csj_s_, :Float32), (:cutest_cint_csj_, :Float64), (:cutest_cint_csj_q_, :Float128))
+for (cutest_cint_csj, T) in (
+  (:cutest_cint_csj_s_, :Float32),
+  (:cutest_cint_csj_, :Float64),
+  (:cutest_cint_csj_q_, :Float128),
+)
   @eval begin
     function csj(
       ::Type{$T},
