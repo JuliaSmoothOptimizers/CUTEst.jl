@@ -46,7 +46,9 @@ CUTEst.ufn
 CUTEst.csgrp
 CUTEst.cshc
 CUTEst.cdimsj
+CUTEst.cdimscj
 CUTEst.cfn
+CUTEst.csj
 CUTEst.cofg
 CUTEst.cofsg
 CUTEst.ceh
