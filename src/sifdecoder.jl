@@ -82,7 +82,8 @@ end
 
 """
     sifdecoder(name::String, args...; verbose::Bool=false,
-               precision::Symbol=:double, libsif_folder=libsif_path)
+               precision::Symbol=:double, libsif_folder=libsif_path,
+               help::Bool=false, show::Bool=false)
 
 Decodes a SIF problem, converting it into a format suitable for further processing.
 
@@ -92,11 +93,15 @@ Decodes a SIF problem, converting it into a format suitable for further processi
 - `verbose::Bool`: If `true`, enables verbose output during the decoding process. Defaults to `false`.
 - `precision::Symbol`: The desired precision for the problem. Can be `:single`, `:double` (default), or `:quadruple`.
 - `libsif_folder::String`: The directory where the generated files (`*.f` and `*.d`) will be stored. Defaults to `libsif_path`.
+- `help::Bool`: If `true`, prints the help message of `sifdecoder_standalone` and exits without decoding any problem.
+- `show::Bool=false`: If `true`, prints the available parameters for the specified SIF problem. This is useful to inspect what settings can be passed with the flag `-param`.
 
 ```julia
 sifdecoder("HS1.SIF", precision=:single)
 sifdecoder("DIXMAANJ", "-param", "M=30"; precision=:double, verbose=true)
 sifdecoder("/home/alexis/CUTEst/BROWNDEN.SIF", precision=:quadruple)
+sifdecoder("HS1", help=true)
+sifdecoder("DIXMAANJ", show=true)
 ```
 """
 function sifdecoder(
@@ -105,7 +110,26 @@ function sifdecoder(
   verbose::Bool = false,
   precision::Symbol = :double,
   libsif_folder::String = libsif_path,
+  help::Bool=false,
+  show::Bool=false,
 )
+  if help
+    run(`$(SIFDecode_jll.sifdecoder_standalone()) --help`)
+    return nothing
+  end
+
+  if show
+    if isempty(name)
+      error("You must provide a SIF problem name when using `show=true`.")
+    end
+    if length(name) < 4 || name[end-3:end] != ".SIF"
+      name *= ".SIF"
+    end
+    sif_path = isfile(name) ? abspath(name) : joinpath(ENV["MASTSIF"], name)
+    run(`$(SIFDecode_jll.sifdecoder_standalone()) -show $sif_path`)
+    return nothing
+  end
+
   outsdif = _name_outsdif(name, precision)
   prec = _decoder_precision(precision)
   suffix = _suffix_precision(precision)
@@ -139,7 +163,7 @@ function sifdecoder(
       ),
     )
     error_str = read(errlog, String)
-    if length(error_str) > 0
+    if !isempty(error_str)
       println(error_str)
       error("Unable to compile a shared library for the problem $name.")
     end
