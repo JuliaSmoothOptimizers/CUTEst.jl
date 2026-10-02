@@ -341,7 +341,9 @@ function NLPModels.cons_nln!(nlp::CUTEstModel{T}, x::AbstractVector, c::Abstract
   if length(nlp.cons_nln_vals) < nlp.meta.nnln
     resize!(nlp.cons_nln_vals, nlp.meta.nnln)
   end
-  cons_nln!(nlp, x, view(nlp.cons_nln_vals, 1:nlp.meta.nnln))
+  resize!(nlp.input_workspace, length(x))
+  copyto!(nlp.input_workspace, x)
+  cons_nln!(nlp, nlp.input_workspace, view(nlp.cons_nln_vals, 1:nlp.meta.nnln))
   copyto!(c, view(nlp.cons_nln_vals, 1:nlp.meta.nnln))
   return c
 end

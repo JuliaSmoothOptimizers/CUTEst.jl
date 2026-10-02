@@ -307,17 +307,17 @@ function CUTEstModel{T}(
   workspace_nvar = Vector{T}(undef, nvar)
   workspace_ncon = Vector{T}(undef, ncon)
 
-  jac_coord_rows = Vector{Cint}()
-  jac_coord_cols = Vector{Cint}()
-  jac_coord_vals = Vector{T}()
-  hess_coord_vals = Vector{T}()
+  jac_coord_rows = Vector{Cint}(undef, nnzj)
+  jac_coord_cols = Vector{Cint}(undef, nnzj)
+  jac_coord_vals = Vector{T}(undef, nnzj)
+  hess_coord_vals = Vector{T}(undef, nnzh)
 
-  cons_vals = Vector{T}()
+  cons_vals = Vector{T}(undef, ncon)
   nnln = count(.!linear)
-  cons_nln_vals = Vector{T}()
+  cons_nln_vals = Vector{T}(undef, nnln)
 
-  input_workspace = Vector{T}()
-  output_workspace = Vector{T}()
+  input_workspace = Vector{T}(undef, nvar)
+  output_workspace = Vector{T}(undef, nvar)
 
   fclose(T, libsif, funit, status)
   cutest_error(status[])
