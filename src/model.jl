@@ -15,6 +15,13 @@ mutable struct CUTEstModel{T} <: AbstractNLPModel{T, Vector{T}}
   workspace_nvar::Vector{T}
   workspace_ncon::Vector{T}
 
+  input_workspace::Vector{T}
+  output_workspace::Vector{T}
+  jac_coord_rows::Vector{Cint}
+  jac_coord_cols::Vector{Cint}
+  jac_coord_vals::Vector{T}
+  hess_coord_vals::Vector{T}
+
   Jval::Vector{T}
   Jvar::Vector{Cint}
 
@@ -296,6 +303,13 @@ function CUTEstModel{T}(
   workspace_nvar = Vector{T}(undef, nvar)
   workspace_ncon = Vector{T}(undef, ncon)
 
+  input_workspace = T[]
+  output_workspace = T[]
+  jac_coord_rows = Cint[]
+  jac_coord_cols = Cint[]
+  jac_coord_vals = T[]
+  hess_coord_vals = T[]
+
   fclose(T, libsif, funit, status)
   cutest_error(status[])
 
@@ -329,6 +343,12 @@ function CUTEstModel{T}(
     clinvals,
     workspace_nvar,
     workspace_ncon,
+    input_workspace,
+    output_workspace,
+    jac_coord_rows,
+    jac_coord_cols,
+    jac_coord_vals,
+    hess_coord_vals,
     Jval,
     Jvar,
     libsif,
